@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>คำนวณภาษี</title>
+</head>
+<body>
+<input type="number" id="price" min="0" value="100"> บาท
+<p>ภาษีมูลค่าเพิ่ม 7%: <span id="vat">7.00</span> บาท รวม: <span id="total">107.00</span> บาท</p>
+<script>
+  const price = document.getElementById('price');
+  function calc() {
+    const p = parseFloat(price.value) || 0;
+    const vat = p * 0.07;
+    document.getElementById('vat').textContent = vat.toFixed(2);
+    document.getElementById('total').textContent = (p + vat).toFixed(2);
+  }
+  price.addEventListener('input', calc);   // คำนวณใหม่ทุกครั้งที่พิมพ์
+</script>
+</body>
+</html>

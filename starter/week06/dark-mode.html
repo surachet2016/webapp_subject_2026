@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dark Mode</title>
+</head>
+<body>
+<style>
+  body { background: #ffffff; color: #212529; }
+  body.dark { background: #121212; color: #e9ecef; }
+</style>
+<button id="themeBtn">โหมดมืด</button>
+<script>
+  const btn = document.getElementById('themeBtn');
+  btn.addEventListener('click', () => {
+    document.body.classList.toggle('dark');
+    btn.textContent = document.body.classList.contains('dark') ? 'โหมดสว่าง' : 'โหมดมืด';
+  });
+</script>
+</body>
+</html>
