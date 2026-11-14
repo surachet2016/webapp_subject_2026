@@ -84,13 +84,13 @@ echo $b,&quot; &quot;;
  ?&gt;</code></pre></div>
 <p>แสดงผลลัพธ์</p>
 <h2 id="s6">7.4 การสอดแทรกคำสั่งภาษา PHP ใน HTML</h2>
-<p>เพื่อเป็นการบ่งบอกให้รู้ว่า ส่วนใดเป็นคำสั่ง ที่อยู่ภายในเอกสาร จึงได้มีการกำหนดสัญลักษณ์ไว้ดังนี้ ซึ่งสามารถทำได้หลายรูปแบบ เช่น</p>
-<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;? ... ?&gt; (SGML style)
-&lt;?php ... ?&gt;? (XML style)
-&lt;script language=&quot;php&quot;&gt; ... &lt;/script&gt; (JavaScript style)</code></pre></div>
-<ul><li>&lt;% ... %&gt; (ASP style)</li></ul>
-<p>ที่นิยมก็คือแบบแรก โดยเริ่มต้นด้วย &lt;? และจบด้วย ?&gt; และตรงกลางจะเป็นคำสั่งในภาษา PHP </p>
-<p>เราสามารถวางคำสั่ง ไว้ภายในเอกสาร ตามที่ต้องการได้ อาจจะสลับกับ Tag ของภาษา ก็ได้ ตัวอย่างเช่น</p>
+<p>PHP ใช้แท็กเปิดและแท็กปิดบอกว่าส่วนใดในเอกสาร HTML เป็นคำสั่ง PHP โดยมีรูปแบบดังนี้ (The PHP Group, 2024b)</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;?php ... ?&gt; รูปแบบมาตรฐาน ใช้ได้กับทุกเซิร์ฟเวอร์
+&lt;?= ... ?&gt; รูปแบบย่อสำหรับแสดงผล มีความหมายเหมือน &lt;?php echo ... ?&gt;
+&lt;? ... ?&gt; แท็กแบบสั้น ใช้ได้เมื่อเซิร์ฟเวอร์เปิดค่า short_open_tag เท่านั้น จึงไม่แนะนำ</code></pre></div>
+<ul><li>&lt;% ... %&gt; และ &lt;script language=&quot;php&quot;&gt; ถูกยกเลิกตั้งแต่ PHP 7 ใช้ไม่ได้แล้ว</li></ul>
+<p>ควรใช้แบบ &lt;?php ... ?&gt; เสมอ และถ้าไฟล์มีแต่โค้ด PHP ล้วน ไม่ต้องใส่แท็กปิด ?&gt; ท้ายไฟล์ เพื่อป้องกันช่องว่างเกินที่อาจถูกส่งออกไปโดยไม่ตั้งใจ</p>
+<p>คำสั่ง PHP วางสลับกับแท็ก HTML ได้ตามต้องการ ตัวอย่างเช่น</p>
 <div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;HTML&gt;
 &lt;HEAD&gt;
 &lt;TITLE&gt; My Homepage &lt;/TITLE&gt;
@@ -134,7 +134,7 @@ echo (0xef + 007);</code></pre></div>
 <p>?&gt; </p>
 <p>แสดงผลลัพธ์</p>
 <h2 id="s8">7.6 แนะนำคำสั่ง IF ในภาษา PHP</h2>
-<p>คำสั่ง IF ในภาษา PHP คือคำสั่งเงื่อนไขที่ใช้ในการตรวจสอบเงื่อนไขว่าเป็นจริงหรือเท็จ โดยใช้คำสั่ง if จะช่วยให้โปรแกรมทำงานตามเงื่อนไขที่กำหนดไว้  โดยในกรณีที่เป็นจริง โปรแกรมจะทำงานตามคำสั่งที่กำหนดไว้ในบล็อกที่อยู่ในเครื่องหมายปีกกา {} ซึ่งถ้าเงื่อนไขเป็นเท็จ โปรแกรมจะไม่ทำงานในบล็อกเงื่อนไขนั้น และทำงานต่อไปนอกจากนี้ ยังสามารถเพิ่มเงื่อนไขเข้าไปเพิ่มเติมโดยใช้คำสั่ง else เพื่อกำหนดคำสั่งที่ต้องการให้ไม่เป็นจริง  แต่เราสามารถลดความยาวของคำสั่งและการทำงานลงได้ โดยการใช้ &quot;IF แบบสั้น&quot;</p>
+<p>คำสั่ง if ใช้ตรวจสอบเงื่อนไขว่าเป็นจริงหรือเท็จ ถ้าเงื่อนไขเป็นจริง โปรแกรมจะทำคำสั่งในบล็อก { } ของ if ถ้าเป็นเท็จจะข้ามบล็อกนั้นไป ใช้ else กำหนดคำสั่งที่ทำเมื่อเงื่อนไขเป็นเท็จ หรือใช้ elseif ตรวจหลายเงื่อนไขต่อกัน และยังเขียนให้สั้นลงได้ด้วยตัวดำเนินการแบบมีเงื่อนไข (Ternary Operator) หรือที่เรียกว่า &quot;IF แบบสั้น&quot; (The PHP Group, 2024b)</p>
 <p>     รูปแบบการเขียนคำสั่ง IF</p>
 <p>if (เงื่อนไข) {<br>  // คำสั่งที่จะถูกดำเนินการถ้าเงื่อนไขเป็นจริง<br>} else {<br>  // คำสั่งที่จะถูกดำเนินการถ้าเงื่อนไขไม่เป็นจริง<br>}</p>
 <p>แต่เราสามารถลดความยาวของคำสั่งและการทำงานลงได้ โดยการใช้ IF แบบสั้น</p>
@@ -203,7 +203,7 @@ echo &quot;Your country is $country.&quot;;
 ?&gt;</code></pre></div>
 <p>แสดงผลลัพธ์</p>
 <h2 id="s11">7.9 แนะนำคำสั่ง วนรอบ ในภาษา PHP</h2>
-<p>php loop การทำซ้ำหรือการวนซ้ำ ( Loop )  เนื่องจากการแสดงผลของชุดข้อมูล()ต่าง ๆ ที่มีค่าข้อมูลที่เหมือนกันแต่ต่างกันที่ตัวเลขในการแสดงคนจริงนิยมใช้ loop ในการแสดงผลของข้อมูล ซึ่งจะได้ประหยัดเวลาในการเขียนและยังลดบรรทัดโค้ดที่ไม่จำเป็นอีกด้วย ทั้งนี้ จึงขอยกตัวอย่างวิธีการ loop ข้อมูลของ php มาทั้งหมด 4 แบบ ได้แก่ <strong>For Loop , Foreach Loop , While Loop , Do While Loop </strong> และยังมีคำสั่งที่เกี่ยวข้องกับ การใช้ loop อย่างเช่น <strong>break / continue  </strong>ยังมีเรื่อง Recursive Function หรือการใช้ Function  เรียกทำงาน Function ตัวเองไปเรื่อยๆจนกว่าข้อมูลจะแสดงครบทั้งหมด</p>
+<p>การวนรอบ (Loop) ใช้ทำคำสั่งชุดเดิมซ้ำหลายครั้ง เช่น แสดงข้อมูลทุกตัวในอาร์เรย์ ช่วยลดจำนวนบรรทัดโค้ดที่ซ้ำกัน ภาษา PHP มีคำสั่งวนรอบ 4 แบบ ได้แก่ for, foreach, while และ do...while มีคำสั่ง break สำหรับออกจากลูป และ continue สำหรับข้ามไปรอบถัดไป (The PHP Group, 2024b) นอกจากนี้ยังทำงานซ้ำได้ด้วยฟังก์ชันที่เรียกตัวเอง (Recursive Function)</p>
 <p>for loop  มีไว้สำหรับการทำซ้ำโปรแกรมในจำนวนรอบที่แน่นอน ตัวอย่างเช่น</p>
 <p>&lt;?php<br>// for ([กำหนดตัวแปรสำหรับเริ่มต้น]; [ถ้าตรงเงื่อนไขจะยังวนลูป]; [เพิ่มค่าตัวแปรไปเรื่อยๆจนกว่าจะพ้นเงื่อนไข]) {<br>    // ให้ทำอะไรซักอย่างซ้ำๆ <br>//   }<br><br>for ($i = 0; $i &lt; 4; $i++) {  <br>    echo &quot;The number is: $i &lt;br&gt;&quot;; //ส่วนแสดงผล<br>}<br><br>?&gt;</p>
 <p>แสดงผลลัพธ์</p>
@@ -300,8 +300,7 @@ echo &quot;ค่าที่น้อยสุด คือ &quot;.min($price1,
 <p>แสดงผลลัพธ์</p>
 <p><strong>ฟังก์ชัน date() </strong></p>
 <p>เป็น Functions ที่ใช้ในการจัดรูปแบบ วันที่ และเวลา</p>
-<p>ซึงในบทความนี้ จะแนะนำเกร็ดความเบื้องต้นเล็กๆน้อยๆ เกี่ยวกับวันที่และเวลาในภาษา  ซึ่งจะพูดถึงถึงเกี่ยวกับการแสดงวันที่ และเวลาใน</p>
-<p>โปรแกรมของการจัดรูปแบบการแสดงของเวลา และการดำเนินการอื่นๆ ที่เกี่ยวกับวันเวลา เช่น การแสดงวันที่และเวลาของปัจจุบัน </p>
+<p>ใช้แสดงวันที่และเวลาปัจจุบัน หรือแปลงค่า timestamp ให้อยู่ในรูปแบบที่ต้องการ (The PHP Group, 2024b)</p>
 <p>Syntax date(format,timestamp)</p>
 <p>parameter format ระบุรูปแบบ</p>
 <p class="cap">ตารางที่ 7-2 รูปแบบ (format) ที่ใช้กับฟังก์ชัน date() ใน PHP</p>
@@ -420,7 +419,7 @@ exit;</code></pre></div>
 <p>ThaiCreate.Com. (n.d.). PHP &amp; MySQL (mysqli) tutorials. Retrieved November 14, 2026, from <a href="https://www.thaicreate.com/" target="_blank" rel="noopener noreferrer">https://www.thaicreate.com/</a></p>
 <p>The PHP Group. (2024b). PHP manual. Retrieved from <a href="https://www.php.net/manual/en/" target="_blank" rel="noopener noreferrer">https://www.php.net/manual/en/</a></p>
 <label class="donebox"><input type="checkbox" id="done"><span>ทำเครื่องหมายว่าอ่านบทนี้แล้ว</span></label>
-<div class="pager"><a class="pn" href="ch6.html"><small>บทก่อนหน้า</small><b>บทที่ 6 พื้นฐานภาษา JavaScript</b></a><a class="pn next" href="ch8.html"><small>บทถัดไป</small><b>บทที่ 8 พื้นฐานภาษา MySQLi</b></a></div>
+<div class="pager"><a class="pn" href="ch6.html"><small>บทก่อนหน้า</small><b>บทที่ 6 พื้นฐานภาษา JavaScript</b></a><a class="pn next" href="ch8.html"><small>บทถัดไป</small><b>บทที่ 8 พื้นฐาน MySQLi</b></a></div>
 </article></div>
 </main>
 <footer class="foot"><div class="wrap fgrid">

@@ -3,7 +3,7 @@
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
   function get(k) { try { return JSON.parse(localStorage.getItem(k) || "null"); } catch (e) { return null; } }
   function set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
-  var NAMES = { 1: "แนวคิดและหลักการออกแบบเว็บไซต์", 2: "พื้นฐานสำหรับการเขียนโปรแกรมบนเว็บ", 3: "พื้นฐานภาษา HTML", 4: "พื้นฐาน CSS", 5: "พื้นฐาน Bootstrap", 6: "พื้นฐานภาษา JavaScript", 7: "พื้นฐานภาษา PHP", 8: "พื้นฐานภาษา MySQLi", 9: "การใช้โปรแกรมสำเร็จรูปเพื่อจัดทำเว็บไซต์", 10: "การจัดตั้งเว็บไซต์" };
+  var NAMES = { 1: "แนวคิดและหลักการออกแบบเว็บไซต์", 2: "พื้นฐานสำหรับการเขียนโปรแกรมบนเว็บ", 3: "พื้นฐานภาษา HTML", 4: "พื้นฐาน CSS", 5: "พื้นฐาน Bootstrap", 6: "พื้นฐานภาษา JavaScript", 7: "พื้นฐานภาษา PHP", 8: "พื้นฐาน MySQLi", 9: "การใช้โปรแกรมสำเร็จรูปเพื่อจัดทำเว็บไซต์", 10: "การจัดตั้งเว็บไซต์" };
   var base = (document.querySelector('link[rel=stylesheet]').getAttribute("href") || "").replace("assets/style.css", "");
 
   /* theme */
