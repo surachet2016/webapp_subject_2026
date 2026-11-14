@@ -1292,6 +1292,39 @@ src: url(&#x27;ที่อยู่ URL ของฟอนต์ที่เร
 &lt;/body&gt;
 &lt;/html&gt;</code></pre></div>
 <p>แสดงผลลัพธ์</p>
+<ul><li><strong>การใช้ Google Fonts และการเลือกฟอนต์ภาษาไทย</strong></li></ul>
+<p>Google Fonts เป็นคลังฟอนต์ออนไลน์ของ Google ที่ให้นำฟอนต์ไปใช้บนเว็บไซต์ได้โดยไม่เสียค่าใช้จ่าย ฟอนต์ในคลังเป็นฟอนต์โอเพนซอร์ส ส่วนใหญ่เผยแพร่ภายใต้สัญญาอนุญาต SIL Open Font License (OFL) ซึ่งอนุญาตให้ใช้ ดัดแปลง และแจกจ่ายได้ รวมถึงใช้ในงานเชิงพาณิชย์ แต่ห้ามนำไฟล์ฟอนต์ไปจำหน่ายเดี่ยว ๆ (Google, n.d.; SIL International, n.d.) ในคลังมีฟอนต์ภาษาไทยหลายตระกูล เช่น Sarabun, Noto Sans Thai, Noto Serif Thai, Prompt และ Kanit</p>
+<p>ขั้นตอนการใช้ Google Fonts มีดังนี้</p>
+<p>- เปิดเว็บไซต์ <a href="https://fonts.google.com" target="_blank" rel="noopener noreferrer">https://fonts.google.com</a> แล้วกรองภาษา (Language) เป็น Thai</p>
+<p>- เลือกฟอนต์และน้ำหนัก (Weight) เฉพาะที่ใช้จริง เช่น 400 สำหรับเนื้อหา และ 700 สำหรับตัวหนา</p>
+<p>- คัดลอกแท็ก &lt;link&gt; ที่เว็บไซต์สร้างให้ ไปวางในส่วน &lt;head&gt; ของหน้าเว็บ</p>
+<p>- กำหนด font-family ใน CSS โดยปิดท้ายด้วยฟอนต์สำรอง</p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Google Fonts&lt;/title&gt;
+&lt;link rel=&quot;preconnect&quot; href=&quot;https://fonts.googleapis.com&quot;&gt;
+&lt;link rel=&quot;preconnect&quot; href=&quot;https://fonts.gstatic.com&quot; crossorigin&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Prompt:wght@600&amp;family=Sarabun:wght@400;700&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+  body { font-family: &quot;Sarabun&quot;, Tahoma, sans-serif; line-height: 1.6; }
+  h1   { font-family: &quot;Prompt&quot;, sans-serif; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;ร้านกาแฟบ้านสวน&lt;/h1&gt;
+&lt;p&gt;กาแฟคั่วกลาง หอมกรุ่น เปิดทุกวัน 07:00–17:00 น.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>ผลลัพธ์ที่ได้คือ หัวเรื่องแสดงด้วยฟอนต์ Prompt และเนื้อหาแสดงด้วยฟอนต์ Sarabun หากเครื่องไม่ได้เชื่อมต่ออินเทอร์เน็ต เบราว์เซอร์จะแสดงข้อความด้วยฟอนต์สำรอง (Tahoma หรือ sans-serif) แทน ข้อความจึงยังอ่านได้</p>
+<p>ข้อควรพิจารณาในการใช้ฟอนต์ภาษาไทยบนเว็บไซต์ มีดังนี้</p>
+<p>- ฟอนต์สำรอง: ปิดท้าย font-family ด้วยฟอนต์ที่มีในเครื่องทั่วไปและตระกูลทั่วไป เช่น Tahoma, sans-serif</p>
+<p>- ระยะบรรทัด: อักษรไทยมีสระและวรรณยุกต์ซ้อนอยู่ด้านบนและด้านล่าง ควรกำหนด line-height ของเนื้อหาประมาณ 1.5–1.8 เพื่อไม่ให้บรรทัดชนกัน</p>
+<p>- ประสิทธิภาพ: เลือกเฉพาะน้ำหนักที่ใช้ ไม่ควรใช้เกิน 2 ตระกูลฟอนต์ และใช้ display=swap หรือ font-display: swap เพื่อแสดงข้อความด้วยฟอนต์สำรองระหว่างรอโหลด</p>
+<p>- ความเป็นส่วนตัว: เมื่อใช้ Google Fonts เบราว์เซอร์ของผู้เข้าชมจะส่งคำขอซึ่งรวมหมายเลข IP ไปยังเซิร์ฟเวอร์ของ Google ควรระบุไว้ในประกาศความเป็นส่วนตัวของเว็บไซต์ หรือดาวน์โหลดไฟล์ฟอนต์มาเก็บบนเซิร์ฟเวอร์ของตนเองแล้วใช้ @font-face แทน</p>
+<p>- สิทธิการใช้งาน: ตรวจสัญญาอนุญาตของฟอนต์ทุกครั้ง ฟอนต์ที่จำหน่ายมักต้องซื้อสิทธิ์สำหรับใช้บนเว็บไซต์ (Webfont License) แยกต่างหาก ไม่ควรแปลงไฟล์ฟอนต์ที่ไม่มีสิทธิ์มาใช้ และควรระบุแหล่งที่มาของฟอนต์ในเอกสารประกอบโครงงาน</p>
 <h2 id="s21">4.11 CSS Flexbox</h2>
 <p>ใน CSS การกำหนดขนาดและตำแหน่งของกล่องใช้โหมดการจัดวาง (Layout Mode) ซึ่งมีดังนี้</p>
 <ul><li><strong>block - จัดวางเนื้อหาแบบบล็อก</strong></li><li><strong>inline - จัดวางเนื้อหาต่อเนื่องในบรรทัดเหมือนข้อความ</strong></li><li><strong>table - จัดวางเนื้อหาแบบตาราง</strong></li><li><strong>position - กำหนดตำแหน่งขององค์ประกอบได้อย่างอิสระ</strong></li></ul>
@@ -1712,8 +1745,10 @@ body { font-family: var(--font-base); font-size: 16px; background-color: var(--b
 <p>จีราวุธ วารินทร์. (2564). พัฒนาเว็บไซต์สมัยใหม่ด้วย HTML5 JavaScript + CSS3 ฉบับสมบูรณ์. กรุงเทพฯ: รีไวว่า.</p>
 <p>Coyier, C. (n.d.-a). A complete guide to CSS flexbox. CSS-Tricks. Retrieved from <a href="https://css-tricks.com/snippets/css/a-guide-to-flexbox/" target="_blank" rel="noopener noreferrer">https://css-tricks.com/snippets/css/a-guide-to-flexbox/</a></p>
 <p>Coyier, C. (n.d.-b). A complete guide to CSS grid layout. CSS-Tricks. Retrieved from <a href="https://css-tricks.com/snippets/css/complete-guide-grid/" target="_blank" rel="noopener noreferrer">https://css-tricks.com/snippets/css/complete-guide-grid/</a></p>
+<p>Google. (n.d.). Google Fonts. Retrieved November 15, 2026, from <a href="https://fonts.google.com/" target="_blank" rel="noopener noreferrer">https://fonts.google.com/</a></p>
 <p>Keith, J. (2016). Resilient web design. Retrieved from <a href="https://resilientwebdesign.com/" target="_blank" rel="noopener noreferrer">https://resilientwebdesign.com/</a></p>
 <p>Mozilla Developer Network [MDN]. (2024a). CSS: Cascading Style Sheets. Retrieved from <a href="https://developer.mozilla.org/en-US/docs/Web/CSS" target="_blank" rel="noopener noreferrer">https://developer.mozilla.org/en-US/docs/Web/CSS</a></p>
+<p>SIL International. (n.d.). SIL Open Font License (OFL). Retrieved November 15, 2026, from <a href="https://openfontlicense.org/" target="_blank" rel="noopener noreferrer">https://openfontlicense.org/</a></p>
 <p>Verou, L. (2015). CSS Secrets: Better Solutions to Everyday Web Design Problems. Sebastopol, CA: O&#x27;Reilly Media.</p>
 <label class="donebox"><input type="checkbox" id="done"><span>ทำเครื่องหมายว่าอ่านบทนี้แล้ว</span></label>
 <div class="pager"><a class="pn" href="ch3.html"><small>บทก่อนหน้า</small><b>บทที่ 3 พื้นฐานภาษา HTML</b></a><a class="pn next" href="ch5.html"><small>บทถัดไป</small><b>บทที่ 5 พื้นฐาน Bootstrap</b></a></div>
