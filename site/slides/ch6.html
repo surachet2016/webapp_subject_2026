@@ -1,0 +1,557 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="สไลด์บทที่ 6 JavaScript รายวิชา 07-034-210 พร้อมตัวอย่างที่กดลองได้">
+<meta name="theme-color" content="#1e1b4b">
+<title>สไลด์บทที่ 6 JavaScript · การเขียนโปรแกรมบนเว็บ</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%234338ca'/%3E%3Cpath d='M26 20 14 32l12 12M38 20l12 12-12 12' fill='none' stroke='%23fff' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="deck.css">
+<style>
+/* เฉพาะบทที่ 6 */
+.ed{font-family:Mono,monospace;font-size:15px;line-height:1.55;background:#0f1226;color:#e8eaf8;border:0;border-radius:12px;padding:12px 14px;width:100%;resize:none}
+.con{font-family:Mono,monospace;font-size:15px;line-height:1.6;background:#111827;color:#d1d5db;border-radius:12px;padding:10px 14px;overflow:auto;white-space:pre-wrap}
+.con .l{color:#a7f3d0}.con .e{color:#fca5a5}.con .i{color:#93c5fd}
+.con .l::before{content:"› ";color:#6b7280}
+.chip{font:inherit;font-size:17px;border:2px solid var(--line);background:#fff;border-radius:12px;padding:6px 12px;cursor:pointer}
+.chip.on{border-color:var(--accent);background:#fffbeb}
+.pv{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;overflow:hidden}
+.mini .hl{outline:3px solid #f59e0b;outline-offset:2px}
+.mini .big{font-size:28px;color:#b45309}
+.ev{font-family:Mono,monospace;font-size:15px;height:300px;overflow:auto;background:#111827;color:#a7f3d0;border-radius:12px;padding:10px 14px}
+.pad{height:150px;border-radius:14px;background:linear-gradient(135deg,#6366f1,#ec4899);color:#fff;font-size:22px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;user-select:none}
+.qa{font-family:Mono,monospace;font-size:16px;background:#0f1226;color:#e8eaf8;border-radius:12px;padding:12px 14px;white-space:pre;margin-bottom:8px}
+.ans{font-size:18px;margin-top:4px;min-height:28px}
+.ord{display:flex;flex-direction:column;gap:8px}
+.ord button{font:inherit;font-family:Mono,monospace;font-size:17px;text-align:left;background:#fff;border:2px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer}
+.ord button.pick{border-color:var(--brand);background:#eef2ff}
+.ord button b{display:inline-block;min-width:26px;color:var(--brand)}
+.prom{width:170px;height:170px;border-radius:50%;margin:10px auto;display:flex;align-items:center;justify-content:center;flex-direction:column;color:#fff;font-weight:700;font-size:22px;transition:background .4s}
+.prom small{font-size:15px;font-weight:400}
+.spin{animation:sp 1.2s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+table.u{border-collapse:collapse;width:100%;font-size:16px}
+table.u th,table.u td{border:1px solid var(--line);padding:6px 8px;text-align:left}
+table.u th{background:#eef2ff}
+.theme-dark{background:#111827!important;color:#e5e7eb!important}
+iframe.box{width:100%;border:1px solid var(--line);border-radius:12px;background:#fff}
+.todo li{display:flex;justify-content:space-between;align-items:center;background:#fff;border:1px solid var(--line);border-radius:10px;padding:6px 12px;margin:6px 0;font-size:19px;list-style:none}
+.todo li button{border:0;background:#fee2e2;color:#991b1b;border-radius:8px;padding:2px 10px;cursor:pointer;font:inherit;font-size:16px}
+</style>
+</head>
+<body>
+<div id="stage">
+
+<section class="slide dark" data-title="ปก">
+  <div style="position:absolute;left:72px;top:180px;width:600px">
+    <p class="kicker">รายวิชา 07-034-210 การเขียนโปรแกรมบนเว็บ · บทที่ 6</p>
+    <h1>JavaScript</h1>
+    <p class="muted" style="margin-top:18px">DOM เหตุการณ์ ไวยากรณ์ ES6+ การทำงานแบบอะซิงโครนัส Fetch API Promise การดีบัก และความปลอดภัยเมื่อใช้ AI ช่วยเขียนโค้ด</p>
+    <p class="muted" style="margin-top:28px;font-size:20px">ดร.สุรเชษฐ์ สังขพันธ์ · กด → หรือ Space ไปสไลด์ถัดไป · กด O ดูสารบัญ</p>
+  </div>
+  <svg style="position:absolute;right:70px;top:150px" width="440" height="420" viewBox="0 0 440 420" aria-hidden="true">
+    <rect x="20" y="20" width="400" height="300" rx="18" fill="#0f1226" stroke="#a78bfa" stroke-width="2"/>
+    <g font-family="Mono" font-size="19">
+      <text x="44" y="70" fill="#c4b5fd">const</text><text x="112" y="70" fill="#fff">btn = document</text>
+      <text x="64" y="102" fill="#fff">.querySelector(</text><text x="244" y="102" fill="#86efac">"#like"</text><text x="318" y="102" fill="#fff">);</text>
+      <text x="44" y="146" fill="#fff">btn.</text><text x="92" y="146" fill="#fcd34d">addEventListener</text><text x="290" y="146" fill="#fff">(</text>
+      <text x="64" y="178" fill="#86efac">"click"</text><text x="150" y="178" fill="#fff">, () =&gt; {</text>
+      <text x="84" y="210" fill="#fff">count++;</text>
+      <text x="64" y="242" fill="#fff">});</text>
+      <rect x="44" y="262" width="12" height="22" fill="#fcd34d"><animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite"/></rect>
+    </g>
+    <rect x="130" y="340" width="180" height="60" rx="14" fill="#f59e0b"/>
+    <text x="220" y="378" text-anchor="middle" font-family="Sarabun" font-size="22" font-weight="700" fill="#111">❤ ถูกใจ <tspan id="cvN">12</tspan></text>
+    <circle cx="300" cy="350" r="0" fill="#ec4899" opacity=".8"><animate attributeName="r" values="0;26;0" dur="1.6s" repeatCount="indefinite"/></circle>
+  </svg>
+  <div class="foot"><span>ภาพประกอบในสไลด์ชุดนี้สร้างด้วย SVG/CSS โดยใช้ปัญญาประดิษฐ์ (AI) ช่วยสร้าง</span><span>พ.ศ. 2569</span></div>
+</section>
+
+<section class="slide" data-title="เป้าหมายของบทนี้">
+  <p class="kicker">เป้าหมายของบทนี้</p>
+  <h2>เรียนจบบทนี้ นักศึกษาจะ...</h2>
+  <div class="grid2" style="align-items:start">
+    <ul class="b">
+      <li>ใส่ JavaScript ในหน้าเว็บได้ถูกที่</li>
+      <li>เลือกและแก้ไขเอลิเมนต์ผ่าน DOM</li>
+      <li>เขียนด้วยไวยากรณ์ ES6+ และดักฟังเหตุการณ์</li>
+      <li>ดึงข้อมูลจาก API ด้วย fetch และ async/await</li>
+      <li>ดีบักด้วย Console และป้องกัน XSS</li>
+    </ul>
+    <div class="card">
+      <h3>ผลลัพธ์การเรียนรู้ (CLO) ของบทนี้</h3>
+      <p><b>CLO4</b> สร้างเว็บเพจที่มีปฏิสัมพันธ์กับผู้ใช้ โดยใช้ภาษาสคริปต์และส่วนเสริมได้เหมาะสมกับลักษณะงาน</p>
+      <p style="margin-top:8px"><b>CLO5</b> ประยุกต์ความรู้ด้านการเขียนโปรแกรมบนเว็บเพื่อพัฒนาเว็บไซต์สำหรับแก้ปัญหาจากสถานการณ์ที่กำหนด พร้อมทดสอบและปรับปรุงการทำงานได้</p>
+      <p class="muted" style="margin-top:10px;font-size:16px">ใบงานที่ 6: เขียนโปรแกรมเชิงปฏิสัมพันธ์ด้วย Modern JavaScript (ES6+) และการควบคุม DOM</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-title="6.1 JavaScript ทำอะไรได้">
+  <p class="kicker">6.1 ประโยชน์และบทบาทของ JavaScript (จีราวุธ วารินทร์, 2566; Haverbeke, 2024)</p>
+  <h2>ทำให้หน้าเว็บ "ตอบสนอง" ผู้ใช้</h2>
+  <div class="grid4">
+    <div class="card hov"><h3>ตรวจข้อมูล</h3><p>เตือนทันทีเมื่อกรอกผิด ก่อนส่งไปเซิร์ฟเวอร์</p></div>
+    <div class="card hov"><h3>เปลี่ยนหน้าเว็บ</h3><p>ซ่อน แสดง เพิ่ม ลบเนื้อหา โดยไม่โหลดหน้าใหม่</p></div>
+    <div class="card hov"><h3>คุยกับ API</h3><p>ดึงข้อมูลสด เช่น สภาพอากาศ คำสั่งซื้อ</p></div>
+    <div class="card hov"><h3>เก็บค่าในเครื่อง</h3><p>จำการตั้งค่าด้วย localStorage</p></div>
+  </div>
+  <div class="grid2" style="margin-top:18px;align-items:start">
+    <div class="card"><p>JavaScript ทำงาน<b>ในเบราว์เซอร์ของผู้ใช้</b> (Client-side) ผู้ใช้เปิดดูและแก้โค้ดได้ จึง<b>ห้ามเชื่อ</b>ผลตรวจฝั่งนี้อย่างเดียว ต้องตรวจซ้ำที่ PHP เสมอ</p></div>
+    <div class="card"><p>มาตรฐานภาษาชื่อ <b>ECMAScript</b> (ECMA-262) เวอร์ชัน ES6 (ค.ศ. 2015) เพิ่ม let/const, arrow function, Promise ที่ใช้ทั่วไปในปัจจุบัน</p></div>
+  </div>
+  <a class="src" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noopener noreferrer">อ่านต่อ: JavaScript (MDN)</a>
+</section>
+
+<section class="slide" data-title="6.2 เริ่มเขียนและ Console">
+  <p class="kicker">6.2 เริ่มต้นเขียน JavaScript</p>
+  <h2>เขียน แล้วกด "รัน" ดูผลใน Console</h2>
+  <div class="grid2" style="grid-template-columns:1.1fr 1fr;align-items:start">
+    <div>
+      <div class="tabs" id="whereTabs"><button class="on" data-k="0">ไฟล์แยก .js</button><button data-k="1">ใน &lt;script&gt;</button><button data-k="2">ในแอตทริบิวต์</button></div>
+      <div class="code" id="whereCode" style="font-size:15px;white-space:pre;height:130px"></div>
+      <textarea class="ed" id="c1" spellcheck="false" style="height:200px;margin-top:10px">let name = "กัญญา";
+let price = 55;
+console.log("สวัสดี " + name);
+console.log("ราคารวม VAT:", price * 1.07);
+console.log(typeof price, typeof name);</textarea>
+      <button class="btn" id="r1" style="margin-top:8px">▶ รัน</button>
+    </div>
+    <div><p style="font-size:18px;font-weight:600">Console</p><div class="con" id="o1" style="height:410px"></div></div>
+  </div>
+</section>
+
+<section class="slide" data-title="6.3–6.5 noscript ปุ่ม และสไตล์">
+  <p class="kicker">6.3 Tag noscript · 6.4 ปุ่มลิงก์ไปหน้าอื่น · 6.5 เพิ่มเติมสไตล์</p>
+  <h2>JavaScript เปลี่ยนหน้าตาได้ทันที</h2>
+  <div class="grid2" style="align-items:start">
+    <div>
+      <div class="code" style="font-size:15px;white-space:pre">&lt;noscript&gt;
+  เบราว์เซอร์ของคุณปิด JavaScript อยู่
+&lt;/noscript&gt;
+
+&lt;button onclick="location.href='menu.html'"&gt;
+  ดูเมนู&lt;/button&gt;
+
+el.style.backgroundColor = "#fde68a";
+el.style.fontSize = "28px";</div>
+      <label style="display:flex;gap:10px;align-items:center;margin-top:14px;font-weight:400"><input type="checkbox" id="jsOff" style="width:22px;height:22px"> จำลองผู้ใช้ปิด JavaScript</label>
+    </div>
+    <div class="pv" style="min-height:360px">
+      <p id="nsMsg" style="display:none;background:#fee2e2;color:#991b1b;border-radius:8px;padding:8px 12px;font-size:18px">&lt;noscript&gt; แสดง: เบราว์เซอร์ของคุณปิด JavaScript อยู่ บางฟังก์ชันจะใช้ไม่ได้</p>
+      <h3 id="stTarget" style="padding:8px;border-radius:8px;transition:all .3s">ร้านกาแฟบ้านสวน</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px">
+        <button class="btn alt" data-st="bg">พื้นหลังเหลือง</button><button class="btn alt" data-st="big">ตัวใหญ่</button><button class="btn alt" data-st="hide">ซ่อน/แสดง</button><button class="btn alt" data-st="reset">คืนค่า</button>
+      </div>
+      <button class="btn" id="goLink" style="margin-top:14px">ดูเมนู (ไปหน้า menu.html)</button>
+      <p id="stCode" style="font-family:Mono,monospace;font-size:16px;margin-top:12px;color:#4338ca"></p>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-title="6.6 กล่องข้อความ">
+  <p class="kicker">6.6 กล่องข้อความ (Message Box)</p>
+  <h2>alert · confirm · prompt</h2>
+  <div class="grid3">
+    <div class="card"><h3>alert()</h3><div class="code" style="font-size:15px">alert("บันทึกแล้ว");</div><button class="btn" id="mA" style="margin-top:10px">ลองเลย</button><p class="muted" style="font-size:17px;margin-top:8px">แจ้งเตือน มีปุ่ม OK ปุ่มเดียว</p></div>
+    <div class="card"><h3>confirm()</h3><div class="code" style="font-size:15px">let ok = confirm("ลบรายการนี้?");
+// true หรือ false</div><button class="btn" id="mC" style="margin-top:10px">ลองเลย</button><p class="muted" style="font-size:17px;margin-top:8px">ยืนยัน คืนค่า true/false</p></div>
+    <div class="card"><h3>prompt()</h3><div class="code" style="font-size:15px">let n = prompt("ชื่อของคุณ", "");
+// ข้อความ หรือ null</div><button class="btn" id="mP" style="margin-top:10px">ลองเลย</button><p class="muted" style="font-size:17px;margin-top:8px">รับข้อความ คืนค่าเป็นสตริงเสมอ</p></div>
+  </div>
+  <div class="card" style="margin-top:16px"><p id="mOut" style="font-size:22px">ผลลัพธ์จะแสดงที่นี่</p></div>
+  <p class="muted" style="font-size:17px;margin-top:10px">กล่องเหล่านี้หยุดการทำงานของหน้าเว็บจนกว่าผู้ใช้จะกด งานจริงนิยมใช้ Modal ของ Bootstrap (บทที่ 5) แทน</p>
+</section>
+
+<section class="slide" data-title="6.7 DOM: เลือกแล้วแก้">
+  <p class="kicker">6.7 การใช้งาน DOM Tree (MDN, 2024c)</p>
+  <h2>เลือกเอลิเมนต์ แล้วสั่งเปลี่ยน</h2>
+  <div class="grid2" style="grid-template-columns:1.05fr 1fr;align-items:start">
+    <div>
+      <div style="display:flex;flex-direction:column;gap:8px" id="domBtns">
+        <button class="chip" data-d="0">document.querySelector("h3")</button>
+        <button class="chip" data-d="1">h3.textContent = "เมนูวันนี้"</button>
+        <button class="chip" data-d="2">document.querySelectorAll("li").length</button>
+        <button class="chip" data-d="3">li[0].classList.add("big")</button>
+        <button class="chip" data-d="4">ul.append(document.createElement("li"))</button>
+        <button class="chip" data-d="5">document.getElementById("msg").remove()</button>
+      </div>
+      <div class="con" id="domOut" style="height:110px;margin-top:10px"></div>
+      <button class="btn alt" id="domReset" style="margin-top:8px">เริ่มใหม่</button>
+    </div>
+    <div class="pv mini" id="domPage" style="min-height:420px"></div>
+  </div>
+</section>
+
+<section class="slide" data-title="6.8.1 let และ const">
+  <p class="kicker">6.8.1 การประกาศตัวแปรด้วย let และ const (ECMA International, 2023)</p>
+  <h2>ทายก่อน แล้วรันพิสูจน์</h2>
+  <div class="grid2" style="align-items:start">
+    <div>
+      <div class="qa">const vat = 0.07;
+vat = 0.1;
+console.log(vat);</div>
+      <div style="display:flex;gap:8px"><button class="chip" data-q="0|a">0.1</button><button class="chip" data-q="0|b">0.07</button><button class="chip" data-q="0|c">เกิด Error</button></div>
+      <p class="ans" id="a0"></p>
+      <div class="qa" style="margin-top:10px">if (true) {
+  let x = 5;
+}
+console.log(x);</div>
+      <div style="display:flex;gap:8px"><button class="chip" data-q="1|a">5</button><button class="chip" data-q="1|b">undefined</button><button class="chip" data-q="1|c">เกิด Error</button></div>
+      <p class="ans" id="a1"></p>
+    </div>
+    <div>
+      <div class="card"><h3>ใช้แบบไหนดี</h3><ul class="b"><li style="font-size:20px"><b>const</b> ค่าไม่เปลี่ยน (ใช้เป็นค่าเริ่มต้น)</li><li style="font-size:20px"><b>let</b> ค่าเปลี่ยนได้ ใช้ได้เฉพาะใน { } ที่ประกาศ</li><li style="font-size:20px"><b>var</b> แบบเก่า ขอบเขตกว้างเกิน เลี่ยงได้ควรเลี่ยง</li></ul></div>
+      <div class="con" id="qOut" style="height:150px;margin-top:12px"></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-title="6.8.2 Arrow Function และ Template Literal">
+  <p class="kicker">6.8.2 ฟังก์ชันลูกศร (Arrow Functions) และ Template Literals</p>
+  <h2>เขียนสั้นลง อ่านง่ายขึ้น</h2>
+  <div class="grid2" style="align-items:start">
+    <div>
+      <div class="tabs" id="fnTabs"><button class="on" data-k="0">function แบบเดิม</button><button data-k="1">arrow function</button><button data-k="2">แบบย่อสุด</button></div>
+      <div class="code" id="fnCode" style="font-size:17px;white-space:pre;height:150px"></div>
+      <p style="font-size:19px;margin-top:10px">ทั้งสามแบบให้ผลเหมือนกัน: <code>withVat(100)</code> → <b>107</b></p>
+    </div>
+    <div class="card">
+      <h3>Template Literal ใช้ ` ` และ ${ }</h3>
+      <div style="display:flex;gap:10px;margin-top:6px"><input type="text" id="tN" value="ลาเต้" aria-label="ชื่อเมนู"><input type="text" id="tP" value="55" aria-label="ราคา" style="width:110px"></div>
+      <div class="code" id="tCode" style="font-size:15px;white-space:pre-wrap;margin-top:10px"></div>
+      <p id="tRes" style="font-size:22px;margin-top:10px;color:#4338ca"></p>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-title="6.8.3 ดักฟังเหตุการณ์">
+  <p class="kicker">6.8.3 การดักฟังเหตุการณ์สมัยใหม่ (Modern Event Listeners)</p>
+  <h2>addEventListener: เมื่อ...เกิดขึ้น ให้ทำ...</h2>
+  <div class="grid2" style="align-items:start">
+    <div>
+      <div class="pad" id="evPad" tabindex="0">คลิก ดับเบิลคลิก หรือชี้ที่นี่</div>
+      <input type="text" id="evIn" placeholder="พิมพ์ในช่องนี้ (input / keydown)" style="margin-top:12px">
+      <div class="code" style="font-size:15px;white-space:pre;margin-top:12px">pad.addEventListener("click", (e) =&gt; {
+  console.log("click ที่", e.offsetX, e.offsetY);
+});
+input.addEventListener("input", (e) =&gt; {
+  console.log(e.target.value);
+});</div>
+    </div>
+    <div><p style="font-size:18px;font-weight:600">เหตุการณ์ที่เกิดขึ้น (ล่าสุดอยู่บน)</p><div class="ev" id="evLog" style="height:400px"></div></div>
+  </div>
+</section>
+
+<section class="slide" data-title="6.8.4 โหมดมืดและคำนวณราคา">
+  <p class="kicker">6.8.4 สลับโหมดด้วย classList.toggle และคำนวณราคาพร้อมภาษีแบบเรียลไทม์</p>
+  <h2>ตัวอย่างจากเล่ม ลองใช้จริง</h2>
+  <div class="grid2" style="align-items:start">
+    <div class="pv" id="calcBox" style="min-height:380px;transition:all .3s">
+      <div style="display:flex;justify-content:space-between;align-items:center"><h3>คำนวณราคาสินค้า</h3><button class="btn alt" id="darkBtn">🌙 โหมดมืด</button></div>
+      <label for="qty" style="display:block;margin-top:10px">จำนวน (แก้ว)</label><input type="number" id="qty" value="2" min="0" style="font:inherit;font-size:20px;width:100%;padding:6px 10px;border:1px solid #cbd5e1;border-radius:8px">
+      <label for="unit" style="display:block;margin-top:10px">ราคาต่อแก้ว (บาท)</label><input type="number" id="unit" value="55" min="0" style="font:inherit;font-size:20px;width:100%;padding:6px 10px;border:1px solid #cbd5e1;border-radius:8px">
+      <p id="calcOut" style="font-size:24px;margin-top:14px"></p>
+    </div>
+    <div class="code" style="font-size:14px;white-space:pre;height:390px">const qty = document.querySelector("#qty");
+const unit = document.querySelector("#unit");
+const out = document.querySelector("#out");
+const VAT = 0.07;
+
+const calc = () =&gt; {
+  const sub = Number(qty.value) * Number(unit.value);
+  const total = sub * (1 + VAT);
+  out.textContent =
+    `ก่อน VAT ${sub.toFixed(2)} รวม ${total.toFixed(2)} บาท`;
+};
+qty.addEventListener("input", calc);
+unit.addEventListener("input", calc);
+
+document.querySelector("#dark")
+  .addEventListener("click", () =&gt;
+    document.body.classList.toggle("theme-dark"));</div>
+  </div>
+</section>
+
+<section class="slide" data-title="6.9 ลำดับการทำงานแบบอะซิงโครนัส">
+  <p class="kicker">6.9 การเขียนโปรแกรมแบบอะซิงโครนัส</p>
+  <h2>ทายลำดับ: บรรทัดไหนพิมพ์ก่อน?</h2>
+  <div class="grid2" style="align-items:start">
+    <div>
+      <div class="qa" style="font-size:15px">console.log("A เริ่ม");
+setTimeout(() =&gt; console.log("B timeout 0 ms"), 0);
+Promise.resolve().then(() =&gt; console.log("C promise"));
+console.log("D จบ");</div>
+      <p style="font-size:18px">คลิกเรียงตามลำดับที่คิดว่าจะแสดง</p>
+      <div class="ord" id="ord"><button data-o="A"><b></b>A เริ่ม</button><button data-o="B"><b></b>B timeout 0 ms</button><button data-o="C"><b></b>C promise</button><button data-o="D"><b></b>D จบ</button></div>
+      <div style="display:flex;gap:8px;margin-top:10px"><button class="btn" id="ordRun">▶ รันจริง</button><button class="btn alt" id="ordReset">เริ่มใหม่</button></div>
+    </div>
+    <div><div class="con" id="ordOut" style="height:170px"></div><div class="card" id="ordTxt" style="margin-top:12px;min-height:200px"><p style="font-size:19px">JavaScript ทำงานทีละบรรทัด (single thread) งานที่ต้องรอ เช่น ตัวจับเวลาหรือการดึงข้อมูลจะถูกพักไว้ แล้วกลับมาทำเมื่องานหลักเสร็จ หน้าเว็บจึงไม่ค้างระหว่างรอ</p></div></div>
+  </div>
+</section>
+
+<section class="slide" data-title="6.9.2 Promise">
+  <p class="kicker">6.9.2 แนวคิด Promise และความสัมพันธ์กับ async/await</p>
+  <h2>Promise = สัญญาว่าจะได้ผลลัพธ์ในอนาคต</h2>
+  <div class="grid3" style="grid-template-columns:300px 1fr 1fr;align-items:start">
+    <div style="text-align:center">
+      <div class="prom" id="pm" style="background:#94a3b8"><span id="pmT">พร้อม</span><small id="pmS"></small></div>
+      <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap"><button class="btn" id="pmGo">สั่งกาแฟ</button><button class="btn alt" id="pmOk">ได้กาแฟ</button><button class="btn alt" id="pmNo">ของหมด</button></div>
+      <p class="muted" style="font-size:16px;margin-top:8px">pending → fulfilled หรือ rejected (เปลี่ยนสถานะได้ครั้งเดียว)</p>
+    </div>
+    <div><p style="font-weight:600;font-size:18px">then / catch</p><div class="code" style="font-size:14px;white-space:pre;height:250px">orderCoffee()
+  .then((cup) =&gt; {
+    console.log("ได้", cup);
+  })
+  .catch((err) =&gt; {
+    console.log("ผิดพลาด", err);
+  })
+  .finally(() =&gt; {
+    console.log("จบรายการ");
+  });</div></div>
+    <div><p style="font-weight:600;font-size:18px">async / await (ผลเหมือนกัน)</p><div class="code" style="font-size:14px;white-space:pre;height:250px">async function run() {
+  try {
+    const cup = await orderCoffee();
+    console.log("ได้", cup);
+  } catch (err) {
+    console.log("ผิดพลาด", err);
+  } finally {
+    console.log("จบรายการ");
+  }
+}</div></div>
+  </div>
+  <div class="con" id="pmLog" style="height:90px;margin-top:12px"></div>
+</section>
+
+<section class="slide" data-title="6.9.1 fetch ข้อมูลจาก API">
+  <p class="kicker">6.9.1 ดึงข้อมูลจาก JSONPlaceholder API มาแสดงในตาราง</p>
+  <h2>fetch + async/await ของจริง</h2>
+  <div class="grid2" style="grid-template-columns:1fr 1fr;align-items:start">
+    <div>
+      <div class="code" style="font-size:14px;white-space:pre;height:300px">async function loadUsers() {
+  out.textContent = "กำลังโหลด...";
+  try {
+    const res = await fetch(
+      "https://jsonplaceholder.typicode.com/users");
+    if (!res.ok) throw new Error(res.status);
+    const users = await res.json();
+    users.forEach((u) =&gt; {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `&lt;td&gt;${u.id}&lt;/td&gt;...`;
+      tbody.append(tr);
+    });
+  } catch (err) {
+    out.textContent = "โหลดไม่สำเร็จ: " + err.message;
+  }
+}</div>
+      <div style="display:flex;gap:8px;margin-top:10px"><button class="btn" id="fGo">▶ โหลดข้อมูล</button><button class="btn alt" id="fBad">ลอง URL ผิด</button></div>
+      <p class="muted" style="font-size:15px;margin-top:6px">JSONPlaceholder เป็น API ทดลองที่ให้ข้อมูลสมมติ ต้องต่ออินเทอร์เน็ต</p>
+    </div>
+    <div><p id="fMsg" style="font-size:19px;min-height:30px"></p><div style="height:400px;overflow:auto"><table class="u"><thead><tr><th>id</th><th>ชื่อ</th><th>อีเมล</th><th>เมือง</th></tr></thead><tbody id="fBody"></tbody></table></div></div>
+  </div>
+</section>
+
+<section class="slide" data-title="6.10.2 ดีบักด้วย Console">
+  <p class="kicker">6.10.2 ใช้ Console ค้นหาข้อผิดพลาด (Console Debugging)</p>
+  <h2>ภารกิจ: รันแล้วอ่าน Error แก้ให้ผ่าน</h2>
+  <div class="grid2" style="grid-template-columns:1.1fr 1fr;align-items:start">
+    <div>
+      <textarea class="ed" id="c2" spellcheck="false" style="height:300px">const items = [55, 60, 50];
+let total = 0;
+for (let i = 0; i <= items.length; i++) {
+  total += items[i];
+}
+console.log("รวม", totl);
+const msg = `ยอดชำระ ${total} บาท`
+consol.log(msg);</textarea>
+      <div style="display:flex;gap:8px;margin-top:8px"><button class="btn" id="r2">▶ รัน</button><button class="btn alt" id="h2">คำใบ้</button><button class="btn alt" id="s2">ดูเฉลย</button></div>
+    </div>
+    <div><p style="font-size:18px;font-weight:600">Console</p><div class="con" id="o2" style="height:200px"></div><div class="card" id="h2t" style="margin-top:10px;min-height:130px"><p style="font-size:18px">มี 3 จุดผิด: ตัวแปรสะกดผิด ชื่อออบเจกต์ผิด และลูปเกินขอบเขตอาร์เรย์ (ทำให้ได้ NaN)</p></div></div>
+  </div>
+</section>
+
+<section class="slide" data-title="6.10.3 XSS: innerHTML vs textContent">
+  <p class="kicker">6.10.3 ความมั่นคงปลอดภัย (OWASP, 2023a)</p>
+  <h2>อย่าเอาข้อความจากผู้ใช้ใส่ innerHTML ตรง ๆ</h2>
+  <div class="grid2" style="align-items:start">
+    <div>
+      <label for="xIn">ความคิดเห็นจากผู้ใช้</label>
+      <input type="text" id="xIn" value='อร่อยมาก &lt;img src=x onerror="document.body.style.background=&apos;#fecaca&apos;;document.body.insertAdjacentText(&apos;beforeend&apos;,&apos; ⚠ สคริปต์แปลกปลอมทำงาน!&apos;)"&gt;' style="font-family:Mono,monospace;font-size:14px">
+      <div style="display:flex;gap:8px;margin-top:10px"><button class="btn" style="background:#dc2626" id="xBad">แสดงด้วย innerHTML</button><button class="btn" style="background:#059669" id="xGood">แสดงด้วย textContent</button></div>
+      <div class="card" style="margin-top:12px"><ul class="b"><li style="font-size:19px">ข้อความที่มีแท็กถูกตีความเป็น HTML และรันสคริปต์ได้ (XSS)</li><li style="font-size:19px">ใช้ <b>textContent</b> หรือสร้างเอลิเมนต์ทีละตัว</li><li style="font-size:19px">โค้ดจาก AI ชอบใช้ innerHTML ต้องตรวจทุกครั้ง</li></ul></div>
+    </div>
+    <div><p style="font-size:17px" class="muted">หน้าเว็บจำลองแยกในกรอบปิด (sandbox) ไม่กระทบหน้านี้</p><iframe class="box" id="xFr" sandbox="allow-scripts" title="หน้าเว็บจำลองแสดงความคิดเห็น" style="height:360px"></iframe></div>
+  </div>
+</section>
+
+<section class="slide" data-title="6.10 ใช้ AI ช่วยเขียน JS">
+  <p class="kicker">6.10 AI-Assisted JS Development (Haverbeke, 2024; OWASP, 2023a)</p>
+  <h2>ให้ AI ช่วยหาสาเหตุ แต่ตัดสินใจเอง</h2>
+  <div class="grid2" style="align-items:start">
+    <div>
+      <div class="code" style="white-space:pre-wrap;font-size:15px;height:300px">บทบาท: ผู้ตรวจสอบความปลอดภัย JavaScript
+งาน: ตรวจโค้ดด้านล่าง 2 ประเด็น
+1) Asynchronous: มีจุดลืม await, ไม่จัดการ error
+   หรือ res.ok หรือไม่
+2) XSS: มีการนำข้อมูลภายนอกใส่ innerHTML,
+   eval หรือ document.write หรือไม่
+ผลลัพธ์: ตาราง บรรทัด / ปัญหา / ความเสี่ยง / วิธีแก้
+[วางโค้ด ไม่วาง API key หรือข้อมูลผู้ใช้จริง]</div>
+      <p class="muted" style="font-size:17px;margin-top:8px">ตัวอย่างกรอบคำสั่งจากหัวข้อ 6.10.4</p>
+    </div>
+    <div class="card"><h3>ข้อควรระวัง (6.10.3)</h3><ul class="b"><li style="font-size:19px">ห้ามวาง API key รหัสผ่าน หรือข้อมูลส่วนบุคคลใน Prompt</li><li style="font-size:19px">ห้ามเก็บรหัสลับไว้ในโค้ด JavaScript ฝั่งผู้ใช้</li><li style="font-size:19px">ตรวจ innerHTML, eval, ไลบรารีที่ AI แนะนำ</li><li style="font-size:19px">ทดสอบด้วย Console และกรณีข้อมูลผิดพลาด</li></ul></div>
+  </div>
+  <div class="links" style="margin-top:12px">
+    <a class="lk" href="https://eloquentjavascript.net/" target="_blank" rel="noopener noreferrer"><b>Eloquent JavaScript</b><span>Haverbeke (2024) อ่านฟรีออนไลน์</span></a>
+    <a class="lk" href="https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html" target="_blank" rel="noopener noreferrer"><b>OWASP XSS Prevention</b><span>แนวทางป้องกัน XSS</span></a>
+    <a class="lk" href="https://developer.chrome.com/docs/devtools/console" target="_blank" rel="noopener noreferrer"><b>Chrome DevTools Console</b><span>คู่มือการดีบัก</span></a>
+  </div>
+</section>
+
+<section class="slide" data-title="6.10.5 localStorage">
+  <p class="kicker">6.10.5 Modern JavaScript: LocalStorage และ DOM ปลอดภัย</p>
+  <h2>รายการสั่งซื้อที่จำได้แม้รีเฟรชหน้า</h2>
+  <div class="grid2" style="align-items:start">
+    <div>
+      <div style="display:flex;gap:8px"><input type="text" id="tdIn" placeholder="เช่น ลาเต้เย็น 1 แก้ว" aria-label="รายการใหม่"><button class="btn" id="tdAdd">เพิ่ม</button></div>
+      <ul class="todo" id="tdList" style="padding:0;margin-top:10px;max-height:330px;overflow:auto"></ul>
+      <p class="muted" id="tdNote" style="font-size:16px"></p>
+    </div>
+    <div class="code" style="font-size:14px;white-space:pre;height:430px">const KEY = "orders";
+let orders = JSON.parse(
+  localStorage.getItem(KEY) ?? "[]");
+
+const render = () =&gt; {
+  list.replaceChildren();
+  orders.forEach((text, i) =&gt; {
+    const li = document.createElement("li");
+    li.textContent = text;   // ปลอดภัยจาก XSS
+    list.append(li);
+  });
+};
+
+addBtn.addEventListener("click", () =&gt; {
+  orders.push(input.value.trim());
+  localStorage.setItem(KEY, JSON.stringify(orders));
+  render();
+});</div>
+  </div>
+</section>
+
+<section class="slide dark" data-title="สรุปและงานที่ได้รับมอบหมาย">
+  <p class="kicker">สรุปบทที่ 6</p>
+  <h2>JavaScript ทำให้หน้าเว็บมีชีวิต</h2>
+  <div class="grid2" style="align-items:start">
+    <ul class="b" style="color:#fff">
+      <li>ใส่ JS เป็นไฟล์แยก · ดีบักด้วย Console</li>
+      <li>DOM: querySelector → textContent, classList, append</li>
+      <li>ES6+: const/let, arrow function, template literal, addEventListener</li>
+      <li>fetch + async/await + try/catch · Promise มี 3 สถานะ</li>
+      <li>ใช้ textContent ป้องกัน XSS · ตรวจโค้ดจาก AI เสมอ</li>
+    </ul>
+    <div class="card" style="color:var(--ink)"><h3>งานสัปดาห์นี้</h3><p>ใบงานที่ 6: เขียนโปรแกรมเชิงปฏิสัมพันธ์ด้วย Modern JavaScript (ES6+) และการควบคุม DOM</p><p style="margin-top:8px">แบบฝึกหัดท้ายบทที่ 6 ส่งผ่าน Google Classroom</p><p style="margin-top:10px"><a href="../worksheets/ws6.html" target="_blank">เปิดใบงานที่ 6</a> · <a href="../chapters/ch6.html" target="_blank">อ่านบทที่ 6</a></p></div>
+  </div>
+  <div class="foot"><span>อ้างอิงหลัก: เอกสารประกอบการสอนบทที่ 6; จีราวุธ วารินทร์ (2566); Haverbeke (2024); ECMA International (2023); MDN (2024c); OWASP (2023a)</span><span></span></div>
+</section>
+
+</div>
+<script src="deck.js" data-ch="6" data-back="../chapters/ch6.html"></script>
+<script>
+(function(){
+var $=function(id){return document.getElementById(id)};
+var all=function(q){return [].slice.call(document.querySelectorAll(q))};
+var esc=function(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")};
+var SC="scr"+"ipt";
+// ตัวรันโค้ดแบบแยกกรอบ (sandbox) ส่งผล console กลับมาด้วย postMessage
+var runners={};
+addEventListener("message",function(e){for(var k in runners){var r=runners[k];if(r.fr.contentWindow===e.source&&e.data&&e.data.t){var c=$(r.out);c.insertAdjacentHTML("beforeend",'<div class="'+(e.data.t==="err"?"e":"l")+'">'+esc(e.data.v)+'</div>');c.scrollTop=c.scrollHeight}}});
+function runJS(id,code,out){var r=runners[id];if(!r){var f=document.createElement("iframe");f.setAttribute("sandbox","allow-scripts");f.style.display="none";f.title="ตัวรันโค้ด";document.body.appendChild(f);r=runners[id]={fr:f,out:out}}
+ $(out).innerHTML='<div class="i">// รันเมื่อ '+new Date().toLocaleTimeString("th-TH")+'</div>';
+ var pre='var P=function(t,a){parent.postMessage({t:t,v:a.map(function(x){try{return typeof x==="object"?JSON.stringify(x):String(x)}catch(e){return String(x)}}).join(" ")},"*")};console.log=function(){P("log",[].slice.call(arguments))};console.error=function(){P("err",[].slice.call(arguments))};onerror=function(m,s,l){P("err",[m+(l?" (บรรทัด "+(l-1)+")":"")]);return true};onunhandledrejection=function(e){P("err",["Uncaught (in promise) "+e.reason])};';
+ r.fr.srcdoc="<!doctype html><meta charset='utf-8'><"+SC+">"+pre+"</"+SC+"><"+SC+">\n"+code+"\n</"+SC+">"}
+// 4 where + run
+var WH=['<!-- index.html (แนะนำ) -->\n<script src="js/app.js" defer></'+SC+'>\n// js/app.js\nconsole.log("พร้อมทำงาน");','<body>\n  ...\n  <script>\n    console.log("พร้อมทำงาน");\n  </'+SC+'>\n</body>','<button onclick="alert(\'สวัสดี\')">\n  กดฉัน\n</button>\n<!-- ผสม HTML กับ JS ดูแลยาก ไม่แนะนำ -->'];
+Deck.tabs($("whereTabs"),function(b){$("whereCode").textContent=WH[b.dataset.k]});$("whereCode").textContent=WH[0];
+$("r1").onclick=function(){runJS("r1",$("c1").value,"o1")};
+// 5 style
+var st=$("stTarget");
+all("[data-st]").forEach(function(b){b.onclick=function(){if($("jsOff").checked){$("stCode").textContent="(JavaScript ถูกปิด ปุ่มนี้ไม่ทำงาน)";return}var k=b.dataset.st,c="";
+ if(k==="bg"){st.style.backgroundColor="#fde68a";c='el.style.backgroundColor = "#fde68a";'}
+ if(k==="big"){st.style.fontSize="38px";c='el.style.fontSize = "38px";'}
+ if(k==="hide"){st.style.display=st.style.display==="none"?"":"none";c='el.style.display = "none"; // หรือ ""'}
+ if(k==="reset"){st.removeAttribute("style");c='el.removeAttribute("style");'}
+ $("stCode").textContent=c}});
+$("jsOff").onchange=function(){$("nsMsg").style.display=this.checked?"block":"none"};
+$("goLink").onclick=function(){$("stCode").textContent=$("jsOff").checked?"(JavaScript ถูกปิด ปุ่มนี้ไม่ทำงาน)":'location.href = "menu.html"; // ในสไลด์นี้ไม่เปลี่ยนหน้าจริง'};
+// 6 message box
+$("mA").onclick=function(){alert("บันทึกแล้ว");$("mOut").textContent="alert() คืนค่า undefined"};
+$("mC").onclick=function(){var ok=confirm("ลบรายการนี้?");$("mOut").textContent="confirm() คืนค่า "+ok+(ok?" → ลบรายการ":" → ยกเลิก")};
+$("mP").onclick=function(){var n=prompt("ชื่อของคุณ","");$("mOut").textContent=n===null?"prompt() คืนค่า null (กดยกเลิก)":'prompt() คืนค่า "'+n+'" → สวัสดี '+n};
+// 7 dom
+var PAGE='<h3>เมนูร้านกาแฟ</h3><p id="msg" style="background:#fee2e2;border-radius:6px;padding:4px 8px;font-size:18px">ประกาศ: ปิดปรับปรุงวันจันทร์</p><ul style="padding-left:24px;font-size:20px"><li>ลาเต้</li><li>มอคค่า</li><li>ชาเขียว</li></ul>';
+function domReset(){$("domPage").innerHTML=PAGE;$("domOut").innerHTML=""}domReset();$("domReset").onclick=domReset;
+function dlog(t,c){$("domOut").insertAdjacentHTML("beforeend",'<div class="'+(c||"l")+'">'+esc(t)+'</div>');$("domOut").scrollTop=1e6}
+all("#domBtns button").forEach(function(b){b.onclick=function(){var p=$("domPage"),k=+b.dataset.d;all("#domPage .hl").forEach(function(e){e.classList.remove("hl")});
+ if(k===0){var h=p.querySelector("h3");h.classList.add("hl");dlog("<h3> "+h.textContent)}
+ if(k===1){var h1=p.querySelector("h3");h1.textContent="เมนูวันนี้";h1.classList.add("hl");dlog('ข้อความเปลี่ยนเป็น "เมนูวันนี้"')}
+ if(k===2){var L=p.querySelectorAll("li");L.forEach(function(e){e.classList.add("hl")});dlog(L.length)}
+ if(k===3){var f=p.querySelector("li");f.classList.add("big");f.classList.add("hl");dlog('class="big" ถูกเพิ่มแล้ว')}
+ if(k===4){var li=document.createElement("li");li.textContent="เมนูใหม่ "+(p.querySelectorAll("li").length+1);li.classList.add("hl");p.querySelector("ul").append(li);dlog("เพิ่ม <li> ท้ายรายการ")}
+ if(k===5){var m=p.querySelector("#msg");if(m){m.remove();dlog("ลบ #msg แล้ว")}else dlog("TypeError: Cannot read properties of null (reading 'remove')","e")}}});
+// 8 let/const quiz
+var QA=[{c:"c",code:"const vat = 0.07;\nvat = 0.1;\nconsole.log(vat);",why:"const กำหนดค่าใหม่ไม่ได้ จะเกิด TypeError: Assignment to constant variable"},{c:"c",code:"if (true) {\n  let x = 5;\n}\nconsole.log(x);",why:"let มีขอบเขตเฉพาะใน { } นอกบล็อกจึงไม่รู้จัก x → ReferenceError (ถ้าใช้ var จะได้ 5)"}];
+all("[data-q]").forEach(function(b){b.onclick=function(){var p=b.dataset.q.split("|"),q=QA[+p[0]],ok=p[1]===q.c;all('[data-q^="'+p[0]+'|"]').forEach(function(x){x.classList.toggle("on",x===b)});
+ $("a"+p[0]).innerHTML=(ok?'<b style="color:#059669">ถูกต้อง ✓</b> ':'<b style="color:#dc2626">ยังไม่ใช่</b> ')+q.why;runJS("q",q.code,"qOut")}});
+// 9 arrow + template
+var FN=['function withVat(price) {\n  return price * 1.07;\n}','const withVat = (price) => {\n  return price * 1.07;\n};','const withVat = price => price * 1.07;'];
+Deck.tabs($("fnTabs"),function(b){$("fnCode").textContent=FN[b.dataset.k]});$("fnCode").textContent=FN[0];
+function tl(){var n=$("tN").value,p=Number($("tP").value)||0;$("tCode").textContent='const name = "'+n+'", price = '+p+';\nconst msg = `เมนู ${name} ราคา ${price} บาท\nรวม VAT ${(price*1.07).toFixed(2)} บาท`;';$("tRes").textContent="เมนู "+n+" ราคา "+p+" บาท รวม VAT "+(p*1.07).toFixed(2)+" บาท"}
+$("tN").oninput=tl;$("tP").oninput=tl;tl();
+// 10 events
+var lg=$("evLog");function ev(t){var d=new Date();lg.insertAdjacentHTML("afterbegin","<div>"+d.toLocaleTimeString("th-TH")+"."+String(d.getMilliseconds()).padStart(3,"0")+"  "+esc(t)+"</div>");while(lg.children.length>40)lg.lastChild.remove()}
+var pad=$("evPad");pad.addEventListener("click",function(e){ev("click  x="+e.offsetX+" y="+e.offsetY)});pad.addEventListener("dblclick",function(){ev("dblclick")});pad.addEventListener("mouseenter",function(){ev("mouseenter")});pad.addEventListener("mouseleave",function(){ev("mouseleave")});
+$("evIn").addEventListener("keydown",function(e){ev('keydown  key="'+e.key+'"')});$("evIn").addEventListener("input",function(e){ev('input  value="'+e.target.value+'"')});
+// 11 calc + dark
+function calc(){var s=Number($("qty").value)*Number($("unit").value),t=s*1.07;$("calcOut").textContent="ก่อน VAT "+s.toFixed(2)+" รวม "+t.toFixed(2)+" บาท"}
+$("qty").addEventListener("input",calc);$("unit").addEventListener("input",calc);calc();
+$("darkBtn").addEventListener("click",function(){var on=$("calcBox").classList.toggle("theme-dark");this.textContent=on?"☀ โหมดสว่าง":"🌙 โหมดมืด"});
+// 12 order
+var pick=[];function ordReset(){pick=[];all("#ord button").forEach(function(b){b.classList.remove("pick");b.querySelector("b").textContent=""});$("ordOut").innerHTML=""}
+all("#ord button").forEach(function(b){b.onclick=function(){if(b.classList.contains("pick"))return;pick.push(b.dataset.o);b.classList.add("pick");b.querySelector("b").textContent=pick.length+"."}});
+$("ordReset").onclick=ordReset;
+$("ordRun").onclick=function(){runJS("ord",'console.log("A เริ่ม");\nsetTimeout(() => console.log("B timeout 0 ms"), 0);\nPromise.resolve().then(() => console.log("C promise"));\nconsole.log("D จบ");',"ordOut");
+ var right="ADCB",mine=pick.join("");$("ordTxt").innerHTML=(pick.length===4?(mine===right?'<p style="font-size:21px;color:#059669"><b>ทายถูก! A → D → C → B</b></p>':'<p style="font-size:21px;color:#dc2626"><b>คุณทาย '+pick.join(" → ")+'</b> ลำดับจริงคือ A → D → C → B</p>'):'<p style="font-size:19px">ลำดับจริงคือ A → D → C → B</p>')+'<p style="font-size:18px;margin-top:8px">A และ D รันทันทีตามลำดับ · Promise (C) อยู่ในคิวที่ทำก่อน · setTimeout (B) รอคิวถัดไป แม้ตั้งไว้ 0 ms</p>'};
+// 13 promise
+var pmState="idle",pmT=null;function pmlog(t,c){$("pmLog").insertAdjacentHTML("beforeend",'<div class="'+(c||"l")+'">'+esc(t)+'</div>');$("pmLog").scrollTop=1e6}
+function pmSet(bg,t,s,spin){var p=$("pm");p.style.background=bg;$("pmT").textContent=t;$("pmS").textContent=s;p.classList.toggle("spin",!!spin)}
+$("pmGo").onclick=function(){if(pmState==="pending")return;pmState="pending";$("pmLog").innerHTML="";pmSet("#f59e0b","⏳","pending",false);pmlog("orderCoffee() → Promise { <pending> }","i")};
+function settle(ok){if(pmState!=="pending"){pmlog(pmState==="idle"?"กด สั่งกาแฟ ก่อน":"Promise เปลี่ยนสถานะได้ครั้งเดียว","i");return}pmState=ok?"fulfilled":"rejected";
+ if(ok){pmSet("#059669","✓","fulfilled");pmlog("ได้ ลาเต้เย็น")}else{pmSet("#dc2626","✗","rejected");pmlog("ผิดพลาด Error: ของหมด","e")}pmlog("จบรายการ","i")}
+$("pmOk").onclick=function(){settle(true)};$("pmNo").onclick=function(){settle(false)};
+// 14 fetch
+function load(url){var tb=$("fBody");tb.replaceChildren();$("fMsg").textContent="กำลังโหลด...";var t0=performance.now();
+ fetch(url).then(function(res){if(!res.ok)throw new Error("HTTP "+res.status);return res.json()}).then(function(users){users.forEach(function(u){var tr=document.createElement("tr");[u.id,u.name,u.email,u.address&&u.address.city].forEach(function(v){var td=document.createElement("td");td.textContent=v;tr.append(td)});tb.append(tr)});$("fMsg").innerHTML='<b style="color:#059669">โหลดสำเร็จ '+users.length+' รายการ</b> ใช้เวลา '+Math.round(performance.now()-t0)+' ms (ข้อมูลสมมติ)'})
+ .catch(function(err){$("fMsg").innerHTML='<b style="color:#dc2626">โหลดไม่สำเร็จ: '+esc(err.message)+'</b> → catch ทำงาน หน้าเว็บไม่พัง'})}
+$("fGo").onclick=function(){load("https://jsonplaceholder.typicode.com/users")};$("fBad").onclick=function(){load("https://jsonplaceholder.typicode.com/userz")};
+// 15 debug
+var BUG=$("c2").value;$("r2").onclick=function(){runJS("r2",$("c2").value,"o2")};
+$("h2").onclick=function(){$("h2t").innerHTML='<ul class="b"><li style="font-size:17px">ReferenceError: totl → ควรเป็น total</li><li style="font-size:17px">consol ไม่มีอยู่จริง → console</li><li style="font-size:17px">i &lt;= items.length อ่านเกิน 1 ช่อง ได้ undefined → NaN ควรใช้ &lt;</li></ul>'};
+$("s2").onclick=function(){$("c2").value=BUG.replace("i <= items.length","i < items.length").replace("totl","total").replace("consol.log","console.log");runJS("r2",$("c2").value,"o2")};
+// 16 xss (ในกรอบ sandbox ไม่มี allow-same-origin จึงไม่กระทบหน้าหลัก)
+function xss(mode){var v=$("xIn").value;var safe=mode==="good";
+ var code="var box=document.getElementById('c');var v="+JSON.stringify(v)+";"+(safe?"box.textContent=v;":"box.innerHTML=v;");
+ $("xFr").srcdoc="<!doctype html><meta charset='utf-8'><body style='font-family:sans-serif;padding:14px;font-size:18px'><h3 style='margin:0 0 8px'>ความคิดเห็นล่าสุด</h3><div id='c' style='border:1px solid #ddd;border-radius:8px;padding:10px'></div><p style='color:#666;font-size:14px'>แสดงด้วย "+(safe?"textContent":"innerHTML")+"</p><"+SC+">"+code+"</"+SC+"></body>"}
+$("xBad").onclick=function(){xss("bad")};$("xGood").onclick=function(){xss("good")};xss("good");
+// 18 localStorage
+var KEY="ch6-orders",orders=[],canStore=true;
+try{orders=JSON.parse(localStorage.getItem(KEY)||"[]")}catch(e){canStore=false;orders=[]}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(orders))}catch(e){canStore=false}}
+function render(){var l=$("tdList");l.replaceChildren();orders.forEach(function(t,i){var li=document.createElement("li");var s=document.createElement("span");s.textContent=t;var b=document.createElement("button");b.textContent="ลบ";b.onclick=function(){orders.splice(i,1);save();render()};li.append(s,b);l.append(li)});
+ $("tdNote").textContent=canStore?"เก็บใน localStorage ของเบราว์เซอร์นี้ ลองกด F5 รายการยังอยู่ (" +orders.length+" รายการ)":"เบราว์เซอร์นี้ไม่อนุญาต localStorage รายการจะหายเมื่อรีเฟรช"}
+$("tdAdd").onclick=function(){var v=$("tdIn").value.trim();if(!v)return;orders.push(v);$("tdIn").value="";save();render()};
+$("tdIn").addEventListener("keydown",function(e){if(e.key==="Enter")$("tdAdd").click()});render();
+})();
+</script>
+</body>
+</html>
