@@ -46,6 +46,9 @@ select{font:inherit;font-size:17px;border:1px solid var(--line);border-radius:8p
 .fixes label{display:flex;gap:10px;align-items:center;font-weight:400;font-size:19px;margin:6px 0;cursor:pointer}
 .fixes input{width:22px;height:22px;accent-color:var(--ok)}
 iframe.run{background:#fff}
+.fnt{display:flex;flex-wrap:wrap;gap:6px}
+.fprev{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 20px;height:215px;overflow:hidden}
+.fprev h3{margin:0 0 6px}
 </style>
 </head>
 <body>
@@ -270,6 +273,42 @@ iframe.run{background:#fff}
   </div>
 </section>
 
+<section class="slide" data-title="4.10 ฟอนต์และ font-family">
+  <p class="kicker">4.10 CSS3 Font · font-family, font-weight, font-size, line-height</p>
+  <h2>เลือกฟอนต์ แล้วดูข้อความไทยเปลี่ยน</h2>
+  <div class="grid2" style="grid-template-columns:430px 1fr;align-items:start">
+    <div>
+      <p style="font-size:17px;font-weight:600">ตระกูลทั่วไป (Generic)</p>
+      <div class="fnt" id="fGen"><button class="chip" data-f="serif">serif</button><button class="chip on" data-f="sans-serif">sans-serif</button><button class="chip" data-f="monospace">monospace</button></div>
+      <p style="font-size:17px;font-weight:600;margin-top:10px">ฟอนต์ไทยจาก Google Fonts</p>
+      <div class="fnt" id="fTh"><button class="chip" data-f="Sarabun">Sarabun</button><button class="chip" data-f="Noto Sans Thai">Noto Sans Thai</button><button class="chip" data-f="Noto Serif Thai">Noto Serif Thai</button><button class="chip" data-f="Prompt">Prompt</button><button class="chip" data-f="Kanit">Kanit</button><button class="chip" data-f="Chakra Petch">Chakra Petch</button></div>
+      <div class="rg" style="margin-top:12px">
+        <label for="fW">weight</label><select id="fW"><option>300</option><option selected>400</option><option>700</option></select><span></span>
+        <label for="fS">size</label><input type="range" id="fS" min="14" max="40" value="24"><output id="oFS"></output>
+        <label for="fL">line-height</label><input type="range" id="fL" min="10" max="22" value="16"><output id="oFL"></output>
+      </div>
+      <p class="muted" id="fNote" style="font-size:15px;margin-top:8px">ฟอนต์ไทยโหลดจาก Google Fonts เมื่อเปิดสไลด์นี้ ต้องต่ออินเทอร์เน็ต</p>
+    </div>
+    <div>
+      <div class="fprev" id="fPrev"><h3>ร้านกาแฟบ้านสวน Coffee</h3><p>กาแฟคั่วกลาง หอมกรุ่น สั่งได้ทุกวัน 07:00–17:00 น. ราคาเริ่มต้น 55 บาท<br>ปู่ป้าผู้ใหญ่ฟังได้ยิน ญาญ่า ฐิติ ฎีกา ฤๅษี (สระบน–ล่างครบ)</p></div>
+      <div class="code" id="ftCode" style="font-size:14px;line-height:1.45;white-space:pre;margin-top:8px;min-height:130px;flex-shrink:0"></div>
+      <p style="font-size:16px;margin-top:6px">ข้อความไทยมีสระและวรรณยุกต์ซ้อนบนล่าง ควรตั้ง <b>line-height ประมาณ 1.5–1.8</b> ลองเลื่อนให้ต่ำกว่า 1.2 จะเห็นบรรทัดชนกัน</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-title="4.10 @font-face และ Google Fonts">
+  <p class="kicker">4.10 CSS3 Font-face · การใช้ฟอนต์บนเว็บและสิทธิการใช้งาน</p>
+  <h2>นำฟอนต์มาใช้บนเว็บ 2 วิธี และต้องตรวจสิทธิ์ก่อนเสมอ</h2>
+  <div class="tabs" id="ffTabs"><button class="on" data-k="g">Google Fonts</button><button data-k="s">@font-face (เก็บไฟล์เอง)</button><button data-k="p">ประสิทธิภาพ</button></div>
+  <div class="grid2" style="grid-template-columns:1.15fr 1fr;align-items:start">
+    <div class="code" id="ffCode" style="font-size:13px;line-height:1.45;white-space:pre;height:310px"></div>
+    <div class="card" id="ffTxt" style="min-height:300px"></div>
+  </div>
+  <div class="card" style="margin-top:12px"><p style="font-size:17px"><b>สิทธิการใช้งานฟอนต์:</b> ฟอนต์บน Google Fonts ส่วนใหญ่ใช้ SIL Open Font License ใช้ได้ฟรีแม้งานเชิงพาณิชย์ · ฟอนต์แห่งชาติ 13 แบบของ SIPA เช่น TH Sarabun New ใช้ได้ฟรีตามเงื่อนไขของผู้เผยแพร่ · ฟอนต์ขายต้องซื้อสิทธิ์ใช้บนเว็บ (Webfont license) แยก ห้ามแปลงไฟล์ฟอนต์ที่ไม่มีสิทธิ์มาใช้ และอ้างอิงที่มาของฟอนต์ในรายงาน</p></div>
+  <a class="src" href="https://fonts.google.com/?subset=thai" target="_blank" rel="noopener noreferrer">fonts.google.com (ฟอนต์ภาษาไทย)</a>
+</section>
+
 <section class="slide" data-title="4.12.1 ตัวแปร CSS">
   <p class="kicker">4.12.1 ตัวแปรใน CSS (Custom Properties) (Verou, 2015)</p>
   <h2>เปลี่ยนค่าที่เดียว ทั้งเว็บเปลี่ยนตาม</h2>
@@ -481,6 +520,22 @@ function ef(){var r=$("e1").value,s=$("e2").value,ro=$("e3").value,sc=($("e4").v
  var bg=g?"linear-gradient(135deg, #6366f1, #ec4899)":"#6366f1";var b=$("fxBox");b.style.borderRadius=r+"px";b.style.boxShadow="0 "+Math.round(s/2)+"px "+s+"px rgba(0,0,0,.35)";b.style.transform="rotate("+ro+"deg) scale("+sc+")";b.style.background=bg;
  $("eCode").textContent=".box {\n  border-radius: "+r+"px;\n  box-shadow: 0 "+Math.round(s/2)+"px "+s+"px rgba(0,0,0,.35);\n  background: "+bg+";\n  transform: rotate("+ro+"deg) scale("+sc+");\n  transition: all .4s;\n}"}
 ["e1","e2","e3","e4","e5"].forEach(function(i){$(i).oninput=ef;$(i).onchange=ef});ef();
+// font slides
+var GF="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;700&family=Noto+Sans+Thai:wght@300;400;700&family=Noto+Serif+Thai:wght@300;400;700&family=Prompt:wght@300;400;700&family=Kanit:wght@300;400;700&family=Chakra+Petch:wght@300;400;700&display=swap",gfOn=false;
+function gfLoad(){if(gfOn)return;gfOn=true;var l=document.createElement("link");l.rel="stylesheet";l.href=GF;l.onerror=function(){$("fNote").textContent="โหลดฟอนต์จาก Google Fonts ไม่ได้ (ไม่มีอินเทอร์เน็ต) เบราว์เซอร์จะใช้ฟอนต์สำรองแทน"};document.head.appendChild(l)}
+var FF="sans-serif";
+function fn2(){var w=$("fW").value,sz=$("fS").value,lh=($("fL").value/10).toFixed(1),generic=["serif","sans-serif","monospace"].indexOf(FF)>-1;
+ var stack=generic?FF:'"'+FF+'", '+(/Serif/.test(FF)?"serif":"sans-serif");
+ var pv=$("fPrev");pv.style.fontFamily=stack;pv.style.fontWeight=w;pv.style.fontSize=sz+"px";pv.style.lineHeight=lh;pv.querySelector("h3").style.fontFamily=stack;
+ $("oFS").textContent=sz;$("oFL").textContent=lh;
+ $("ftCode").textContent="body {\n  font-family: "+stack+";\n  font-weight: "+w+";\n  font-size: "+(sz/16).toFixed(2).replace(/\.?0+$/,"")+"rem;  /* "+sz+"px */\n  line-height: "+lh+";\n}";
+ all("#fGen .chip,#fTh .chip").forEach(function(b){b.classList.toggle("on",b.dataset.f===FF)})}
+all("#fGen .chip,#fTh .chip").forEach(function(b){b.onclick=function(){FF=b.dataset.f;if(!/serif|monospace/.test(FF)||/Thai/.test(FF))gfLoad();fn2()}});
+["fW","fS","fL"].forEach(function(i){$(i).oninput=fn2;$(i).onchange=fn2});fn2();
+var FFT={g:['<!-- ใน <head> -->\n<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n<link rel="stylesheet"\n  href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap">\n\n/* ใน CSS */\nbody {\n  font-family: "Sarabun", sans-serif;\n}','<h3>Google Fonts</h3><ul class="b"><li style="font-size:18px">เลือกฟอนต์ที่ fonts.google.com กรองภาษา Thai</li><li style="font-size:18px">คัดลอกโค้ด &lt;link&gt; ไปวางใน &lt;head&gt;</li><li style="font-size:18px">ใส่ฟอนต์สำรองต่อท้ายเสมอ เช่น sans-serif</li><li style="font-size:18px">ผู้ชมทุกคนจะส่งคำขอ (รวมเลข IP) ไปที่เซิร์ฟเวอร์ของ Google ควรระบุในประกาศความเป็นส่วนตัว (PDPA บทที่ 2) หรือเลือกเก็บไฟล์เอง</li></ul>'],
+s:['/* css/style.css · ไฟล์อยู่ใน fonts/ ของเว็บเราเอง */\n@font-face {\n  font-family: "Sarabun";\n  src: url("../fonts/Sarabun-Regular.woff2") format("woff2");\n  font-weight: 400;\n  font-display: swap;\n}\n@font-face {\n  font-family: "Sarabun";\n  src: url("../fonts/Sarabun-Bold.woff2") format("woff2");\n  font-weight: 700;\n  font-display: swap;\n}\nbody { font-family: "Sarabun", Tahoma, sans-serif; }','<h3>@font-face เก็บไฟล์เอง</h3><ul class="b"><li style="font-size:18px">ดาวน์โหลดฟอนต์ที่มีสิทธิ์ใช้ แปลงหรือเลือกไฟล์ .woff2 (เล็กที่สุด รองรับเบราว์เซอร์ปัจจุบัน)</li><li style="font-size:18px">หนึ่งน้ำหนักต่อหนึ่งกฎ ใช้ชื่อ font-family เดียวกัน</li><li style="font-size:18px">ไม่ส่งข้อมูลผู้ชมไปที่อื่น และใช้ได้แม้เครือข่ายภายในไม่มีอินเทอร์เน็ต</li><li style="font-size:18px">สไลด์ชุดนี้ใช้วิธีนี้กับฟอนต์ Sarabun</li></ul>'],
+p:['/* แสดงข้อความด้วยฟอนต์สำรองทันที แล้วสลับเมื่อโหลดเสร็จ */\nfont-display: swap;\n\n/* โหลดเฉพาะอักษรไทย เมื่อหน้ามีอักษรไทย */\nunicode-range: U+0E01-0E5B;\n\n/* ใช้ไม่เกิน 2 ตระกูล 2–3 น้ำหนัก */\nh1, h2 { font-family: "Prompt", sans-serif; }\nbody   { font-family: "Sarabun", sans-serif; }','<h3>ฟอนต์มีผลต่อความเร็ว</h3><ul class="b"><li style="font-size:18px">ไฟล์ฟอนต์ไทยแต่ละน้ำหนักอาจใหญ่หลายสิบ KB โหลดเท่าที่ใช้</li><li style="font-size:18px"><b>font-display: swap</b> กันหน้าว่างระหว่างรอฟอนต์</li><li style="font-size:18px">หัวเรื่องกับเนื้อหาใช้ฟอนต์ต่างกันได้ แต่ไม่ควรเกิน 2 ตระกูล</li><li style="font-size:18px">ตรวจผลด้วย Lighthouse (บทที่ 10)</li></ul>']};
+function ffs(k){$("ffCode").textContent=FFT[k][0];$("ffTxt").innerHTML=FFT[k][1]}Deck.tabs($("ffTabs"),function(b){ffs(b.dataset.k)});ffs("g");
 // 14 variables
 var TH=[{pri:"#1e3a8a",on:"#fff",bg:"#f8fafc",txt:"#0f172a",acc:"#fbbf24",r:"6px"},{pri:"#78350f",on:"#fff",bg:"#fffbeb",txt:"#451a03",acc:"#fcd34d",r:"16px"},{pri:"#a78bfa",on:"#111",bg:"#111827",txt:"#e5e7eb",acc:"#34d399",r:"10px"}];
 function th(k){var t=TH[k],d=$("vDemo"),code=":root {\n";Object.keys(t).forEach(function(p){d.style.setProperty("--"+p,t[p]);code+="  --"+p+": "+t[p]+";\n"});
