@@ -18,7 +18,7 @@
 <a class="brand" href="../index.html" aria-label="หน้าแรก การเขียนโปรแกรมบนเว็บ"><span class="logo" aria-hidden="true">&lt;/&gt;</span><span class="bt"><b>การเขียนโปรแกรมบนเว็บ</b><small>07-034-210</small></span></a>
 <button id="menuBtn" class="iconbtn menu-btn" type="button" aria-expanded="false" aria-controls="menu" aria-label="เปิดเมนู"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v2H3V6Zm0 5h18v2H3v-2Zm0 5h18v2H3v-2Z"/></svg></button>
 <nav id="menu" aria-label="เมนูหลัก">
-<a href="../chapters.html" aria-current="page">บทเรียน</a><a href="../worksheets.html">ใบงาน</a><a href="../assessment.html">เกณฑ์ประเมินผล</a><a href="../start.html">เริ่มต้นใช้งาน</a><a href="../about.html">เกี่ยวกับรายวิชา</a>
+<a href="../chapters.html" aria-current="page">บทเรียน</a><a href="../worksheets.html">ใบงาน</a><a href="../assessment.html">เกณฑ์ประเมินผล</a><a href="../clo.html">ผลลัพธ์การเรียนรู้</a><a href="../start.html">เริ่มต้นใช้งาน</a><a href="../about.html">เกี่ยวกับรายวิชา</a>
 </nav>
 <button id="theme" class="iconbtn" type="button" aria-label="สลับโหมดมืดและสว่าง"><span class="i-moon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5Z"/></svg></span><span class="i-sun"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg></span></button>
 </div><div id="bar" class="bar" aria-hidden="true"></div></header>
@@ -32,6 +32,7 @@
 <aside class="side" aria-label="สารบัญบทนี้"><details class="tocbox" open><summary>สารบัญบทนี้</summary><ol><li><a href="#s1">บทนำ</a></li><li><a href="#s2">เนื้อหา</a></li><li><a href="#s3">6.1 ประโยชน์และบทบาทของภาษา JavaScript ในการพัฒนาเว็บ</a></li><li><a href="#s4">6.2 เริ่มต้นเขียน JavaScript</a></li><li><a href="#s5">6.3 Tag noscript</a></li><li><a href="#s6">6.4 ปุ่มสำหรับลิงก์ไปหน้าอื่น</a></li><li><a href="#s7">6.5 เพิ่มเติมสไตล์</a></li><li><a href="#s8">6.6 กล่องข้อความ (Message Box)</a></li><li><a href="#s9">6.7 การใช้งาน DOM Tree</a></li><li><a href="#s10">6.8 ไวยากรณ์ JavaScript สมัยใหม่ (Modern JavaScript: ECMAScript 6+)</a></li><li><a href="#s15">6.9 การเขียนโปรแกรมแบบอะซิงโครนัสและการรับส่งข้อมูล (Async/Await &amp; Fetch API)</a></li><li><a href="#s18">6.10 เทคนิคการใช้ AI ช่วยเขียนโค้ดและดีบัก JavaScript (AI-Assisted JS Development)</a></li><li><a href="#s24">สรุป</a></li><li><a href="#s25">แบบฝึกหัด</a></li><li><a href="#s26">เอกสารอ้างอิง</a></li></ol></details></aside>
 <article class="chapter prose" data-ch="6">
 <p class="note"><b>หมายเหตุ</b> หน้านี้ไม่แสดงภาพประกอบ (ดูภาพได้ในเอกสารประกอบการสอนฉบับเต็ม) ตัวอย่าง HTML ครบหน้ามีปุ่ม "ลองรัน" กดเพื่อดูผลได้ทันที</p>
+<p class="note"><b>ผลลัพธ์การเรียนรู้ (CLO) ของบทนี้</b> CLO4 CLO5 · <a href="../clo.html">ดูความหมาย</a></p>
 <h2 id="s1">บทนำ</h2>
 <p>ภาษาจาวาสคริปต์ (JavaScript) เป็นภาษาโปรแกรมระดับสูงเชิงวัตถุที่ทำงานทางฝั่งไคลเอนต์ (Client-Side Scripting) ซึ่งเป็นหัวใจสำคัญในการทำให้หน้าเว็บเพจมีความมีชีวิตชีวาและสามารถโต้ตอบกับผู้ใช้งาน (Interactivity) ได้อย่างราบรื่น โดยไม่จำเป็นต้องโหลดหน้าเว็บเพจใหม่ทั้งหมด จากจุดเริ่มต้นที่เป็นเพียงภาษาสคริปต์เสริมลูกเล่น ปัจจุบัน JavaScript ได้พัฒนา สู่มาตรฐาน ECMAScript (ES6+) ที่มีความทรงพลัง รองรับการจัดการโครงสร้างเอกสาร (DOM: Document Object Model), การตรวจจับเหตุการณ์ (Event Handling), การประมวลผลแบบอะซิงโครนัส (Asynchronous Programming) ร่วมกับ Fetch API และเป็นรากฐานสู่เฟรมเวิร์กสมัยใหม่ ในบทนี้นักศึกษาจะได้เรียนรู้ตั้งแต่ไวยากรณ์พื้นฐาน การควบคุม DOM ไปจนถึงการนำเครื่องมือปัญญาประดิษฐ์ (AI) มาช่วยเขียนชุดคำสั่งและแก้ไขข้อผิดพลาด (Debug) อย่างมีแบบแผน</p>
 <h2 id="s2">เนื้อหา</h2>
@@ -418,7 +419,7 @@ document.getElementById(&quot;id ของ Element&quot;).textContent = &quot;�
 <footer class="foot"><div class="wrap fgrid">
 <div><a class="brand" href="../index.html"><span class="logo" aria-hidden="true">&lt;/&gt;</span><span class="bt"><b>การเขียนโปรแกรมบนเว็บ</b><small>Web Programming</small></span></a>
 <p class="small">สื่อเสริมการเรียนรู้ ใช้ประกอบเอกสารประกอบการสอน ไม่มีระบบสมาชิกและไม่เก็บข้อมูลส่วนบุคคล ส่งงานผ่าน Google Classroom</p></div>
-<div><p class="fh">เรียนรู้</p><a href="../chapters.html">บทเรียน 10 บท</a><a href="../worksheets.html">ใบงานประจำบท</a><a href="../assessment.html">เกณฑ์การประเมินผล</a><a href="../start.html">เริ่มต้นใช้งาน</a></div>
+<div><p class="fh">เรียนรู้</p><a href="../chapters.html">บทเรียน 10 บท</a><a href="../worksheets.html">ใบงานประจำบท</a><a href="../assessment.html">เกณฑ์การประเมินผล</a><a href="../clo.html">ผลลัพธ์การเรียนรู้ (CLO)</a><a href="../start.html">เริ่มต้นใช้งาน</a></div>
 <div><p class="fh">รายวิชา</p><a href="../about.html">เกี่ยวกับรายวิชา</a><span>ผู้สอน: ดร.สุรเชษฐ์ สังขพันธ์</span><span>พ.ศ. 2569</span></div>
 </div></footer>
 <script src="../assets/app.js"></script>

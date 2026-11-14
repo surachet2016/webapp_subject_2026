@@ -18,7 +18,7 @@
 <a class="brand" href="../index.html" aria-label="หน้าแรก การเขียนโปรแกรมบนเว็บ"><span class="logo" aria-hidden="true">&lt;/&gt;</span><span class="bt"><b>การเขียนโปรแกรมบนเว็บ</b><small>07-034-210</small></span></a>
 <button id="menuBtn" class="iconbtn menu-btn" type="button" aria-expanded="false" aria-controls="menu" aria-label="เปิดเมนู"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v2H3V6Zm0 5h18v2H3v-2Zm0 5h18v2H3v-2Z"/></svg></button>
 <nav id="menu" aria-label="เมนูหลัก">
-<a href="../chapters.html" aria-current="page">บทเรียน</a><a href="../worksheets.html">ใบงาน</a><a href="../assessment.html">เกณฑ์ประเมินผล</a><a href="../start.html">เริ่มต้นใช้งาน</a><a href="../about.html">เกี่ยวกับรายวิชา</a>
+<a href="../chapters.html" aria-current="page">บทเรียน</a><a href="../worksheets.html">ใบงาน</a><a href="../assessment.html">เกณฑ์ประเมินผล</a><a href="../clo.html">ผลลัพธ์การเรียนรู้</a><a href="../start.html">เริ่มต้นใช้งาน</a><a href="../about.html">เกี่ยวกับรายวิชา</a>
 </nav>
 <button id="theme" class="iconbtn" type="button" aria-label="สลับโหมดมืดและสว่าง"><span class="i-moon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5Z"/></svg></span><span class="i-sun"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg></span></button>
 </div><div id="bar" class="bar" aria-hidden="true"></div></header>
@@ -32,6 +32,7 @@
 <aside class="side" aria-label="สารบัญบทนี้"><details class="tocbox" open><summary>สารบัญบทนี้</summary><ol><li><a href="#s1">บทนำ</a></li><li><a href="#s2">เนื้อหา</a></li><li><a href="#s3">4.1 รูปแบบ CSS</a></li><li><a href="#s4">4.2 CSS Style Sheet</a></li><li><a href="#s8">4.3 CSS Selectors</a></li><li><a href="#s12">4.4 CSS Color</a></li><li><a href="#s13">4.5 CSS Borders</a></li><li><a href="#s16">4.6 CSS Margins</a></li><li><a href="#s17">4.7 CSS Padding</a></li><li><a href="#s18">4.8 CSS Layout</a></li><li><a href="#s19">4.9 CSS Grid Layout Module</a></li><li><a href="#s20">4.10 CSS3</a></li><li><a href="#s21">4.11 CSS Flexbox</a></li><li><a href="#s23">4.12 ตัวแปรใน CSS และหน่วยวัดสมัยใหม่ (CSS Custom Properties &amp; Modern Units)</a></li><li><a href="#s26">4.13 การออกแบบตอบสนองด้วยมีเดียคิวรี (Responsive Web Design with Media Queries)</a></li><li><a href="#s27">4.14 เทคนิคการใช้ AI ช่วยกำหนดสไตล์และจัดเลย์เอาต์ CSS (AI-Assisted CSS Development)</a></li><li><a href="#s33">สรุป</a></li><li><a href="#s34">แบบฝึกหัด</a></li><li><a href="#s35">เอกสารอ้างอิง</a></li></ol></details></aside>
 <article class="chapter prose" data-ch="4">
 <p class="note"><b>หมายเหตุ</b> หน้านี้ไม่แสดงภาพประกอบ (ดูภาพได้ในเอกสารประกอบการสอนฉบับเต็ม) ตัวอย่าง HTML ครบหน้ามีปุ่ม "ลองรัน" กดเพื่อดูผลได้ทันที</p>
+<p class="note"><b>ผลลัพธ์การเรียนรู้ (CLO) ของบทนี้</b> CLO3 CLO5 · <a href="../clo.html">ดูความหมาย</a></p>
 <h2 id="s1">บทนำ</h2>
 <p>ภาษา CSS (Cascading Style Sheets) เป็นกลไกสำคัญที่ใช้สำหรับกำหนดรูปแบบการแสดงผล ความสวยงาม และการจัดวางองค์ประกอบ ของเอกสาร HTML บนหน้าเว็บเพจ โดยทำหน้าที่แยกส่วนของการนำเสนอ (Presentation) ออกจากส่วนของโครงสร้างเนื้อหา (Structure) ช่วยให้การบำรุงรักษาและการปรับแต่งรูปแบบทำได้อย่างสะดวกรวดเร็วและมีมาตรฐานเดียวกันทั้งเว็บไซต์ ในบทนี้นักศึกษาจะได้เรียนรู้ตั้งแต่ รูปแบบไวยากรณ์พื้นฐาน การใช้งานตัวเลือก (Selectors), โมเดลกล่อง (Box Model: Margin, Border, Padding), เทคโนโลยีการจัดเลย์เอาต์สมัยใหม่ด้วย CSS Grid และ CSS Flexbox, การใช้งานตัวแปร (CSS Variables), การออกแบบที่ตอบสนองต่อทุกขนาดหน้าจอ (Responsive Design with Media Queries) ตลอดจนการประยุกต์ใช้ปัญญาประดิษฐ์ (AI) ในการช่วยเขียนโค้ดและแก้ไขข้อผิดพลาดทางด้านสไตล์อย่างมีประสิทธิภาพ</p>
 <h2 id="s2">เนื้อหา</h2>
@@ -1721,7 +1722,7 @@ body { font-family: var(--font-base); font-size: 16px; background-color: var(--b
 <footer class="foot"><div class="wrap fgrid">
 <div><a class="brand" href="../index.html"><span class="logo" aria-hidden="true">&lt;/&gt;</span><span class="bt"><b>การเขียนโปรแกรมบนเว็บ</b><small>Web Programming</small></span></a>
 <p class="small">สื่อเสริมการเรียนรู้ ใช้ประกอบเอกสารประกอบการสอน ไม่มีระบบสมาชิกและไม่เก็บข้อมูลส่วนบุคคล ส่งงานผ่าน Google Classroom</p></div>
-<div><p class="fh">เรียนรู้</p><a href="../chapters.html">บทเรียน 10 บท</a><a href="../worksheets.html">ใบงานประจำบท</a><a href="../assessment.html">เกณฑ์การประเมินผล</a><a href="../start.html">เริ่มต้นใช้งาน</a></div>
+<div><p class="fh">เรียนรู้</p><a href="../chapters.html">บทเรียน 10 บท</a><a href="../worksheets.html">ใบงานประจำบท</a><a href="../assessment.html">เกณฑ์การประเมินผล</a><a href="../clo.html">ผลลัพธ์การเรียนรู้ (CLO)</a><a href="../start.html">เริ่มต้นใช้งาน</a></div>
 <div><p class="fh">รายวิชา</p><a href="../about.html">เกี่ยวกับรายวิชา</a><span>ผู้สอน: ดร.สุรเชษฐ์ สังขพันธ์</span><span>พ.ศ. 2569</span></div>
 </div></footer>
 <script src="../assets/app.js"></script>
