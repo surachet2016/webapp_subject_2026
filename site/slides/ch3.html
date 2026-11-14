@@ -1,0 +1,469 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="สไลด์บทที่ 3 ภาษา HTML และ HTML5 รายวิชา 07-034-210 พร้อมตัวอย่างที่กดลองได้">
+<meta name="theme-color" content="#1e1b4b">
+<title>สไลด์บทที่ 3 ภาษา HTML และ HTML5 · การเขียนโปรแกรมบนเว็บ</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%234338ca'/%3E%3Cpath d='M26 20 14 32l12 12M38 20l12 12-12 12' fill='none' stroke='%23fff' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="deck.css">
+<style>
+/* เฉพาะบทที่ 3 */
+.anat{font-family:Mono,monospace;font-size:28px;background:#0f1226;color:#e8eaf8;border-radius:16px;padding:28px 26px;text-align:center;line-height:1.6}
+.anat span{border-radius:6px;padding:2px 4px;cursor:pointer;transition:background .2s,color .2s}
+.anat .t{color:#93c5fd}.anat .a{color:#fcd34d}.anat .v{color:#86efac}.anat .c{color:#fff}
+.anat span.hl{background:#f59e0b;color:#111}
+.part{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}
+.part button{font:inherit;font-size:18px;border:2px solid var(--line);background:#fff;border-radius:12px;padding:8px 14px;cursor:pointer}
+.part button.on{border-color:var(--accent);background:#fffbeb}
+.vs{font-family:Mono,monospace;font-size:16px;line-height:1.6;background:#0f1226;color:#e8eaf8;border-radius:12px;padding:16px 18px;white-space:pre-wrap;word-break:break-all;height:330px;overflow:auto}
+.typed{color:#fcd34d}
+.caret{display:inline-block;width:10px;height:20px;background:#fcd34d;vertical-align:middle;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.prev{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;min-height:120px;overflow:auto}
+.prev h1,.prev h2,.prev h3,.prev h4,.prev h5,.prev h6{margin:0;line-height:1.3}
+.tg{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.tg button{font:inherit;text-align:left;background:#fff;border:2px solid var(--line);border-radius:14px;padding:12px 14px;cursor:pointer;transition:all .2s}
+.tg button b{font-family:Mono,monospace;font-size:20px;color:var(--brand)}
+.tg button span{display:block;font-size:16px;color:var(--muted)}
+.tg button.on{border-color:var(--brand);background:#eef2ff;transform:translateY(-3px)}
+.tbl table{border-collapse:collapse;width:100%}
+.tbl td,.tbl th{border:1px solid #94a3b8;padding:6px 8px;font-size:16px;text-align:center}
+.tbl th{background:#e0e7ff}
+.ctrl{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.ctrl input[type=number]{font:inherit;font-size:18px;width:70px;border:1px solid var(--line);border-radius:8px;padding:4px 8px}
+.fm label{display:block;font-size:17px;font-weight:600;margin-top:8px}
+.fm input,.fm select,.fm textarea{font:inherit;font-size:17px;border:1px solid #cbd5e1;border-radius:8px;padding:6px 10px;width:100%}
+.fm input[type=radio],.fm input[type=checkbox]{width:auto;accent-color:var(--brand)}
+.fm .row{display:flex;gap:14px;align-items:center;font-weight:400}
+.fm input:user-invalid{border-color:var(--bad);background:#fef2f2}
+.fm input:user-valid{border-color:var(--ok)}
+.wire{display:grid;grid-template-columns:2fr 1fr;grid-template-rows:60px 46px 1fr 52px;gap:8px;height:390px}
+.wire div{border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:Mono,monospace;font-size:19px;font-weight:700;cursor:pointer;color:#fff;transition:transform .2s,box-shadow .2s}
+.wire div:hover,.wire div.on{transform:scale(1.03);box-shadow:0 10px 24px rgba(0,0,0,.2)}
+.wire .w-h{grid-column:1/3;background:#4f46e5}.wire .w-n{grid-column:1/3;background:#0ea5e9}
+.wire .w-m{background:#7c3aed;flex-direction:column;gap:8px}.wire .w-a{background:#f59e0b;color:#111}
+.wire .w-f{grid-column:1/3;background:#334155}
+.wire .w-m i{font-style:normal;background:rgba(255,255,255,.2);border-radius:8px;padding:6px 14px;font-size:17px}
+.sr{white-space:pre;font-family:Mono,monospace;font-size:17px;line-height:1.8;background:#111827;color:#a7f3d0;border-radius:12px;padding:14px 16px;min-height:200px}
+.bug{font-family:Mono,monospace;font-size:17px;line-height:1.75;background:#0f1226;color:#e8eaf8;border-radius:12px;padding:12px 6px}
+.bug div{padding:0 12px;border-radius:6px;cursor:pointer;white-space:pre}
+.bug div:hover{background:rgba(255,255,255,.08)}
+.bug div.ok{background:rgba(5,150,105,.35)}
+.bug div.no{background:rgba(220,38,38,.35)}
+#hPrev h1{font-size:40px}#hPrev h2{font-size:33px}#hPrev h3{font-size:27px}#hPrev h4{font-size:23px}#hPrev h5{font-size:20px}#hPrev h6{font-size:17px}
+#skel div{white-space:pre-wrap;word-break:break-all}
+canvas{background:#fff;border:1px solid var(--line);border-radius:12px;cursor:crosshair;touch-action:none}
+.kbd{display:inline-block;font-family:Mono,monospace;font-size:17px;background:#fff;border:1px solid #cbd5e1;border-bottom-width:3px;border-radius:6px;padding:1px 8px}
+</style>
+</head>
+<body>
+<div id="stage">
+
+<section class="slide dark" data-title="ปก">
+  <div style="position:absolute;left:72px;top:170px;width:620px">
+    <p class="kicker">รายวิชา 07-034-210 การเขียนโปรแกรมบนเว็บ · บทที่ 3</p>
+    <h1>ภาษา HTML<br>และ HTML5</h1>
+    <p class="muted" style="margin-top:18px">แท็ก เอลิเมนต์ ตาราง แบบฟอร์ม สื่อมัลติมีเดีย แท็กเชิงความหมาย การตรวจข้อมูลในฟอร์ม และการใช้ AI ช่วยตรวจโค้ด</p>
+    <p class="muted" style="margin-top:28px;font-size:20px">ดร.สุรเชษฐ์ สังขพันธ์ · กด → หรือ Space ไปสไลด์ถัดไป · กด O ดูสารบัญ</p>
+  </div>
+  <svg style="position:absolute;right:70px;top:120px" width="440" height="470" viewBox="0 0 440 470" aria-hidden="true">
+    <defs><linearGradient id="g3" x1="0" x2="1"><stop offset="0" stop-color="#818cf8"/><stop offset="1" stop-color="#f59e0b"/></linearGradient></defs>
+    <rect x="20" y="20" width="400" height="430" rx="22" fill="rgba(255,255,255,.06)" stroke="url(#g3)" stroke-width="2"/>
+    <g font-family="Mono" font-size="22">
+      <text x="50" y="80" fill="#93c5fd">&lt;header&gt;</text>
+      <rect x="50" y="96" width="340" height="40" rx="8" fill="#4f46e5"><animate attributeName="width" from="0" to="340" dur="1s" fill="freeze"/></rect>
+      <text x="50" y="180" fill="#93c5fd">&lt;main&gt;</text>
+      <rect x="50" y="196" width="220" height="150" rx="8" fill="#7c3aed"><animate attributeName="height" from="0" to="150" begin=".5s" dur="1s" fill="freeze"/></rect>
+      <rect x="284" y="196" width="106" height="150" rx="8" fill="#f59e0b"><animate attributeName="height" from="0" to="150" begin=".8s" dur="1s" fill="freeze"/></rect>
+      <text x="300" y="186" fill="#fcd34d" font-size="18">&lt;aside&gt;</text>
+      <text x="50" y="392" fill="#93c5fd">&lt;footer&gt;</text>
+      <rect x="50" y="404" width="340" height="28" rx="8" fill="#334155"><animate attributeName="width" from="0" to="340" begin="1.1s" dur="1s" fill="freeze"/></rect>
+    </g>
+  </svg>
+  <div class="foot"><span>ภาพประกอบในสไลด์ชุดนี้สร้างด้วย SVG/CSS โดยใช้ปัญญาประดิษฐ์ (AI) ช่วยสร้าง</span><span>พ.ศ. 2569</span></div>
+</section>
+
+<section class="slide" data-title="เป้าหมายของบทนี้">
+  <p class="kicker">เป้าหมายของบทนี้</p>
+  <h2>เรียนจบบทนี้ นักศึกษาจะ...</h2>
+  <div class="grid2" style="align-items:start">
+    <ul class="b">
+      <li>แยก แท็ก เอลิเมนต์ และแอตทริบิวต์ได้</li>
+      <li>เขียนโครงหน้า HTML5 ที่ถูกต้องตามมาตรฐาน</li>
+      <li>สร้างตาราง แบบฟอร์ม และใส่สื่อมัลติมีเดีย</li>
+      <li>วางโครงหน้าด้วยแท็กเชิงความหมาย (Semantic)</li>
+      <li>ใช้ AI ช่วยสร้างและตรวจโค้ด แล้วตรวจซ้ำเองได้</li>
+    </ul>
+    <div class="card">
+      <h3>ผลลัพธ์การเรียนรู้ (CLO) ของบทนี้</h3>
+      <p><b>CLO1</b> อธิบายแนวคิด องค์ประกอบ โครงสร้าง และหลักการออกแบบเว็บไซต์ได้อย่างถูกต้อง</p>
+      <p style="margin-top:6px"><b>CLO2</b> วิเคราะห์ความต้องการของผู้ใช้ และจัดทำขอบเขตงานและโครงสร้างเว็บไซต์ให้สอดคล้องกับโจทย์</p>
+      <p style="margin-top:6px"><b>CLO3</b> ใช้ภาษาและเครื่องมือในการพัฒนาเว็บไซต์ให้ทำงานได้ตามข้อกำหนด</p>
+      <p style="margin-top:6px"><b>CLO5</b> ประยุกต์ความรู้พัฒนาเว็บไซต์แก้ปัญหาจากสถานการณ์ พร้อมทดสอบและปรับปรุง</p>
+      <p class="muted" style="margin-top:8px;font-size:16px">ใบงานที่ 3: โครงหน้าเว็บด้วย HTML5 Semantic Elements และแบบฟอร์มตรวจข้อมูล</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-title="3.1 VS Code และ Emmet">
+  <p class="kicker">3.1 เตรียมโปรแกรมแก้ไขโค้ด</p>
+  <h2>พิมพ์ ! แล้วกด Tab ได้โครงหน้า HTML5 ทันที</h2>
+  <div class="grid2" style="grid-template-columns:1fr 1.15fr;align-items:start">
+    <div>
+      <ul class="b">
+        <li style="font-size:22px">ติดตั้ง <b>VS Code</b> จาก code.visualstudio.com</li>
+        <li style="font-size:22px">ส่วนขยาย: <b>Live Server</b>, <b>Prettier</b>, <b>Auto Rename Tag</b></li>
+        <li style="font-size:22px">จัดรูปแบบโค้ด <span class="kbd">Shift</span>+<span class="kbd">Alt</span>+<span class="kbd">F</span></li>
+        <li style="font-size:22px">คลิกขวา → <b>Open with Live Server</b> หน้าเว็บรีเฟรชเองเมื่อบันทึก</li>
+      </ul>
+      <div style="display:flex;gap:10px;margin-top:14px"><button class="btn" id="emBtn">พิมพ์ ! แล้วกด Tab</button><button class="btn alt" id="emBtn2">ul&gt;li*3</button></div>
+    </div>
+    <div class="vs" id="emOut"></div>
+  </div>
+  <a class="src" href="https://code.visualstudio.com/docs/editor/emmet" target="_blank" rel="noopener noreferrer">อ่านต่อ: Emmet in Visual Studio Code</a>
+</section>
+
+<section class="slide" data-title="3.2 แท็ก เอลิเมนต์ แอตทริบิวต์">
+  <p class="kicker">3.2 เอลิเมนต์ (Element) และแท็ก (Tag) (Duckett, 2011; บัญชา ปะสีละเตสัง, 2565ข)</p>
+  <h2>หนึ่งบรรทัด มีหลายส่วน</h2>
+  <div class="anat" id="anat"><span class="t" data-p="open">&lt;a</span> <span class="a" data-p="attr">href</span>=<span class="v" data-p="val">"https://www.pnu.ac.th"</span><span class="t" data-p="open">&gt;</span><span class="c" data-p="content">ม.นราธิวาสฯ</span><span class="t" data-p="close">&lt;/a&gt;</span></div>
+  <div class="part" id="parts">
+    <button data-p="open">แท็กเปิด</button><button data-p="attr">แอตทริบิวต์</button><button data-p="val">ค่าของแอตทริบิวต์</button><button data-p="content">เนื้อหา</button><button data-p="close">แท็กปิด</button><button data-p="all">ทั้งหมด = เอลิเมนต์</button>
+  </div>
+  <div class="card" id="anatTxt" style="margin-top:14px;min-height:96px"><p style="font-size:24px">กดปุ่มด้านบน หรือชี้ที่โค้ด เพื่อดูว่าแต่ละส่วนคืออะไร</p></div>
+  <div class="grid3" style="margin-top:14px"><div class="card"><h3>Void</h3><p>มีแท็กเปิดอย่างเดียว เช่น &lt;br&gt; &lt;hr&gt; &lt;img&gt;</p></div><div class="card"><h3>Raw Text</h3><p>เนื้อหาเป็นโค้ดล้วน เช่น &lt;script&gt; &lt;style&gt;</p></div><div class="card"><h3>Nested</h3><p>มีเอลิเมนต์อื่นซ้อนข้างใน เช่น &lt;ul&gt;&lt;li&gt;...&lt;/li&gt;&lt;/ul&gt;</p></div></div>
+</section>
+
+<section class="slide" data-title="3.3–3.4 โครงสร้าง HTML5">
+  <p class="kicker">3.3 รูปแบบมาตรฐานของ HTML · 3.4 HTML5</p>
+  <h2>โครงหน้าที่ทุกไฟล์ต้องมี</h2>
+  <div class="grid2" style="grid-template-columns:1.1fr 1fr;align-items:start">
+    <div class="bug" id="skel"></div>
+    <div class="card" id="skelTxt" style="min-height:300px"><h3>ชี้ที่แต่ละบรรทัด</h3><p>เพื่อดูหน้าที่ของบรรทัดนั้น</p></div>
+  </div>
+  <p class="muted" style="font-size:18px;margin-top:10px">HTML 4 ต้องเขียน DOCTYPE ยาวและอ้าง DTD ส่วน HTML5 เหลือแค่ &lt;!DOCTYPE html&gt;</p>
+</section>
+
+<section class="slide" data-title="3.5 หัวเรื่อง h1–h6">
+  <p class="kicker">3.5 เริ่มต้นด้วยแท็ก &lt;h1&gt;</p>
+  <h2>หัวเรื่องมี 6 ระดับ ใช้ตามลำดับความสำคัญ</h2>
+  <div class="grid2" style="align-items:start">
+    <div>
+      <label for="hLv">ระดับหัวเรื่อง: <span id="hLvT">h1</span></label>
+      <input type="range" id="hLv" min="1" max="6" value="1" style="margin:10px 0 16px">
+      <div class="code" id="hCode" style="font-size:20px"></div>
+      <ul class="b" style="margin-top:14px"><li style="font-size:21px">หนึ่งหน้าควรมี &lt;h1&gt; เดียว คือชื่อหลักของหน้า</li><li style="font-size:21px">ไม่ข้ามระดับ เช่น h2 แล้วกระโดดไป h5</li><li style="font-size:21px">อย่าใช้ h เพียงเพราะอยากได้ตัวใหญ่ ใช้ CSS แทน</li></ul>
+    </div>
+    <div class="prev" id="hPrev" style="min-height:360px"></div>
+  </div>
+</section>
+
+<section class="slide" data-title="3.6 แท็กเดี่ยว">
+  <p class="kicker">3.6 แท็กเดี่ยว (Void Elements)</p>
+  <h2>ไม่มีเนื้อหา จึงไม่มีแท็กปิด</h2>
+  <div class="grid2" style="grid-template-columns:1fr 1fr;align-items:start">
+    <div class="tg" id="voids">
+      <button data-v="br"><b>&lt;br&gt;</b><span>ขึ้นบรรทัดใหม่</span></button>
+      <button data-v="hr"><b>&lt;hr&gt;</b><span>เส้นคั่นเนื้อหา</span></button>
+      <button data-v="img"><b>&lt;img&gt;</b><span>แสดงภาพ ต้องมี alt</span></button>
+      <button data-v="input"><b>&lt;input&gt;</b><span>ช่องรับข้อมูล</span></button>
+      <button data-v="meta"><b>&lt;meta&gt;</b><span>ข้อมูลของหน้า</span></button>
+      <button data-v="link"><b>&lt;link&gt;</b><span>เชื่อมไฟล์ CSS</span></button>
+    </div>
+    <div><div class="code" id="vCode" style="font-size:16px;white-space:pre-wrap;min-height:110px"></div><div class="prev" id="vPrev" style="margin-top:12px;min-height:170px"></div></div>
+  </div>
+</section>
+
+<section class="slide" data-title="3.7 แท็กคู่ ลองแก้เอง">
+  <p class="kicker">3.7 แท็กคู่ (Paired Tags)</p>
+  <h2>แก้โค้ดทางซ้าย แล้วกด "ลองรัน"</h2>
+  <div class="grid2" style="align-items:start">
+    <div><textarea id="pairTa" rows="12" spellcheck="false" style="font-family:Mono,monospace;font-size:16px;height:400px">&lt;h2&gt;ร้านกาแฟบ้านสวน&lt;/h2&gt;
+&lt;p&gt;เปิดทุกวัน &lt;strong&gt;07:00–17:00&lt;/strong&gt; น.&lt;/p&gt;
+&lt;p&gt;เมนูแนะนำ &lt;em&gt;ลาเต้เย็น&lt;/em&gt;&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;ลาเต้&lt;/li&gt;
+  &lt;li&gt;มอคค่า&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+  &lt;li&gt;Wi-Fi ฟรี&lt;/li&gt;
+  &lt;li&gt;ที่จอดรถ&lt;/li&gt;
+&lt;/ul&gt;
+&lt;a href="https://www.pnu.ac.th" target="_blank"&gt;เว็บไซต์มหาวิทยาลัย&lt;/a&gt;</textarea>
+      <div style="display:flex;gap:10px;margin-top:10px"><button class="btn" id="pairRun">▶ ลองรัน</button><button class="btn alt" id="pairBreak">ลองลืมปิดแท็ก &lt;/strong&gt;</button></div>
+    </div>
+    <div><iframe class="run" id="pairFr" title="ผลลัพธ์แท็กคู่" style="height:400px"></iframe></div>
+  </div>
+</section>
+
+<section class="slide" data-title="3.8 สร้างตาราง">
+  <p class="kicker">3.8 แท็กตาราง (Table Tags)</p>
+  <h2>ตาราง = แถว (tr) × ช่อง (th/td)</h2>
+  <div class="ctrl"><label>แถว <input type="number" id="tR" min="1" max="6" value="3"></label><label>คอลัมน์ <input type="number" id="tC" min="1" max="6" value="3"></label><label class="row" style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="tH" checked style="width:20px;height:20px"> แถวหัวตาราง &lt;th&gt;</label><label class="row" style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="tS" style="width:20px;height:20px"> รวมช่อง colspan="2"</label></div>
+  <div class="grid2" style="align-items:start;margin-top:14px">
+    <div class="code" id="tCode" style="font-size:15px;height:400px"></div>
+    <div class="prev tbl" id="tPrev" style="min-height:200px"></div>
+  </div>
+</section>
+
+<section class="slide" data-title="3.9 แบบฟอร์ม">
+  <p class="kicker">3.9 แท็กแบบฟอร์ม</p>
+  <h2>ช่องรับข้อมูลแต่ละแบบ ลองกรอกได้เลย</h2>
+  <div class="grid2" style="grid-template-columns:1fr 1fr;align-items:start">
+    <form class="card fm" id="fmDemo" onsubmit="return false" style="padding:14px 20px">
+      <label for="f1">ชื่อ (text)</label><input id="f1" name="name" type="text" placeholder="เช่น กัญญา">
+      <label for="f2">อีเมล (email)</label><input id="f2" name="email" type="email" placeholder="name@example.com">
+      <label for="f3">วันเกิด (date)</label><input id="f3" name="dob" type="date">
+      <label>เพศ (radio)</label><div class="row"><label class="row"><input type="radio" name="g" value="ช"> ชาย</label><label class="row"><input type="radio" name="g" value="ญ"> หญิง</label><label class="row"><input type="radio" name="g" value="-"> ไม่ระบุ</label></div>
+      <label for="f5">สาขา (select)</label><select id="f5" name="major"><option>การจัดการเทคโนโลยีสารสนเทศ</option><option>การบัญชี</option><option>การตลาด</option></select>
+    </form>
+    <div><div class="code" id="fmCode" style="font-size:15px;height:300px;white-space:pre-wrap"></div><p class="muted" style="font-size:17px;margin-top:8px">ทุกช่องควรมี &lt;label for="..."&gt; จับคู่กับ id เพื่อให้คลิกที่ป้ายแล้วเลือกช่องได้ และโปรแกรมอ่านหน้าจออ่านถูก</p></div>
+  </div>
+</section>
+
+<section class="slide" data-title="GET หรือ POST">
+  <p class="kicker">3.9 action และ method ของแบบฟอร์ม</p>
+  <h2>ข้อมูลเดินทางไปเซิร์ฟเวอร์อย่างไร</h2>
+  <div class="grid2" style="grid-template-columns:420px 1fr;align-items:start">
+    <div class="card fm">
+      <div class="tabs" id="mTabs"><button class="on" data-m="GET">method="GET"</button><button data-m="POST">method="POST"</button></div>
+      <label for="q1">ชื่อผู้ใช้</label><input id="q1" type="text" value="kanya">
+      <label for="q2">รหัสผ่าน</label><input id="q2" type="password" value="secret123">
+      <button class="btn" id="mSend" style="margin-top:12px">ส่งฟอร์ม (จำลอง)</button>
+    </div>
+    <div><div class="code" id="mOut" style="font-size:16px;height:250px;white-space:pre-wrap"></div><div class="card" id="mTxt" style="margin-top:12px"></div></div>
+  </div>
+</section>
+
+<section class="slide" data-title="3.10 มัลติมีเดียและ canvas">
+  <p class="kicker">3.10 แท็กมัลติมีเดียและกราฟิกใน HTML5</p>
+  <h2>เล่นสื่อและวาดภาพได้โดยไม่ต้องใช้ปลั๊กอิน</h2>
+  <div class="grid2" style="grid-template-columns:1fr 1fr;align-items:start">
+    <div>
+      <div class="code" style="font-size:15px;white-space:pre">&lt;video src="intro.mp4" controls width="480"
+       poster="cover.jpg"&gt;&lt;/video&gt;
+&lt;audio src="song.mp3" controls&gt;&lt;/audio&gt;
+&lt;canvas id="pad" width="520" height="300"&gt;&lt;/canvas&gt;
+&lt;iframe src="https://www.youtube.com/embed/..."
+        title="วิดีโอ"&gt;&lt;/iframe&gt;</div>
+      <ul class="b" style="margin-top:12px"><li style="font-size:20px"><b>controls</b> แสดงปุ่มเล่น หยุด เสียง</li><li style="font-size:20px">ใส่คำบรรยาย (subtitle) ด้วย &lt;track&gt;</li><li style="font-size:20px">ใช้เฉพาะสื่อที่มีสิทธิ์เผยแพร่</li></ul>
+    </div>
+    <div><p class="muted" style="font-size:18px">ลองวาดบน &lt;canvas&gt; ด้วยเมาส์หรือนิ้ว (JavaScript สั่งวาด)</p><canvas id="pad" width="520" height="300" aria-label="พื้นที่วาดภาพ"></canvas><div style="display:flex;gap:8px;margin-top:8px"><button class="btn alt" data-col="#4338ca">น้ำเงิน</button><button class="btn alt" data-col="#dc2626">แดง</button><button class="btn alt" data-col="#059669">เขียว</button><button class="btn" id="padClr">ล้าง</button></div></div>
+  </div>
+</section>
+
+<section class="slide" data-title="3.11 แท็กเชิงความหมาย">
+  <p class="kicker">3.11 Semantic Elements (MDN, 2024b)</p>
+  <h2>ตั้งชื่อส่วนของหน้าให้บอกความหมาย</h2>
+  <div class="grid2" style="grid-template-columns:1fr 1fr;align-items:start">
+    <div class="wire" id="wire">
+      <div class="w-h" data-w="header">&lt;header&gt;</div>
+      <div class="w-n" data-w="nav">&lt;nav&gt;</div>
+      <div class="w-m" data-w="main">&lt;main&gt;<i data-w="article">&lt;article&gt;</i><i data-w="section">&lt;section&gt;</i></div>
+      <div class="w-a" data-w="aside">&lt;aside&gt;</div>
+      <div class="w-f" data-w="footer">&lt;footer&gt;</div>
+    </div>
+    <div class="card" id="wireTxt" style="min-height:390px"><h3>คลิกส่วนต่าง ๆ ของโครงหน้า</h3><p>เพื่อดูว่าแท็กนั้นใช้ทำอะไร</p></div>
+  </div>
+</section>
+
+<section class="slide" data-title="div ล้วน หรือ Semantic">
+  <p class="kicker">3.11 ทำไมต้องใช้แท็กเชิงความหมาย</p>
+  <h2>หน้าตาเหมือนกัน แต่โปรแกรมอ่านหน้าจอ "เห็น" ต่างกัน</h2>
+  <div class="tabs" id="semTabs"><button class="on" data-s="div">แบบ div ล้วน</button><button data-s="sem">แบบ Semantic</button></div>
+  <div class="grid2" style="align-items:start">
+    <div class="code" id="semCode" style="font-size:16px;height:330px"></div>
+    <div><p style="font-size:19px;font-weight:600">สิ่งที่โปรแกรมอ่านหน้าจอประกาศ (จุดสังเกต / Landmarks)</p><div class="sr" id="semSR"></div><p class="muted" id="semNote" style="font-size:18px;margin-top:10px"></p></div>
+  </div>
+</section>
+
+<section class="slide" data-title="3.12 ตรวจข้อมูลในฟอร์ม">
+  <p class="kicker">3.12 Native Form Validation</p>
+  <h2>ให้เบราว์เซอร์ช่วยตรวจก่อนส่ง</h2>
+  <div class="grid2" style="grid-template-columns:1fr 1fr;align-items:start">
+    <form class="card fm" id="valForm" novalidate style="padding:14px 20px">
+      <label for="v1">รหัสนักศึกษา 10 หลัก <small class="muted">required pattern</small></label><input id="v1" required pattern="[0-9]{10}" placeholder="6601234567" inputmode="numeric">
+      <label for="v2">อีเมล <small class="muted">type="email"</small></label><input id="v2" type="email" required placeholder="name@example.com">
+      <label for="v3">อายุ <small class="muted">min="15" max="60"</small></label><input id="v3" type="number" min="15" max="60" required>
+      <label for="v4">รหัสผ่าน <small class="muted">minlength="8"</small></label><input id="v4" type="password" minlength="8" required>
+      <button class="btn" style="margin-top:12px" type="submit">ส่ง</button>
+    </form>
+    <div><div class="card" id="valOut" style="min-height:180px"><h3>ผลการตรวจ</h3><p>กรอกแล้วกด "ส่ง"</p></div>
+      <div class="card" style="margin-top:12px;border-color:#fecaca;background:#fff7f7"><p style="font-size:19px"><b>สำคัญ:</b> การตรวจฝั่งเบราว์เซอร์ช่วยผู้ใช้ แต่ผู้ไม่หวังดีปิดได้ จึงต้องตรวจซ้ำฝั่งเซิร์ฟเวอร์ด้วย PHP เสมอ (บทที่ 7)</p></div></div>
+  </div>
+</section>
+
+<section class="slide" data-title="3.13 ใช้ AI ช่วยเขียน HTML">
+  <p class="kicker">3.13 AI-Assisted HTML Development (W3C, 2024; OWASP, 2023b)</p>
+  <h2>สั่ง AI ให้ชัด แล้วตรวจผลด้วยเครื่องมือมาตรฐาน</h2>
+  <div class="grid2" style="align-items:start">
+    <div>
+      <div class="code" style="white-space:pre-wrap;font-size:15px;height:270px">บทบาท: ผู้เชี่ยวชาญ HTML5 และการเข้าถึงเว็บ (WCAG)
+งาน: ตรวจโค้ด HTML ด้านล่าง
+ให้ตรวจ:
+1) ใช้แท็กเชิงความหมายเหมาะสมหรือไม่
+2) ทุก &lt;img&gt; มี alt และทุกช่องฟอร์มมี &lt;label&gt;
+3) ลำดับหัวเรื่อง h1–h6 ถูกต้อง
+ผลลัพธ์: ตารางปัญหา บรรทัด วิธีแก้
+[วางโค้ดที่นี่ ไม่วางข้อมูลส่วนบุคคลจริง]</div>
+      <p class="muted" style="font-size:17px;margin-top:8px">ตัวอย่างกรอบคำสั่งจากหัวข้อ 3.13.4</p>
+    </div>
+    <div class="card"><h3>ข้อควรระวัง (3.13.3)</h3><ul class="b"><li style="font-size:20px">AI อาจใช้แท็กหรือแอตทริบิวต์ที่เลิกใช้แล้ว</li><li style="font-size:20px">อาจลืม alt, label หรือใส่ลำดับหัวเรื่องผิด</li><li style="font-size:20px">ต้องตรวจด้วย W3C Validator และ Lighthouse ซ้ำ</li><li style="font-size:20px">อ่านเข้าใจทุกบรรทัดก่อนส่งงาน และบันทึกการใช้ AI</li></ul></div>
+  </div>
+  <div class="links" style="margin-top:12px">
+    <a class="lk" href="https://validator.w3.org/nu/" target="_blank" rel="noopener noreferrer"><b>W3C Nu Html Checker</b><span>ตรวจความถูกต้องของ HTML</span></a>
+    <a class="lk" href="https://developer.chrome.com/docs/lighthouse/overview" target="_blank" rel="noopener noreferrer"><b>Lighthouse</b><span>ตรวจการเข้าถึงใน Chrome DevTools</span></a>
+    <a class="lk" href="https://cheatsheetseries.owasp.org/cheatsheets/HTML5_Security_Cheat_Sheet.html" target="_blank" rel="noopener noreferrer"><b>OWASP HTML5 Security</b><span>ข้อควรระวังด้านความปลอดภัย</span></a>
+  </div>
+</section>
+
+<section class="slide" data-title="ภารกิจ: หาจุดผิด">
+  <p class="kicker">ฝึกตรวจโค้ด (แบบที่ AI ควรทำ และเราต้องทำเป็น)</p>
+  <h2>คลิกบรรทัดที่มีปัญหา (มี 4 จุด)</h2>
+  <div class="grid2" style="grid-template-columns:1.15fr 1fr;align-items:start">
+    <div class="bug" id="bugs"></div>
+    <div><div class="card" id="bugTxt" style="min-height:250px"><h3>พบแล้ว <span id="bugN">0</span> / 4</h3><p class="muted">คลิกบรรทัดที่คิดว่าผิด</p></div><button class="btn alt" id="bugReset" style="margin-top:10px">เริ่มใหม่</button></div>
+  </div>
+</section>
+
+<section class="slide" data-title="สนามทดลอง Semantic HTML5">
+  <p class="kicker">3.13.5 ตัวอย่างโครงหน้า Semantic HTML5 พร้อมฟอร์ม</p>
+  <h2>สนามทดลอง: แก้แล้วรันได้ทันที</h2>
+  <div class="grid2" style="align-items:start">
+    <div><textarea id="playTa" spellcheck="false" style="font-family:Mono,monospace;font-size:14px;height:430px">&lt;header&gt;
+  &lt;h1&gt;ร้านกาแฟบ้านสวน&lt;/h1&gt;
+  &lt;nav&gt;&lt;a href="#menu"&gt;เมนู&lt;/a&gt; | &lt;a href="#contact"&gt;ติดต่อ&lt;/a&gt;&lt;/nav&gt;
+&lt;/header&gt;
+&lt;main&gt;
+  &lt;section id="menu"&gt;
+    &lt;h2&gt;เมนูแนะนำ&lt;/h2&gt;
+    &lt;table border="1"&gt;
+      &lt;tr&gt;&lt;th&gt;เมนู&lt;/th&gt;&lt;th&gt;ราคา&lt;/th&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;ลาเต้&lt;/td&gt;&lt;td&gt;55&lt;/td&gt;&lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/section&gt;
+  &lt;section id="contact"&gt;
+    &lt;h2&gt;ติดต่อเรา&lt;/h2&gt;
+    &lt;form&gt;
+      &lt;label for="em"&gt;อีเมล&lt;/label&gt;
+      &lt;input id="em" type="email" required&gt;
+      &lt;button&gt;ส่ง&lt;/button&gt;
+    &lt;/form&gt;
+  &lt;/section&gt;
+&lt;/main&gt;
+&lt;footer&gt;&lt;p&gt;&amp;copy; 2569 ร้านกาแฟบ้านสวน&lt;/p&gt;&lt;/footer&gt;</textarea>
+      <button class="btn" id="playRun" style="margin-top:10px">▶ ลองรัน</button></div>
+    <iframe class="run" id="playFr" title="ผลลัพธ์สนามทดลอง" style="height:480px"></iframe>
+  </div>
+</section>
+
+<section class="slide dark" data-title="สรุปและงานที่ได้รับมอบหมาย">
+  <p class="kicker">สรุปบทที่ 3</p>
+  <h2>HTML คือโครงกระดูกของทุกหน้าเว็บ</h2>
+  <div class="grid2" style="align-items:start">
+    <ul class="b" style="color:#fff">
+      <li>เอลิเมนต์ = แท็กเปิด + เนื้อหา + แท็กปิด และมีแอตทริบิวต์เสริม</li>
+      <li>HTML5 เริ่มด้วย &lt;!DOCTYPE html&gt; มี head และ body</li>
+      <li>ตารางใช้ tr/th/td ฟอร์มต้องมี label และเลือก GET/POST ให้เหมาะ</li>
+      <li>แท็กเชิงความหมายช่วย SEO และการเข้าถึง</li>
+      <li>ตรวจในเบราว์เซอร์แล้ว ต้องตรวจซ้ำที่เซิร์ฟเวอร์ · AI ช่วยได้แต่ต้องตรวจ</li>
+    </ul>
+    <div class="card" style="color:var(--ink)"><h3>งานสัปดาห์นี้</h3><p>ใบงานที่ 3: สร้างโครงหน้าเว็บด้วย HTML5 Semantic Elements และแบบฟอร์มที่ตรวจข้อมูลได้</p><p style="margin-top:8px">แบบฝึกหัดท้ายบทที่ 3 ส่งผ่าน Google Classroom</p><p style="margin-top:10px"><a href="../worksheets/ws3.html" target="_blank">เปิดใบงานที่ 3</a> · <a href="../chapters/ch3.html" target="_blank">อ่านบทที่ 3</a></p></div>
+  </div>
+  <div class="foot"><span>อ้างอิงหลัก: เอกสารประกอบการสอนบทที่ 3; Duckett (2011); จีราวุธ วารินทร์ (2564); บัญชา ปะสีละเตสัง (2565ข); MDN (2024b); W3C (2024); OWASP (2023b)</span><span></span></div>
+</section>
+
+</div>
+<script src="deck.js" data-ch="3" data-back="../chapters/ch3.html"></script>
+<script>
+(function(){
+var $=function(id){return document.getElementById(id)};
+var esc=function(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")};
+// 3 emmet
+var EM1='<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8">\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n  <title>Document</title>\n</head>\n<body>\n  \n</body>\n</html>';
+var EM2='<ul>\n  <li></li>\n  <li></li>\n  <li></li>\n</ul>';
+var emT=null;function emmet(abbr,out){clearTimeout(emT);var o=$("emOut"),k=0;o.innerHTML='<span class="typed"></span><span class="caret"></span>';
+ (function type(){if(k<abbr.length){o.firstChild.textContent+=abbr[k++];emT=setTimeout(type,180)}else emT=setTimeout(function(){o.innerHTML='<span style="color:#94a3b8">// กด Tab แล้ว Emmet ขยายเป็น</span>\n'+esc(out)+(abbr==="!"?'\n\n<span style="color:#94a3b8">// แก้ lang="en" เป็น lang="th" สำหรับหน้าภาษาไทย</span>':'')},600)})()}
+$("emBtn").onclick=function(){emmet("!",EM1)};$("emBtn2").onclick=function(){emmet("ul>li*3",EM2)};
+o0();function o0(){$("emOut").innerHTML='<span style="color:#94a3b8">// ไฟล์ index.html ว่างอยู่ กดปุ่มทางซ้าย</span>\n<span class="caret"></span>'}
+// 4 anatomy
+var AN={open:"<b>แท็กเปิด</b> บอกจุดเริ่มของเอลิเมนต์ ชื่อแท็ก a ย่อมาจาก anchor (จุดยึดลิงก์)",attr:"<b>แอตทริบิวต์</b> ข้อมูลเสริมของเอลิเมนต์ เขียนในแท็กเปิดเท่านั้น เช่น href, src, alt, id, class",val:"<b>ค่าของแอตทริบิวต์</b> อยู่ในเครื่องหมายคำพูด ในที่นี้คือที่อยู่ปลายทางของลิงก์",content:"<b>เนื้อหา</b> สิ่งที่ผู้ใช้เห็นบนหน้าเว็บ อาจเป็นข้อความหรือเอลิเมนต์อื่นซ้อนอยู่ (Nested)",close:"<b>แท็กปิด</b> มีเครื่องหมาย / นำหน้าชื่อแท็ก บอกจุดสิ้นสุด",all:"<b>เอลิเมนต์ (Element)</b> คือทั้งก้อนตั้งแต่แท็กเปิดถึงแท็กปิด ส่วน <b>แท็ก (Tag)</b> คือเครื่องหมาย &lt;...&gt; ที่ใช้สร้างเอลิเมนต์"};
+function an(p){[].forEach.call(document.querySelectorAll("#anat span"),function(s){s.classList.toggle("hl",p==="all"||s.dataset.p===p)});[].forEach.call(document.querySelectorAll("#parts button"),function(b){b.classList.toggle("on",b.dataset.p===p)});$("anatTxt").innerHTML="<p style=\"font-size:24px\">"+AN[p]+"</p>"}
+[].forEach.call(document.querySelectorAll("#parts button"),function(b){b.onclick=function(){an(b.dataset.p)}});
+[].forEach.call(document.querySelectorAll("#anat span"),function(s){s.onmouseenter=function(){an(s.dataset.p)}});
+// 5 skeleton
+var SK=[['<!DOCTYPE html>',"บอกเบราว์เซอร์ว่าเป็นเอกสาร HTML5 ต้องอยู่บรรทัดแรกเสมอ"],['<html lang="th">',"เอลิเมนต์รากของหน้า lang=\"th\" บอกภาษา ช่วยโปรแกรมอ่านหน้าจอและเครื่องมือค้นหา"],['<head>',"ส่วนหัว เก็บข้อมูลเกี่ยวกับหน้า (ไม่แสดงในเนื้อหา)"],['  <meta charset="UTF-8">',"กำหนดรหัสอักขระ UTF-8 ทำให้ภาษาไทยไม่เป็นตัวอักษรแปลก"],['  <meta name="viewport" content="width=device-width, initial-scale=1">',"ทำให้หน้าเว็บพอดีจอมือถือ (พื้นฐานของ Responsive ในบทที่ 5)"],['  <title>ร้านกาแฟบ้านสวน</title>',"ชื่อหน้า แสดงบนแท็บเบราว์เซอร์และผลการค้นหา"],['</head>',"ปิดส่วนหัว"],['<body>',"ส่วนเนื้อหาที่ผู้ใช้มองเห็นทั้งหมด"],['  <h1>ยินดีต้อนรับ</h1>',"เนื้อหาจริงเริ่มที่นี่"],['</body>',"ปิดส่วนเนื้อหา"],['</html>',"ปิดเอกสาร"]];
+$("skel").innerHTML=SK.map(function(r,k){return '<div data-k="'+k+'">'+esc(r[0])+'</div>'}).join("");
+[].forEach.call(document.querySelectorAll("#skel div"),function(d){d.onmouseenter=d.onclick=function(){[].forEach.call(document.querySelectorAll("#skel div"),function(x){x.classList.remove("ok")});d.classList.add("ok");var r=SK[d.dataset.k];$("skelTxt").innerHTML='<h3 style="font-family:Mono,monospace;font-size:20px;word-break:break-all">'+esc(r[0].trim())+'</h3><p>'+r[1]+'</p>'}});
+// 6 headings
+function hd(){var n=$("hLv").value;$("hLvT").textContent="h"+n;$("hCode").textContent="<h"+n+">ร้านกาแฟบ้านสวน</h"+n+">";var s="";for(var k=1;k<=6;k++){s+='<h'+k+' style="font-family:Sarabun;'+(k==n?'background:#fde68a;border-radius:6px;padding:0 6px':'color:#94a3b8')+'">h'+k+' ร้านกาแฟบ้านสวน</h'+k+'>'}$("hPrev").innerHTML=s}
+$("hLv").oninput=hd;hd();
+// 7 void
+var VD={br:['<p>นราธิวาส<br>ราชนครินทร์</p>','<p style="font-size:22px">นราธิวาส<br>ราชนครินทร์</p>'],hr:['<p>บทนำ</p>\n<hr>\n<p>เนื้อหา</p>','<p style="font-size:20px">บทนำ</p><hr><p style="font-size:20px">เนื้อหา</p>'],
+img:['<img src="coffee.svg" alt="แก้วกาแฟลาเต้" width="120">','<svg width="120" height="120" viewBox="0 0 120 120" role="img" aria-label="แก้วกาแฟลาเต้"><rect x="25" y="35" width="60" height="70" rx="10" fill="#b45309"/><path d="M85 50 q25 0 25 20 t-25 20" fill="none" stroke="#b45309" stroke-width="8"/><path d="M40 25 q8-12 0-20 M60 25 q8-12 0-20" stroke="#94a3b8" stroke-width="4" fill="none"/></svg><p class="muted" style="font-size:16px">alt คือคำบรรยายภาพ ใช้เมื่อภาพโหลดไม่ได้และให้โปรแกรมอ่านหน้าจออ่าน</p>'],
+input:['<input type="text" placeholder="พิมพ์ชื่อ">','<input type="text" placeholder="พิมพ์ชื่อ" style="font:inherit;font-size:20px;padding:8px;border:1px solid #cbd5e1;border-radius:8px">'],
+meta:['<meta charset="UTF-8">\n<meta name="description" content="ร้านกาแฟในนราธิวาส">','<p style="font-size:19px">ไม่แสดงบนหน้าเว็บ แต่บอกข้อมูลแก่เบราว์เซอร์และเครื่องมือค้นหา เช่น คำอธิบายที่โชว์ใต้ลิงก์ใน Google</p>'],
+link:['<link rel="stylesheet" href="style.css">','<p style="font-size:19px">ไม่แสดงบนหน้า แต่ดึงไฟล์ CSS มาจัดรูปแบบ (บทที่ 4)</p>']};
+function vd(k){$("vCode").textContent=VD[k][0];$("vPrev").innerHTML=VD[k][1];[].forEach.call(document.querySelectorAll("#voids button"),function(b){b.classList.toggle("on",b.dataset.v===k)})}
+[].forEach.call(document.querySelectorAll("#voids button"),function(b){b.onclick=function(){vd(b.dataset.v)}});vd("br");
+// 8 paired run
+var pairOrig=$("pairTa").value;
+$("pairRun").onclick=function(){Deck.run("pairTa","pairFr")};
+$("pairBreak").onclick=function(){$("pairTa").value=pairOrig.replace("07:00–17:00</strong>","07:00–17:00");Deck.run("pairTa","pairFr")};
+Deck.run("pairTa","pairFr");
+// 9 table
+function tb(){var R=Math.max(1,Math.min(6,+$("tR").value||1)),C=Math.max(1,Math.min(6,+$("tC").value||1)),H=$("tH").checked,S=$("tS").checked&&C>=2;
+ var head=["เมนู","ราคา","ขนาด","หมวด","คะแนน","หมายเหตุ"],rows=[["ลาเต้","55","กลาง","กาแฟ","5","ขายดี"],["มอคค่า","60","ใหญ่","กาแฟ","4","-"],["ชาเขียว","50","กลาง","ชา","4","-"],["โกโก้","50","เล็ก","ช็อกโกแลต","3","-"],["น้ำส้ม","40","กลาง","น้ำผลไม้","4","-"],["อเมริกาโน","45","กลาง","กาแฟ","5","-"]];
+ var code='<table border="1">\n',html='<table>';
+ if(H){code+='  <tr>';html+='<tr>';for(var c=0;c<C;c++){code+='<th>'+head[c]+'</th>';html+='<th>'+head[c]+'</th>'}code+='</tr>\n';html+='</tr>'}
+ for(var r=0;r<R;r++){code+='  <tr>';html+='<tr>';
+  if(S&&r===R-1){code+='<td colspan="2">รวมช่อง</td>';html+='<td colspan="2" style="background:#fde68a">รวมช่อง</td>';for(var c2=2;c2<C;c2++){code+='<td>'+rows[r][c2]+'</td>';html+='<td>'+rows[r][c2]+'</td>'}}
+  else for(var c3=0;c3<C;c3++){code+='<td>'+rows[r][c3]+'</td>';html+='<td>'+rows[r][c3]+'</td>'}
+  code+='</tr>\n';html+='</tr>'}
+ code+='</table>';html+='</table>';$("tCode").textContent=code;$("tPrev").innerHTML=html}
+["tR","tC","tH","tS"].forEach(function(id){$(id).oninput=tb;$(id).onchange=tb});tb();
+// 10 form code
+function fm(){var f=$("fmDemo"),g=f.querySelector("input[name=g]:checked");
+ $("fmCode").textContent='<form action="register.php" method="post">\n  <label for="f1">ชื่อ</label>\n  <input id="f1" name="name" type="text"> → "'+$("f1").value+'"\n  <input name="email" type="email"> → "'+$("f2").value+'"\n  <input name="dob" type="date"> → "'+$("f3").value+'"\n  <input type="radio" name="g" ...> → "'+(g?g.value:"")+'"\n  <select name="major"> → "'+$("f5").value+'"\n</form>\n\nเซิร์ฟเวอร์อ่านค่าตาม name เช่น $_POST["name"]'}
+$("fmDemo").addEventListener("input",fm);$("fmDemo").addEventListener("change",fm);fm();
+// 11 get/post
+var MM="GET";
+function ms(){var u=encodeURIComponent($("q1").value),p=encodeURIComponent($("q2").value);
+ if(MM==="GET"){$("mOut").textContent="GET /login.php?user="+u+"&pass="+p+" HTTP/1.1\nHost: www.example.com\n\n(ข้อมูลอยู่ใน URL)";$("mTxt").innerHTML='<p style="font-size:20px">ข้อมูลต่อท้าย URL <b style="color:#dc2626">มองเห็นได้ในแถบที่อยู่ ประวัติ และ log ของเซิร์ฟเวอร์</b> เหมาะกับการค้นหาหรือกรองข้อมูล ไม่เหมาะกับรหัสผ่าน</p>'}
+ else{$("mOut").textContent="POST /login.php HTTP/1.1\nHost: www.example.com\nContent-Type: application/x-www-form-urlencoded\n\nuser="+u+"&pass="+p+"\n\n(ข้อมูลอยู่ในส่วน body)";$("mTxt").innerHTML='<p style="font-size:20px">ข้อมูลอยู่ใน body ไม่แสดงใน URL เหมาะกับการเข้าสู่ระบบ สมัครสมาชิก หรือบันทึกข้อมูล <b>แต่ยังต้องใช้ HTTPS</b> จึงจะเข้ารหัสระหว่างทาง</p>'}}
+Deck.tabs($("mTabs"),function(b){MM=b.dataset.m;ms()});$("mSend").onclick=function(e){e.preventDefault();ms()};ms();
+// 12 canvas
+var cv=$("pad"),cx=cv.getContext("2d"),drawing=false,col="#4338ca";cx.lineWidth=5;cx.lineCap="round";
+function pos(e){var r=cv.getBoundingClientRect();return[(e.clientX-r.left)*cv.width/r.width,(e.clientY-r.top)*cv.height/r.height]}
+function hint(){cx.fillStyle="#94a3b8";cx.font="20px Sarabun";cx.fillText("วาดตรงนี้",210,155)}hint();
+cv.onpointerdown=function(e){if(!drawing&&cv.dataset.h!=="0"){cx.clearRect(0,0,cv.width,cv.height);cv.dataset.h="0"}drawing=true;var p=pos(e);cx.beginPath();cx.moveTo(p[0],p[1]);cv.setPointerCapture(e.pointerId)};
+cv.onpointermove=function(e){if(!drawing)return;var p=pos(e);cx.strokeStyle=col;cx.lineTo(p[0],p[1]);cx.stroke()};
+cv.onpointerup=cv.onpointercancel=function(){drawing=false};
+[].forEach.call(document.querySelectorAll("[data-col]"),function(b){b.onclick=function(){col=b.dataset.col}});
+$("padClr").onclick=function(){cx.clearRect(0,0,cv.width,cv.height);cv.dataset.h="";hint()};
+// 13 wire
+var WR={header:["&lt;header&gt;","ส่วนหัวของหน้าหรือของบทความ มักมีโลโก้ ชื่อเว็บ และหัวเรื่องหลัก"],nav:["&lt;nav&gt;","กลุ่มลิงก์นำทางหลักของเว็บ เช่น เมนู หน้าแรก เกี่ยวกับเรา ติดต่อ"],main:["&lt;main&gt;","เนื้อหาหลักของหน้า มีได้ครั้งเดียวต่อหน้า ไม่รวมเมนูและส่วนท้าย"],article:["&lt;article&gt;","เนื้อหาที่สมบูรณ์ในตัว ยกไปใช้ที่อื่นได้ เช่น ข่าว โพสต์ บทความ"],section:["&lt;section&gt;","จัดกลุ่มเนื้อหาตามหัวข้อ ควรมีหัวเรื่อง (h2–h6) ของตัวเอง"],aside:["&lt;aside&gt;","เนื้อหาเสริมที่เกี่ยวข้องรอง ๆ เช่น แถบข้าง ข่าวแนะนำ โฆษณา"],footer:["&lt;footer&gt;","ส่วนท้าย มักมีลิขสิทธิ์ ข้อมูลติดต่อ ลิงก์นโยบาย"]};
+[].forEach.call(document.querySelectorAll("#wire [data-w]"),function(d){d.onclick=function(e){e.stopPropagation();[].forEach.call(document.querySelectorAll("#wire .on"),function(x){x.classList.remove("on")});d.classList.add("on");var w=WR[d.dataset.w];$("wireTxt").innerHTML='<h3 style="font-family:Mono,monospace;color:var(--brand)">'+w[0]+'</h3><p>'+w[1]+'</p><p class="muted" style="font-size:18px;margin-top:14px">แท็กเหล่านี้ไม่ได้เปลี่ยนหน้าตา (ใช้ CSS จัดเหมือน div) แต่บอก "ความหมาย" ให้เบราว์เซอร์ เครื่องมือค้นหา และโปรแกรมอ่านหน้าจอ</p>'}});
+// 14 div vs semantic
+var SM={div:['<div class="header">\n  <div class="title">ร้านกาแฟบ้านสวน</div>\n</div>\n<div class="menu">\n  <div><a href="/">หน้าแรก</a></div>\n</div>\n<div class="content">\n  <div class="post">...</div>\n</div>\n<div class="footer">© 2569</div>',"(ไม่พบจุดสังเกต)\nลิงก์ หน้าแรก\nข้อความ ร้านกาแฟบ้านสวน\nข้อความ ...\nข้อความ © 2569","ผู้ใช้โปรแกรมอ่านหน้าจอต้องฟังทีละบรรทัด กระโดดไปเนื้อหาหลักไม่ได้ และเครื่องมือค้นหาเดาโครงสร้างได้ยาก"],
+sem:['<header>\n  <h1>ร้านกาแฟบ้านสวน</h1>\n</header>\n<nav>\n  <a href="/">หน้าแรก</a>\n</nav>\n<main>\n  <article>...</article>\n</main>\n<footer>© 2569</footer>',"แบนเนอร์ (banner)\n  หัวเรื่องระดับ 1: ร้านกาแฟบ้านสวน\nการนำทาง (navigation)\nเนื้อหาหลัก (main)\n  บทความ (article)\nข้อมูลเนื้อหา (contentinfo)","ผู้ใช้กดปุ่มลัดกระโดดไปยังแต่ละส่วนได้ทันที เครื่องมือค้นหาเข้าใจว่าส่วนใดคือเนื้อหาหลัก (ช่วย SEO) และโค้ดอ่านง่ายขึ้น"]};
+function sm(k){$("semCode").textContent=SM[k][0];$("semSR").textContent=SM[k][1];$("semNote").textContent=SM[k][2];$("semSR").style.color=k==="sem"?"#a7f3d0":"#fca5a5"}
+Deck.tabs($("semTabs"),function(b){sm(b.dataset.s)});sm("div");
+// 15 validation
+$("valForm").onsubmit=function(e){e.preventDefault();var f=this,out=[];[].forEach.call(f.querySelectorAll("input"),function(i){var lb=f.querySelector('label[for="'+i.id+'"]').firstChild.textContent.trim();if(!i.checkValidity())out.push('<li style="font-size:18px;color:#b91c1c"><b>'+lb+'</b>: '+i.validationMessage+'</li>')});
+ [].forEach.call(f.querySelectorAll("input"),function(i){i.classList.add("tch");i.style.borderColor=i.checkValidity()?"#059669":"#dc2626"});
+ $("valOut").innerHTML=out.length?'<h3>ยังส่งไม่ได้ ('+out.length+' ช่อง)</h3><ul class="b">'+out.join("")+'</ul><p class="muted" style="font-size:15px">ข้อความเตือนมาจากเบราว์เซอร์เอง ภาษาจึงขึ้นกับการตั้งค่าเครื่อง</p>':'<h3 style="color:#059669">ผ่านการตรวจทุกช่อง ✓</h3><p>เบราว์เซอร์จะส่งข้อมูลไปเซิร์ฟเวอร์ (ในสไลด์นี้ไม่ได้ส่งจริง)</p>'};
+// 17 bugs
+var BG=[['<!DOCTYPE html>',0],['<html lang="th">',0],['<body>',0],['  <h1>เมนูวันนี้</h1>',0],['  <h4>เครื่องดื่ม</h4>',"ข้ามลำดับหัวเรื่องจาก h1 ไป h4 ควรเป็น h2"],['  <img src="latte.jpg">',"ภาพไม่มี alt โปรแกรมอ่านหน้าจออ่านไม่ได้"],['  <p>ลาเต้ <b>55 บาท</p></b>',"ปิดแท็กสลับลำดับ ต้องปิด </b> ก่อน </p>"],['  <form method="post">',0],['    อีเมล <input type="email" name="email">',"ช่องกรอกไม่มี <label> จับคู่"],['    <button>ส่ง</button>',0],['  </form>',0],['</body>',0],['</html>',0]];
+var found=0;function bugs(){found=0;$("bugN").textContent=0;$("bugTxt").innerHTML='<h3>พบแล้ว <span id="bugN">0</span> / 4</h3><p class="muted">คลิกบรรทัดที่คิดว่าผิด</p>';
+ $("bugs").innerHTML=BG.map(function(r,k){return '<div data-k="'+k+'">'+esc(r[0])+'</div>'}).join("");
+ [].forEach.call(document.querySelectorAll("#bugs div"),function(d){d.onclick=function(){if(d.classList.contains("ok"))return;var r=BG[d.dataset.k];if(r[1]){d.classList.add("ok");found++;$("bugN").textContent=found;$("bugTxt").insertAdjacentHTML("beforeend",'<p style="font-size:19px;margin-top:6px">✓ '+esc(r[1])+'</p>');if(found===4)$("bugTxt").insertAdjacentHTML("beforeend",'<p style="font-size:20px;margin-top:10px;color:#059669"><b>ครบแล้ว!</b> ลองให้ AI ตรวจโค้ดเดียวกัน แล้วเทียบว่าเจอครบไหม</p>')}else{d.classList.add("no");setTimeout(function(){d.classList.remove("no")},600)}}})}
+$("bugReset").onclick=bugs;bugs();
+// 18 playground
+$("playRun").onclick=function(){Deck.run("playTa","playFr")};Deck.run("playTa","playFr");
+})();
+</script>
+</body>
+</html>

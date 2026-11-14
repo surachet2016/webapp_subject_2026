@@ -57,7 +57,7 @@
       }, 450);
     },
     run: function (ta, fr) {
-      document.getElementById(fr).srcdoc = '<!doctype html><html lang="th"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><body style="margin:0;font-family:sans-serif">' + document.getElementById(ta).value + "</body></html>";
+      document.getElementById(fr).srcdoc = '<!doctype html><html lang="th"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><body style="margin:0;padding:12px 16px;font-family:Sarabun,\'Noto Sans Thai\',sans-serif;font-size:19px;line-height:1.5">' + document.getElementById(ta).value + "</body></html>";
     },
     go: function (n) { go(n - 1); }
   };
