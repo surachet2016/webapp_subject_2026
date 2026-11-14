@@ -35,3 +35,10 @@
 (`.github/workflows/deploy.yml`) จะอัปโหลดขึ้น https://fms.pnu.ac.th/lessons/ โดยอัตโนมัติ
 ต้องตั้ง Secrets `SFTP_USERNAME` และ `SFTP_PASSWORD` ใน Settings > Secrets and variables > Actions ก่อน
 (ระบบอัปโหลดไฟล์ทับของเดิม แต่ไม่ลบไฟล์ที่ถูกลบออกจาก repo)
+
+### แก้ใบงานด้วยไฟล์ .md
+
+เนื้อหาใบงานบนเว็บสร้างจาก `worksheets/worksheet-01.md` ถึง `worksheet-10.md` โดยสคริปต์
+`.github/deploy/build_worksheets.py` ก่อนอัปโหลดทุกครั้ง ดังนั้นแก้ไฟล์ `.md` แล้ว push ไป `main` เว็บจะอัปเดตเอง
+(ไม่ต้องแก้ `site/worksheets/wsN.html`) รูปแบบที่รองรับ: `# หัวเรื่อง`, `## หัวข้อย่อย`, `- รายการ`, `**ตัวหนา**`,
+`` `โค้ด` `` และย่อหน้าคั่นด้วยบรรทัดว่าง ทดลองสร้างในเครื่องได้ด้วย `python .github/deploy/build_worksheets.py`
