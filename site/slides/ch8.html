@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="สไลด์บทที่ 8 PHP กับฐานข้อมูล MySQLi รายวิชา 07-034-210 พร้อมตัวอย่างจำลองที่กดลองได้">
+<meta name="theme-color" content="#1e1b4b">
+<title>สไลด์บทที่ 8 PHP กับ MySQLi · การเขียนโปรแกรมบนเว็บ</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%234338ca'/%3E%3Cpath d='M26 20 14 32l12 12M38 20l12 12-12 12' fill='none' stroke='%23fff' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="deck.css">
+<style>
+/* เฉพาะบทที่ 8 */
+table.db{border-collapse:collapse;width:100%;font-size:16px;background:#fff}
+table.db th,table.db td{border:1px solid var(--line);padding:6px 8px;text-align:left}
+table.db th{background:#eef2ff;font-family:Mono,monospace;font-size:14px;cursor:pointer}
+table.db th.on{background:#fde68a}
+table.db tr.sel td{background:#fef3c7}
+table.db tr.new td{animation:flash 1.2s ease}
+@keyframes flash{from{background:#bbf7d0}}
+table.db td.num{text-align:right;font-family:Mono,monospace}
+table.db button{font:inherit;font-size:14px;border:0;border-radius:6px;padding:3px 8px;cursor:pointer}
+.sql{font-family:Mono,monospace;font-size:15px;line-height:1.55;background:#0f1226;color:#e8eaf8;border-radius:12px;padding:10px 14px;white-space:pre-wrap;word-break:break-word}
+.sql .k{color:#c4b5fd}.sql .s{color:#86efac}.sql .bad{color:#fca5a5;background:rgba(220,38,38,.25)}
+.res{font-size:18px;border-radius:10px;padding:10px 14px;background:#fff;border:1px solid var(--line)}
+.sim{display:inline-block;font-size:13px;background:#fef3c7;color:#92400e;border-radius:6px;padding:2px 8px;margin-left:6px;vertical-align:middle}
+.chip{font:inherit;font-size:16px;border:2px solid var(--line);background:#fff;border-radius:12px;padding:5px 12px;cursor:pointer}
+.chip.on{border-color:var(--accent);background:#fffbeb}
+.vars label{display:grid;grid-template-columns:120px 1fr;align-items:center;gap:8px;margin:6px 0;font-size:17px}
+.vars input,.vars select{font:inherit;font-size:17px;border:1px solid var(--line);border-radius:8px;padding:5px 8px;width:100%}
+.php{font-family:Mono,monospace;font-size:14px;line-height:1.6;background:#0f1226;color:#e8eaf8;border-radius:12px;padding:10px 4px;overflow:auto}
+.php div{padding:0 12px;border-radius:6px;white-space:pre-wrap}
+.php.click div{cursor:pointer}.php.click div:hover{background:rgba(255,255,255,.08)}
+.php div.ok{background:rgba(5,150,105,.35)}.php div.no{background:rgba(220,38,38,.35)}
+.acct{flex:1;border-radius:14px;padding:14px;color:#fff;text-align:center}
+.acct b{display:block;font-size:30px;font-family:Mono,monospace}
+.steps{display:flex;flex-direction:column;gap:6px;font-family:Mono,monospace;font-size:14px}
+.steps div{border-radius:8px;padding:6px 10px;background:#f1f5f9;border-left:5px solid #cbd5e1}
+.steps div.done{border-color:#059669;background:#ecfdf5}
+.steps div.fail{border-color:#dc2626;background:#fef2f2}
+.steps div.undo{border-color:#f59e0b;background:#fffbeb;text-decoration:line-through}
+.nf{display:grid;gap:10px}
+.pager{display:flex;gap:6px;margin-top:8px}
+.pager button{font:inherit;font-size:15px;border:1px solid var(--line);background:#fff;border-radius:8px;padding:4px 10px;cursor:pointer}
+.pager button.on{background:var(--brand);color:#fff;border-color:var(--brand)}
+</style>
+</head>
+<body>
+<div id="stage">
+
+<section class="slide dark" data-title="ปก">
+  <div style="position:absolute;left:72px;top:180px;width:600px">
+    <p class="kicker">รายวิชา 07-034-210 การเขียนโปรแกรมบนเว็บ · บทที่ 8</p>
+    <h1>PHP กับฐานข้อมูล<br>MySQLi</h1>
+    <p class="muted" style="margin-top:18px">phpMyAdmin Foreign Key การเชื่อมต่อ CRUD ค้นหา แบ่งหน้า อัปโหลดภาพ ป้องกัน SQL Injection ทรานแซกชัน และ AI ช่วยออกแบบฐานข้อมูล</p>
+    <p class="muted" style="margin-top:24px;font-size:20px">ดร.สุรเชษฐ์ สังขพันธ์ · กด → หรือ Space ไปสไลด์ถัดไป · กด O ดูสารบัญ</p>
+  </div>
+  <svg style="position:absolute;right:80px;top:140px" width="420" height="440" viewBox="0 0 420 440" aria-hidden="true">
+    <g fill="#4f46e5" stroke="#c4b5fd" stroke-width="2">
+      <ellipse cx="210" cy="90" rx="150" ry="40"/>
+      <path d="M60 90 v220 a150 40 0 0 0 300 0 v-220" fill="#3730a3"/>
+      <ellipse cx="210" cy="90" rx="150" ry="40"/>
+    </g>
+    <path d="M60 165 a150 40 0 0 0 300 0 M60 240 a150 40 0 0 0 300 0" fill="none" stroke="#a5b4fc" stroke-width="2"/>
+    <text x="210" y="98" text-anchor="middle" font-family="Mono" font-size="22" fill="#fff">db_test</text>
+    <text x="210" y="210" text-anchor="middle" font-family="Mono" font-size="17" fill="#fde68a">SELECT * FROM customer</text>
+    <rect x="120" y="360" width="180" height="56" rx="14" fill="#f59e0b"><animate attributeName="y" values="360;350;360" dur="2s" repeatCount="indefinite"/></rect>
+    <text x="210" y="394" text-anchor="middle" font-family="Mono" font-size="18" font-weight="700" fill="#111">4 rows</text>
+  </svg>
+  <div class="foot"><span>ภาพประกอบสร้างด้วย SVG/CSS โดยใช้ AI ช่วยสร้าง · ฐานข้อมูลในสไลด์จำลองด้วย JavaScript ข้อมูลสมมติ</span><span style="white-space:nowrap">พ.ศ. 2569</span></div>
+</section>
+
+<section class="slide" data-title="เป้าหมายของบทนี้">
+  <p class="kicker">เป้าหมายของบทนี้</p>
+  <h2>เรียนจบบทนี้ นักศึกษาจะ...</h2>
+  <div class="grid2" style="align-items:start">
+    <ul class="b">
+      <li>ออกแบบตารางและความสัมพันธ์ด้วย Foreign Key</li>
+      <li>เชื่อมต่อ PHP กับ MySQL ด้วย mysqli</li>
+      <li>เขียนระบบแสดง เพิ่ม แก้ไข ลบ ค้นหา แบ่งหน้า</li>
+      <li>ป้องกัน SQL Injection ด้วย Prepared Statements</li>
+      <li>ใช้ทรานแซกชันรักษาความถูกต้องของข้อมูล</li>
+    </ul>
+    <div class="card">
+      <h3>ผลลัพธ์การเรียนรู้ (CLO) ของบทนี้</h3>
+      <p style="font-size:18px"><b>CLO2</b> วิเคราะห์ความต้องการและจัดทำโครงสร้างเว็บไซต์ให้สอดคล้องกับโจทย์</p>
+      <p style="font-size:18px;margin-top:4px"><b>CLO3</b> ใช้ภาษาและเครื่องมือพัฒนาเว็บไซต์ให้ทำงานได้ตามข้อกำหนด</p>
+      <p style="font-size:18px;margin-top:4px"><b>CLO4</b> สร้างเว็บเพจที่มีปฏิสัมพันธ์กับผู้ใช้</p>
+      <p style="font-size:18px;margin-top:4px"><b>CLO5</b> ประยุกต์ความรู้แก้ปัญหาจากสถานการณ์ พร้อมทดสอบและปรับปรุง</p>
+      <p style="font-size:18px;margin-top:4px"><b>CLO6</b> รับผิดชอบต่อความปลอดภัยและความเป็นส่วนตัวของข้อมูล</p>
+      <p class="muted" style="margin-top:8px;font-size:15px">ใบงานที่ 8: เชื่อมต่อ MySQLi พัฒนาระบบ CRUD และป้องกัน SQL Injection</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-title="8.1 ตารางใน phpMyAdmin">
+  <p class="kicker">8.1 สร้างฐานข้อมูลด้วย phpMyAdmin (ชาญชัย ศุภอรรถกร, 2564; ชวลิต มนต์เทวัญ, 2565)</p>
+  <h2>ตาราง customer ในฐานข้อมูล db_test</h2>
+  <p class="muted" style="font-size:18px">คลิกชื่อคอลัมน์เพื่อดูชนิดข้อมูล</p>
+  <div id="t1" style="margin-top:6px"></div>
+  <div class="grid2" style="margin-top:12px;align-items:start">
+    <div class="card" id="colTxt" style="min-height:120px"><p style="font-size:19px">คลิกหัวคอลัมน์ในตาราง</p></div>
+    <div class="sql" id="t1sql" style="font-size:14px"></div>
+  </div>
+  <a class="src" href="https://www.phpmyadmin.net/" target="_blank" rel="noopener noreferrer">phpmyadmin.net · ข้อมูลสมมติจากเล่มหัวข้อ 8.1</a>
+</section>
+
+<section class="slide" data-title="8.1.1 Foreign Key">
+  <p class="kicker">8.1.1 กำหนดความสัมพันธ์ระหว่างตารางด้วย Foreign Key</p>
+  <h2>ใบสั่งซื้อต้องอ้างถึงลูกค้าที่มีอยู่จริง</h2>
+  <div class="grid2" style="align-items:start">
+    <div><p style="font-weight:600;font-size:17px">customer (ตารางแม่)</p><div id="fkC"></div></div>
+    <div><p style="font-weight:600;font-size:17px">orders (ตารางลูก) · ชี้แถวเพื่อดูลูกค้า</p><div id="fkO"></div>
+      <div class="vars" style="margin-top:10px;display:flex;gap:8px;align-items:center"><select id="fkSel" style="width:auto"><option>C001</option><option>C002</option><option>C003</option><option>C004</option><option>C999</option></select><button class="btn" id="fkAdd">INSERT คำสั่งซื้อ</button></div>
+      <div class="res" id="fkRes" style="margin-top:8px;font-size:16px"></div></div>
+  </div>
+  <div class="sql" style="font-size:13px;margin-top:10px">FOREIGN KEY (CustomerID) REFERENCES customer(CustomerID) ON DELETE RESTRICT ON UPDATE CASCADE</div>
+</section>
+
+<section class="slide" data-title="8.2 เชื่อมต่อฐานข้อมูล">
+  <p class="kicker">8.2 เชื่อมต่อฐานข้อมูลด้วย mysqli_connect</p>
+  <h2>เชื่อมต่อให้ได้ ตั้งภาษาไทยให้ถูก</h2>
+  <div class="grid2" style="grid-template-columns:400px 1fr;align-items:start">
+    <div class="vars card">
+      <label>host<input id="cH" value="localhost"></label>
+      <label>user<input id="cU" value="root"></label>
+      <label>password<input id="cP" type="password" value=""></label>
+      <label>database<input id="cD" value="db_test"></label>
+      <button class="btn" id="cGo" style="margin-top:8px">เชื่อมต่อ (จำลอง)</button>
+      <p class="muted" style="font-size:15px;margin-top:6px">XAMPP ค่าเริ่มต้น: user root ไม่มีรหัสผ่าน (ใช้ในเครื่องเท่านั้น)</p>
+    </div>
+    <div><div class="sql" id="cCode" style="font-size:14px"></div><div class="res" id="cRes" style="margin-top:10px"></div>
+      <div class="card" style="margin-top:10px"><p style="font-size:17px">เก็บค่าเชื่อมต่อในไฟล์ config แยก ห้ามอัปโหลดรหัสผ่านจริงขึ้น GitHub และห้าม echo ข้อความ error ของฐานข้อมูลให้ผู้ใช้เห็นบนเซิร์ฟเวอร์จริง</p></div></div>
+  </div>
+</section>
+
+<section class="slide" data-title="8.3 Master-Detail">
+  <p class="kicker">8.3 แสดงรายการแบบ Master-Detail ด้วยฟังก์ชันของ mysqli</p>
+  <h2>คลิกรายการ ดูรายละเอียด</h2>
+  <div class="grid2" style="align-items:start">
+    <div><div id="mdList"></div><div class="sql" style="font-size:13px;margin-top:10px">$result = mysqli_query($conn,
+  "SELECT CustomerID, Name FROM customer");
+while ($row = mysqli_fetch_assoc($result)) {
+  echo "&lt;a href='detail.php?id={$row['CustomerID']}'&gt;"
+     . htmlspecialchars($row['Name']) . "&lt;/a&gt;";
+}</div></div>
+    <div><div class="card" id="mdDetail" style="min-height:200px"><p style="font-size:19px">คลิกชื่อลูกค้าทางซ้าย</p></div><div class="sql" id="mdSql" style="font-size:13px;margin-top:10px"></div></div>
+  </div>
+</section>
+
+<section class="slide" data-title="8.4–8.6 เพิ่ม แก้ไข ลบ">
+  <p class="kicker">8.4 เพิ่ม · 8.5 แก้ไข · 8.6 ลบ · 8.9 รวมในหน้าเดียว</p>
+  <h2>CRUD: ลองทำกับฐานข้อมูลจำลอง</h2>
+  <div class="grid2" style="grid-template-columns:1.25fr 1fr;align-items:start">
+    <div><div id="crudT"></div><button class="btn alt" id="crudReset" style="margin-top:8px">คืนค่าข้อมูลตั้งต้น</button></div>
+    <div>
+      <div class="card vars" style="padding:12px 16px">
+        <b id="crudMode" style="font-size:18px">เพิ่มลูกค้าใหม่</b>
+        <label>CustomerID<input id="fId" value="C005"></label>
+        <label>Name<input id="fName" value="Kanya Thongdee"></label>
+        <label>Email<input id="fMail" value="kanya@example.com"></label>
+        <label>Budget<input id="fBud" type="number" value="1500000"></label>
+        <div style="display:flex;gap:8px;margin-top:6px"><button class="btn" id="crudSave">บันทึก</button><button class="btn alt" id="crudNew">ล้างฟอร์ม</button></div>
+      </div>
+      <div class="sql" id="crudSql" style="font-size:13px;margin-top:10px;min-height:90px"></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-title="8.7–8.8 ค้นหาและแบ่งหน้า">
+  <p class="kicker">8.7 ค้นหาข้อมูล · 8.8 แบ่งหน้าแสดงผลตาราง</p>
+  <h2>LIKE สำหรับค้นหา · LIMIT สำหรับแบ่งหน้า</h2>
+  <div class="grid2" style="grid-template-columns:1.2fr 1fr;align-items:start">
+    <div>
+      <div style="display:flex;gap:10px;align-items:center"><input type="text" id="sQ" placeholder="ค้นหาชื่อหรืออีเมล เช่น an" style="flex:1"><label style="font-size:16px;font-weight:400">ต่อหน้า <select id="sN"><option>3</option><option selected>4</option><option>5</option></select></label></div>
+      <div id="sT" style="margin-top:8px"></div><div class="pager" id="sP"></div>
+    </div>
+    <div><div class="sql" id="sSql" style="font-size:14px"></div><div class="card" style="margin-top:10px"><p style="font-size:17px">OFFSET = (หน้า − 1) × จำนวนต่อหน้า · ค่าค้นหาต้องส่งผ่าน Prepared Statement เสมอ (สไลด์ถัดไป)</p></div></div>
+  </div>
+</section>
+
+<section class="slide" data-title="8.12 SQL Injection">
+  <p class="kicker">8.12 ป้องกันช่องโหว่ SQL Injection (OWASP, 2023e; The PHP Group, 2024a)</p>
+  <h2>ลองเจาะระบบล็อกอินที่ต่อสตริงเข้า SQL</h2>
+  <div class="grid2" style="grid-template-columns:400px 1fr;align-items:start">
+    <div class="card vars">
+      <div class="tabs" id="sqTabs"><button class="on" data-k="bad">ต่อสตริง (อันตราย)</button><button data-k="good">Prepared</button></div>
+      <label>username<input id="qU" value="admin' -- "></label>
+      <label>password<input id="qP" value="ไม่รู้รหัส"></label>
+      <button class="btn" id="qGo" style="margin-top:6px">เข้าสู่ระบบ (จำลอง)</button>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"><button class="chip" data-inj="admin' -- ">admin' -- </button><button class="chip" data-inj="' OR '1'='1' -- ">' OR '1'='1' -- </button><button class="chip" data-inj="somchai">ผู้ใช้ปกติ</button></div>
+    </div>
+    <div><p style="font-weight:600;font-size:17px">คำสั่งที่ส่งถึงฐานข้อมูล</p><div class="sql" id="qSql" style="min-height:120px"></div><div class="res" id="qRes" style="margin-top:10px;min-height:80px"></div></div>
+  </div>
+</section>
+
+<section class="slide" data-title="8.12.1 Prepared Statements">
+  <p class="kicker">8.12.1 การทำงานและไวยากรณ์ของ Prepared Statements ใน MySQLi</p>
+  <h2>ส่งโครงคำสั่งก่อน ส่งข้อมูลทีหลัง</h2>
+  <div class="pipe" id="ps"><div class="st">1. prepare<br><small>SQL มีเครื่องหมาย ?</small></div><span class="ar">→</span><div class="st">2. bind_param<br><small>ผูกค่าพร้อมชนิด</small></div><span class="ar">→</span><div class="st">3. execute<br><small>รันคำสั่ง</small></div><span class="ar">→</span><div class="st">4. get_result<br><small>ดึงผลลัพธ์</small></div></div>
+  <button class="btn" id="psGo" style="margin-top:12px">▶ ดูลำดับ</button>
+  <div class="grid2" style="margin-top:12px;align-items:start">
+    <div class="sql" style="font-size:14px">$stmt = $conn-&gt;prepare(
+  "SELECT CustomerID, Name FROM customer
+   WHERE Name LIKE ? AND Budget &gt;= ?");
+$like = "%" . $_GET['q'] . "%";
+$min  = (float) $_GET['min'];
+$stmt-&gt;bind_param("sd", $like, $min);
+$stmt-&gt;execute();
+$result = $stmt-&gt;get_result();</div>
+    <div class="card"><h3>ตัวอักษรชนิดใน bind_param</h3><ul class="b"><li style="font-size:19px"><b>s</b> string ข้อความ</li><li style="font-size:19px"><b>i</b> integer จำนวนเต็ม</li><li style="font-size:19px"><b>d</b> double ทศนิยม</li><li style="font-size:19px"><b>b</b> blob ข้อมูลไบนารี</li></ul><p style="font-size:17px;margin-top:6px">ฐานข้อมูลถือค่าที่ผูกเป็น "ข้อมูล" เสมอ ไม่ตีความเป็นคำสั่ง แม้มีเครื่องหมาย ' หรือ --</p></div>
+  </div>
+</section>
+
+<section class="slide" data-title="8.10 อัปโหลดภาพ">
+  <p class="kicker">8.10 การ Upload image to Server</p>
+  <h2>ตรวจไฟล์ก่อนรับเข้าระบบ</h2>
+  <div class="grid2" style="grid-template-columns:400px 1fr;align-items:start">
+    <div class="card">
+      <label for="upF">เลือกไฟล์จากเครื่อง</label><input type="file" id="upF" style="margin-top:8px;font-size:16px">
+      <p class="muted" style="font-size:15px;margin-top:8px">ตรวจในเบราว์เซอร์เพื่อสาธิตเท่านั้น ไฟล์ไม่ถูกส่งไปที่ใด</p>
+      <div class="sql" style="font-size:12.5px;margin-top:10px">$f = $_FILES['photo'];
+$type = (new finfo(FILEINFO_MIME_TYPE))
+          -&gt;file($f['tmp_name']);
+$ok = ['image/jpeg' =&gt; 'jpg', 'image/png' =&gt; 'png'];
+if (!isset($ok[$type]) || $f['size'] &gt; 2_000_000) {
+    exit('ไฟล์ไม่ถูกต้อง');
+}
+$name = bin2hex(random_bytes(8)) . '.' . $ok[$type];
+move_uploaded_file($f['tmp_name'],
+                   __DIR__ . '/../uploads/' . $name);</div>
+    </div>
+    <div><div class="steps" id="upSteps"></div><div class="res" id="upRes" style="margin-top:10px"></div></div>
+  </div>
+</section>
+
+<section class="slide" data-title="8.13 ทรานแซกชัน">
+  <p class="kicker">8.13 ทรานแซกชันเพื่อความสมบูรณ์ของข้อมูล (Silberschatz et al., 2019; MySQL AB &amp; Oracle, 2024)</p>
+  <h2>ทำครบทุกขั้น หรือไม่ทำเลย</h2>
+  <div class="grid2" style="grid-template-columns:1fr 1fr;align-items:start">
+    <div>
+      <div style="display:flex;gap:10px"><div class="acct" style="background:#4f46e5">orders<b id="trO">0</b></div><div class="acct" style="background:#7c3aed">order_items<b id="trI">0</b></div><div class="acct" style="background:#059669">สต็อกสินค้า #10<b id="trS">20</b></div></div>
+      <label style="display:flex;gap:10px;align-items:center;margin-top:12px;font-weight:400"><input type="checkbox" id="trUse" checked style="width:22px;height:22px"> ใช้ begin_transaction / commit / rollback</label>
+      <label style="display:flex;gap:10px;align-items:center;margin-top:6px;font-weight:400"><input type="checkbox" id="trFail" checked style="width:22px;height:22px"> จำลองไฟดับก่อนตัดสต็อก</label>
+      <div style="display:flex;gap:8px;margin-top:10px"><button class="btn" id="trGo">สั่งซื้อ 2 ชิ้น</button><button class="btn alt" id="trReset">เริ่มใหม่</button></div>
+      <div class="res" id="trRes" style="margin-top:10px;font-size:17px"></div>
+    </div>
+    <div class="steps" id="trSteps"></div>
+  </div>
+</section>
+
+<section class="slide" data-title="8.14 mysqli เชิงวัตถุ">
+  <p class="kicker">8.14 MySQLi เชิงวัตถุ (OOP) และตัวอย่างโค้ดมาตรฐาน</p>
+  <h2>แบบฟังก์ชัน หรือแบบวัตถุ ผลเหมือนกัน</h2>
+  <div class="grid2" style="align-items:start">
+    <div><p style="font-weight:600;font-size:17px">แบบฟังก์ชัน (Procedural)</p><div class="sql" style="font-size:14px">$conn = mysqli_connect("localhost", "root", "", "db_test");
+mysqli_set_charset($conn, "utf8mb4");
+$stmt = mysqli_prepare($conn,
+  "SELECT Name FROM customer WHERE CustomerID = ?");
+mysqli_stmt_bind_param($stmt, "s", $id);
+mysqli_stmt_execute($stmt);
+$res = mysqli_stmt_get_result($stmt);
+$row = mysqli_fetch_assoc($res);</div></div>
+    <div><p style="font-weight:600;font-size:17px">แบบวัตถุ (OOP) แนะนำ</p><div class="sql" style="font-size:14px">$db = new mysqli("localhost", "root", "", "db_test");
+$db-&gt;set_charset("utf8mb4");
+$stmt = $db-&gt;prepare(
+  "SELECT Name FROM customer WHERE CustomerID = ?");
+$stmt-&gt;bind_param("s", $id);
+$stmt-&gt;execute();
+$row = $stmt-&gt;get_result()-&gt;fetch_assoc();</div></div>
+  </div>
+  <div class="card" style="margin-top:12px"><p style="font-size:19px">แบบวัตถุสั้นกว่า อ่านเป็นลำดับ และต่อยอดสู่ PDO หรือเฟรมเวิร์กได้ง่าย · ตั้ง <code>mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT)</code> ให้ข้อผิดพลาดกลายเป็น Exception แล้วจับด้วย try/catch</p></div>
+  <a class="src" href="https://www.php.net/manual/en/book.mysqli.php" target="_blank" rel="noopener noreferrer">The PHP Group (2024a): MySQLi</a>
+</section>
+
+<section class="slide" data-title="8.15 AI ช่วยออกแบบ Schema">
+  <p class="kicker">8.15.1 ใช้ AI ช่วยออกแบบ Schema · 8.15.3 Prompt for Database Tuning</p>
+  <h2>จากตารางรวมมั่ว ๆ สู่ 3NF</h2>
+  <div class="tabs" id="nfTabs"><button class="on" data-k="0">ก่อน (ตารางเดียว)</button><button data-k="1">1NF</button><button data-k="2">2NF</button><button data-k="3">3NF</button><button data-k="4">Prompt</button></div>
+  <div class="grid2" style="grid-template-columns:1.3fr 1fr;align-items:start">
+    <div id="nfView"></div>
+    <div class="card" id="nfTxt" style="min-height:200px"></div>
+  </div>
+</section>
+
+<section class="slide" data-title="ภารกิจ: ตรวจโค้ดฐานข้อมูล">
+  <p class="kicker">8.15.2 ให้ AI ตรวจจับช่องโหว่ SQL Injection และปรับปรุงประสิทธิภาพ แล้วเราตรวจซ้ำ</p>
+  <h2>คลิกบรรทัดที่มีปัญหา (มี 5 จุด)</h2>
+  <div class="grid2" style="grid-template-columns:1.25fr 1fr;align-items:start">
+    <div class="php click" id="bugs"></div>
+    <div><div class="card" id="bugTxt" style="min-height:300px"></div><button class="btn alt" id="bugReset" style="margin-top:10px">เริ่มใหม่</button></div>
+  </div>
+</section>
+
+<section class="slide dark" data-title="สรุปและงานที่ได้รับมอบหมาย">
+  <p class="kicker">สรุปบทที่ 8</p>
+  <h2>ข้อมูลคือหัวใจของเว็บแอป ต้องถูกต้องและปลอดภัย</h2>
+  <div class="grid2" style="align-items:start">
+    <ul class="b" style="color:#fff">
+      <li>ออกแบบตาราง Primary Key และ Foreign Key ด้วย phpMyAdmin</li>
+      <li>เชื่อมต่อด้วย mysqli + utf8mb4 · เก็บค่าเชื่อมต่อแยกไฟล์</li>
+      <li>CRUD + ค้นหา (LIKE) + แบ่งหน้า (LIMIT/OFFSET)</li>
+      <li>ทุกค่าจากผู้ใช้ผ่าน Prepared Statement · ตรวจไฟล์อัปโหลด</li>
+      <li>หลายคำสั่งที่ต้องสำเร็จพร้อมกัน ใช้ทรานแซกชัน</li>
+    </ul>
+    <div class="card" style="color:var(--ink)"><h3>งานสัปดาห์นี้</h3><p>ใบงานที่ 8: เชื่อมต่อฐานข้อมูล MySQLi พัฒนาระบบ CRUD และป้องกัน SQL Injection</p><p style="margin-top:8px">แบบฝึกหัดท้ายบทที่ 8 ส่งผ่าน Google Classroom</p><p style="margin-top:10px"><a href="../worksheets/ws8.html" target="_blank">เปิดใบงานที่ 8</a> · <a href="../chapters/ch8.html" target="_blank">อ่านบทที่ 8</a></p></div>
+  </div>
+  <div class="foot"><span>อ้างอิงหลัก: เอกสารประกอบการสอนบทที่ 8; ชาญชัย ศุภอรรถกร (2564); ชวลิต มนต์เทวัญ (2565); Silberschatz et al. (2019); OWASP (2023e); The PHP Group (2024a); ThaiCreate.Com (n.d.)</span><span></span></div>
+</section>
+
+</div>
+<script src="deck.js" data-ch="8" data-back="../chapters/ch8.html"></script>
+<script>
+(function(){
+var $=function(id){return document.getElementById(id)};
+var all=function(q){return [].slice.call(document.querySelectorAll(q))};
+var esc=function(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")};
+var nf=function(n){return Number(n).toLocaleString("en-US")};
+var SEED=[["C001","Somchai Jaidee","somchai.jaidee@example.com","TH",1000000,600000],["C002","Anna Taylor","anna.taylor@example.com","UK",2000000,800000],["C003","Kenji Sato","kenji.sato@example.com","US",3000000,600000],["C004","Maria Lopez","maria.lopez@example.com","US",4000000,100000]];
+var COLS=["CustomerID","Name","Email","CountryCode","Budget","Used"];
+function tbl(rows,opt){opt=opt||{};var h='<table class="db"><tr>'+(opt.cols||COLS).map(function(c){return '<th data-c="'+c+'">'+c+'</th>'}).join("")+(opt.act?'<th>จัดการ</th>':'')+'</tr>';
+ rows.forEach(function(r,i){h+='<tr data-i="'+i+'"'+(opt.cls&&opt.cls[i]?' class="'+opt.cls[i]+'"':'')+'>'+r.map(function(v){return '<td'+(typeof v==="number"?' class="num"':'')+'>'+(typeof v==="number"?nf(v):esc(v))+'</td>'}).join("")+(opt.act?'<td><button data-e="'+i+'" style="background:#e0e7ff">แก้ไข</button> <button data-d="'+i+'" style="background:#fee2e2">ลบ</button></td>':'')+'</tr>'});return h+"</table>"}
+// 3 table
+$("t1").innerHTML=tbl(SEED);
+var CT={CustomerID:["varchar(4) NOT NULL · PRIMARY KEY","รหัสลูกค้า ไม่ซ้ำกันและห้ามว่าง ใช้ระบุแถวแต่ละแถว"],Name:["varchar(50) NOT NULL","ข้อความยาวไม่เกิน 50 ตัวอักษร"],Email:["varchar(50) NOT NULL","ควรเพิ่ม UNIQUE ถ้าห้ามอีเมลซ้ำ"],CountryCode:["varchar(2) NOT NULL","รหัสประเทศ 2 ตัวอักษร เช่น TH, US"],Budget:["double NOT NULL","ตัวเลขทศนิยม งานการเงินจริงนิยม DECIMAL(12,2) เพื่อไม่ให้ปัดเศษผิด"],Used:["double NOT NULL","ยอดที่ใช้ไปแล้ว"]};
+all("#t1 th").forEach(function(th){th.onclick=function(){all("#t1 th").forEach(function(x){x.classList.toggle("on",x===th)});var c=CT[th.dataset.c];$("colTxt").innerHTML='<h3 style="font-family:Mono,monospace">'+th.dataset.c+'</h3><p style="font-family:Mono,monospace;font-size:17px;color:#4338ca">'+c[0]+'</p><p style="font-size:19px;margin-top:6px">'+c[1]+'</p>'}});
+$("t1sql").textContent="CREATE TABLE `customer` (\n  `CustomerID` varchar(4) NOT NULL,\n  `Name` varchar(50) NOT NULL, ...\n  PRIMARY KEY (`CustomerID`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
+// 4 FK
+var ORD=[[1,"C001","2026-11-02",1200],[2,"C003","2026-11-05",650],[3,"C001","2026-11-09",300]];
+function fk(){$("fkC").innerHTML=tbl(SEED.map(function(r){return[r[0],r[1]]}),{cols:["CustomerID","Name"]});$("fkO").innerHTML=tbl(ORD,{cols:["OrderID","CustomerID","OrderDate","Total"],cls:ORD.map(function(o,i){return i===ORD.length-1&&fk.added?"new":""})});
+ all("#fkO tr[data-i]").forEach(function(tr){tr.onmouseenter=function(){var c=ORD[tr.dataset.i][1];all("#fkC tr[data-i]").forEach(function(x){x.classList.toggle("sel",SEED[x.dataset.i][0]===c)});tr.classList.add("sel")};tr.onmouseleave=function(){all("#fkC tr.sel,#fkO tr.sel").forEach(function(x){x.classList.remove("sel")})}})}
+fk();$("fkAdd").onclick=function(){var c=$("fkSel").value;if(SEED.some(function(r){return r[0]===c})){ORD.push([ORD.length+1,c,"2026-11-14",500]);fk.added=1;fk();$("fkRes").innerHTML='<span style="color:#059669">✓ Query OK, 1 row affected</span> <span class="sim">จำลอง</span>'}else{fk.added=0;$("fkRes").innerHTML='<span style="color:#dc2626;font-family:Mono,monospace;font-size:14px">#1452 - Cannot add or update a child row: a foreign key constraint fails</span><br>ไม่มีลูกค้า '+c+' ในตาราง customer <span class="sim">จำลอง</span>'}};
+// 5 connect
+function cc(){$("cCode").textContent='$conn = mysqli_connect("'+$("cH").value+'", "'+$("cU").value+'", "'+($("cP").value?"********":"")+'", "'+$("cD").value+'");\nif (!$conn) {\n    error_log(mysqli_connect_error());\n    exit("ระบบขัดข้อง กรุณาลองใหม่ภายหลัง");\n}\nmysqli_set_charset($conn, "utf8mb4");'}
+["cH","cU","cP","cD"].forEach(function(i){$(i).oninput=cc});cc();
+$("cGo").onclick=function(){var h=$("cH").value,u=$("cU").value,d=$("cD").value,r;
+ if(h!=="localhost"&&h!=="127.0.0.1")r='<span style="color:#dc2626">✗ Connection refused (ไม่พบเซิร์ฟเวอร์ '+esc(h)+')</span>';
+ else if(u!=="root")r="<span style='color:#dc2626'>✗ Access denied for user '"+esc(u)+"'@'localhost'</span>";
+ else if(d!=="db_test")r="<span style='color:#dc2626'>✗ Unknown database '"+esc(d)+"'</span>";
+ else r='<span style="color:#059669">✓ เชื่อมต่อสำเร็จ · ตั้งค่า utf8mb4 แล้ว ภาษาไทยไม่เพี้ยน</span>';
+ $("cRes").innerHTML=r+' <span class="sim">จำลอง</span><p class="muted" style="font-size:15px;margin-top:4px">ผู้ใช้เว็บจริงควรเห็นแค่ "ระบบขัดข้อง" ส่วนรายละเอียดเก็บใน log</p>'};
+// 6 master-detail
+$("mdList").innerHTML='<table class="db"><tr><th>CustomerID</th><th>Name</th></tr>'+SEED.map(function(r,i){return '<tr data-i="'+i+'" style="cursor:pointer"><td>'+r[0]+'</td><td style="color:#4338ca;text-decoration:underline">'+r[1]+'</td></tr>'}).join("")+'</table>';
+all("#mdList tr[data-i]").forEach(function(tr){tr.onclick=function(){all("#mdList tr").forEach(function(x){x.classList.toggle("sel",x===tr)});var r=SEED[tr.dataset.i],pct=Math.round(r[5]/r[4]*100);
+ $("mdDetail").innerHTML='<h3>'+esc(r[1])+'</h3><p style="font-size:18px">รหัส '+r[0]+' · '+r[3]+'<br>'+esc(r[2])+'</p><p style="font-size:18px;margin-top:6px">งบ '+nf(r[4])+' · ใช้ไป '+nf(r[5])+' ('+pct+'%)</p><div style="height:14px;background:#e5e7eb;border-radius:99px;margin-top:6px;overflow:hidden"><i style="display:block;height:100%;width:'+pct+'%;background:linear-gradient(90deg,#6366f1,#ec4899)"></i></div>';
+ $("mdSql").textContent='// detail.php?id='+r[0]+'\n$stmt = $conn->prepare("SELECT * FROM customer WHERE CustomerID = ?");\n$stmt->bind_param("s", $_GET["id"]);'}});
+// 7 CRUD
+var DB=[],EDIT=-1;function crudReset(){DB=SEED.map(function(r){return r.slice()});EDIT=-1;crudForm();crud();$("crudSql").textContent="-- คำสั่ง SQL จะแสดงที่นี่"}
+function crud(cls){$("crudT").innerHTML=tbl(DB.map(function(r){return[r[0],r[1],r[4]]}),{cols:["CustomerID","Name","Budget"],act:1,cls:cls});
+ all("#crudT [data-e]").forEach(function(b){b.onclick=function(){EDIT=+b.dataset.e;var r=DB[EDIT];$("fId").value=r[0];$("fName").value=r[1];$("fMail").value=r[2];$("fBud").value=r[4];$("fId").disabled=true;$("crudMode").textContent="แก้ไข "+r[0];$("crudSql").textContent="SELECT * FROM customer WHERE CustomerID = ? -- ดึงข้อมูลเดิมมาใส่ฟอร์ม"}});
+ all("#crudT [data-d]").forEach(function(b){b.onclick=function(){var r=DB[+b.dataset.d];if(!confirm("ลบ "+r[1]+" ?"))return;DB.splice(+b.dataset.d,1);crud();$("crudSql").innerHTML='<span class="k">DELETE FROM</span> customer <span class="k">WHERE</span> CustomerID = ?\n-- bind_param("s", "'+r[0]+'") → 1 row affected <span class="sim">จำลอง</span>'}})}
+function crudForm(){EDIT=-1;$("fId").disabled=false;$("fId").value="C00"+(DB.length+1);$("fName").value="Kanya Thongdee";$("fMail").value="kanya@example.com";$("fBud").value=1500000;$("crudMode").textContent="เพิ่มลูกค้าใหม่"}
+$("crudNew").onclick=crudForm;$("crudReset").onclick=crudReset;
+$("crudSave").onclick=function(){var id=$("fId").value.trim(),n=$("fName").value.trim(),m=$("fMail").value.trim(),b=Number($("fBud").value)||0;
+ if(!id||!n){$("crudSql").textContent="-- กรุณากรอก CustomerID และ Name";return}
+ if(EDIT<0){if(DB.some(function(r){return r[0]===id})){$("crudSql").innerHTML='<span class="bad">#1062 - Duplicate entry \''+esc(id)+'\' for key \'PRIMARY\'</span> <span class="sim">จำลอง</span>';return}
+  DB.push([id,n,m,"TH",b,0]);var cls=[];cls[DB.length-1]="new";crud(cls);$("crudSql").innerHTML='<span class="k">INSERT INTO</span> customer (CustomerID, Name, Email, CountryCode, Budget, Used)\n<span class="k">VALUES</span> (?, ?, ?, ?, ?, 0)\n-- bind_param("ssssd", ...) → 1 row affected <span class="sim">จำลอง</span>';crudForm()}
+ else{var r=DB[EDIT];r[1]=n;r[2]=m;r[4]=b;var c2=[];c2[EDIT]="new";crud(c2);$("crudSql").innerHTML='<span class="k">UPDATE</span> customer <span class="k">SET</span> Name = ?, Email = ?, Budget = ?\n<span class="k">WHERE</span> CustomerID = ?\n-- bind_param("ssds", ...) → 1 row affected <span class="sim">จำลอง</span>';crudForm()}};
+crudReset();
+// 8 search + paging
+var BIG=SEED.concat([["C005","Kanya Thongdee","kanya@example.com","TH",1500000,200000],["C006","David Chen","david.chen@example.com","SG",2500000,900000],["C007","Nadia Rahman","nadia.r@example.com","MY",1800000,400000],["C008","Ananya Srisuk","ananya.s@example.com","TH",900000,100000],["C009","Lucas Martin","lucas.m@example.com","FR",3200000,1500000],["C010","Hana Kim","hana.kim@example.com","KR",2100000,700000]]);
+var page=1;function sr(){var q=$("sQ").value.trim().toLowerCase(),n=+$("sN").value;var f=BIG.filter(function(r){return !q||r[1].toLowerCase().indexOf(q)>-1||r[2].toLowerCase().indexOf(q)>-1});var pages=Math.max(1,Math.ceil(f.length/n));if(page>pages)page=pages;var off=(page-1)*n;
+ $("sT").innerHTML=tbl(f.slice(off,off+n).map(function(r){return[r[0],r[1],r[2]]}),{cols:["CustomerID","Name","Email"]})+'<p class="muted" style="font-size:15px;margin-top:4px">พบ '+f.length+' รายการ · หน้า '+page+'/'+pages+' <span class="sim">จำลอง</span></p>';
+ var ph="";for(var p=1;p<=pages;p++)ph+='<button data-p="'+p+'"'+(p===page?' class="on"':'')+'>'+p+'</button>';$("sP").innerHTML=ph;all("#sP button").forEach(function(b){b.onclick=function(){page=+b.dataset.p;sr()}});
+ $("sSql").innerHTML='<span class="k">SELECT</span> COUNT(*) <span class="k">FROM</span> customer\n<span class="k">WHERE</span> Name <span class="k">LIKE</span> ? <span class="k">OR</span> Email <span class="k">LIKE</span> ?;\n-- ? = <span class="s">"%'+esc(q)+'%"</span>  → '+f.length+'\n\n<span class="k">SELECT</span> CustomerID, Name, Email <span class="k">FROM</span> customer\n<span class="k">WHERE</span> Name <span class="k">LIKE</span> ? <span class="k">OR</span> Email <span class="k">LIKE</span> ?\n<span class="k">ORDER BY</span> CustomerID\n<span class="k">LIMIT</span> '+n+' <span class="k">OFFSET</span> '+off+';  -- ('+page+' − 1) × '+n}
+$("sQ").oninput=function(){page=1;sr()};$("sN").onchange=function(){page=1;sr()};sr();
+// 9 SQL injection (จำลองการตีความคำสั่ง)
+var SQM="bad";function sq(){var u=$("qU").value,p=$("qP").value,html,res;
+ if(SQM==="bad"){var full="SELECT * FROM users WHERE username = '"+u+"' AND password = '"+p+"'";
+  var cut=full.indexOf("--"),eff=cut>-1?full.slice(0,cut):full;
+  html='<span class="k">SELECT</span> * <span class="k">FROM</span> users <span class="k">WHERE</span> username = \''+'<span class="bad">'+esc(u)+'</span>\' <span class="k">AND</span> password = \''+esc(p)+'\'';
+  if(cut>-1)html+='\n<span style="color:#94a3b8">-- ทุกอย่างหลัง -- กลายเป็นคำอธิบาย ฐานข้อมูลไม่ตรวจรหัสผ่าน</span>';
+  var always=/'\s*or\s*'1'\s*=\s*'1/i.test(eff);var m=eff.match(/username = '([^']*)'/);var nm=m?m[1]:"";
+  if(always)res='<b style="color:#dc2626">เข้าสู่ระบบได้!</b> เงื่อนไข OR \'1\'=\'1\' เป็นจริงทุกแถว ได้บัญชีแรกในตาราง (มักเป็น admin)';
+  else if(cut>-1&&nm)res='<b style="color:#dc2626">เข้าสู่ระบบเป็น '+esc(nm)+' ได้โดยไม่ต้องรู้รหัสผ่าน!</b>';
+  else res=nm==="somchai"&&p==="pass1234"?'<b style="color:#059669">เข้าสู่ระบบสำเร็จ</b>':'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง'}
+ else{html='<span class="k">SELECT</span> id, password_hash <span class="k">FROM</span> users <span class="k">WHERE</span> username = <span class="s">?</span>\n-- bind_param("s", <span class="s">"'+esc(u)+'"</span>)\n<span style="color:#94a3b8">-- ค่าทั้งก้อนถูกค้นหาเป็นชื่อผู้ใช้ตรงตัวอักษร รวมทั้ง \' และ --</span>';
+  res=u==="somchai"?'พบผู้ใช้ แล้วตรวจรหัสผ่านด้วย password_verify() → '+(p==="pass1234"?'<b style="color:#059669">สำเร็จ</b>':'<b>ไม่ถูกต้อง</b>'):'<b style="color:#059669">ไม่พบผู้ใช้ชื่อ "'+esc(u)+'"</b> การโจมตีไม่ได้ผล'}
+ $("qSql").innerHTML=html;$("qRes").innerHTML=res+' <span class="sim">จำลอง</span>'}
+Deck.tabs($("sqTabs"),function(b){SQM=b.dataset.k;sq()});$("qGo").onclick=sq;all("[data-inj]").forEach(function(c){c.onclick=function(){$("qU").value=c.dataset.inj;$("qP").value=c.dataset.inj==="somchai"?"pass1234":"ไม่รู้รหัส";sq()}});sq();
+// 10 prepared pipe
+$("psGo").onclick=function(){Deck.pipe("ps")};
+// 11 upload
+function up(f){var st=[];if(!f){$("upSteps").innerHTML='<div>เลือกไฟล์ภาพ (JPG/PNG ไม่เกิน 2 MB)</div>';$("upRes").innerHTML="";return}
+ var okType={"image/jpeg":"jpg","image/png":"png"}[f.type];var ext=(f.name.split(".").pop()||"").toLowerCase();
+ st.push(['ชื่อไฟล์เดิม: '+f.name+' (ไม่ใช้ชื่อนี้เก็บจริง)',1]);
+ st.push(['ชนิดไฟล์: '+(f.type||"ไม่ทราบ")+(okType?" ✓":" ✗ ไม่อนุญาต")+' (เบราว์เซอร์เดาจากนามสกุล เซิร์ฟเวอร์ต้องตรวจเนื้อไฟล์ด้วย finfo)',!!okType]);
+ st.push(['ขนาด: '+(f.size/1024).toFixed(1)+' KB'+(f.size<=2000000?" ✓":" ✗ เกิน 2 MB"),f.size<=2000000]);
+ if(okType&&ext!==okType&&!(okType==="jpg"&&ext==="jpeg"))st.push(['นามสกุล .'+ext+' ไม่ตรงกับชนิดจริง → ใช้ชนิดจริงเป็นหลัก',1]);
+ var pass=okType&&f.size<=2000000;var a=new Uint8Array(8);crypto.getRandomValues(a);var nn=[].map.call(a,function(x){return x.toString(16).padStart(2,"0")}).join("")+"."+(okType||"?");
+ if(pass)st.push(['ตั้งชื่อใหม่: '+nn,1],['ย้ายไป uploads/ นอกโฟลเดอร์ที่รันสคริปต์ได้',1],['INSERT ชื่อไฟล์ลงตาราง (Prepared)',1]);
+ $("upSteps").innerHTML=st.map(function(s){return '<div class="'+(s[1]?"done":"fail")+'">'+esc(s[0])+'</div>'}).join("");
+ $("upRes").innerHTML=(pass?'<b style="color:#059669">ผ่านการตรวจ</b> รับไฟล์ได้':'<b style="color:#dc2626">ปฏิเสธไฟล์</b> แจ้งผู้ใช้ให้เลือกไฟล์ใหม่')+' <span class="sim">จำลอง ไม่มีการอัปโหลดจริง</span>'}
+$("upF").onchange=function(){up(this.files[0])};up(null);
+// 12 transaction
+var TS={o:0,i:0,s:20};function trShow(){$("trO").textContent=TS.o;$("trI").textContent=TS.i;$("trS").textContent=TS.s}
+var STEPS=["INSERT INTO orders ... → order_id","INSERT INTO order_items (qty 2)","UPDATE products SET stock = stock - 2"];
+function trReset(){TS={o:0,i:0,s:20};trShow();$("trSteps").innerHTML=STEPS.map(function(s){return "<div>"+esc(s)+"</div>"}).join("");$("trRes").textContent="";}
+$("trReset").onclick=trReset;
+$("trGo").onclick=function(){var use=$("trUse").checked,fail=$("trFail").checked,el=[],before={o:TS.o,i:TS.i,s:TS.s};
+ if(use)el.push(["begin_transaction()","done"]);
+ TS.o++;el.push([STEPS[0],"done"]);TS.i++;el.push([STEPS[1],"done"]);
+ if(fail){el.push([STEPS[2]+"  ✗ ไฟดับ / เกิด Exception","fail"]);
+  if(use){el.push(["rollback() → ย้อนทุกคำสั่งตั้งแต่ begin","undo"]);TS=before;$("trRes").innerHTML='<b style="color:#059669">ข้อมูลยังถูกต้อง</b> ไม่มีคำสั่งซื้อค้าง สต็อกไม่เพี้ยน <span class="sim">จำลอง</span>'}
+  else $("trRes").innerHTML='<b style="color:#dc2626">ข้อมูลไม่สอดคล้อง!</b> มีคำสั่งซื้อและรายการสินค้า แต่สต็อกไม่ถูกตัด <span class="sim">จำลอง</span>'}
+ else{TS.s-=2;el.push([STEPS[2],"done"]);if(use)el.push(["commit() → ยืนยันทั้งหมด","done"]);$("trRes").innerHTML='<b style="color:#059669">สั่งซื้อสำเร็จ</b> ทุกตารางอัปเดตครบ <span class="sim">จำลอง</span>'}
+ trShow();$("trSteps").innerHTML=el.map(function(s){return '<div class="'+s[1]+'">'+esc(s[0])+'</div>'}).join("")};
+trReset();
+// 13 normalization
+var NF=[{t:'<table class="db"><tr><th>OrderID</th><th>Customer</th><th>CustomerEmail</th><th>Items</th></tr><tr><td>1</td><td>Somchai</td><td>somchai@ex.com</td><td>ลาเต้ x2, มอคค่า x1</td></tr><tr><td>2</td><td>Somchai</td><td>somchai@ex.com</td><td>โกโก้ x1</td></tr></table>',x:"<b>ปัญหา</b> ช่อง Items เก็บหลายค่าในช่องเดียว ข้อมูลลูกค้าซ้ำทุกคำสั่งซื้อ ถ้าแก้อีเมลต้องแก้หลายแถว (Update Anomaly)"},
+{t:'<table class="db"><tr><th>OrderID</th><th>Customer</th><th>CustomerEmail</th><th>Item</th><th>Qty</th></tr><tr><td>1</td><td>Somchai</td><td>somchai@ex.com</td><td>ลาเต้</td><td>2</td></tr><tr><td>1</td><td>Somchai</td><td>somchai@ex.com</td><td>มอคค่า</td><td>1</td></tr><tr><td>2</td><td>Somchai</td><td>somchai@ex.com</td><td>โกโก้</td><td>1</td></tr></table>',x:"<b>1NF</b> ทุกช่องเก็บค่าเดียว (Atomic) แยกสินค้าเป็นแถว แต่ข้อมูลลูกค้ายังซ้ำ"},
+{t:'<div class="nf"><table class="db"><tr><th>OrderID 🔑</th><th>Customer</th><th>CustomerEmail</th></tr><tr><td>1</td><td>Somchai</td><td>somchai@ex.com</td></tr><tr><td>2</td><td>Somchai</td><td>somchai@ex.com</td></tr></table><table class="db"><tr><th>OrderID 🔑</th><th>Item 🔑</th><th>Qty</th></tr><tr><td>1</td><td>ลาเต้</td><td>2</td></tr><tr><td>1</td><td>มอคค่า</td><td>1</td></tr><tr><td>2</td><td>โกโก้</td><td>1</td></tr></table></div>',x:"<b>2NF</b> แยกคอลัมน์ที่ขึ้นกับคีย์บางส่วนออก รายการสินค้าขึ้นกับ (OrderID, Item) ส่วนลูกค้าขึ้นกับ OrderID อย่างเดียว"},
+{t:'<div class="nf"><table class="db"><tr><th>CustomerID 🔑</th><th>Name</th><th>Email</th></tr><tr><td>C001</td><td>Somchai</td><td>somchai@ex.com</td></tr></table><table class="db"><tr><th>OrderID 🔑</th><th>CustomerID ↗</th></tr><tr><td>1</td><td>C001</td></tr><tr><td>2</td><td>C001</td></tr></table><table class="db"><tr><th>OrderID ↗</th><th>Item</th><th>Qty</th></tr><tr><td>1</td><td>ลาเต้</td><td>2</td></tr><tr><td>1</td><td>มอคค่า</td><td>1</td></tr><tr><td>2</td><td>โกโก้</td><td>1</td></tr></table></div>',x:"<b>3NF</b> อีเมลขึ้นกับลูกค้า ไม่ใช่คำสั่งซื้อ (Transitive) จึงแยกตาราง customer แล้วเชื่อมด้วย Foreign Key ↗ ข้อมูลเก็บที่เดียว แก้ที่เดียว"},
+{t:'<div class="sql" style="font-size:14px">บทบาท: ผู้เชี่ยวชาญออกแบบฐานข้อมูล MySQL 8\nงาน: ออกแบบ Schema ระบบสั่งกาแฟออนไลน์ให้อยู่ใน 3NF\nข้อมูลที่ต้องเก็บ: ลูกค้า เมนู ราคา คำสั่งซื้อ รายการในคำสั่งซื้อ\nข้อกำหนด: ระบุ PK/FK ชนิดข้อมูล utf8mb4\n  และ INDEX สำหรับค้นหาตามชื่อลูกค้าและวันที่สั่ง\nผลลัพธ์: CREATE TABLE ทั้งหมด + ER Diagram แบบข้อความ\n  + อธิบายเหตุผลแต่ละขั้นของการทำ Normalization\n[ห้ามใส่ข้อมูลลูกค้าจริงใน Prompt]</div>',x:"<b>Prompt ตัวอย่าง (8.15.3)</b> ใช้ AI ร่าง Schema แล้วตรวจเองว่าแต่ละตารางเก็บเรื่องเดียว ไม่มีข้อมูลซ้ำ และ FK ถูกทิศทาง ก่อนสร้างจริงใน phpMyAdmin"}];
+function nfShow(k){$("nfView").innerHTML=NF[k].t;$("nfTxt").innerHTML='<p style="font-size:19px">'+NF[k].x+'</p>'}Deck.tabs($("nfTabs"),function(b){nfShow(b.dataset.k)});nfShow(0);
+// 14 bugs
+var BG=[['<?php',0],['$conn = mysqli_connect("localhost", "root", "", "db_test");',0],['$q = $_GET["q"];',0],['$sql = "SELECT * FROM customer WHERE Name LIKE \'%$q%\'";',"ต่อค่าจากผู้ใช้เข้า SQL ตรง ๆ เสี่ยง SQL Injection ใช้ prepare + bind_param"],['$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));',"แสดง error ของฐานข้อมูลให้ผู้ใช้เห็น เปิดเผยโครงสร้างตาราง ควรเขียน log แล้วแสดงข้อความกลาง ๆ"],['// ไม่มี LIMIT ดึงทุกแถวทุกครั้ง',"ไม่มี LIMIT เมื่อข้อมูลมากหน้าเว็บช้า ควรแบ่งหน้า (8.8)"],['while ($row = mysqli_fetch_assoc($result)) {',0],['    echo "<td>" . $row["Name"] . "</td>";',"echo ข้อมูลจากฐานข้อมูลโดยไม่ผ่าน htmlspecialchars เสี่ยง Stored XSS"],['}',0],['// ไม่ได้ตั้ง mysqli_set_charset($conn, "utf8mb4")',"ไม่ตั้ง charset ภาษาไทยอาจเพี้ยนเป็น ???"],['?>',0]];
+var found=0;function bugs(){found=0;$("bugTxt").innerHTML='<h3>พบแล้ว <span id="bugN">0</span> / 5</h3><p class="muted">คลิกบรรทัดที่มีปัญหา</p>';
+ $("bugs").innerHTML=BG.map(function(r,k){return '<div data-k="'+k+'">'+esc(r[0])+'</div>'}).join("");
+ all("#bugs div").forEach(function(dv){dv.onclick=function(){if(dv.classList.contains("ok"))return;var r=BG[dv.dataset.k];if(r[1]){dv.classList.add("ok");found++;$("bugN").textContent=found;$("bugTxt").insertAdjacentHTML("beforeend",'<p style="font-size:16px;margin-top:6px">✓ '+esc(r[1])+'</p>');if(found===5)$("bugTxt").insertAdjacentHTML("beforeend",'<p style="font-size:17px;margin-top:8px;color:#059669"><b>ครบแล้ว!</b> เทียบกับผลที่ AI ตรวจ ว่าเจอครบหรือไม่</p>')}else{dv.classList.add("no");setTimeout(function(){dv.classList.remove("no")},600)}}})}
+$("bugReset").onclick=bugs;bugs();
+})();
+</script>
+</body>
+</html>
