@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="สไลด์บทที่ 4 พื้นฐาน CSS รายวิชา 07-034-210 พร้อมตัวอย่างที่กดลองได้">
+<meta name="theme-color" content="#1e1b4b">
+<title>สไลด์บทที่ 4 พื้นฐาน CSS · การเขียนโปรแกรมบนเว็บ</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%234338ca'/%3E%3Cpath d='M26 20 14 32l12 12M38 20l12 12-12 12' fill='none' stroke='%23fff' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="deck.css">
+<style>
+/* เฉพาะบทที่ 4 */
+.anat{font-family:Mono,monospace;font-size:30px;background:#0f1226;color:#e8eaf8;border-radius:16px;padding:26px;line-height:1.6}
+.anat span{border-radius:6px;padding:2px 4px;cursor:pointer;transition:background .2s,color .2s}
+.anat .s{color:#93c5fd}.anat .p{color:#fcd34d}.anat .v{color:#86efac}.anat .d{color:#94a3b8}
+.anat span.hl{background:#f59e0b;color:#111}
+.part{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.part button,.chip{font:inherit;font-size:18px;border:2px solid var(--line);background:#fff;border-radius:12px;padding:7px 14px;cursor:pointer}
+.part button.on,.chip.on{border-color:var(--accent);background:#fffbeb}
+.pv{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;overflow:hidden}
+#sbox{font-size:19px;line-height:1.5}
+#sbox *{transition:outline-color .2s,background .2s}
+#sbox .m{outline:3px solid #f59e0b;outline-offset:2px;background:#fef3c7;border-radius:4px}
+#sbox ul{padding-left:24px}
+.selin{font-family:Mono,monospace;font-size:22px;padding:10px 14px;border:2px solid var(--brand);border-radius:10px;width:100%}
+.spec{display:flex;gap:10px;margin-top:10px}
+.spec div{flex:1;text-align:center;border-radius:12px;padding:10px;color:#fff;font-weight:700}
+.spec b{display:block;font-size:40px;font-family:Mono,monospace}
+.spec small{font-size:15px;font-weight:400}
+.bm-wrap{display:flex;align-items:center;justify-content:center;height:360px;background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.bm-m{background:#fdba74;display:flex}.bm-b{background:#fde047;display:flex}.bm-p{background:#86efac;display:flex}.bm-c{background:#93c5fd;display:flex;align-items:center;justify-content:center;font-family:Mono,monospace;font-size:16px}
+.rg{display:grid;grid-template-columns:110px 1fr 60px;gap:6px 10px;align-items:center}
+.rg label{font-size:18px}
+.rg output{font-family:Mono,monospace;font-size:16px}
+.play{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px;height:360px}
+.play .it{background:#6366f1;color:#fff;border-radius:10px;font-weight:700;font-size:20px;display:flex;align-items:center;justify-content:center;min-width:70px;min-height:60px;transition:all .4s}
+.play .it:nth-child(2){background:#8b5cf6;min-height:90px}.play .it:nth-child(3){background:#ec4899}.play .it:nth-child(4){background:#f59e0b;min-height:40px}.play .it:nth-child(5){background:#10b981}.play .it:nth-child(6){background:#0ea5e9}
+select{font:inherit;font-size:17px;border:1px solid var(--line);border-radius:8px;padding:5px 8px;background:#fff}
+.sel-row{display:grid;grid-template-columns:170px 1fr;gap:8px 10px;align-items:center}
+.sel-row label{font-family:Mono,monospace;font-size:16px;font-weight:600}
+.swatch{height:150px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700}
+.unit{display:flex;align-items:center;gap:10px;margin:6px 0}
+.unit span{font-family:Mono,monospace;font-size:16px;width:150px}
+.unit i{display:block;height:26px;border-radius:6px;background:linear-gradient(90deg,#6366f1,#8b5cf6);transition:width .3s}
+.fx{width:220px;height:150px;margin:20px auto;display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px;font-weight:700;transition:all .4s}
+.fixes label{display:flex;gap:10px;align-items:center;font-weight:400;font-size:19px;margin:6px 0;cursor:pointer}
+.fixes input{width:22px;height:22px;accent-color:var(--ok)}
+iframe.run{background:#fff}
+</style>
+</head>
+<body>
+<div id="stage">
+
+<section class="slide dark" data-title="ปก">
+  <div style="position:absolute;left:72px;top:180px;width:600px">
+    <p class="kicker">รายวิชา 07-034-210 การเขียนโปรแกรมบนเว็บ · บทที่ 4</p>
+    <h1>พื้นฐาน CSS</h1>
+    <p class="muted" style="margin-top:18px">ตัวเลือก ลำดับความสำคัญ สี Box Model Flexbox Grid ตัวแปร หน่วยวัดสมัยใหม่ มีเดียคิวรี และการใช้ AI ช่วยดีบักเลย์เอาต์</p>
+    <p class="muted" style="margin-top:28px;font-size:20px">ดร.สุรเชษฐ์ สังขพันธ์ · กด → หรือ Space ไปสไลด์ถัดไป · กด O ดูสารบัญ</p>
+  </div>
+  <svg style="position:absolute;right:70px;top:130px" width="460" height="450" viewBox="0 0 460 450" aria-hidden="true">
+    <g>
+      <rect x="40" y="40" width="160" height="160" rx="10" fill="#4f46e5"><animate attributeName="rx" values="10;80;10" dur="4s" repeatCount="indefinite"/></rect>
+      <rect x="240" y="40" width="180" height="100" rx="14" fill="#f59e0b"><animate attributeName="width" values="180;120;180" dur="3s" repeatCount="indefinite"/></rect>
+      <rect x="240" y="160" width="180" height="40" rx="10" fill="#10b981"><animate attributeName="fill" values="#10b981;#0ea5e9;#10b981" dur="3s" repeatCount="indefinite"/></rect>
+      <rect x="40" y="230" width="380" height="180" rx="16" fill="none" stroke="#c4b5fd" stroke-width="3" stroke-dasharray="10 8"/>
+      <rect x="70" y="260" width="100" height="120" rx="10" fill="#8b5cf6"><animate attributeName="x" values="70;180;70" dur="5s" repeatCount="indefinite"/></rect>
+      <rect x="300" y="260" width="90" height="120" rx="10" fill="#ec4899"/>
+      <text x="230" y="440" text-anchor="middle" font-family="Mono" font-size="20" fill="#fde68a">display: flex;</text>
+    </g>
+  </svg>
+  <div class="foot"><span>ภาพประกอบในสไลด์ชุดนี้สร้างด้วย SVG/CSS โดยใช้ปัญญาประดิษฐ์ (AI) ช่วยสร้าง</span><span>พ.ศ. 2569</span></div>
+</section>
+
+<section class="slide" data-title="เป้าหมายของบทนี้">
+  <p class="kicker">เป้าหมายของบทนี้</p>
+  <h2>เรียนจบบทนี้ นักศึกษาจะ...</h2>
+  <div class="grid2" style="align-items:start">
+    <ul class="b">
+      <li>เขียนกฎ CSS และเลือกวิธีแทรก CSS ได้เหมาะสม</li>
+      <li>ใช้ตัวเลือกและอธิบายว่าทำไมกฎหนึ่ง "ชนะ" อีกกฎ</li>
+      <li>ควบคุมพื้นที่ด้วย Box Model</li>
+      <li>จัดเลย์เอาต์ด้วย Flexbox และ Grid</li>
+      <li>ทำเว็บรองรับทุกจอด้วยตัวแปร หน่วยสัมพัทธ์ และมีเดียคิวรี</li>
+    </ul>
+    <div class="card">
+      <h3>ผลลัพธ์การเรียนรู้ (CLO) ของบทนี้</h3>
+      <p><b>CLO3</b> ใช้ภาษาและเครื่องมือในการพัฒนา จัดตั้ง และบริหารเว็บไซต์ให้ทำงานได้ตามข้อกำหนด</p>
+      <p style="margin-top:8px"><b>CLO5</b> ประยุกต์ความรู้ด้านการเขียนโปรแกรมบนเว็บเพื่อพัฒนาเว็บไซต์สำหรับแก้ปัญหาจากสถานการณ์ที่กำหนด พร้อมทดสอบและปรับปรุงการทำงานได้</p>
+      <p class="muted" style="margin-top:10px;font-size:16px">ใบงานที่ 4: ตกแต่งหน้าเว็บด้วย Box Model, Modern Units, Flexbox และ Grid</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-title="4.1 รูปแบบกฎ CSS">
+  <p class="kicker">4.1 รูปแบบ CSS (จีราวุธ วารินทร์, 2564; Keith, 2016)</p>
+  <h2>หนึ่งกฎ = ตัวเลือก + การประกาศ</h2>
+  <div class="anat" id="anat"><span class="s" data-p="sel">h1</span> <span class="d" data-p="block">{</span><br>&nbsp;&nbsp;<span class="p" data-p="prop">color</span><span class="d" data-p="decl">:</span> <span class="v" data-p="val">#4338ca</span><span class="d" data-p="decl">;</span><br>&nbsp;&nbsp;<span class="p" data-p="prop">font-size</span><span class="d" data-p="decl">:</span> <span class="v" data-p="val">2rem</span><span class="d" data-p="decl">;</span><br><span class="d" data-p="block">}</span></div>
+  <div class="part" id="parts"><button data-p="sel">ตัวเลือก (Selector)</button><button data-p="prop">คุณสมบัติ (Property)</button><button data-p="val">ค่า (Value)</button><button data-p="decl">การประกาศ (Declaration)</button><button data-p="block">บล็อกการประกาศ</button></div>
+  <div class="card" id="anatTxt" style="margin-top:14px;min-height:90px"><p style="font-size:23px">กดปุ่ม หรือชี้ที่โค้ด เพื่อดูว่าแต่ละส่วนคืออะไร</p></div>
+</section>
+
+<section class="slide" data-title="4.2 สามวิธีแทรก CSS">
+  <p class="kicker">4.2 CSS Style Sheet</p>
+  <h2>Inline · Internal · External</h2>
+  <div class="tabs" id="wayTabs"><button class="on" data-w="0">4.2.1 Inline</button><button data-w="1">4.2.2 Internal</button><button data-w="2">4.2.3 External</button></div>
+  <div class="grid2" style="align-items:start">
+    <div class="code" id="wayCode" style="font-size:16px;height:300px;white-space:pre-wrap"></div>
+    <div class="card" id="wayTxt" style="min-height:300px"></div>
+  </div>
+  <p class="muted" style="font-size:18px;margin-top:10px">งานจริงใช้ External เป็นหลัก เพราะแก้ไฟล์เดียว เปลี่ยนได้ทั้งเว็บ และเบราว์เซอร์เก็บแคชไฟล์ CSS ไว้ใช้ซ้ำ</p>
+</section>
+
+<section class="slide" data-title="4.3 ตัวเลือก (Selectors)">
+  <p class="kicker">4.3 CSS Selectors (MDN, 2024a)</p>
+  <h2>พิมพ์ตัวเลือก แล้วดูว่าเลือกอะไรบ้าง</h2>
+  <div class="grid2" style="grid-template-columns:1fr 1fr;align-items:start">
+    <div>
+      <input class="selin" id="selIn" type="text" value=".price" spellcheck="false" aria-label="ตัวเลือก CSS">
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px" id="selPre">
+        <button class="chip" data-s="p">p</button><button class="chip" data-s=".price">.price</button><button class="chip" data-s="#special">#special</button><button class="chip" data-s="ul li">ul li</button><button class="chip" data-s="ul > li">ul &gt; li</button><button class="chip" data-s="h3 + p">h3 + p</button><button class="chip" data-s="a[target]">a[target]</button><button class="chip" data-s="li:first-child">li:first-child</button><button class="chip" data-s="li:nth-child(even)">li:nth-child(even)</button><button class="chip" data-s="p, a">p, a</button>
+      </div>
+      <p id="selMsg" style="margin-top:14px;font-size:21px"></p>
+    </div>
+    <div class="pv" id="sbox">
+      <h3>เมนูร้านกาแฟ</h3>
+      <p>เปิดทุกวัน</p>
+      <ul>
+        <li>ลาเต้ <span class="price">55</span></li>
+        <li id="special">มอคค่า <span class="price">60</span> <em>แนะนำ</em></li>
+        <li>ชาเขียว <span class="price">50</span>
+          <ol><li>หวานน้อย</li><li>หวานปกติ</li></ol></li>
+        <li>โกโก้ <span class="price">50</span></li>
+      </ul>
+      <p class="note price">ราคารวมภาษีแล้ว</p>
+      <a href="#" target="_blank">ดูแผนที่ร้าน</a> · <a href="#">ติดต่อเรา</a>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-title="Specificity ใครชนะ">
+  <p class="kicker">4.3 ลำดับความสำคัญของตัวเลือก (Specificity) และการสืบทอด</p>
+  <h2>สองกฎขัดกัน กฎไหนชนะ?</h2>
+  <div class="grid2" style="grid-template-columns:1fr 1fr;align-items:start">
+    <div>
+      <label for="spA">กฎ A (สีแดง)</label><input class="selin" id="spA" value="#menu li" spellcheck="false" style="margin:4px 0 4px;border-color:#dc2626">
+      <div class="spec" id="specA"></div>
+      <label for="spB" style="display:block;margin-top:14px">กฎ B (สีน้ำเงิน) เขียนทีหลัง</label><input class="selin" id="spB" value="ul li.active" spellcheck="false" style="margin:4px 0 4px;border-color:#2563eb">
+      <div class="spec" id="specB"></div>
+    </div>
+    <div>
+      <div class="card" id="spWin" style="min-height:160px"></div>
+      <div class="card" style="margin-top:12px"><p style="font-size:18px">เทียบทีละหลักจากซ้าย <b>(ID, Class/แอตทริบิวต์/:pseudo-class, แท็ก)</b> ไม่ใช่บวกรวม ถ้าเท่ากัน กฎที่เขียนทีหลังชนะ · Inline style ชนะทุกตัวเลือก ยกเว้น !important</p></div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px"><button class="chip" data-ab="p|.note">p vs .note</button><button class="chip" data-ab=".a.b.c.d|#x">.a.b.c.d vs #x</button><button class="chip" data-ab="li|li">li vs li</button></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-title="4.4 สีใน CSS">
+  <p class="kicker">4.4 CSS Color</p>
+  <h2>สีเดียวกัน เขียนได้หลายแบบ และต้องอ่านง่าย</h2>
+  <div class="grid2" style="align-items:start">
+    <div>
+      <div class="rg"><label for="cFg">สีตัวอักษร</label><input type="color" id="cFg" value="#ffffff" style="width:100%;height:42px"><span></span><label for="cBg">สีพื้นหลัง</label><input type="color" id="cBg" value="#4338ca" style="width:100%;height:42px"><span></span></div>
+      <div class="code" id="cCode" style="font-size:17px;margin-top:14px;white-space:pre"></div>
+      <div style="display:flex;gap:8px;margin-top:10px"><button class="chip" data-c="#ffffff|#4338ca">ม่วงขาว</button><button class="chip" data-c="#9ca3af|#ffffff">เทาอ่อนบนขาว</button><button class="chip" data-c="#facc15|#ffffff">เหลืองบนขาว</button><button class="chip" data-c="#111827|#fde68a">ดำบนเหลือง</button></div>
+    </div>
+    <div>
+      <div class="swatch" id="cSw">ร้านกาแฟบ้านสวน</div>
+      <div class="card" id="cRatio" style="margin-top:12px"></div>
+    </div>
+  </div>
+  <a class="src" href="https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html" target="_blank" rel="noopener noreferrer">เกณฑ์ความต่างของสี: WCAG 2.2 (W3C)</a>
+</section>
+
+<section class="slide" data-title="4.5–4.7 Box Model">
+  <p class="kicker">4.5 Borders · 4.6 Margins · 4.7 Padding</p>
+  <h2>ทุกเอลิเมนต์คือกล่อง 4 ชั้น</h2>
+  <div class="grid2" style="grid-template-columns:400px 1fr;align-items:start">
+    <div>
+      <div class="rg">
+        <label for="bmW">width</label><input type="range" id="bmW" min="80" max="220" value="160"><output id="oW"></output>
+        <label for="bmP">padding</label><input type="range" id="bmP" min="0" max="40" value="20"><output id="oP"></output>
+        <label for="bmB">border</label><input type="range" id="bmB" min="0" max="20" value="6"><output id="oB"></output>
+        <label for="bmM">margin</label><input type="range" id="bmM" min="0" max="40" value="20"><output id="oM"></output>
+      </div>
+      <label style="display:flex;gap:10px;align-items:center;margin-top:12px"><input type="checkbox" id="bmS" style="width:22px;height:22px"> box-sizing: border-box</label>
+      <div class="card" id="bmTxt" style="margin-top:12px"></div>
+    </div>
+    <div class="bm-wrap"><div class="bm-m" id="bm1"><div class="bm-b" id="bm2"><div class="bm-p" id="bm3"><div class="bm-c" id="bm4">content</div></div></div></div></div>
+  </div>
+  <p class="muted" style="font-size:17px;margin-top:8px">สีส้ม = margin · เหลือง = border · เขียว = padding · ฟ้า = content (สีเดียวกับเครื่องมือ DevTools ของ Chrome)</p>
+</section>
+
+<section class="slide" data-title="4.8 display และ position">
+  <p class="kicker">4.8 CSS Layout</p>
+  <h2>display กำหนดว่ากล่องเรียงตัวอย่างไร</h2>
+  <div class="tabs" id="dispTabs"><button class="on" data-d="block">block</button><button data-d="inline">inline</button><button data-d="inline-block">inline-block</button><button data-d="none">none (ซ่อน)</button></div>
+  <div class="grid2" style="align-items:start">
+    <div class="pv" style="height:260px;font-size:19px" id="dispBox">ข้อความก่อนหน้า <span class="dx">กล่อง A</span><span class="dx">กล่อง B</span><span class="dx">กล่อง C</span> ข้อความต่อท้าย</div>
+    <div class="card" id="dispTxt" style="min-height:260px"></div>
+  </div>
+  <p class="muted" style="font-size:18px;margin-top:10px">ยุคก่อนจัดเลย์เอาต์ด้วย float และ position ปัจจุบันใช้ Flexbox และ Grid ซึ่งง่ายและคาดเดาผลได้มากกว่า</p>
+</section>
+
+<section class="slide" data-title="4.11 Flexbox">
+  <p class="kicker">4.11 CSS Flexbox (Coyier, n.d.-a)</p>
+  <h2>Flexbox: จัดเรียงแนวเดียว (1 มิติ)</h2>
+  <div class="grid2" style="grid-template-columns:420px 1fr;align-items:start">
+    <div>
+      <div class="sel-row">
+        <label for="fd">flex-direction</label><select id="fd"><option>row</option><option>row-reverse</option><option>column</option></select>
+        <label for="jc">justify-content</label><select id="jc"><option>flex-start</option><option>center</option><option>flex-end</option><option selected>space-between</option><option>space-around</option><option>space-evenly</option></select>
+        <label for="ai">align-items</label><select id="ai"><option>stretch</option><option selected>center</option><option>flex-start</option><option>flex-end</option></select>
+        <label for="fw">flex-wrap</label><select id="fw"><option>nowrap</option><option>wrap</option></select>
+        <label for="fn">จำนวนกล่อง</label><input type="range" id="fn" min="2" max="6" value="4">
+      </div>
+      <div class="code" id="fCode" style="font-size:16px;margin-top:12px;white-space:pre"></div>
+    </div>
+    <div class="play" id="flexP"></div>
+  </div>
+</section>
+
+<section class="slide" data-title="4.9 Grid">
+  <p class="kicker">4.9 CSS Grid Layout Module (Coyier, n.d.-b)</p>
+  <h2>Grid: จัดเป็นตาราง 2 มิติ (แถวและคอลัมน์)</h2>
+  <div class="grid2" style="grid-template-columns:420px 1fr;align-items:start">
+    <div>
+      <div class="sel-row">
+        <label for="gc">columns</label><select id="gc"><option>1fr 1fr 1fr</option><option>200px 1fr</option><option>1fr 2fr 1fr</option><option>repeat(4, 1fr)</option><option>repeat(auto-fit, minmax(120px, 1fr))</option></select>
+        <label for="gg">gap</label><input type="range" id="gg" min="0" max="30" value="12">
+        <label for="gs">กล่อง 1</label><select id="gs"><option value="">ปกติ</option><option value="span 2">กว้าง 2 คอลัมน์</option><option value="1 / -1">เต็มแถว (header)</option></select>
+      </div>
+      <div class="code" id="gCode" style="font-size:16px;margin-top:12px;white-space:pre"></div>
+    </div>
+    <div class="play" id="gridP"></div>
+  </div>
+</section>
+
+<section class="slide" data-title="Flexbox หรือ Grid">
+  <p class="kicker">เลือกเครื่องมือให้ถูกงาน</p>
+  <h2>Flexbox หรือ Grid?</h2>
+  <div class="grid2" style="align-items:start">
+    <div class="card hov"><h3 style="color:#4338ca">Flexbox (1 มิติ)</h3><ul class="b"><li style="font-size:21px">เรียงแถวเดียวหรือคอลัมน์เดียว</li><li style="font-size:21px">ขนาดตามเนื้อหา กระจายพื้นที่ที่เหลือ</li><li style="font-size:21px">เช่น แถบเมนู ปุ่มเรียงกัน จัดของกลางกล่อง</li></ul></div>
+    <div class="card hov"><h3 style="color:#059669">Grid (2 มิติ)</h3><ul class="b"><li style="font-size:21px">คุมทั้งแถวและคอลัมน์พร้อมกัน</li><li style="font-size:21px">วางโครงหน้าก่อน แล้วใส่เนื้อหา</li><li style="font-size:21px">เช่น โครงหน้าเว็บ แกลเลอรี การ์ดสินค้า</li></ul></div>
+  </div>
+  <div class="card" style="margin-top:16px"><p><b>ใช้ร่วมกันได้:</b> Grid วางโครงหน้า แล้วใช้ Flexbox จัดของภายในแต่ละส่วน เช่น เมนูใน header</p></div>
+  <div class="links" style="margin-top:12px">
+    <a class="lk" href="https://css-tricks.com/snippets/css/a-guide-to-flexbox/" target="_blank" rel="noopener noreferrer"><b>A Complete Guide to Flexbox</b><span>CSS-Tricks</span></a>
+    <a class="lk" href="https://css-tricks.com/snippets/css/complete-guide-grid/" target="_blank" rel="noopener noreferrer"><b>A Complete Guide to Grid</b><span>CSS-Tricks</span></a>
+    <a class="lk" href="https://flexboxfroggy.com/#th" target="_blank" rel="noopener noreferrer"><b>Flexbox Froggy</b><span>เกมฝึก Flexbox (มีภาษาไทย)</span></a>
+  </div>
+</section>
+
+<section class="slide" data-title="4.10 เอฟเฟกต์ CSS3">
+  <p class="kicker">4.10 CSS3</p>
+  <h2>มุมโค้ง เงา ไล่สี หมุน และการเปลี่ยนแบบนุ่มนวล</h2>
+  <div class="grid2" style="grid-template-columns:420px 1fr;align-items:start">
+    <div>
+      <div class="rg">
+        <label for="e1">radius</label><input type="range" id="e1" min="0" max="75" value="16"><output id="oe1"></output>
+        <label for="e2">shadow</label><input type="range" id="e2" min="0" max="40" value="14"><output id="oe2"></output>
+        <label for="e3">rotate</label><input type="range" id="e3" min="-45" max="45" value="0"><output id="oe3"></output>
+        <label for="e4">scale</label><input type="range" id="e4" min="5" max="13" value="10"><output id="oe4"></output>
+      </div>
+      <label style="display:flex;gap:10px;align-items:center;margin-top:10px"><input type="checkbox" id="e5" checked style="width:22px;height:22px"> linear-gradient</label>
+      <div class="code" id="eCode" style="font-size:15px;margin-top:10px;white-space:pre"></div>
+    </div>
+    <div class="pv" style="height:390px;display:flex;align-items:center;justify-content:center"><div class="fx" id="fxBox">CSS3</div></div>
+  </div>
+</section>
+
+<section class="slide" data-title="4.12.1 ตัวแปร CSS">
+  <p class="kicker">4.12.1 ตัวแปรใน CSS (Custom Properties) (Verou, 2015)</p>
+  <h2>เปลี่ยนค่าที่เดียว ทั้งเว็บเปลี่ยนตาม</h2>
+  <div class="grid2" style="align-items:start">
+    <div>
+      <div class="tabs" id="themeTabs"><button class="on" data-t="0">ธีมมหาวิทยาลัย</button><button data-t="1">ธีมร้านกาแฟ</button><button data-t="2">โหมดมืด</button></div>
+      <div class="code" id="vCode" style="font-size:16px;white-space:pre;height:300px"></div>
+    </div>
+    <div class="pv" id="vDemo" style="height:370px;padding:0">
+      <div style="background:var(--pri);color:var(--on);padding:16px 20px;font-weight:700;font-size:22px">ร้านกาแฟบ้านสวน</div>
+      <div style="background:var(--bg);color:var(--txt);padding:18px 20px;height:100%">
+        <p style="font-size:20px">เมล็ดคั่วสดทุกเช้า</p>
+        <div style="display:flex;gap:10px;margin-top:12px"><div style="flex:1;border:2px solid var(--pri);border-radius:var(--r);padding:12px;font-size:18px">ลาเต้ 55</div><div style="flex:1;border:2px solid var(--pri);border-radius:var(--r);padding:12px;font-size:18px">มอคค่า 60</div></div>
+        <button style="margin-top:16px;font:inherit;font-size:19px;border:0;border-radius:var(--r);padding:10px 18px;background:var(--acc);color:#111">สั่งเลย</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-title="4.12.2 หน่วยวัดสมัยใหม่">
+  <p class="kicker">4.12.2 หน่วยวัดสัมพัทธ์สมัยใหม่ (Modern CSS Units)</p>
+  <h2>px คงที่ แต่ rem, %, vw ปรับตามบริบท</h2>
+  <div class="grid2" style="grid-template-columns:400px 1fr;align-items:start">
+    <div>
+      <label for="uR">ขนาดตัวอักษรพื้นฐาน (root) <span id="uRo"></span></label><input type="range" id="uR" min="12" max="24" value="16">
+      <label for="uC" style="display:block;margin-top:12px">ความกว้างกล่องแม่ / จอ <span id="uCo"></span></label><input type="range" id="uC" min="200" max="600" value="500">
+      <div class="card" style="margin-top:14px"><p style="font-size:18px"><b>rem</b> อิงขนาดตัวอักษรของ &lt;html&gt; · <b>em</b> อิงของตัวแม่ · <b>%</b> อิงความกว้างตัวแม่ · <b>vw/vh</b> 1% ของความกว้าง/สูงจอ · ผู้ใช้ที่ขยายตัวอักษรในเบราว์เซอร์จะได้ขนาดที่เหมาะสมเมื่อใช้ rem</p></div>
+    </div>
+    <div class="pv" id="uBox" style="height:380px"></div>
+  </div>
+</section>
+
+<section class="slide" data-title="4.13 มีเดียคิวรี">
+  <p class="kicker">4.13 Responsive Web Design ด้วย Media Queries (Keith, 2016)</p>
+  <h2>ลากแถบเลื่อน เปลี่ยนความกว้างจอ</h2>
+  <div class="grid2" style="grid-template-columns:380px 1fr;align-items:start">
+    <div>
+      <label for="mqW">ความกว้างจอจำลอง <b id="mqO"></b></label><input type="range" id="mqW" min="320" max="760" value="760">
+      <div style="display:flex;gap:8px;margin-top:8px"><button class="chip" data-w="360">มือถือ</button><button class="chip" data-w="600">แท็บเล็ต</button><button class="chip" data-w="760">คอมพิวเตอร์</button></div>
+      <div class="code" style="font-size:14px;margin-top:12px;white-space:pre">.cards { display: grid;
+  grid-template-columns: 1fr; }
+
+@media (min-width: 480px) {
+  .cards { grid-template-columns:
+           repeat(2, 1fr); } }
+
+@media (min-width: 700px) {
+  .cards { grid-template-columns:
+           repeat(3, 1fr); } }</div>
+      <p class="muted" style="font-size:16px;margin-top:8px">เขียนสำหรับจอเล็กก่อน แล้วค่อยเพิ่มสำหรับจอใหญ่ (Mobile-First ในบทที่ 5)</p>
+    </div>
+    <div style="height:440px;display:flex;justify-content:center;align-items:flex-start;background:#e5e7eb;border-radius:14px;padding:10px;overflow:hidden"><iframe id="mqFr" class="run" title="หน้าเว็บจำลองตามความกว้างจอ" style="height:420px;transition:width .3s"></iframe></div>
+  </div>
+</section>
+
+<section class="slide" data-title="ภารกิจ: ซ่อมเลย์เอาต์แตก">
+  <p class="kicker">4.14.2 ใช้ AI ค้นหาและแก้ปัญหาเลย์เอาต์แตก (CSS Debugging)</p>
+  <h2>ภารกิจ: ซ่อมการ์ดที่ล้นจอ</h2>
+  <div class="grid2" style="grid-template-columns:420px 1fr;align-items:start">
+    <div>
+      <p style="font-size:19px">อาการ: บนจอมือถือ การ์ดล้นออกนอกกรอบ ภาพใหญ่เกินกล่อง ติ๊กวิธีแก้ทีละข้อ</p>
+      <div class="fixes" style="margin-top:8px">
+        <label><input type="checkbox" data-f="bs"> <code>* { box-sizing: border-box; }</code></label>
+        <label><input type="checkbox" data-f="wrap"> <code>.row { flex-wrap: wrap; }</code></label>
+        <label><input type="checkbox" data-f="img"> <code>img { max-width: 100%; }</code></label>
+        <label><input type="checkbox" data-f="w"> <code>.card { width: 300px }</code> → <code>flex: 1 1 140px</code></label>
+      </div>
+      <div class="card" id="fixTxt" style="margin-top:10px;min-height:100px"></div>
+    </div>
+    <div style="display:flex;justify-content:center;background:#e5e7eb;border-radius:14px;padding:10px;height:440px"><iframe id="fixFr" class="run" title="การ์ดที่กำลังซ่อม" style="width:340px;height:420px"></iframe></div>
+  </div>
+</section>
+
+<section class="slide" data-title="4.14 ใช้ AI ช่วยเขียน CSS">
+  <p class="kicker">4.14 AI-Assisted CSS Development (Verou, 2015; Coyier, n.d.-a, n.d.-b)</p>
+  <h2>บอกอาการให้ชัด แล้วตรวจคำตอบเสมอ</h2>
+  <div class="grid2" style="align-items:start">
+    <div>
+      <div class="code" style="white-space:pre-wrap;font-size:15px;height:300px">บทบาท: ผู้เชี่ยวชาญ CSS Layout
+ปัญหา: บนจอกว้าง 360px การ์ด 3 ใบล้นออกนอกจอ
+สิ่งที่คาดหวัง: จอเล็กเรียง 1 คอลัมน์ จอ ≥ 700px เรียง 3 คอลัมน์
+โค้ดปัจจุบัน: [วาง HTML และ CSS ที่เกี่ยวข้อง]
+ข้อจำกัด: ไม่ใช้เฟรมเวิร์ก ใช้ CSS Grid หรือ Flexbox
+ผลลัพธ์: บอกสาเหตุ บรรทัดที่ต้องแก้ และโค้ดที่แก้แล้ว</div>
+      <p class="muted" style="font-size:17px;margin-top:8px">ตัวอย่างกรอบคำสั่งจากหัวข้อ 4.14.4</p>
+    </div>
+    <div class="card"><h3>ข้อควรระวัง (4.14.3)</h3><ul class="b"><li style="font-size:20px">AI อาจแก้ด้วย !important หรือ position: absolute ซึ่งทำให้ดูแลยาก</li><li style="font-size:20px">อาจใช้ฟีเจอร์ใหม่ที่เบราว์เซอร์บางตัวยังไม่รองรับ ตรวจที่ caniuse.com</li><li style="font-size:20px">ทดสอบหลายขนาดจอด้วย DevTools (Ctrl+Shift+M)</li><li style="font-size:20px">อธิบายได้ว่าแต่ละบรรทัดทำอะไร และบันทึกการใช้ AI</li></ul></div>
+  </div>
+  <div class="links" style="margin-top:12px">
+    <a class="lk" href="https://developer.mozilla.org/en-US/docs/Web/CSS" target="_blank" rel="noopener noreferrer"><b>MDN: CSS</b><span>คู่มืออ้างอิงคุณสมบัติทั้งหมด</span></a>
+    <a class="lk" href="https://caniuse.com/" target="_blank" rel="noopener noreferrer"><b>Can I use</b><span>ตรวจการรองรับของเบราว์เซอร์</span></a>
+    <a class="lk" href="https://resilientwebdesign.com/" target="_blank" rel="noopener noreferrer"><b>Resilient Web Design</b><span>Keith (2016) อ่านฟรีออนไลน์</span></a>
+  </div>
+</section>
+
+<section class="slide" data-title="สนามทดลอง Responsive Card Grid">
+  <p class="kicker">4.14.5 Responsive Card Grid ด้วย CSS Grid และตัวแปร CSS</p>
+  <h2>สนามทดลอง: แก้แล้วรันได้ทันที</h2>
+  <div class="grid2" style="align-items:start">
+    <div><textarea id="playTa" spellcheck="false" style="font-family:Mono,monospace;font-size:14px;height:430px">&lt;style&gt;
+  :root { --pri: #4338ca; --gap: 14px; --r: 12px; }
+  .cards {
+    display: grid; gap: var(--gap);
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+  .card {
+    border: 2px solid var(--pri); border-radius: var(--r);
+    padding: 12px; transition: transform .2s;
+  }
+  .card:hover { transform: translateY(-4px); }
+  .card h3 { margin: 0 0 6px; color: var(--pri); }
+&lt;/style&gt;
+&lt;div class="cards"&gt;
+  &lt;div class="card"&gt;&lt;h3&gt;ลาเต้&lt;/h3&gt;55 บาท&lt;/div&gt;
+  &lt;div class="card"&gt;&lt;h3&gt;มอคค่า&lt;/h3&gt;60 บาท&lt;/div&gt;
+  &lt;div class="card"&gt;&lt;h3&gt;ชาเขียว&lt;/h3&gt;50 บาท&lt;/div&gt;
+  &lt;div class="card"&gt;&lt;h3&gt;โกโก้&lt;/h3&gt;50 บาท&lt;/div&gt;
+&lt;/div&gt;</textarea>
+      <div style="display:flex;gap:10px;margin-top:10px;align-items:center"><button class="btn" id="playRun">▶ ลองรัน</button><label for="playW" style="font-weight:400">กว้าง</label><input type="range" id="playW" min="280" max="560" value="560" style="width:180px"></div></div>
+    <div style="display:flex;justify-content:center;background:#e5e7eb;border-radius:14px;padding:10px;height:490px"><iframe class="run" id="playFr" title="ผลลัพธ์สนามทดลอง" style="height:470px;width:560px;transition:width .3s"></iframe></div>
+  </div>
+</section>
+
+<section class="slide dark" data-title="สรุปและงานที่ได้รับมอบหมาย">
+  <p class="kicker">สรุปบทที่ 4</p>
+  <h2>HTML คือโครง CSS คือหน้าตาและการจัดวาง</h2>
+  <div class="grid2" style="align-items:start">
+    <ul class="b" style="color:#fff">
+      <li>กฎ CSS = ตัวเลือก + คุณสมบัติ: ค่า · ใช้ไฟล์ External เป็นหลัก</li>
+      <li>กฎขัดกัน: !important → Specificity → เขียนทีหลังชนะ</li>
+      <li>Box Model: content, padding, border, margin · ใช้ border-box</li>
+      <li>Flexbox 1 มิติ · Grid 2 มิติ</li>
+      <li>ตัวแปร หน่วย rem/% และ @media ทำให้เว็บรองรับทุกจอ</li>
+    </ul>
+    <div class="card" style="color:var(--ink)"><h3>งานสัปดาห์นี้</h3><p>ใบงานที่ 4: ตกแต่งหน้าเว็บจากใบงานที่ 3 ด้วย Box Model, Modern Units, Flexbox และ Grid</p><p style="margin-top:8px">แบบฝึกหัดท้ายบทที่ 4 ส่งผ่าน Google Classroom</p><p style="margin-top:10px"><a href="../worksheets/ws4.html" target="_blank">เปิดใบงานที่ 4</a> · <a href="../chapters/ch4.html" target="_blank">อ่านบทที่ 4</a></p></div>
+  </div>
+  <div class="foot"><span>อ้างอิงหลัก: เอกสารประกอบการสอนบทที่ 4; จีราวุธ วารินทร์ (2564); Keith (2016); Verou (2015); Coyier (n.d.-a, n.d.-b); MDN (2024a)</span><span></span></div>
+</section>
+
+</div>
+<script src="deck.js" data-ch="4" data-back="../chapters/ch4.html"></script>
+<script>
+(function(){
+var $=function(id){return document.getElementById(id)};
+var all=function(q){return [].slice.call(document.querySelectorAll(q))};
+// 3 anatomy
+var AN={sel:"<b>ตัวเลือก (Selector)</b> บอกว่าจะจัดรูปแบบเอลิเมนต์ใด ในที่นี้คือทุก &lt;h1&gt;",prop:"<b>คุณสมบัติ (Property)</b> สิ่งที่ต้องการเปลี่ยน เช่น color, font-size, margin",val:"<b>ค่า (Value)</b> ค่าที่กำหนดให้คุณสมบัติ เช่น #4338ca หรือ 2rem",decl:"<b>การประกาศ (Declaration)</b> คู่ คุณสมบัติ: ค่า; ปิดท้ายด้วยเครื่องหมาย ; ทุกครั้ง",block:"<b>บล็อกการประกาศ</b> อยู่ในวงเล็บปีกกา { } รวมหลายการประกาศไว้ด้วยกัน"};
+function an(p){all("#anat span").forEach(function(s){s.classList.toggle("hl",s.dataset.p===p||(p==="decl"&&(s.dataset.p==="prop"||s.dataset.p==="val")))});all("#parts button").forEach(function(b){b.classList.toggle("on",b.dataset.p===p)});$("anatTxt").innerHTML='<p style="font-size:23px">'+AN[p]+'</p>'}
+all("#parts button").forEach(function(b){b.onclick=function(){an(b.dataset.p)}});all("#anat span").forEach(function(s){s.onmouseenter=function(){an(s.dataset.p)}});
+// 4 ways
+var WY=[['<p style="color: red; font-size: 20px;">\n  ลดราคาวันนี้\n</p>','<h3>Inline (ในแท็ก)</h3><ul class="b"><li style="font-size:20px">✓ เร็ว ใช้กับจุดเดียว</li><li style="font-size:20px">✗ ซ้ำซ้อน แก้ทั้งเว็บยาก</li><li style="font-size:20px">✗ ความสำคัญสูงมาก ทับกฎอื่น</li></ul>'],
+['<head>\n  <style>\n    p { color: red; }\n    .sale { font-weight: bold; }\n  </style>\n</head>','<h3>Internal (ใน &lt;head&gt;)</h3><ul class="b"><li style="font-size:20px">✓ คุมทั้งหน้าในที่เดียว</li><li style="font-size:20px">✗ ใช้ได้เฉพาะหน้านั้น</li><li style="font-size:20px">เหมาะกับหน้าเดี่ยว หรือทดลอง</li></ul>'],
+['<!-- index.html -->\n<head>\n  <link rel="stylesheet" href="css/style.css">\n</head>\n\n/* css/style.css */\np { color: red; }\n.sale { font-weight: bold; }','<h3>External (ไฟล์ .css แยก)</h3><ul class="b"><li style="font-size:20px">✓ ใช้ร่วมกันทุกหน้า แก้ที่เดียว</li><li style="font-size:20px">✓ แยกโครงสร้างกับหน้าตาชัดเจน</li><li style="font-size:20px">✓ เบราว์เซอร์แคชไฟล์ได้ โหลดเร็วขึ้น</li></ul>']];
+function wy(k){$("wayCode").textContent=WY[k][0];$("wayTxt").innerHTML=WY[k][1]}
+Deck.tabs($("wayTabs"),function(b){wy(b.dataset.w)});wy(0);
+// 5 selectors
+function sel(){var v=$("selIn").value.trim(),box=$("sbox");all("#sbox .m").forEach(function(e){e.classList.remove("m")});
+ all("#selPre button").forEach(function(b){b.classList.toggle("on",b.dataset.s===v)});
+ if(!v){$("selMsg").textContent="พิมพ์ตัวเลือก";return}
+ try{var r=[].slice.call(box.querySelectorAll(v)).filter(function(e){return box.contains(e)});r.forEach(function(e){e.classList.add("m")});$("selMsg").innerHTML='<b style="color:#059669">เลือกได้ '+r.length+' เอลิเมนต์</b>';$("selIn").style.borderColor="var(--brand)"}
+ catch(e){$("selMsg").innerHTML='<b style="color:#dc2626">ตัวเลือกนี้เขียนไม่ถูกต้อง</b>';$("selIn").style.borderColor="#dc2626"}}
+$("selIn").oninput=sel;all("#selPre button").forEach(function(b){b.onclick=function(){$("selIn").value=b.dataset.s;sel()}});sel();
+// 6 specificity
+function spec(s){s=s.replace(/"[^"]*"|'[^']*'/g,"");var a=(s.match(/#[\w-]+/g)||[]).length;s=s.replace(/#[\w-]+/g," ");
+ var pe=(s.match(/::[\w-]+/g)||[]).length;s=s.replace(/::[\w-]+/g," ");
+ var b=(s.match(/\.[\w-]+|\[[^\]]*\]|:[\w-]+(\([^)]*\))?/g)||[]).length;s=s.replace(/\.[\w-]+|\[[^\]]*\]|:[\w-]+(\([^)]*\))?/g," ");
+ var c=(s.match(/(^|[\s>+~,(])[a-zA-Z][\w-]*/g)||[]).length+pe;return[a,b,c]}
+function card(v){return '<div style="background:#dc2626"><b>'+v[0]+'</b><small>ID</small></div><div style="background:#d97706"><b>'+v[1]+'</b><small>Class · [attr] · :pseudo</small></div><div style="background:#2563eb"><b>'+v[2]+'</b><small>แท็ก</small></div>'}
+function sp(){var A=spec($("spA").value),B=spec($("spB").value);$("specA").innerHTML=card(A);$("specB").innerHTML=card(B);
+ var w=0;for(var k=0;k<3;k++){if(A[k]!==B[k]){w=A[k]>B[k]?1:2;break}}
+ var why=w?("ตัดสินที่หลักที่ "+(k+1)+" ("+["ID","Class","แท็ก"][k]+")"):"ความจำเพาะเท่ากัน กฎที่เขียนทีหลัง (B) ชนะ";if(!w)w=2;
+ $("spWin").innerHTML='<h3>ผลลัพธ์</h3><p style="font-size:30px;font-weight:700;color:'+(w===1?"#dc2626":"#2563eb")+'">กฎ '+(w===1?"A ชนะ → ข้อความสีแดง":"B ชนะ → ข้อความสีน้ำเงิน")+'</p><p style="font-size:19px">'+why+'</p>'}
+$("spA").oninput=sp;$("spB").oninput=sp;all("[data-ab]").forEach(function(b){b.onclick=function(){var p=b.dataset.ab.split("|");$("spA").value=p[0];$("spB").value=p[1];sp()}});sp();
+// 7 color
+function lum(h){var r=[1,3,5].map(function(i){var c=parseInt(h.substr(i,2),16)/255;return c<=.03928?c/12.92:Math.pow((c+.055)/1.055,2.4)});return .2126*r[0]+.7152*r[1]+.0722*r[2]}
+function rgb(h){return[1,3,5].map(function(i){return parseInt(h.substr(i,2),16)})}
+function hsl(h){var c=rgb(h).map(function(x){return x/255}),mx=Math.max.apply(0,c),mn=Math.min.apply(0,c),l=(mx+mn)/2,s=0,hh=0,d=mx-mn;if(d){s=l>.5?d/(2-mx-mn):d/(mx+mn);hh=mx===c[0]?(c[1]-c[2])/d+(c[1]<c[2]?6:0):mx===c[1]?(c[2]-c[0])/d+2:(c[0]-c[1])/d+4;hh*=60}return Math.round(hh)+", "+Math.round(s*100)+"%, "+Math.round(l*100)+"%"}
+function col(){var f=$("cFg").value,b=$("cBg").value,L1=lum(f),L2=lum(b),r=(Math.max(L1,L2)+.05)/(Math.min(L1,L2)+.05);
+ $("cSw").style.color=f;$("cSw").style.background=b;
+ $("cCode").textContent="background: "+b+";\nbackground: rgb("+rgb(b).join(", ")+");\nbackground: hsl("+hsl(b)+");\ncolor: "+f+";";
+ var ok=r>=4.5,ok2=r>=3;$("cRatio").innerHTML='<p style="font-size:22px">อัตราส่วนความต่าง <b>'+r.toFixed(2)+' : 1</b></p><p style="font-size:19px;color:'+(ok?"#059669":"#dc2626")+'">'+(ok?"✓ ผ่าน":"✗ ไม่ผ่าน")+' ข้อความปกติ (ต้อง ≥ 4.5:1)</p><p style="font-size:19px;color:'+(ok2?"#059669":"#dc2626")+'">'+(ok2?"✓ ผ่าน":"✗ ไม่ผ่าน")+' ข้อความขนาดใหญ่ (ต้อง ≥ 3:1)</p>'}
+$("cFg").oninput=col;$("cBg").oninput=col;all("[data-c]").forEach(function(b){b.onclick=function(){var p=b.dataset.c.split("|");$("cFg").value=p[0];$("cBg").value=p[1];col()}});col();
+// 8 box model
+function bm(){var W=+$("bmW").value,P=+$("bmP").value,B=+$("bmB").value,M=+$("bmM").value,S=$("bmS").checked;
+ $("oW").textContent=W;$("oP").textContent=P;$("oB").textContent=B;$("oM").textContent=M;
+ var cw=S?Math.max(0,W-2*P-2*B):W,tot=cw+2*P+2*B;
+ $("bm1").style.padding=M+"px";$("bm2").style.padding=B+"px";$("bm3").style.padding=P+"px";$("bm4").style.width=cw+"px";$("bm4").style.height="70px";$("bm4").textContent=cw+" × 70";
+ $("bmTxt").innerHTML='<p style="font-size:18px;font-family:Mono,monospace">'+(S?"border-box: width รวม padding และ border แล้ว<br>":"content-box: width คือเนื้อหาอย่างเดียว<br>")+'กว้างที่เห็นจริง = '+(S?W:(W+" + 2×"+P+" + 2×"+B))+' = <b>'+tot+'px</b><br>กินพื้นที่รวม margin = <b>'+(tot+2*M)+'px</b></p>'}
+["bmW","bmP","bmB","bmM","bmS"].forEach(function(i){$(i).oninput=bm;$(i).onchange=bm});bm();
+// 9 display
+var DS={block:"<b>block</b> ขึ้นบรรทัดใหม่ และกว้างเต็มตัวแม่ เช่น div, p, h1, section",inline:"<b>inline</b> อยู่ในบรรทัดเดียวกับข้อความ กำหนด width/height ไม่ได้ เช่น span, a, strong",'inline-block':"<b>inline-block</b> อยู่ในบรรทัดเดียวกัน แต่กำหนด width, height, padding ได้เต็มที่ เหมาะกับปุ่ม",none:"<b>none</b> ซ่อนเอลิเมนต์และไม่กินพื้นที่ (ต่างจาก visibility: hidden ที่ยังกินพื้นที่)"};
+function ds(d){all("#dispBox .dx").forEach(function(e,k){e.style.cssText="display:"+d+";background:"+["#c7d2fe","#fbcfe8","#bbf7d0"][k]+";border:2px solid #6366f1;border-radius:8px;padding:8px 12px;margin:4px;width:150px;height:56px;box-sizing:border-box"});$("dispTxt").innerHTML='<p style="font-size:21px">'+DS[d]+'</p><div class="code" style="font-size:16px;margin-top:12px">.box {\n  display: '+d+';\n  width: 150px; height: 56px;\n}</div>'}
+Deck.tabs($("dispTabs"),function(b){ds(b.dataset.d)});ds("block");
+// 10 flex
+function fx(){var n=+$("fn").value,c=$("flexP"),h="";for(var k=1;k<=n;k++)h+='<div class="it">'+k+'</div>';c.innerHTML=h;
+ c.style.cssText="display:flex;flex-direction:"+$("fd").value+";justify-content:"+$("jc").value+";align-items:"+$("ai").value+";flex-wrap:"+$("fw").value+";gap:10px;height:360px";
+ if($("fw").value==="wrap")all("#flexP .it").forEach(function(e){e.style.minWidth="150px"});
+ $("fCode").textContent=".container {\n  display: flex;\n  flex-direction: "+$("fd").value+";\n  justify-content: "+$("jc").value+";\n  align-items: "+$("ai").value+";\n  flex-wrap: "+$("fw").value+";\n  gap: 10px;\n}"}
+["fd","jc","ai","fw","fn"].forEach(function(i){$(i).oninput=fx;$(i).onchange=fx});fx();
+// 11 grid
+function gr(){var c=$("gridP"),h="";for(var k=1;k<=7;k++)h+='<div class="it">'+k+'</div>';c.innerHTML=h;
+ c.style.cssText="display:grid;grid-template-columns:"+$("gc").value+";gap:"+$("gg").value+"px;align-content:start;height:360px;overflow:auto";
+ var s=$("gs").value,f=c.firstChild;if(s)f.style.gridColumn=s;
+ $("gCode").textContent=".container {\n  display: grid;\n  grid-template-columns:\n    "+$("gc").value+";\n  gap: "+$("gg").value+"px;\n}"+(s?"\n.item1 { grid-column: "+s+"; }":"")}
+["gc","gg","gs"].forEach(function(i){$(i).oninput=gr;$(i).onchange=gr});gr();
+// 13 effects
+function ef(){var r=$("e1").value,s=$("e2").value,ro=$("e3").value,sc=($("e4").value/10).toFixed(1),g=$("e5").checked;
+ $("oe1").textContent=r;$("oe2").textContent=s;$("oe3").textContent=ro+"°";$("oe4").textContent=sc;
+ var bg=g?"linear-gradient(135deg, #6366f1, #ec4899)":"#6366f1";var b=$("fxBox");b.style.borderRadius=r+"px";b.style.boxShadow="0 "+Math.round(s/2)+"px "+s+"px rgba(0,0,0,.35)";b.style.transform="rotate("+ro+"deg) scale("+sc+")";b.style.background=bg;
+ $("eCode").textContent=".box {\n  border-radius: "+r+"px;\n  box-shadow: 0 "+Math.round(s/2)+"px "+s+"px rgba(0,0,0,.35);\n  background: "+bg+";\n  transform: rotate("+ro+"deg) scale("+sc+");\n  transition: all .4s;\n}"}
+["e1","e2","e3","e4","e5"].forEach(function(i){$(i).oninput=ef;$(i).onchange=ef});ef();
+// 14 variables
+var TH=[{pri:"#1e3a8a",on:"#fff",bg:"#f8fafc",txt:"#0f172a",acc:"#fbbf24",r:"6px"},{pri:"#78350f",on:"#fff",bg:"#fffbeb",txt:"#451a03",acc:"#fcd34d",r:"16px"},{pri:"#a78bfa",on:"#111",bg:"#111827",txt:"#e5e7eb",acc:"#34d399",r:"10px"}];
+function th(k){var t=TH[k],d=$("vDemo"),code=":root {\n";Object.keys(t).forEach(function(p){d.style.setProperty("--"+p,t[p]);code+="  --"+p+": "+t[p]+";\n"});
+ $("vCode").textContent=code+"}\n\n.header { background: var(--pri);\n          color: var(--on); }\n.btn { background: var(--acc);\n       border-radius: var(--r); }"}
+Deck.tabs($("themeTabs"),function(b){th(b.dataset.t)});th(0);
+// 15 units
+function un(){var R=+$("uR").value,C=+$("uC").value;$("uRo").textContent=R+"px";$("uCo").textContent=C+"px";
+ var rows=[["200px",200,"คงที่เสมอ"],["10rem",10*R,"= 10 × "+R],["50%",C/2,"= ครึ่งของ "+C],["40vw",C*.4,"= 40% ของจอ "+C]];
+ $("uBox").innerHTML='<div style="width:'+C+'px;max-width:100%;border:2px dashed #94a3b8;border-radius:10px;padding:10px;transition:width .3s"><p class="muted" style="font-size:15px">กล่องแม่ / จอ กว้าง '+C+'px</p>'+rows.map(function(r){return '<div class="unit"><span>'+r[0]+'</span><i style="width:'+Math.min(r[1],C-170)+'px"></i></div><p class="muted" style="font-size:14px;margin:-4px 0 6px 160px">'+Math.round(r[1])+'px '+r[2]+'</p>'}).join("")+'<p style="font-size:'+R+'px;margin-top:8px">ข้อความ 1rem = '+R+'px</p></div>'}
+$("uR").oninput=un;$("uC").oninput=un;un();
+// 16 media query
+var MQ='<style>body{font-family:sans-serif;margin:0;padding:12px}header{background:#4338ca;color:#fff;padding:10px 14px;border-radius:8px;font-weight:700}.cards{display:grid;grid-template-columns:1fr;gap:10px;margin-top:10px}.card{background:#eef2ff;border-radius:8px;padding:14px;font-size:17px}.tag{font-size:13px;color:#6b7280}@media (min-width:480px){.cards{grid-template-columns:repeat(2,1fr)}header::after{content:" · แท็บเล็ต"}}@media (min-width:700px){.cards{grid-template-columns:repeat(3,1fr)}header::after{content:" · คอมพิวเตอร์"}}@media (max-width:479px){header::after{content:" · มือถือ"}}</style><header>ร้านกาแฟบ้านสวน</header><div class="cards"><div class="card">ลาเต้<div class="tag">55 บาท</div></div><div class="card">มอคค่า<div class="tag">60 บาท</div></div><div class="card">ชาเขียว<div class="tag">50 บาท</div></div><div class="card">โกโก้<div class="tag">50 บาท</div></div><div class="card">อเมริกาโน<div class="tag">45 บาท</div></div><div class="card">น้ำส้ม<div class="tag">40 บาท</div></div></div>';
+$("mqFr").srcdoc='<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'+MQ;
+function mq(){var w=$("mqW").value;$("mqO").textContent=w+"px";$("mqFr").style.width=w+"px"}
+$("mqW").oninput=mq;all("[data-w]").forEach(function(b){if(b.closest("#stage")&&b.classList.contains("chip"))b.onclick=function(){$("mqW").value=b.dataset.w;mq()}});mq();
+// 17 fix
+function fix(){var f={};all(".fixes input").forEach(function(i){f[i.dataset.f]=i.checked});
+ var css="body{font-family:sans-serif;margin:0;padding:10px}"+(f.bs?"*{box-sizing:border-box}":"")+".row{display:flex;gap:10px;"+(f.wrap?"flex-wrap:wrap;":"")+"}.card{"+(f.w?"flex:1 1 140px;":"width:300px;flex-shrink:0;")+"border:2px solid #6366f1;border-radius:10px;padding:12px}"+(f.img?"img{max-width:100%;height:auto}":"")+".card p{margin:6px 0 0}";
+ var src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="420" height="140"><rect width="420" height="140" fill="#f59e0b"/><text x="210" y="82" font-size="28" text-anchor="middle" fill="white" font-family="sans-serif">image 420px</text></svg>');
+ $("fixFr").srcdoc='<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>'+css+'</style><div class="row"><div class="card"><img src="'+src+'" alt="ภาพเมนู"><p>ลาเต้ 55 บาท</p></div><div class="card"><p>มอคค่า 60 บาท</p></div><div class="card"><p>ชาเขียว 50 บาท</p></div></div>';
+ var n=Object.keys(f).filter(function(k){return f[k]}).length;
+ $("fixTxt").innerHTML=n===4?'<p style="font-size:20px;color:#059669"><b>ซ่อมสำเร็จ ✓</b> การ์ดเรียงลงมาพอดีจอ ภาพย่อตามกล่อง นี่คือสิ่งที่ควรได้จาก AI: สาเหตุ + จุดที่แก้ + เหตุผล</p>':'<p style="font-size:19px">แก้แล้ว '+n+' / 4 ข้อ · สังเกตว่าแต่ละข้อแก้อาการใด</p>'}
+all(".fixes input").forEach(function(i){i.onchange=fix});fix();
+// 19 playground
+function pw(){$("playFr").style.width=$("playW").value+"px"}
+$("playRun").onclick=function(){Deck.run("playTa","playFr")};$("playW").oninput=pw;Deck.run("playTa","playFr");
+})();
+</script>
+</body>
+</html>

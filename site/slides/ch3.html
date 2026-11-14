@@ -21,8 +21,8 @@
 .typed{color:#fcd34d}
 .caret{display:inline-block;width:10px;height:20px;background:#fcd34d;vertical-align:middle;animation:blink 1s steps(1) infinite}
 @keyframes blink{50%{opacity:0}}
-.prev{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;min-height:120px;overflow:auto}
-.prev h1,.prev h2,.prev h3,.prev h4,.prev h5,.prev h6{margin:0;line-height:1.3}
+.pv{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;min-height:120px;overflow:auto}
+.pv h1,.pv h2,.pv h3,.pv h4,.pv h5,.pv h6{margin:0;line-height:1.3}
 .tg{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 .tg button{font:inherit;text-align:left;background:#fff;border:2px solid var(--line);border-radius:14px;padding:12px 14px;cursor:pointer;transition:all .2s}
 .tg button b{font-family:Mono,monospace;font-size:20px;color:var(--brand)}
@@ -156,7 +156,7 @@ canvas{background:#fff;border:1px solid var(--line);border-radius:12px;cursor:cr
       <div class="code" id="hCode" style="font-size:20px"></div>
       <ul class="b" style="margin-top:14px"><li style="font-size:21px">หนึ่งหน้าควรมี &lt;h1&gt; เดียว คือชื่อหลักของหน้า</li><li style="font-size:21px">ไม่ข้ามระดับ เช่น h2 แล้วกระโดดไป h5</li><li style="font-size:21px">อย่าใช้ h เพียงเพราะอยากได้ตัวใหญ่ ใช้ CSS แทน</li></ul>
     </div>
-    <div class="prev" id="hPrev" style="min-height:360px"></div>
+    <div class="pv" id="hPrev" style="min-height:360px"></div>
   </div>
 </section>
 
@@ -172,7 +172,7 @@ canvas{background:#fff;border:1px solid var(--line);border-radius:12px;cursor:cr
       <button data-v="meta"><b>&lt;meta&gt;</b><span>ข้อมูลของหน้า</span></button>
       <button data-v="link"><b>&lt;link&gt;</b><span>เชื่อมไฟล์ CSS</span></button>
     </div>
-    <div><div class="code" id="vCode" style="font-size:16px;white-space:pre-wrap;min-height:110px"></div><div class="prev" id="vPrev" style="margin-top:12px;min-height:170px"></div></div>
+    <div><div class="code" id="vCode" style="font-size:16px;white-space:pre-wrap;min-height:110px"></div><div class="pv" id="vPrev" style="margin-top:12px;min-height:170px"></div></div>
   </div>
 </section>
 
@@ -204,7 +204,7 @@ canvas{background:#fff;border:1px solid var(--line);border-radius:12px;cursor:cr
   <div class="ctrl"><label>แถว <input type="number" id="tR" min="1" max="6" value="3"></label><label>คอลัมน์ <input type="number" id="tC" min="1" max="6" value="3"></label><label class="row" style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="tH" checked style="width:20px;height:20px"> แถวหัวตาราง &lt;th&gt;</label><label class="row" style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="tS" style="width:20px;height:20px"> รวมช่อง colspan="2"</label></div>
   <div class="grid2" style="align-items:start;margin-top:14px">
     <div class="code" id="tCode" style="font-size:15px;height:400px"></div>
-    <div class="prev tbl" id="tPrev" style="min-height:200px"></div>
+    <div class="pv tbl" id="tPrev" style="min-height:200px"></div>
   </div>
 </section>
 
