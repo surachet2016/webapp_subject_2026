@@ -37,6 +37,7 @@
 <h2 id="s2">เนื้อหา</h2>
 <h2 id="s3">8.1 การสร้างฐานข้อมูล MySQLi ด้วยโปรแกรม PhpMyAdmin (ชาญชัย ศุภอรรถกร, 2564; ชวลิต มนต์เทวัญ, 2565)</h2>
 <p>PHP MySQL Configuration &amp; Connect to Database (mysqli) สำหรับ mysqli ไม่ใช่ function ใหม่ เริ่มมีมาตั้งแต่รุ่น PHP 5.0 เป็นต้นไป เป็น function ที่ถูกออกแบบไว้ติดต่อกับ Database ของ MySQL โดยเฉพาะ ซึ่งจะมาทำหน้าที่ทดแทน function เดิมอย่าง mysql เหตุผลหลักก็คือ function ของ mysql ธรรมดาถูกประกาศเลิกใช้ (deprecated) ใน PHP 5.5 และถูกถอดออกถาวรตั้งแต่ PHP 7.0 มันค่อนข้างจะโบราณ และมีช่องโหว์เยอะ (หมายถึง เมื่อเขียนแล้วผู้ใช้มักจะทำช่องโหว์ไว้) ฉะนั้น mysqli ซึ่งเป็น function ปัจจุบันที่กำลังถูกแทนที่ mysql มันได้ถูกออกแบบให้ทำงานได้ดีกว่าเดิม ทำงานได้เร็ว และที่สำคัญ มันปลอดภัยกกว่าการใช้ในรูปแบบเดิม ๆ มาก เช่น รองรับแนวคิด OOP ขึ้น การเขียนในรูปแบบของ Parameters Query และ Prepared Statement ที่จะผิดช่องโหว์ของการเกิดข้อผิดพลาดในการ Query ที่เกิดจากการรับค่าในรูปแบบต่าง ๆ รวมทั้งป้องกันการ Hack ผ่านพวก SQL Injection ได้เป็นอย่างดี<br>    สำหรับ mysqli สามารถใช้ได้ตั้งแต่ PHP 5.0เป็นต้นไป ซึ่งในมาตรฐาน PHP 7 และ PHP 8.x ในปัจจุบัน ส่วนขยาย mysql เดิมได้ถูกยกเลิก (Removed) ไปอย่างถาวรแล้ว และกำหนดให้ใช้ส่วนขยาย mysqli หรือ PDO เป็นมาตรฐานหลัก และ PHP Version ใหม่ ๆ ก็เปิด mysqli ให้ทันที หรือในการติดตั้งเองจำเป็นจะต้องเปิดใช้งาน php_mysqli.dll ซึ่งเป็น extension จะต้องหาไฟล์ php_mysqli.dll ที่ตรงกับ Version ของ PHP ที่เรียกใช้ด้วย</p>
+<p>ที่มาของตัวอย่าง: ลำดับหัวข้อ 8.1–8.11 และโครงสร้างของตัวอย่างในหัวข้อเหล่านี้ปรับจากชุดบทเรียน PHP &amp; MySQL (mysqli) ของ ThaiCreate.Com (ThaiCreate.Com, n.d.) ส่วนข้อมูลในตัวอย่างเป็นข้อมูลสมมติที่ผู้จัดทำกำหนดเอง</p>
 <p><strong>สร้างฐานข้อมูลชื่อ db_test </strong></p>
 <p><strong>สร้างตารางชื่อ customer และป้อนข้อมูลตัวอย่างดังต่อไปนี้</strong></p>
 <div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>CREATE TABLE `customer` (
@@ -49,10 +50,10 @@
   PRIMARY KEY  (`CustomerID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO `customer` VALUES (&#x27;C001&#x27;, &#x27;Win Weerachai&#x27;, &#x27;&#x27;, &#x27;TH&#x27;, 1000000, 600000);
-INSERT INTO `customer` VALUES (&#x27;C002&#x27;, &#x27;John  Smith&#x27;, &#x27;&#x27;, &#x27;UK&#x27;, 2000000, 800000);
-INSERT INTO `customer` VALUES (&#x27;C003&#x27;, &#x27;Jame Born&#x27;, &#x27;&#x27;, &#x27;US&#x27;, 3000000, 600000);
-INSERT INTO `customer` VALUES (&#x27;C004&#x27;, &#x27;Chalee Angel&#x27;, &#x27;&#x27;, &#x27;US&#x27;, 4000000, 100000);</code></pre></div>
+INSERT INTO `customer` VALUES (&#x27;C001&#x27;, &#x27;Somchai Jaidee&#x27;, &#x27;somchai.jaidee@example.com&#x27;, &#x27;TH&#x27;, 1000000, 600000);
+INSERT INTO `customer` VALUES (&#x27;C002&#x27;, &#x27;Anna Taylor&#x27;, &#x27;anna.taylor@example.com&#x27;, &#x27;UK&#x27;, 2000000, 800000);
+INSERT INTO `customer` VALUES (&#x27;C003&#x27;, &#x27;Kenji Sato&#x27;, &#x27;kenji.sato@example.com&#x27;, &#x27;US&#x27;, 3000000, 600000);
+INSERT INTO `customer` VALUES (&#x27;C004&#x27;, &#x27;Maria Lopez&#x27;, &#x27;maria.lopez@example.com&#x27;, &#x27;US&#x27;, 4000000, 100000);</code></pre></div>
 <p>กดปุ่ม Go เพื่อทำการป้อนข้อมูล</p>
 <h3 id="s4">8.1.1 การกำหนดความสัมพันธ์ระหว่างตารางด้วย Foreign Key</h3>
 <p>Foreign Key (คีย์นอก) คือคอลัมน์ในตารางหนึ่งที่อ้างอิงคีย์หลัก (Primary Key) ของอีกตารางหนึ่ง เพื่อรักษาความถูกต้องของความสัมพันธ์ เช่น คำสั่งซื้อต้องอ้างถึงลูกค้าที่มีอยู่จริง ข้อกำหนดคือคอลัมน์ทั้งสองต้องมีชนิดข้อมูลตรงกัน และตารางต้องใช้เอนจิน InnoDB (ตัวอย่างต่อไปนี้ใช้ตาราง customer ที่สร้างไว้ในหัวข้อ 8.1)</p>
@@ -92,7 +93,7 @@ DELETE FROM customer WHERE CustomerID = &#x27;C001&#x27;;                  -- �
 <p>หมายเหตุ: ตัวอย่างโค้ดในบทนี้ใช้ Prepared Statements ผูกค่าตัวแปรด้วย mysqli_stmt_bind_param() และใช้ htmlspecialchars() เมื่อแสดงข้อมูลบนหน้าเว็บ เพื่อป้องกันช่องโหว่ SQL Injection และ XSS (อธิบายหลักการเพิ่มเติมในหัวข้อ 8.12) รหัสผ่านฐานข้อมูลของ root ใน XAMPP เริ่มต้นเป็นค่าว่าง หากตั้งรหัสผ่านไว้ให้แก้ในบรรทัด mysqli_connect() ให้ตรงกัน</p>
 <div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;html&gt;
 &lt;head&gt;
-&lt;title&gt;ThaiCreate.Com PHP &amp; MySQL (mysqli)&lt;/title&gt;
+&lt;title&gt;ตัวอย่าง PHP และ MySQLi&lt;/title&gt;
 &lt;/head&gt;
 &lt;body&gt;
 &lt;?php
@@ -204,7 +205,7 @@ mysqli_close($conn);</code></pre></div>
 &lt;/html&gt;</code></pre></div>
 <p>แสดงผลลัพธ์</p>
 <h2 id="s7">8.4 การเพิ่มข้อมูลลงในฐานข้อมูล MySQLi</h2>
-<p><strong>PHP MySQL Add/Insert Data Record (mysqli)</strong> เป็นตัวอย่างของ <strong>mysqli </strong>การเขียน <strong>PHP </strong>เพื่อ <strong>Insert </strong>หรือ<strong>เพิ่ม</strong><strong> </strong><strong>Add</strong><strong> </strong>ข้อมูลลงใน <strong>Database ของ MySQL </strong>โดยใช้ function ต่าง ๆ ของ <strong>mysqli </strong>ผ่านการ <strong>query </strong>ด้วยคำสั่ง <strong>insert</strong></p>
+<p><strong>PHP MySQL Add/Insert Data Record (mysqli)</strong> เป็นตัวอย่างของ <strong>mysqli </strong>การเขียน <strong>PHP </strong>เพื่อ <strong>Insert </strong>หรือ<strong>เพิ่ม Add </strong>ข้อมูลลงใน <strong>Database ของ MySQL </strong>โดยใช้ function ต่าง ๆ ของ <strong>mysqli </strong>ผ่านการ <strong>query </strong>ด้วยคำสั่ง <strong>insert</strong></p>
 <p>รูปแบบการใช้งาน</p>
 <div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>$stmt = mysqli_prepare($conn,
     &quot;INSERT INTO table_name (Col1, Col2, Col3) VALUES (?, ?, ?)&quot;);
@@ -216,7 +217,7 @@ mysqli_stmt_execute($stmt);</code></pre></div>
 <p>สร้างไฟล์ add.php</p>
 <div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;html&gt;
 &lt;head&gt;
-&lt;title&gt;ThaiCreate.Com PHP &amp; MySQL (mysqli)&lt;/title&gt;
+&lt;title&gt;ตัวอย่าง PHP และ MySQLi&lt;/title&gt;
 &lt;/head&gt;
 &lt;body&gt;
 &lt;form action=&quot;save.php&quot; name=&quot;frmAdd&quot; method=&quot;post&quot;&gt;
@@ -288,7 +289,7 @@ mysqli_stmt_execute($stmt);</code></pre></div>
 <p>ให้นักศึกษาตรวจสอบข้อมูลใน list.php</p>
 <p>แสดงผลข้อมูล</p>
 <h2 id="s8">8.5 การแก้ไขข้อมูลใน MySQLi</h2>
-<p>     <strong>PHP MySQL Edit/Update Data Record(</strong><strong>mysqli</strong><strong>)</strong> เป็นตัวอย่างของ <strong>mysqli</strong><strong> </strong>การเขียน <strong>PHP </strong>เพื่อ <strong>Edit/Update</strong> หรือ<strong>แก้ไข</strong>ข้อมูลใน <strong>Database </strong><strong>ของ</strong><strong> MySQL </strong>โดยใช้ function ต่าง ๆ ของ <strong>mysqli</strong><strong> </strong>ผ่านการเขียน <strong>query </strong>ด้วยคำสั่ง <strong>SQL Update </strong>ผ่าน <strong>MySQL Database</strong></p>
+<p>     <strong>PHP MySQL Edit/Update Data Record(mysqli)</strong> เป็นตัวอย่างของ <strong>mysqli </strong>การเขียน <strong>PHP </strong>เพื่อ <strong>Edit/Update</strong> หรือ<strong>แก้ไข</strong>ข้อมูลใน <strong>Database ของ MySQL </strong>โดยใช้ function ต่าง ๆ ของ <strong>mysqli </strong>ผ่านการเขียน <strong>query </strong>ด้วยคำสั่ง <strong>SQL Update </strong>ผ่าน <strong>MySQL Database</strong></p>
 <p><strong>Syntax รูปแบบการใช้งาน</strong></p>
 <div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>$stmt = mysqli_prepare($conn,
     &quot;UPDATE table_name SET Col1 = ?, Col2 = ? WHERE Col3 = ?&quot;);
@@ -298,7 +299,7 @@ mysqli_stmt_execute($stmt);</code></pre></div>
 <p>แก้ไขไฟล์ list.php ใหม่ดังนี้</p>
 <div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;html&gt;
 &lt;head&gt;
-&lt;title&gt;ThaiCreate.Com PHP &amp; MySQL (mysqli)&lt;/title&gt;
+&lt;title&gt;ตัวอย่าง PHP และ MySQLi&lt;/title&gt;
 &lt;/head&gt;
 &lt;body&gt;
 &lt;?php
@@ -445,7 +446,7 @@ mysqli_close($conn);</code></pre></div>
 <p>เมื่อกดปุ่ม submit</p>
 <p>ตรวจสอบข้อมูลใน list.php</p>
 <h2 id="s9">8.6 การลบข้อมูลใน MySQLi</h2>
-<p><strong>PHP MySQL Delete Data Record/Confirm Delete</strong><strong> (</strong><strong>mysqli</strong><strong>)</strong> บทความนี้จะเป็นตัวอย่างของ <strong>mysqli</strong><strong> </strong>การเขียน <strong>PHP </strong>เพื่อ <strong>Delete</strong> หรือ<strong>ลบ</strong> ข้อมูลใน <strong>Database </strong><strong>ของ</strong><strong> MySQL </strong>โดยใช้ function ต่าง ๆ ของ <strong>mysqli</strong><strong> </strong>ผ่านการเขียน Query ด้วย <strong>SQL Delete </strong><strong>บน</strong><strong> MySQL Database</strong></p>
+<p><strong>PHP MySQL Delete Data Record/Confirm Delete</strong><strong> (mysqli)</strong> บทความนี้จะเป็นตัวอย่างของ <strong>mysqli </strong>การเขียน <strong>PHP </strong>เพื่อ <strong>Delete</strong> หรือ<strong>ลบ</strong> ข้อมูลใน <strong>Database ของ MySQL </strong>โดยใช้ function ต่าง ๆ ของ <strong>mysqli </strong>ผ่านการเขียน Query ด้วย <strong>SQL Delete บน MySQL Database</strong></p>
 <p><strong>Syntax รูปแบบการใช้งาน</strong></p>
 <div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>$stmt = mysqli_prepare($conn, &quot;DELETE FROM customer WHERE CustomerID = ?&quot;);
 mysqli_stmt_bind_param($stmt, &quot;s&quot;, $customerID);
@@ -454,7 +455,7 @@ mysqli_stmt_execute($stmt);</code></pre></div>
 <p>แก้ไขไฟล์ list.php ดังนี้</p>
 <div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;html&gt;
 &lt;head&gt;
-&lt;title&gt;ThaiCreate.Com PHP &amp; MySQL (mysqli)&lt;/title&gt;
+&lt;title&gt;ตัวอย่าง PHP และ MySQLi&lt;/title&gt;
 &lt;/head&gt;
 &lt;body&gt;
 &lt;?php
@@ -540,7 +541,7 @@ mysqli_close($conn);</code></pre></div>
 <p>เมื่อกดปุ่ม ตกลง</p>
 <p>ตรวจสอบข้อมูลการลบใน list.php</p>
 <h2 id="s10">8.7 การค้นหาข้อมูลใน MySQLi</h2>
-<p><strong>PHP MySQL Search Data Record (</strong><strong>mysqli</strong><strong>)</strong> เป็นตัวอย่างของ <strong>mysqli</strong><strong> </strong>และการค้นหา (<strong>Search</strong>) ข้อมูล การเขียน <strong>PHP </strong>เพื่อค้นหาข้อมูลจาก <strong>Database </strong><strong>ของ</strong><strong> MySQL </strong>มาแสดงผลทางหน้าจอด้วย function ต่างๆ ของ <strong>mysqli</strong><strong> </strong>ทำงานร่วมกับการ fetch ข้อมูลในรูปแบบของ array</p>
+<p><strong>PHP MySQL Search Data Record (mysqli)</strong> เป็นตัวอย่างของ <strong>mysqli </strong>และการค้นหา (<strong>Search</strong>) ข้อมูล การเขียน <strong>PHP </strong>เพื่อค้นหาข้อมูลจาก <strong>Database ของ MySQL </strong>มาแสดงผลทางหน้าจอด้วย function ต่างๆ ของ <strong>mysqli </strong>ทำงานร่วมกับการ fetch ข้อมูลในรูปแบบของ array</p>
 <p><strong>Syntax รูปแบบการใช้งาน</strong></p>
 <div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>$keyword = &quot;%&quot; . $strKeyword . &quot;%&quot;;
 $stmt = mysqli_prepare($conn, &quot;SELECT * FROM customer WHERE Name LIKE ?&quot;);
@@ -630,7 +631,7 @@ mysqli_stmt_execute($stmt);
 $query = mysqli_stmt_get_result($stmt);
 // $row_start  คือ ลำดับของแถวเริ่มต้น (offset เริ่มที่ 0)
 // $per_page   คือ จำนวนแถวที่แสดงต่อหน้า</code></pre></div>
-<p><strong>Syntax การหา Row Start </strong><strong>และ</strong><strong> Row End</strong></p>
+<p><strong>Syntax การหา Row Start และ Row End</strong></p>
 <div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>$per_page = 2;   // จำนวนแถวต่อหน้า
 $page = 1;
 
@@ -746,8 +747,8 @@ mysqli_close($conn);</code></pre></div>
 <p>หน้าที่1</p>
 <p>หน้าที่2</p>
 <h2 id="s12">8.9 การรวมแสดง เพิ่ม ลบ แก้ไข ในหน้าเดียวกัน</h2>
-<p><strong>การ</strong><strong> </strong><strong>Select</strong><strong> </strong><strong>Inse</strong><strong>rt Update </strong><strong>และ</strong><strong> Delete </strong><strong>หรือเรียกรวมๆว่า</strong><strong> </strong><strong>CRUD(</strong><strong>Create</strong><strong> </strong><strong>Read</strong><strong> </strong><strong>Update</strong><strong> </strong><strong>Delete</strong><strong>)</strong></p>
-<p><strong>PHP MySQL Add/Insert/Edit/Delete to MySQL On Same Form</strong> เป็นตัวอย่างการเขียน <strong>PHP &amp; MySQL</strong> ให้สามารถ <strong>เพิ่ม</strong><strong>/</strong><strong>แก้ไข</strong><strong>/</strong><strong>ลบ</strong> ข้อมูลใน <strong>Form </strong><strong>เดียวกัน</strong> คล้าย ๆ กับ <strong>DataGrid</strong> หรือ <strong>GridView</strong></p>
+<p><strong>การ Select Insert Update และ Delete หรือเรียกรวมๆว่า CRUD(Create Read Update Delete)</strong></p>
+<p><strong>PHP MySQL Add/Insert/Edit/Delete to MySQL On Same Form</strong> เป็นตัวอย่างการเขียน <strong>PHP &amp; MySQL</strong> ให้สามารถ <strong>เพิ่ม/แก้ไข/ลบ</strong> ข้อมูลใน <strong>Form เดียวกัน</strong> คล้าย ๆ กับ <strong>DataGrid</strong> หรือ <strong>GridView</strong></p>
 <p>ตัวอย่างการเขียนโปรแกรม</p>
 <div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;html&gt;
 &lt;head&gt;
@@ -893,7 +894,7 @@ mysqli_close($conn);</code></pre></div>
 <p>สร้างไฟล์ upload1.php</p>
 <div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;html&gt;
 &lt;head&gt;
-&lt;title&gt;ThaiCreate.Com Tutorial&lt;/title&gt;
+&lt;title&gt;ตัวอย่าง PHP และ MySQLi&lt;/title&gt;
 &lt;/head&gt;
 &lt;body&gt;
     &lt;form name=&quot;form1&quot; method=&quot;post&quot; action=&quot;upload2.php&quot; enctype=&quot;multipart/form-data&quot;&gt;
@@ -1096,8 +1097,8 @@ mysqli_close($conn);</code></pre></div>
     mysqli_set_charset($conn, &quot;utf8mb4&quot;);
 
     $users = [</code></pre></div>
-<p>        [&quot;win&quot;,  &quot;win123&quot;,  &quot;Weerachai Nukitram&quot;, &quot;USER&quot;],</p>
-<p>        [&quot;chai&quot;, &quot;chai123&quot;, &quot;Surachai Sirisart&quot;,  &quot;ADMIN&quot;],</p>
+<p>        [&quot;win&quot;,  &quot;win123&quot;,  &quot;Napat Srisuk&quot;, &quot;USER&quot;],</p>
+<p>        [&quot;chai&quot;, &quot;chai123&quot;, &quot;Kanya Thongdee&quot;,  &quot;ADMIN&quot;],</p>
 <div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>    ];
 
     $stmt = mysqli_prepare($conn,
@@ -1118,7 +1119,7 @@ mysqli_close($conn);</code></pre></div>
 <p>สร้างไฟล์ชื่อ login.php</p>
 <div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;html&gt;
 &lt;head&gt;
-&lt;title&gt;ThaiCreate.Com Tutorials&lt;/title&gt;
+&lt;title&gt;ตัวอย่าง PHP และ MySQLi&lt;/title&gt;
 &lt;/head&gt;
 &lt;body&gt;
 &lt;form name=&quot;form1&quot; method=&quot;post&quot; action=&quot;check_login.php&quot;&gt;
@@ -1205,7 +1206,7 @@ $objResult = mysqli_fetch_array(mysqli_stmt_get_result($stmt), MYSQLI_ASSOC);</c
 <p>?&gt;</p>
 <div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;html&gt;
 &lt;head&gt;
-&lt;title&gt;ThaiCreate.Com Tutorials&lt;/title&gt;
+&lt;title&gt;ตัวอย่าง PHP และ MySQLi&lt;/title&gt;
 &lt;/head&gt;
 &lt;body&gt;</code></pre></div>
 <p>  Welcome to Admin Page! &lt;br&gt;</p>
@@ -1250,7 +1251,7 @@ $objResult = mysqli_fetch_array(mysqli_stmt_get_result($stmt), MYSQLI_ASSOC);</c
 <p>?&gt;</p>
 <div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;html&gt;
 &lt;head&gt;
-&lt;title&gt;ThaiCreate.Com Tutorials&lt;/title&gt;
+&lt;title&gt;ตัวอย่าง PHP และ MySQLi&lt;/title&gt;
 &lt;/head&gt;
 &lt;body&gt;</code></pre></div>
 <p>  Welcome to User Page! &lt;br&gt;</p>
@@ -1290,7 +1291,7 @@ $objResult = mysqli_fetch_array(mysqli_stmt_get_result($stmt), MYSQLI_ASSOC);</c
 <p>?&gt;</p>
 <div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;html&gt;
 &lt;head&gt;
-&lt;title&gt;ThaiCreate.Com Tutorials&lt;/title&gt;
+&lt;title&gt;ตัวอย่าง PHP และ MySQLi&lt;/title&gt;
 &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot;&gt;&lt;/head&gt;
 &lt;body&gt;
 &lt;form name=&quot;form1&quot; method=&quot;post&quot; action=&quot;save_profile.php&quot;&gt;</code></pre></div>
@@ -1396,20 +1397,18 @@ mysqli_close($conn);</code></pre></div>
 <p>เมื่อกดปุ่ม Edit จะสามารถแก้ไข Password และ Name ได้</p>
 <p>เมื่อ Login เป็น Admin</p>
 <p>กดปุ่ม Login จะเข้าสู่หน้า Admin Page</p>
-<h2 id="s15">8.12 การป้องกันช่องโหว่ SQL Injection ด้วย Prepared Statements (Open Web Application Security Project [OWASP], 2023; The PHP Group, 2024)</h2>
+<h2 id="s15">8.12 การป้องกันช่องโหว่ SQL Injection ด้วย Prepared Statements (Open Web Application Security Project [OWASP], 2023e; The PHP Group, 2024a)</h2>
 <p>SQL Injection เป็นหนึ่งในภัยคุกคามความปลอดภัยทางเว็บที่อันตรายที่สุด (OWASP Top 10) เกิดจากการที่นักพัฒนานำค่าตัวแปรจากผู้ใช้ (เช่น $_POST หรือ $_GET) ไปเชื่อมต่อกับสตริงคำสั่ง SQL โดยตรง ทำให้ผู้ไม่ประสงค์ดีสามารถแทรกคำสั่งอันตราย เช่น &#x27; OR &#x27;1&#x27;=&#x27;1 เพื่อเข้าสู่ระบบโดยไม่ต้องทราบรหัสผ่าน หรือขโมยข้อมูลทั้งฐานข้อมูลได้</p>
 <h3 id="s16">8.12.1 การทำงานและไวยากรณ์ของ Prepared Statements ใน MySQLi</h3>
 <p>Prepared Statements แก้ปัญหานี้โดยการแยก &quot;โครงสร้างคำสั่ง SQL&quot; ออกจาก &quot;ข้อมูลนำเข้า (Data Parameters)&quot; โดยส่งคำสั่งไปคอมไพล์บนเซิร์ฟเวอร์ฐานข้อมูลก่อน แล้วจึงส่งค่าข้อมูลไปผูก (Bind) ในภายหลัง ข้อมูลจึงไม่มีทางถูกตีความเป็นคำสั่ง SQL ได้:<br><br>// ตัวอย่างการเขียน Prepared Statement สำหรับตรวจสอบการล็อกอินอย่างปลอดภัย<br>$stmt = $conn-&gt;prepare(&quot;SELECT id, username, password_hash FROM users WHERE email = ? AND status = ?&quot;);<br>$status = &#x27;active&#x27;;<br>$stmt-&gt;bind_param(&quot;ss&quot;, $email, $status); // &quot;ss&quot; หมายถึงสตริง 2 ตัว (s=string, i=integer, d=double, b=blob)<br>$stmt-&gt;execute();<br>$result = $stmt-&gt;get_result();<br>if ($row = $result-&gt;fetch_assoc()) {<br>    if (password_verify($password, $row[&#x27;password_hash&#x27;])) {<br>        // ล็อกอินสำเร็จ<br>    }<br>}<br>$stmt-&gt;close();</p>
-<p><em>(ที่มา: Open Web Application Security Project [OWASP], 2023)</em></p>
-<h2 id="s17">8.13 การจัดการทรานแซกชันเพื่อความสมบูรณ์ของข้อมูล (Silberschatz, Korth, &amp; Sudarshan, 2024; MySQL AB &amp; Oracle, 2024) (Database Transactions &amp; Rollback)</h2>
+<h2 id="s17">8.13 การจัดการทรานแซกชันเพื่อความสมบูรณ์ของข้อมูล (Silberschatz, Korth, &amp; Sudarshan, 2019; MySQL AB &amp; Oracle, 2024) (Database Transactions &amp; Rollback)</h2>
 <p>ในระบบงานธุรกิจที่มีการปรับปรุงข้อมูลหลายตารางพร้อมกัน เช่น ระบบสั่งซื้อสินค้า (ต้องบันทึกใบสั่งซื้อ, บันทึกรายการสินค้า, และตัดสต็อกสินค้า) หากเกิดข้อผิดพลาดระหว่างขั้นตอน ข้อมูลจะเกิดความไม่สอดคล้องกัน (Inconsistency) MySQLi จึงรองรับคุณสมบัติ Transactions ตามหลักการ ACID โดยทำงานร่วมกับเอนจิน InnoDB ดังนี้:<br><br>$conn-&gt;begin_transaction(); // เริ่มต้นทรานแซกชัน<br>try {<br>    $conn-&gt;query(&quot;INSERT INTO orders (user_id, total) VALUES (1, 500)&quot;);<br>    $orderId = $conn-&gt;insert_id;<br>    $conn-&gt;query(&quot;INSERT INTO order_items (order_id, product_id, qty) VALUES ($orderId, 10, 2)&quot;);<br>    $conn-&gt;query(&quot;UPDATE products SET stock = stock - 2 WHERE id = 10&quot;);<br><br>    $conn-&gt;commit(); // ยืนยันการบันทึกทั้งหมดเมื่อทุกคำสั่งทำงานถูกต้อง<br>    echo &quot;การสั่งซื้อเสร็จสมบูรณ์&quot;;<br>} catch (Exception $e) {<br>    $conn-&gt;rollback(); // ยกเลิกการเปลี่ยนแปลงทั้งหมด ย้อนกลับสู่สถานะเดิม<br>    echo &quot;เกิดข้อผิดพลาด ยกเลิกรายการ: &quot; . $e-&gt;getMessage();<br>}</p>
-<p><em>(ที่มา: Silberschatz, Korth, &amp; Sudarshan, 2024)</em></p>
 <h2 id="s18">8.14 การเขียน MySQLi เชิงวัตถุ (OOP) และตัวอย่างโค้ดมาตรฐาน (ชาญชัย ศุภอรรถกร, 2564; ชวลิต มนต์เทวัญ, 2565)</h2>
 <p>การเขียนโปรแกรมจัดการฐานข้อมูลในระดับวิชาชีพ ต้องละทิ้งรูปแบบ Procedural ดั้งเดิมและเปลี่ยนมาใช้รูปแบบเชิงวัตถุ (Object-Oriented Programming: OOP) ควบคู่กับมาตรฐานความมั่นคงปลอดภัย (ชาญชัย ศุภอรรถกร, 2564; ชวลิต มนต์เทวัญ, 2565):</p>
 <p>• การตั้งค่ารหัสอักขระ utf8mb4: ต้องเรียกใช้ $mysqli-&gt;set_charset(&quot;utf8mb4&quot;) ทุกครั้ง เพื่อรองรับภาษาไทยครบถ้วนและอีโมจิโดยไม่เกิดปัญหาเครื่องหมายคำถาม (?)</p>
 <h3 id="s19">8.14.1 ตัวอย่างโค้ด MySQLi OOP: Prepared Statements และ Database Transactions</h3>
 <p>&lt;?php<br>// เชื่อมต่อฐานข้อมูลแบบ Object-Oriented<br>$mysqli = new mysqli(&quot;localhost&quot;, &quot;db_user&quot;, &quot;db_pass&quot;, &quot;course_db&quot;);<br>if ($mysqli-&gt;connect_errno) {<br>    die(&quot;การเชื่อมต่อฐานข้อมูลล้มเหลว: &quot; . $mysqli-&gt;connect_error);<br>}<br>$mysqli-&gt;set_charset(&quot;utf8mb4&quot;); // รองรับภาษาไทย 100%<br><br>// เริ่มต้นระบบธุรกรรม (Database Transaction)<br>$mysqli-&gt;begin_transaction();<br><br>try {<br>    // 1. เพิ่มข้อมูลการลงทะเบียน (Prepared Statements)<br>    $stmt1 = $mysqli-&gt;prepare(&quot;INSERT INTO enrollments (student_id, course_code, registered_at) VALUES (?, ?, NOW())&quot;);<br>    $studentId = 101;<br>    $courseCode = &#x27;07-034-210&#x27;;<br>    $stmt1-&gt;bind_param(&quot;is&quot;, $studentId, $courseCode);<br>    $stmt1-&gt;execute();<br>    $stmt1-&gt;close();<br><br>    // 2. ปรับลดที่นั่งว่างในรายวิชา<br>    $stmt2 = $mysqli-&gt;prepare(&quot;UPDATE courses SET available_seats = available_seats - 1 WHERE course_code = ? AND available_seats &gt; 0&quot;);<br>    $stmt2-&gt;bind_param(&quot;s&quot;, $courseCode);<br>    $stmt2-&gt;execute();<br>    <br>    if ($stmt2-&gt;affected_rows === 0) {<br>        throw new Exception(&quot;ที่นั่งในรายวิชาเต็มแล้ว ไม่สามารถลงทะเบียนได้&quot;);<br>    }<br>    $stmt2-&gt;close();<br><br>    // ยืนยันการทำงานของทั้งสองคำสั่ง (Commit)<br>    $mysqli-&gt;commit();<br>    echo &quot;ลงทะเบียนเรียนสำเร็จ&quot;;<br>} catch (Exception $e) {<br>    // ยกเลิกการทำงานทั้งหมดหากมีข้อผิดพลาด (Rollback)<br>    $mysqli-&gt;rollback();<br>    echo &quot;เกิดข้อผิดพลาดในการลงทะเบียน: &quot; . $e-&gt;getMessage();<br>}<br>$mysqli-&gt;close();<br>?&gt;</p>
-<h2 id="s20">8.15 เทคนิคการใช้ AI ช่วยงานฐานข้อมูลและตรวจจับช่องโหว่ความปลอดภัย (Silberschatz et al., 2024; ชวลิต มนต์เทวัญ, 2565) (AI-Assisted Database &amp; Security Audit)</h2>
+<h2 id="s20">8.15 เทคนิคการใช้ AI ช่วยงานฐานข้อมูลและตรวจจับช่องโหว่ความปลอดภัย (Silberschatz et al., 2019; ชวลิต มนต์เทวัญ, 2565) (AI-Assisted Database &amp; Security Audit)</h2>
 <p>การออกแบบฐานข้อมูลและการเขียนคิวรีที่มีประสิทธิภาพและปลอดภัย เป็นทักษะที่ต้องอาศัยประสบการณ์สูง ผู้ช่วย AI (เช่น GitHub Copilot, Cursor, ChatGPT) สามารถทำหน้าที่เป็นผู้ช่วยสถาปนิกฐานข้อมูลและผู้ตรวจสอบความปลอดภัยได้ดังนี้</p>
 <h3 id="s21">8.15.1 การใช้ AI ช่วยออกแบบ Schema และเขียนคำสั่ง SQL เชิงซ้อน</h3>
 <p>• การสร้างโครงสร้างตารางตามหลัก Normalization (3NF): นักพัฒนาสามารถอธิบายความต้องการของระบบให้ AI ออกแบบตารางพร้อมกำหนด Foreign Keys และ Data Types ที่เหมาะสม<br>• การเขียน SQL Query ขั้นสูง: สั่งให้ AI ร่างคำสั่ง JOIN หลายตาราง, คำนวณสรุปยอดด้วย GROUP BY และ HAVING, หรือสร้าง View ได้อย่างแม่นยำ เช่น:<br>  Prompt: &quot;ช่วยเขียน SQL Query ค้นหายอดขายรวมของลูกค้าแต่ละรายในเดือนปัจจุบัน พร้อมเรียงลำดับจากมากไปน้อย และดึงเฉพาะลูกค้าที่มียอดสั่งซื้อเกิน 10,000 บาท&quot;</p>
@@ -1458,10 +1457,11 @@ mysqli_close($conn);</code></pre></div>
 <h2 id="s26">เอกสารอ้างอิง</h2>
 <p>ชาญชัย ศุภอรรถกร. (2564). สร้างเว็บแอปพลิเคชันและเชื่อมต่อฐานข้อมูลด้วย PHP + MySQL ฉบับสมบูรณ์. กรุงเทพฯ: ซิมพลิฟาย.</p>
 <p>ชวลิต มนต์เทวัญ. (2565). ระบบจัดการฐานข้อมูลเชิงสัมพันธ์และเทคนิคการเขียนคิวรีขั้นสูง. กรุงเทพฯ: สำนักพิมพ์มหาวิทยาลัยธรรมศาสตร์.</p>
-<p>MySQL AB &amp; Oracle. (2024). MySQL 8.0 Reference Manual: Relational Database System Architecture. Oracle Corporation. Retrieved from <a href="https://dev.mysql.com/doc/" target="_blank" rel="noopener noreferrer">https://dev.mysql.com/doc/</a></p>
-<p>Open Web Application Security Project [OWASP]. (2023). SQL Injection Prevention Cheat Sheet. Retrieved from <a href="https://cheatsheetseries.owasp.org/" target="_blank" rel="noopener noreferrer">https://cheatsheetseries.owasp.org/</a></p>
-<p>Silberschatz, A., Korth, H. F., &amp; Sudarshan, S. (2024). Database System Concepts (8th ed.). New York: McGraw-Hill Education.</p>
-<p>The PHP Group. (2024). PHP MySQLi Extension Documentation: Prepared Statements and Transaction Management. Retrieved from <a href="https://www.php.net/manual/en/book.mysqli.php" target="_blank" rel="noopener noreferrer">https://www.php.net/manual/en/book.mysqli.php</a></p>
+<p>MySQL AB &amp; Oracle. (2024). MySQL 8.0 reference manual. Oracle Corporation. Retrieved from <a href="https://dev.mysql.com/doc/refman/8.0/en/" target="_blank" rel="noopener noreferrer">https://dev.mysql.com/doc/refman/8.0/en/</a></p>
+<p>Open Web Application Security Project [OWASP]. (2023e). SQL injection prevention. OWASP Cheat Sheet Series. Retrieved from <a href="https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html" target="_blank" rel="noopener noreferrer">https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html</a></p>
+<p>Silberschatz, A., Korth, H. F., &amp; Sudarshan, S. (2019). Database System Concepts (7th ed.). New York: McGraw-Hill Education.</p>
+<p>The PHP Group. (2024a). MySQLi. PHP Manual. Retrieved from <a href="https://www.php.net/manual/en/book.mysqli.php" target="_blank" rel="noopener noreferrer">https://www.php.net/manual/en/book.mysqli.php</a></p>
+<p>ThaiCreate.Com. (n.d.). PHP &amp; MySQL (mysqli) tutorials. Retrieved November 14, 2026, from <a href="https://www.thaicreate.com/" target="_blank" rel="noopener noreferrer">https://www.thaicreate.com/</a></p>
 <label class="donebox"><input type="checkbox" id="done"><span>ทำเครื่องหมายว่าอ่านบทนี้แล้ว</span></label>
 <div class="pager"><a class="pn" href="ch7.html"><small>บทก่อนหน้า</small><b>บทที่ 7 พื้นฐานภาษา PHP</b></a><a class="pn next" href="ch9.html"><small>บทถัดไป</small><b>บทที่ 9 การใช้โปรแกรมสำเร็จรูปเพื่อจัดทำเว็บไซต์</b></a></div>
 </article></div>

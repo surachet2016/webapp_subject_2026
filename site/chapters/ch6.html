@@ -29,7 +29,7 @@
 <ul class="meta"><li><b>29</b> นาที อ่าน</li><li><b>15</b> หัวข้อหลัก</li><li><b>14</b> ตัวอย่างลองรันได้</li></ul>
 </div></div>
 <div class="wrap layout">
-<aside class="side" aria-label="สารบัญบทนี้"><details class="tocbox" open><summary>สารบัญบทนี้</summary><ol><li><a href="#s1">บทนำ</a></li><li><a href="#s2">เนื้อหา</a></li><li><a href="#s3">6.1 ประโยชน์และบทบาทของภาษา JavaScript ในการพัฒนาเว็บ</a></li><li><a href="#s4">6.2 เริ่มต้นเขียน JavaScript</a></li><li><a href="#s5">6.3 Tag noscript</a></li><li><a href="#s6">6.4 ปุ่มสำหรับลิงก์ไปหน้าอื่น</a></li><li><a href="#s7">6.5 เพิ่มเติมสไตล์</a></li><li><a href="#s8">6.6 กล่องข้อความ (Message Box)</a></li><li><a href="#s9">6.7 การใช้งาน DOM Tree</a></li><li><a href="#s10">6.8 ไวยากรณ์ JavaScript สมัยใหม่ (Modern JavaScript: ECMAScript 6+)</a></li><li><a href="#s15">6.9 การเขียนโปรแกรมแบบอะซิงโครนัสและการรับส่งข้อมูล (Async/Await &amp; Fetch API)</a></li><li><a href="#s16">6.10 เทคนิคการใช้ AI ช่วยเขียนโค้ดและดีบัก JavaScript (AI-Assisted JS Development)</a></li><li><a href="#s23">สรุป</a></li><li><a href="#s24">แบบฝึกหัด</a></li><li><a href="#s25">เอกสารอ้างอิง</a></li></ol></details></aside>
+<aside class="side" aria-label="สารบัญบทนี้"><details class="tocbox" open><summary>สารบัญบทนี้</summary><ol><li><a href="#s1">บทนำ</a></li><li><a href="#s2">เนื้อหา</a></li><li><a href="#s3">6.1 ประโยชน์และบทบาทของภาษา JavaScript ในการพัฒนาเว็บ</a></li><li><a href="#s4">6.2 เริ่มต้นเขียน JavaScript</a></li><li><a href="#s5">6.3 Tag noscript</a></li><li><a href="#s6">6.4 ปุ่มสำหรับลิงก์ไปหน้าอื่น</a></li><li><a href="#s7">6.5 เพิ่มเติมสไตล์</a></li><li><a href="#s8">6.6 กล่องข้อความ (Message Box)</a></li><li><a href="#s9">6.7 การใช้งาน DOM Tree</a></li><li><a href="#s10">6.8 ไวยากรณ์ JavaScript สมัยใหม่ (Modern JavaScript: ECMAScript 6+)</a></li><li><a href="#s15">6.9 การเขียนโปรแกรมแบบอะซิงโครนัสและการรับส่งข้อมูล (Async/Await &amp; Fetch API)</a></li><li><a href="#s18">6.10 เทคนิคการใช้ AI ช่วยเขียนโค้ดและดีบัก JavaScript (AI-Assisted JS Development)</a></li><li><a href="#s24">สรุป</a></li><li><a href="#s25">แบบฝึกหัด</a></li><li><a href="#s26">เอกสารอ้างอิง</a></li></ol></details></aside>
 <article class="chapter prose" data-ch="6">
 <p class="note"><b>หมายเหตุ</b> หน้านี้ไม่แสดงภาพประกอบ (ดูภาพได้ในเอกสารประกอบการสอนฉบับเต็ม) ตัวอย่าง HTML ครบหน้ามีปุ่ม "ลองรัน" กดเพื่อดูผลได้ทันที</p>
 <h2 id="s1">บทนำ</h2>
@@ -38,7 +38,7 @@
 <p>JavaScript เป็นภาษาที่เป็น Script ที่อยู่ในเว็บไซต์ (ใช้ร่วมกับ HTML) เพื่อให้เว็บไซต์ของเราดูมีการเคลื่อนไหว สามารถตอบสนองผู้ใช้งานได้มากขึ้น โดยการใส่ JavaScript ลงในโค้ด HTML นั้นทำได้โดยใช้ แท็ก &lt;script&gt;  โดยจะแทรกอยู่ในแท็ก &lt;head&gt; และ แท็ก &lt;body&gt;</p>
 <h2 id="s3">6.1 ประโยชน์และบทบาทของภาษา JavaScript ในการพัฒนาเว็บ (จีราวุธ วารินทร์, 2566; Haverbeke, 2024)</h2>
 <p>JavaScript ใช้เมื่อต้องการให้เว็บเพจแสดงผลแบบเคลื่อนไหว ตอบสนองต่อผู้ใช้ หรือสั่งให้เบราว์เซอร์ทำงานตามที่ต้องการ ซึ่งเป็นงานที่เกินความสามารถของ HTML แต่ไม่จำเป็นต้องติดต่อกับเซิร์ฟเวอร์ เนื่องจาก JavaScript เป็นภาษาที่ทำงานฝั่งไคลเอนต์ โดยมีเบราว์เซอร์เป็นตัวแปลภาษา ตัวอย่างของงานที่ใช้ JavaScript เช่น</p>
-<ul><li>สร้างเมนูที่สามารถตอบสนองต่อการเอา mouse ไปชี้ได้</li><li>สร้างเครื่องคิดเลข ปฏิทิน เกม ในเว็บเพจ</li><li>เปิด, ปิด, เคลื่อนย้ายตำแหน่งของ window</li><li>ทำตัวอักษรวิ่งแบบต่างๆ</li><li>ตรวจสอบความถูกต้องของแบบฟอร์มที่ผู้ใช้กรอก ก่อนส่งข้อมูลไปยัง Server</li><li>และอื่นๆ อีกมากมายที่ไม่ต้องติดต่อกับ Server</li></ul>
+<ul><li>สร้างเมนูที่สามารถตอบสนองต่อการเอา mouse ไปชี้ได้</li><li>สร้างเครื่องคิดเลข ปฏิทิน เกม ในเว็บเพจ</li><li>เปิด, ปิด, เคลื่อนย้ายตำแหน่งของ window</li><li>ทำตัวอักษรวิ่งแบบต่าง ๆ</li><li>ตรวจสอบความถูกต้องของแบบฟอร์มที่ผู้ใช้กรอก ก่อนส่งข้อมูลไปยัง Server</li><li>และอื่นๆ อีกมากมายที่ไม่ต้องติดต่อกับ Server</li></ul>
 <h2 id="s4">6.2 เริ่มต้นเขียน JavaScript</h2>
 <p>การเขียน JavaScript บนไฟล์ HTML จะเริ่มจากการเปิดแท็ก &lt;script&gt; ก่อน ดังนี้</p>
 <div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;script&gt;&lt;/script&gt;</code></pre></div>
@@ -171,7 +171,7 @@ window.alert(&quot;Hello !   &quot; + y);
 ***ตัวแปร y จะเก็บค่าที่ได้จากการป้อนของผู้ใช้  แล้วมาแสดงใน Message Box การเตือน ซึ่งมีข้อความ Hello !</code></pre></div>
 <p> แสดงผลลัพธ์</p>
 <p>เมื่อผู้ใช้ป้อนชื่อแล้วกดปุ่ม OK จะเกิด Message Box ตามรูป</p>
-<h2 id="s9">6.7 การใช้งาน DOM Tree (Mozilla Developer Network [MDN], 2024)</h2>
+<h2 id="s9">6.7 การใช้งาน DOM Tree (Mozilla Developer Network [MDN], 2024c)</h2>
 <p>DOM หรือ Document Object Model เป็นมาตรฐานที่ช่วยให้โปรแกรมและสคริปต์ (script) สามารถเข้าถึงและแก้ไขตัวเนื้อหา โครงสร้าง และ style ของเว็บไซต์ ปัจจุบันมาตรฐาน DOM ดูแลโดย WHATWG ในรูปแบบ DOM Living Standard</p>
 <p>เมื่อเว็บไซต์มีการแสดงผล เบราว์เซอร์จะทำการสร้าง DOM ให้กับแต่ละหน้า</p>
 <p>The HTML DOM Tree of Objects (จาก w3schools.com)</p>
@@ -305,9 +305,7 @@ document.getElementById(&quot;id ของ Element&quot;).textContent = &quot;�
 <h2 id="s15">6.9 การเขียนโปรแกรมแบบอะซิงโครนัสและการรับส่งข้อมูล (Async/Await &amp; Fetch API)</h2>
 <p>ในการติดต่อกับฐานข้อมูลหรือเซิร์ฟเวอร์ภายนอกผ่าน Web API การทำงานจะใช้เวลาประมวลผลเครือข่าย JavaScript จึงใช้รูปแบบ Asynchronous เพื่อไม่ให้หน้าเว็บหยุดชะงัก (Non-blocking) โดยมีมาตรฐานการใช้งานผ่านคำสั่ง async / await ร่วมกับ fetch():<br><br>async function fetchUserData() {<br>  try {<br>    const response = await fetch(&#x27;<a href="https://api.example.com/users&#x27;" target="_blank" rel="noopener noreferrer">https://api.example.com/users&#x27;</a>);<br>    const data = await response.json();<br>    console.log(&#x27;ข้อมูลผู้ใช้:&#x27;, data);<br>  } catch (error) {<br>    console.error(&#x27;เกิดข้อผิดพลาดในการดึงข้อมูล:&#x27;, error);<br>  }<br>}</p>
 <p>การจัดเก็บข้อมูลบนเบราว์เซอร์: การใช้ localStorage ในการบันทึกสถานะของผู้ใช้ (State Persistence) ในรูปแบบ Key-Value ผ่านฟังก์ชัน JSON.stringify() และ JSON.parse() (ดูตัวอย่างในหัวข้อ 6.10.5)</p>
-<h2 id="s16">6.10 เทคนิคการใช้ AI ช่วยเขียนโค้ดและดีบัก JavaScript (Haverbeke, 2024; OWASP, 2023) (AI-Assisted JS Development)</h2>
-<p>JavaScript เป็นภาษาที่มีความยืดหยุ่นสูงและมักพบข้อผิดพลาดขณะทำงาน (Runtime Errors) ได้บ่อยครั้ง การใช้เครื่องมือผู้ช่วย AI (เช่น GitHub Copilot, Cursor, ChatGPT) จึงมีประโยชน์อย่างยิ่งในการช่วยอธิบายตรรกะ การแนะนำแนวทางการเขียนโค้ด และการดีบักค้นหาจุดบกพร่อง</p>
-<h3 id="s17">6.9.1 ตัวอย่าง: ดึงข้อมูลจาก JSONPlaceholder API มาแสดงในตาราง</h3>
+<h3 id="s16">6.9.1 ตัวอย่าง: ดึงข้อมูลจาก JSONPlaceholder API มาแสดงในตาราง</h3>
 <p>JSONPlaceholder (jsonplaceholder.typicode.com) เป็น API ทดลองที่ให้ข้อมูลจำลองในรูปแบบ JSON ใช้ฝึก fetch() โดยไม่ต้องมีเซิร์ฟเวอร์ของตนเอง ต้องเชื่อมต่ออินเทอร์เน็ตขณะทดลอง ตัวอย่างต่อไปนี้ดึงรายชื่อผู้ใช้มาสร้างแถวของตารางด้วย DOM</p>
 <div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;table id=&quot;tbl&quot; border=&quot;1&quot;&gt;
   &lt;thead&gt;&lt;tr&gt;&lt;th&gt;ID&lt;/th&gt;&lt;th&gt;ชื่อ&lt;/th&gt;&lt;th&gt;อีเมล&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
@@ -335,15 +333,43 @@ document.getElementById(&quot;id ของ Element&quot;).textContent = &quot;�
   }
   loadUsers();
 &lt;/script&gt;</code></pre></div>
-<h3 id="s18">6.10.1 ตัวอย่างการใช้ AI ช่วยสร้างตรรกะและการตรวจฟอร์ม (Validation)</h3>
+<h3 id="s17">6.9.2 แนวคิด Promise และความสัมพันธ์กับ async/await</h3>
+<p>Promise คือออบเจ็กต์ที่แทนผลลัพธ์ของการทำงานแบบอะซิงโครนัสซึ่งจะเสร็จในอนาคต ไม่ว่าจะสำเร็จหรือล้มเหลว (Haverbeke, 2024; Mozilla Developer Network [MDN], 2024c) Promise มี 3 สถานะ คือ pending (รอผล) fulfilled (สำเร็จ พร้อมค่าผลลัพธ์) และ rejected (ล้มเหลว พร้อมข้อผิดพลาด) และเมื่อเปลี่ยนจาก pending เป็นสถานะใดแล้วจะไม่เปลี่ยนอีก ผู้พัฒนาสร้าง Promise ด้วย new Promise((resolve, reject) =&gt; { ... }) โดยเรียก resolve(ค่า) เมื่อสำเร็จ หรือ reject(ข้อผิดพลาด) เมื่อล้มเหลว จากนั้นรับผลด้วย .then() สำหรับกรณีสำเร็จ .catch() สำหรับกรณีล้มเหลว และ .finally() สำหรับโค้ดที่ต้องทำงานทุกกรณี</p>
+<p><strong>ตัวอย่างการเขียนโปรแกรม</strong></p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>function wait(ms, ok = true) {
+  return new Promise((resolve, reject) =&gt; {
+    setTimeout(() =&gt; {
+      if (ok) resolve(&#x27;สำเร็จหลัง &#x27; + ms + &#x27; ms&#x27;);</code></pre></div>
+<p>      else reject(new Error(&#x27;ล้มเหลว&#x27;));</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>    }, ms);
+  });
+}</code></pre></div>
+<p>wait(500)</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>  .then((msg) =&gt; { console.log(msg); return wait(300); })
+  .then((msg) =&gt; console.log(msg))
+  .catch((err) =&gt; console.error(err.message))
+  .finally(() =&gt; console.log(&#x27;จบการทำงาน&#x27;));</code></pre></div>
+<p><strong>แสดงผลลัพธ์</strong></p>
+<p>เมื่อรันใน Console จะแสดงข้อความ &quot;สำเร็จหลัง 500 ms&quot; หลังผ่านไปครึ่งวินาที ตามด้วย &quot;สำเร็จหลัง 300 ms&quot; อีก 0.3 วินาทีต่อมา และ &quot;จบการทำงาน&quot; เป็นลำดับสุดท้าย การต่อ .then() หลายชั้นเรียกว่า Promise Chaining ซึ่งทำให้เรียงลำดับงานอะซิงโครนัสได้โดยไม่ต้องซ้อนฟังก์ชันหลายระดับ และถ้าขั้นใดเกิดข้อผิดพลาด การทำงานจะข้ามไปที่ .catch() ทันที</p>
+<p>เมื่อต้องการให้หลายงานทำงานพร้อมกัน ใช้ Promise.all() ซึ่งรอให้ทุก Promise สำเร็จแล้วส่งผลลัพธ์กลับเป็นอาร์เรย์ตามลำดับเดิม แต่ถ้ามี Promise ใดล้มเหลว ทั้งชุดจะถือว่าล้มเหลวทันที หากต้องการทราบผลของทุกงานไม่ว่าสำเร็จหรือไม่ ให้ใช้ Promise.allSettled() แทน ตัวอย่างต่อไปนี้ดึงข้อมูลผู้ใช้และโพสต์จาก JSONPlaceholder พร้อมกัน</p>
+<p>Promise.all([</p>
+<p>  fetch(&#x27;<a href="https://jsonplaceholder.typicode.com/users/1&#x27;" target="_blank" rel="noopener noreferrer">https://jsonplaceholder.typicode.com/users/1&#x27;</a>).then((r) =&gt; r.json()),</p>
+<p>  fetch(&#x27;<a href="https://jsonplaceholder.typicode.com/posts/1&#x27;" target="_blank" rel="noopener noreferrer">https://jsonplaceholder.typicode.com/posts/1&#x27;</a>).then((r) =&gt; r.json())</p>
+<p>])</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>  .then(([user, post]) =&gt; console.log(user.name, &#x27;-&#x27;, post.title))
+  .catch((err) =&gt; console.error(&#x27;โหลดข้อมูลไม่สำเร็จ:&#x27;, err.message));</code></pre></div>
+<p>คำสั่ง async/await ที่ใช้ในหัวข้อ 6.9.1 เป็นรูปแบบการเขียนที่ทำงานบน Promise ฟังก์ชันที่ประกาศด้วย async จะคืนค่าเป็น Promise เสมอ ส่วน await ใช้หยุดรอผลของ Promise ภายในฟังก์ชัน async ทำให้โค้ดอ่านง่ายเหมือนลำดับคำสั่งปกติ และใช้ try/catch จัดการข้อผิดพลาดแทน .catch() นอกจากนี้ fetch() ก็คืนค่าเป็น Promise และจะถือว่าสำเร็จแม้เซิร์ฟเวอร์ตอบรหัสผิดพลาด เช่น 404 จึงต้องตรวจ response.ok ก่อนอ่านข้อมูลเสมอ เหมือนที่ทำในตัวอย่างหัวข้อ 6.9.1</p>
+<h2 id="s18">6.10 เทคนิคการใช้ AI ช่วยเขียนโค้ดและดีบัก JavaScript (Haverbeke, 2024; OWASP, 2023a) (AI-Assisted JS Development)</h2>
+<p>JavaScript เป็นภาษาที่มีความยืดหยุ่นสูงและมักพบข้อผิดพลาดขณะทำงาน (Runtime Errors) ได้บ่อยครั้ง การใช้เครื่องมือผู้ช่วย AI (เช่น GitHub Copilot, Cursor, ChatGPT) จึงมีประโยชน์อย่างยิ่งในการช่วยอธิบายตรรกะ การแนะนำแนวทางการเขียนโค้ด และการดีบักค้นหาจุดบกพร่อง</p>
+<h3 id="s19">6.10.1 ตัวอย่างการใช้ AI ช่วยสร้างตรรกะและการตรวจฟอร์ม (Validation)</h3>
 <p>นักพัฒนาสามารถใช้ Prompt เพื่อให้ AI ร่างฟังก์ชันการตรวจสอบข้อมูลอย่างครอบคลุม เช่น:<br>Prompt: &quot;ช่วยเขียนฟังก์ชัน JavaScript (ES6) สำหรับตรวจสอบแบบฟอร์มลงทะเบียน โดยต้องตรวจว่า: 1) รหัสผ่านมีความยาวอย่างน้อย 8 ตัวอักษรและมีตัวเลขผสม 2) อีเมลถูกต้องตามรูปแบบ และ 3) แสดงข้อความเตือนใต้ช่องกรอกข้อมูลทันทีเมื่อพิมพ์ผิด (Real-time)&quot;<br>AI จะสร้างฟังก์ชันพร้อม Regular Expression (Regex) และการจัดการ Event input ได้อย่างรวดเร็ว</p>
-<h3 id="s19">6.10.2 การใช้ AI สำหรับการดีบักและการค้นหาข้อผิดพลาด (Console Debugging)</h3>
+<h3 id="s20">6.10.2 การใช้ AI สำหรับการดีบักและการค้นหาข้อผิดพลาด (Console Debugging)</h3>
 <p>• การวิเคราะห์ข้อความแจ้งเตือน Error: เมื่อพบข้อผิดพลาด เช่น TypeError: Cannot read properties of undefined หรือ Uncaught SyntaxError สามารถคัดลอกข้อความใน Console ร่วมกับโค้ดส่งให้ AI ช่วยอธิบายสาเหตุและแนวทางแก้ไข<br>• การปรับปรุงประสิทธิภาพ (Refactoring): ให้ AI ช่วยแปลงโค้ดที่มีลูปซ้อนลูป (Nested Loops) ให้ใช้เมธอดอาร์เรย์สมัยใหม่ เช่น .map(), .filter(), .reduce() เพื่อความกระชับและรวดเร็ว</p>
-<h3 id="s20">6.10.3 ข้อควรระวังด้านความมั่นคงปลอดภัยในการใช้ AI พัฒนา JavaScript</h3>
-<p>• ปัญหาช่องโหว่ Cross-Site Scripting (XSS) (Open Web Application Security Project [OWASP], 2023): AI บางครั้งอาจแนะนำการใช้ element.innerHTML ซึ่งอาจเปิดช่องโหว่ให้ผู้ไม่ประสงค์ดีแทรกโค้ดอันตราย นักพัฒนาควรเปลี่ยนไปใช้ element.textContent หรือสร้าง Element ผ่าน document.createElement() แทนเมื่อต้องแสดงผลข้อมูลจากผู้ใช้งาน<br>• ห้ามบันทึกความลับไว้ในโค้ดฝั่ง Client: ต้องไม่ให้ AI ฝังรหัสผ่าน API Key หรือ Secret Keys ไว้ในไฟล์ JavaScript บนเบราว์เซอร์เด็ดขาด</p>
-<h3 id="s21">6.10.4 กรอบคำสั่ง AI สำหรับการดีบัก Asynchronous และการตรวจหาช่องโหว่ XSS (Prompt for Security Review)</h3>
+<h3 id="s21">6.10.3 ข้อควรระวังด้านความมั่นคงปลอดภัยในการใช้ AI พัฒนา JavaScript</h3>
+<p>• ปัญหาช่องโหว่ Cross-Site Scripting (XSS) (Open Web Application Security Project [OWASP], 2023a): AI บางครั้งอาจแนะนำการใช้ element.innerHTML ซึ่งอาจเปิดช่องโหว่ให้ผู้ไม่ประสงค์ดีแทรกโค้ดอันตราย นักพัฒนาควรเปลี่ยนไปใช้ element.textContent หรือสร้าง Element ผ่าน document.createElement() แทนเมื่อต้องแสดงผลข้อมูลจากผู้ใช้งาน<br>• ห้ามบันทึกความลับไว้ในโค้ดฝั่ง Client: ต้องไม่ให้ AI ฝังรหัสผ่าน API Key หรือ Secret Keys ไว้ในไฟล์ JavaScript บนเบราว์เซอร์เด็ดขาด</p>
+<h3 id="s22">6.10.4 กรอบคำสั่ง AI สำหรับการดีบัก Asynchronous และการตรวจหาช่องโหว่ XSS (Prompt for Security Review)</h3>
 <p><em>&quot;Role: Web Security Analyst. / Task: Review the following JavaScript DOM manipulation code. Identify potential DOM-based XSS vulnerabilities caused by unsanitized input and recommend fixes using textContent and DOMPurify. / Constraints: Refactor the code to use modern async/await with robust try...catch error handling.&quot;</em></p>
-<h3 id="s22">6.10.5 ตัวอย่างโค้ด Modern JavaScript: การดึงข้อมูล API, LocalStorage และ DOM ปลอดภัย</h3>
+<h3 id="s23">6.10.5 ตัวอย่างโค้ด Modern JavaScript: การดึงข้อมูล API, LocalStorage และ DOM ปลอดภัย</h3>
 <p>สร้างไฟล์ index.html</p>
 <div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;th&quot;&gt;
@@ -362,9 +388,9 @@ document.getElementById(&quot;id ของ Element&quot;).textContent = &quot;�
 &lt;/html&gt;</code></pre></div>
 <p>สร้างไฟล์ app.js</p>
 <p>// Task Manager Application - Modern ES6+ Safe Implementation<br>const taskInput = document.querySelector(&#x27;#task-input&#x27;);<br>const taskForm = document.querySelector(&#x27;#task-form&#x27;);<br>const taskList = document.querySelector(&#x27;#task-list&#x27;);<br><br>// โหลดรายการจาก LocalStorage เมื่อเปิดหน้าเว็บ<br>const loadTasks = () =&gt; {<br>  const saved = localStorage.getItem(&#x27;course_tasks&#x27;);<br>  return saved ? JSON.parse(saved) : [];<br>};<br><br>// บันทึกรายการลง LocalStorage<br>const saveTasks = (tasks) =&gt; {<br>  localStorage.setItem(&#x27;course_tasks&#x27;, JSON.stringify(tasks));<br>};<br><br>// เรนเดอร์รายการสู่ DOM ด้วย textContent (ป้องกัน XSS จากข้อมูลที่ผู้ใช้พิมพ์)<br>const renderTasks = () =&gt; {<br>  const tasks = loadTasks();<br>  taskList.replaceChildren(); // ล้างรายการเก่า<br>  <br>  tasks.forEach((task, index) =&gt; {<br>    const li = document.createElement(&#x27;li&#x27;);<br>    li.textContent = task.title; // ปลอดภัย: ไม่ตีความสตริงเป็น HTML<br>    <br>    const deleteBtn = document.createElement(&#x27;button&#x27;);<br>    deleteBtn.textContent = &#x27;ลบ&#x27;;<br>    deleteBtn.addEventListener(&#x27;click&#x27;, () =&gt; {<br>      tasks.splice(index, 1);<br>      saveTasks(tasks);<br>      renderTasks();<br>    });<br>    <br>    li.appendChild(deleteBtn);<br>    taskList.appendChild(li);<br>  });<br>};<br><br>// ดักจับการส่งฟอร์ม (Unobtrusive Event Handling)<br>taskForm.addEventListener(&#x27;submit&#x27;, (e) =&gt; {<br>  e.preventDefault();<br>  const title = taskInput.value.trim();<br>  if (!title) return alert(&#x27;กรุณากรอกชื่องาน&#x27;);<br>  <br>  const tasks = loadTasks();<br>  tasks.push({ id: Date.now(), title: title });<br>  saveTasks(tasks);<br>  taskInput.value = &#x27;&#x27;;<br>  renderTasks();<br>});<br><br>// เริ่มต้นโหลดข้อมูล<br>document.addEventListener(&#x27;DOMContentLoaded&#x27;, renderTasks);</p>
-<h2 id="s23">สรุป</h2>
+<h2 id="s24">สรุป</h2>
 <p>ภาษา JavaScript เป็นเสาหลักสำคัญของการพัฒนาเว็บฝั่งผู้ใช้งาน (Client-Side) ที่ช่วยเปลี่ยนหน้าเว็บเอกสารนิ่ง ให้กลายเป็นเว็บแอปพลิเคชันที่มีการโต้ตอบอย่างชาญฉลาด ผ่านการควบคุมโครงสร้างเอกสาร DOM (Document Object Model) และการดักฟังเหตุการณ์ (Event Handling) ไวยากรณ์ในยุคปัจจุบันได้ก้าวสู่มาตรฐาน ES6+ ด้วยการประกาศตัวแปรที่มีขอบเขตชัดเจน (let / const), ฟังก์ชันลูกศร (Arrow Functions), และ Template Literals ควบคู่ไปกับการสื่อสารข้อมูลเครือข่ายแบบ Asynchronous ผ่าน Fetch API และการใช้คำสั่ง async/await ในการรับส่งข้อมูล JSON นอกจากนี้ การประยุกต์ใช้เครื่องมือผู้ช่วย AI เข้ามาช่วยวิเคราะห์ตรรกะ และแก้ไขข้อผิดพลาด (Debugging) ช่วยเพิ่มประสิทธิภาพการพัฒนาอย่างก้าวกระโดด โดยนักพัฒนาต้องตระหนักถึงการป้องกันช่องโหว่ความปลอดภัย เช่น XSS และการตรวจสอบความถูกต้องของโค้ดอยู่เสมอ</p>
-<h2 id="s24">แบบฝึกหัด</h2>
+<h2 id="s25">แบบฝึกหัด</h2>
 <p><strong>คำชี้แจง: จงทำแบบฝึกหัดต่อไปนี้เพื่อทบทวนความรู้ความเข้าใจ</strong></p>
 <p><strong>ตอนที่ 1: แบบฝึกหัดเชิงทฤษฎีและการวิเคราะห์ (Theoretical &amp; Analytical Exercises)</strong></p>
 <p>1. จงอธิบายความแตกต่างระหว่างการประกาศตัวแปรด้วย var, let และ const ในภาษา JavaScript โดยเน้นเรื่องขอบเขตของตัวแปร (Scope) และการกำหนดค่าใหม่</p>
@@ -379,12 +405,12 @@ document.getElementById(&quot;id ของ Element&quot;).textContent = &quot;�
 <p>2.ให้นักศึกษาเขียนโปรแกรมด้วย JavaScript สร้าง form และตรวจสอบความถูกต้อง Validation ต่าง ๆ ดังนี้</p>
 <p>3.ให้นักศึกษาเขียนโปรแกรมด้วย JavaScript กับเทคนิค Mouseover และ Mouseout ให้ทำการเปลี่ยนสีตัวอักษรเป็นสีแดงเมื่อ Mouseover    </p>
 <p>4.ให้นักศึกษาเขียนโปรแกรมด้วย JavaScript การสลับสีแถวในตารางดังนี้</p>
-<h2 id="s25">เอกสารอ้างอิง</h2>
+<h2 id="s26">เอกสารอ้างอิง</h2>
 <p>จีราวุธ วารินทร์. (2566). โมเดิร์น JavaScript เก่งได้ใน 30 วัน ฉบับ Node.js + MongoDB. นนทบุรี: ธิงค์ บียอนด์ บุ๊คส์.</p>
 <p>ECMA International. (2023). ECMAScript 2023 Language Specification (Standard ECMA-262, 14th ed.). Retrieved from <a href="https://www.ecma-international.org/" target="_blank" rel="noopener noreferrer">https://www.ecma-international.org/</a></p>
 <p>Haverbeke, M. (2024). Eloquent JavaScript: A Modern Introduction to Programming (4th ed.). San Francisco, CA: No Starch Press.</p>
-<p>Mozilla Developer Network [MDN]. (2024). JavaScript Guide and Reference: Modern Client-Side Web Development. Retrieved from <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noopener noreferrer">https://developer.mozilla.org/en-US/docs/Web/JavaScript</a></p>
-<p>Open Web Application Security Project [OWASP]. (2023). Cross-Site Scripting (XSS) Prevention Cheat Sheet. Retrieved from <a href="https://cheatsheetseries.owasp.org/" target="_blank" rel="noopener noreferrer">https://cheatsheetseries.owasp.org/</a></p>
+<p>Mozilla Developer Network [MDN]. (2024c). JavaScript. Retrieved from <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noopener noreferrer">https://developer.mozilla.org/en-US/docs/Web/JavaScript</a></p>
+<p>Open Web Application Security Project [OWASP]. (2023a). Cross site scripting prevention. OWASP Cheat Sheet Series. Retrieved from <a href="https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html" target="_blank" rel="noopener noreferrer">https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html</a></p>
 <label class="donebox"><input type="checkbox" id="done"><span>ทำเครื่องหมายว่าอ่านบทนี้แล้ว</span></label>
 <div class="pager"><a class="pn" href="ch5.html"><small>บทก่อนหน้า</small><b>บทที่ 5 พื้นฐาน Bootstrap</b></a><a class="pn next" href="ch7.html"><small>บทถัดไป</small><b>บทที่ 7 พื้นฐานภาษา PHP</b></a></div>
 </article></div>

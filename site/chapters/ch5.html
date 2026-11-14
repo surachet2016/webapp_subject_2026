@@ -35,8 +35,8 @@
 <h2 id="s1">บทนำ</h2>
 <p>Bootstrap เป็นชุดเครื่องมือและเฟรมเวิร์กสำหรับพัฒนาส่วนหน้าของเว็บไซต์ (Front-End CSS Framework) ที่ได้รับความนิยมสูงสุดในโลก ช่วยให้นักพัฒนาสามารถสร้างหน้าเว็บเพจที่มีความสวยงาม เป็นระเบียบ และตอบสนองต่อทุกขนาดหน้าจอ (Responsive Web Design) ได้อย่างรวดเร็ว ในเวอร์ชัน Bootstrap 5 ได้มีการยกเครื่องสถาปัตยกรรมครั้งสำคัญ โดยการตัดการพึ่งพาไลบรารี jQuery ออกอย่างสิ้นเชิง และหันมาใช้ JavaScript แบบดั้งเดิม (Vanilla JavaScript) ส่งผลให้เว็บไซต์มีขนาดเล็กลงและโหลดได้รวดเร็วขึ้นอย่างมาก ในบทนี้นักศึกษาจะได้ศึกษาตั้งแต่การติดตั้งใช้งาน ระบบคอนเทนเนอร์ (Containers), ระบบกริด 12 คอลัมน์ (Grid System), การสร้างและตรวจสอบความถูกต้องของแบบฟอร์ม (Form Validation), คอมโพเนนต์และคลาสอรรถประโยชน์ (Components &amp; Utility Classes) ตลอดจนการประยุกต์ใช้ปัญญาประดิษฐ์ (AI) ในการช่วยประกอบโครงร่างหน้าเว็บและแดชบอร์ดอย่างมืออาชีพ</p>
 <h2 id="s2">เนื้อหา</h2>
-<h2 id="s3">5.1 การติดตั้ง Bootstrap (Bootstrap Core Team, 2024; บัญชา ปะสีละเตสัง, 2565)</h2>
-<ul><li><strong>ให้ผู้เรียน</strong><strong>ไปที่</strong><strong> </strong><strong> </strong><strong>เพื่อทำการเรียนรู้วิธีการติดตั้ง</strong><strong> Bootstrap</strong></li></ul>
+<h2 id="s3">5.1 การติดตั้ง Bootstrap (Bootstrap Core Team, 2024b; บัญชา ปะสีละเตสัง, 2565ก)</h2>
+<ul><li><strong>ให้ผู้เรียนไปที่ </strong><strong> เพื่อทำการเรียนรู้วิธีการติดตั้ง Bootstrap</strong></li></ul>
 <p><strong>การติดตั้ง Bootstrap มี 2 วิธีหลัก ได้แก่</strong></p>
 <p><strong>ดาวน์โหลดไฟล์ CSS และ JS ที่คอมไพล์แล้ว (Compiled CSS and JS) มาติดตั้งบนเว็บเซิร์ฟเวอร์ จะได้ไฟล์และโฟลเดอร์ของ CSS และ JS สำหรับนำไปใช้งาน</strong></p>
 <p>หรือดาวน์โหลดซอร์สโค้ด (Source Files) มาติดตั้ง ซึ่งมีไฟล์และโฟลเดอร์ต้นฉบับสำหรับปรับแต่งเพิ่มเติม</p>
@@ -128,10 +128,18 @@
 &lt;/html&gt;</code></pre></div>
 <p>แสดงผลลัพธ์</p>
 <p>แสดงความแตกต่างระหว่างการใช้งาน Container ทั้งสองแบบ</p>
-<h2 id="s6">5.3 การเรียนรู้ Bootstrap5 Grid System (Jacobsen, 2022; ศุภชัย สมพานิช, 2566)</h2>
+<h2 id="s6">5.3 การเรียนรู้ Bootstrap5 Grid System (Bootstrap Core Team, 2024a; ศุภชัย สมพานิช, 2566ข)</h2>
 <p>Grid System คือระบบจัดวางเนื้อหาเป็นแถว (row) และคอลัมน์ (column) ที่สร้างบน Flexbox ทำให้ปรับขนาดได้ยืดหยุ่นโดยอัตโนมัติ ประกอบด้วยคลาสหลัก 3 กลุ่ม คือ container, row และ col</p>
 <p>Bootstrap แบ่งแต่ละแถวเป็น 12 ส่วน ผู้พัฒนาสามารถรวมหลายส่วนเป็นคอลัมน์ที่กว้างขึ้นได้ และคอลัมน์จะปรับการเรียงตามขนาดหน้าจอโดยอัตโนมัติ จุดตัดหน้าจอ (Breakpoint) ที่ใช้กำหนดคลาสมีดังนี้</p>
 <ul><li><strong>xs - หน้าจอกว้างน้อยกว่า 576px (โทรศัพท์ในแนวตั้ง) ไม่ต้องระบุตัวย่อในชื่อคลาส เช่น col-6</strong></li><li><strong>sm - ตั้งแต่ 576px ขึ้นไป (โทรศัพท์ในแนวนอน)</strong></li><li><strong>md - ตั้งแต่ 768px ขึ้นไป (แท็บเล็ต)</strong></li><li><strong>lg - ตั้งแต่ 992px ขึ้นไป (แล็ปท็อป)</strong></li><li>xl - ตั้งแต่ 1200px ขึ้นไป (เดสก์ท็อป)</li><li>xxl - ตั้งแต่ 1400px ขึ้นไป (จอขนาดใหญ่)</li></ul>
+<p>แนวคิด Mobile-First: Bootstrap 5 ออกแบบตามแนวคิด Mobile-First ซึ่งเชื่อมโยงกับหัวข้อ 1.6.1 และเทคนิคมีเดียคิวรีแบบ min-width ในหัวข้อ 4.13 กล่าวคือ คลาสที่ไม่ระบุตัวย่อ Breakpoint เช่น col-12 มีผลตั้งแต่หน้าจอเล็กที่สุดขึ้นไป ส่วนคลาสที่ระบุ Breakpoint เช่น col-md-6 มีผลตั้งแต่ขนาดนั้นขึ้นไป (Bootstrap Core Team, 2024a) ดังนั้นควรออกแบบเลย์เอาต์สำหรับมือถือก่อน แล้วค่อยเพิ่มคลาสของ Breakpoint ที่ใหญ่ขึ้นเพื่อปรับการจัดวางบนแท็บเล็ตและคอมพิวเตอร์ นอกจากนี้ต้องมีแท็ก &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt; ในส่วน &lt;head&gt; เพื่อให้เบราว์เซอร์บนมือถือแสดงหน้าเว็บตามความกว้างจริงของหน้าจอ</p>
+<p><strong>ตัวอย่างการเขียนโปรแกรม</strong></p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;div class=&quot;row&quot;&gt;
+  &lt;div class=&quot;col-12 col-md-6 col-lg-4&quot;&gt;การ์ดที่ 1&lt;/div&gt;
+  &lt;div class=&quot;col-12 col-md-6 col-lg-4&quot;&gt;การ์ดที่ 2&lt;/div&gt;
+  &lt;div class=&quot;col-12 col-md-6 col-lg-4&quot;&gt;การ์ดที่ 3&lt;/div&gt;
+&lt;/div&gt;</code></pre></div>
+<p>จากตัวอย่าง หน้าจอที่กว้างน้อยกว่า 768px แสดงการ์ด 1 ใบต่อแถว (col-12) หน้าจอตั้งแต่ 768px ขึ้นไปแสดง 2 ใบต่อแถว (col-md-6) และหน้าจอตั้งแต่ 992px ขึ้นไปแสดง 3 ใบต่อแถว (col-lg-4)</p>
 <p>โครงสร้างพื้นฐานของ Bootstrap Grid</p>
 <div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;div class=&quot;container&quot;&gt;
   &lt;div class=&quot;row&quot;&gt;
@@ -189,7 +197,6 @@
 &lt;/body&gt;
 &lt;/html&gt;</code></pre></div>
 <p>แสดงผลลัพธ์</p>
-<p><em>(ที่มา: Bootstrap Core Team, 2024)</em></p>
 <h2 id="s7">5.4 การเรียนรู้ Bootstrap5 Forms</h2>
 <p><strong>ตัวอย่างการเขียนโปรแกรม</strong></p>
 <div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
@@ -333,20 +340,20 @@
 &lt;/body&gt;
 &lt;/html&gt;</code></pre></div>
 <p><strong>แสดงผลลัพธ์</strong></p>
-<h2 id="s10">5.7 คอมโพเนนต์ยอดนิยมและคลาสอรรถประโยชน์ใน Bootstrap 5 (Components &amp; Utilities) (Bootstrap Core Team, 2024; Jacobsen, 2022)</h2>
+<h2 id="s10">5.7 คอมโพเนนต์ยอดนิยมและคลาสอรรถประโยชน์ใน Bootstrap 5 (Components &amp; Utilities) (Bootstrap Core Team, 2024b)</h2>
 <p>นอกเหนือจากระบบตารางกริดและแบบฟอร์มแล้ว Bootstrap 5 ยังเตรียมคอมโพเนนต์สำเร็จรูปและคลาสอรรถประโยชน์ (Utility Classes) ที่ช่วยลดระยะเวลาในการเขียน CSS ตั้งแต่ต้นได้อย่างมหาศาล</p>
 <h3 id="s11">5.7.1 คอมโพเนนต์ส่วนต่อประสานผู้ใช้ที่สำคัญ</h3>
 <p>• แถบนำทาง (Navbar): คอมโพเนนต์ .navbar รองรับการย่อขยายเมนูเป็นปุ่ม Hamburger อัตโนมัติเมื่อดูบนหน้าจอมือถือ<br>• การ์ดแสดงผล (Cards): คอมโพเนนต์ .card ใช้สำหรับจัดกลุ่มรูปภาพ หัวข้อ และเนื้อหา เช่น รายการสินค้า หรือโปรไฟล์ผู้ใช้<br>• หน้าต่างป็อปอัป (Modal): คอมโพเนนต์ .modal ใช้สำหรับแสดงกล่องข้อความยืนยันหรือแบบฟอร์มป็อปอัปโดยไม่ต้องเปลี่ยนหน้าเว็บ<br>• การแจ้งเตือนและปุ่ม (Alerts &amp; Buttons): คลาสตกแต่งปุ่ม .btn .btn-primary .btn-outline-secondary และกล่องแจ้งเตือน .alert .alert-success</p>
 <h3 id="s12">5.7.2 คลาสอรรถประโยชน์ (Utility Classes) สำหรับการจัดแต่งอย่างรวดเร็ว</h3>
 <p>• Spacing Utilities: กำหนดระยะ Margin (m, mt, mb, ms, me, mx, my) และ Padding (p, pt, pb, ps, pe, px, py) เช่น m-3, py-4<br>• Flexbox Utilities: จัดตำแหน่งด้วย d-flex, justify-content-between, align-items-center<br>• Color &amp; Background: กำหนดสีพื้นหลังและตัวอักษร เช่น text-primary, bg-light, text-muted<br>• Shadow &amp; Rounded: เพิ่มมิติด้วย shadow, shadow-sm และความโค้งมนด้วย rounded-3</p>
-<h2 id="s13">5.8 เทคนิคการใช้ AI ช่วยสร้างและปรับแต่ง UI ด้วย Bootstrap 5 (AI-Assisted Bootstrap UI) (ศุภชัย สมพานิช, 2566)</h2>
+<h2 id="s13">5.8 เทคนิคการใช้ AI ช่วยสร้างและปรับแต่ง UI ด้วย Bootstrap 5 (AI-Assisted Bootstrap UI) (ศุภชัย สมพานิช, 2566ข)</h2>
 <p>เนื่องจาก Bootstrap 5 มีรูปแบบชื่อคลาสและโครงสร้างที่เป็นมาตรฐานสากล โมเดลปัญญาประดิษฐ์ (AI Assistants เช่น GitHub Copilot, ChatGPT, Gemini) จึงมีความแม่นยำสูงมากในการสร้างโค้ดหน้าเว็บด้วย Bootstrap 5 จากข้อความคำสั่งภาษาธรรมชาติ</p>
 <h3 id="s14">5.8.1 ตัวอย่างการใช้ AI สร้างหน้า Landing Page และ Dashboard</h3>
 <p>นักพัฒนาสามารถใช้ Prompt สั่งให้ AI ร่างหน้าเว็บที่สมบูรณ์ได้ทันที เช่น:<br>Prompt: &quot;ช่วยเขียนโค้ด HTML5 โดยใช้ Bootstrap 5 สร้างหน้า Dashboard ประกอบด้วย Navbar ด้านบนพร้อมแถบค้นหา, Sidebar เมนูด้านซ้าย, และพื้นที่หลักแสดง Stat Cards 4 ใบ (แสดงยอดขาย, จำนวนผู้ใช้, คำสั่งซื้อใหม่, รายได้) พร้อมตารางสรุปรายการล่าสุดที่ตกแต่งด้วย table-striped table-hover โดยรองรับการแสดงผลบนมือถือ&quot;<br>AI จะสร้างโครงสร้าง Grid (.container-fluid, .row, .col-md-3), การ์ด, ตาราง และคลาสตกแต่งให้ครบถ้วนในคำสั่งเดียว</p>
 <h3 id="s15">5.8.2 ข้อควรระวังและแนวปฏิบัติที่ดีในการใช้ AI พัฒนา Bootstrap</h3>
 <p>• ปัญหาการผสมเวอร์ชัน (Version Mixing): AI อาจสร้างโค้ดที่อ้างอิงคลาสของ Bootstrap 4 (เช่น ใช้ ml-*, mr-* แทน ms-*, me-* หรือใส่การเรียกใช้ jQuery) นักพัฒนาต้องตรวจสอบให้มั่นใจว่าเป็นคลาสมาตรฐานของ Bootstrap 5 เสมอ<br>• การหลีกเลี่ยง Class Overload: ตรวจทานไม่ให้ AI ใส่คลาสที่ไม่จำเป็นซ้ำซ้อนจนทำให้อ่านโค้ดยาก<br>• การผสาน Custom CSS: ในกรณีที่ต้องการให้อัตลักษณ์เว็บไซต์ตรงตามแบรนด์เฉพาะ ให้สร้างไฟล์ style.css เพื่อปรับแต่งทับ Bootstrap แทนที่จะแก้ไขในไฟล์หลักของเฟรมเวิร์ก</p>
 <h3 id="s16">5.8.3 กรอบคำสั่ง AI สำหรับการร่างหน้าเว็บแอดมินแดชบอร์ด (Prompt for Bootstrap UI)</h3>
-<p><em>&quot;Role: Front-End Engineer. / Task: Create an Admin Dashboard Header and 3-Card KPI Summary row using Bootstrap 5.3 CDN. / Constraints: Use purely Bootstrap utility classes (d-flex, p-3, shadow-sm, rounded-3), no custom CSS, mobile-responsive grid (col-12 col-md-4), and ensure semantic structure.&quot;</em></p>
+<p><em>&quot;Role: Front-End Engineer. / Task: Create an Admin Dashboard Header and 3-Card KPI Summary row using Bootstrap 5.3 CDN. / Constraints: Use purely Bootstrap utility classes </em><em>(d-flex, p-3, shadow-sm, rounded-3), no custom CSS, mobile-responsive grid (col-12 col-md-4), and ensure semantic structure.&quot;</em></p>
 <h3 id="s17">5.8.4 ตัวอย่างโค้ด Bootstrap 5 Responsive Navbar และ Card Grid สมบูรณ์</h3>
 <p>&lt;!DOCTYPE html&gt;<br>&lt;html lang=&quot;th&quot;&gt;<br>&lt;head&gt;<br>  &lt;meta charset=&quot;UTF-8&quot;&gt;<br>  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;<br>  &lt;title&gt;ระบบบริหารข้อมูล - Bootstrap 5&lt;/title&gt;<br>  &lt;link href=&quot;<a href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css&quot;" target="_blank" rel="noopener noreferrer">https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css&quot;</a> rel=&quot;stylesheet&quot;&gt;<br>&lt;/head&gt;<br>&lt;body class=&quot;bg-light&quot;&gt;<br>  &lt;!-- Responsive Navbar --&gt;<br>  &lt;nav class=&quot;navbar navbar-expand-lg navbar-dark bg-primary shadow-sm&quot;&gt;<br>    &lt;div class=&quot;container&quot;&gt;<br>      &lt;a class=&quot;navbar-brand fw-bold&quot; href=&quot;#&quot;&gt;มนร. ดิจิทัลธุรกิจ&lt;/a&gt;<br>      &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#mainNav&quot;&gt;<br>        &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;<br>      &lt;/button&gt;<br>      &lt;div class=&quot;collapse navbar-collapse&quot; id=&quot;mainNav&quot;&gt;<br>        &lt;ul class=&quot;navbar-nav me-auto mb-2 mb-lg-0&quot;&gt;<br>          &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link active&quot; href=&quot;#&quot;&gt;แดชบอร์ด&lt;/a&gt;&lt;/li&gt;<br>          &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link&quot; href=&quot;#&quot;&gt;รายชื่อนักศึกษา&lt;/a&gt;&lt;/li&gt;<br>          &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link&quot; href=&quot;#&quot;&gt;รายงานสถิติ&lt;/a&gt;&lt;/li&gt;<br>        &lt;/ul&gt;<br>        &lt;span class=&quot;navbar-text text-white&quot;&gt;ผู้ใช้งาน: อาจารย์ ดร.สุรเชษฐ์&lt;/span&gt;<br>      &lt;/div&gt;<br>    &lt;/div&gt;<br>  &lt;/nav&gt;<br><br>  &lt;!-- 3-Column Responsive KPI Cards --&gt;<br>  &lt;main class=&quot;container my-5&quot;&gt;<br>    &lt;div class=&quot;row g-4&quot;&gt;<br>      &lt;div class=&quot;col-12 col-md-4&quot;&gt;<br>        &lt;div class=&quot;card shadow-sm border-0 h-100 p-3&quot;&gt;<br>          &lt;div class=&quot;card-body&quot;&gt;<br>            &lt;h6 class=&quot;text-muted&quot;&gt;นักศึกษาที่ลงทะเบียน&lt;/h6&gt;<br>            &lt;h2 class=&quot;fw-bold text-primary&quot;&gt;120 คน&lt;/h2&gt;<br>            &lt;span class=&quot;badge bg-success&quot;&gt;เพิ่มขึ้น 12%&lt;/span&gt;<br>          &lt;/div&gt;<br>        &lt;/div&gt;<br>      &lt;/div&gt;<br>      &lt;div class=&quot;col-12 col-md-4&quot;&gt;<br>        &lt;div class=&quot;card shadow-sm border-0 h-100 p-3&quot;&gt;<br>          &lt;div class=&quot;card-body&quot;&gt;<br>            &lt;h6 class=&quot;text-muted&quot;&gt;บทเรียนที่เปิดสอน&lt;/h6&gt;<br>            &lt;h2 class=&quot;fw-bold text-dark&quot;&gt;10 บท&lt;/h2&gt;<br>            &lt;span class=&quot;badge bg-info text-dark&quot;&gt;ครบตามหลักสูตร&lt;/span&gt;<br>          &lt;/div&gt;<br>        &lt;/div&gt;<br>      &lt;/div&gt;<br>      &lt;div class=&quot;col-12 col-md-4&quot;&gt;<br>        &lt;div class=&quot;card shadow-sm border-0 h-100 p-3&quot;&gt;<br>          &lt;div class=&quot;card-body&quot;&gt;<br>            &lt;h6 class=&quot;text-muted&quot;&gt;แบบฝึกหัดที่ส่งแล้ว&lt;/h6&gt;<br>            &lt;h2 class=&quot;fw-bold text-success&quot;&gt;98.5%&lt;/h2&gt;<br>            &lt;span class=&quot;badge bg-warning text-dark&quot;&gt;ตรงเวลา&lt;/span&gt;<br>          &lt;/div&gt;<br>        &lt;/div&gt;<br>      &lt;/div&gt;<br>    &lt;/div&gt;<br>  &lt;/main&gt;<br>  &lt;script src=&quot;<a href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;" target="_blank" rel="noopener noreferrer">https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;</a><br>&lt;/body&gt;<br>&lt;/html&gt;</p>
 <h3 id="s18">5.8.5 ตัวอย่างส่วนหัวเด่น (Hero) และแถวการ์ดสินค้าด้วย .row และ .col-*</h3>
@@ -391,10 +398,9 @@
 <p>3.ให้นักศึกษาสร้างเว็บไซต์ของตนเองโดยมีข้อกำหนดดังนี้</p>
 <ul><li>สร้างหน้า Layout ให้มี ส่วนหัว ส่วนเมนู ส่วนข้อความ ส่วนท้าย</li><li>สร้างหน้า เมนูให้มีอย่างน้อย 3 Links</li><li>ใส่ข้อมูล ข้อความ ภาพ และสื่อมัลติมีเดีย</li></ul>
 <h2 id="s21">เอกสารอ้างอิง</h2>
-<p>บัญชา ปะสีละเตสัง. (2565). พัฒนา Web App แบบ Responsive ด้วย Bootstrap 5 ร่วมกับ Node.js. กรุงเทพฯ: ซีเอ็ดยูเคชั่น.</p>
-<p>ศุภชัย สมพานิช. (2566). สร้างและออกแบบ UI หน้าเว็บระดับมือโปรด้วย Bootstrap 5 และ Tailwind CSS. นนทบุรี: ไอดีซี พรีเมียร์.</p>
-<p>Bootstrap Core Team. (2024). Bootstrap 5.3 Documentation and Component Library. Retrieved from <a href="https://getbootstrap.com/docs/5.3/" target="_blank" rel="noopener noreferrer">https://getbootstrap.com/docs/5.3/</a></p>
-<p>Jacobsen, J. (2022). Bootstrap 5 from Scratch: Build 10 Responsive Web Projects. Birmingham, UK: Packt Publishing.</p>
+<p>บัญชา ปะสีละเตสัง. (2565ก). พัฒนา Web App แบบ Responsive ด้วย Bootstrap 5 ร่วมกับ Node.js. กรุงเทพฯ: ซีเอ็ดยูเคชั่น.</p>
+<p>ศุภชัย สมพานิช. (2566ข). สร้างและออกแบบ UI หน้าเว็บระดับมือโปรด้วย Bootstrap 5 และ Tailwind CSS. นนทบุรี: ไอดีซี พรีเมียร์.</p>
+<p>Bootstrap Core Team. (2024b). Get started with Bootstrap. Bootstrap v5.3. Retrieved from <a href="https://getbootstrap.com/docs/5.3/getting-started/introduction/" target="_blank" rel="noopener noreferrer">https://getbootstrap.com/docs/5.3/getting-started/introduction/</a></p>
 <label class="donebox"><input type="checkbox" id="done"><span>ทำเครื่องหมายว่าอ่านบทนี้แล้ว</span></label>
 <div class="pager"><a class="pn" href="ch4.html"><small>บทก่อนหน้า</small><b>บทที่ 4 พื้นฐาน CSS</b></a><a class="pn next" href="ch6.html"><small>บทถัดไป</small><b>บทที่ 6 พื้นฐานภาษา JavaScript</b></a></div>
 </article></div>

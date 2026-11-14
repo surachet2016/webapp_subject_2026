@@ -49,9 +49,9 @@
 <p>  &quot;editor.defaultFormatter&quot;: &quot;esbenp.prettier-vscode&quot;</p>
 <div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>}</code></pre></div>
 <p>นักศึกษาที่คุ้นเคยกับโปรแกรมอื่น เช่น Sublime Text หรือ Notepad++ สามารถใช้แทนได้ แต่ตัวอย่างและใบงานในรายวิชานี้อธิบายด้วย VS Code (ดูเพิ่มเติมในหัวข้อ 2.20.1)</p>
-<h2 id="s4">3.2 เอลิเมนต์(Element) และแท็ก(Tag) (Duckett, 2021; บัญชา ปะสีละเตสัง, 2565)</h2>
+<h2 id="s4">3.2 เอลิเมนต์(Element) และแท็ก(Tag) (Duckett, 2011; บัญชา ปะสีละเตสัง, 2565ข)</h2>
 <p>การเขียนโค้ดในลักษณะของภาษาแบบ Markup อย่าง HTML, XML เราจะพบคำศัพท์อยู่ 2 คำที่มักจะได้ยินสลับไปสลับมากันอยู่เสมอ นั่นก็คือ คำว่า Elements (เอลิเมนต์) และ Tags (แท็ก) ซึ่งทั้ง 2 คำนี้ โดยความหมายแล้วคล้ายกัน และอาจใช้แทนกันได้ในบางกรณี แต่ความหมายที่แท้จริงของทั้ง 2 คำนี้ มีความแตกต่างกัน จะเป็นอย่างไร ลองอ่านบทความเพื่อความเข้าใจกัน ดังนี้ <br>element คือ ส่วนประกอบที่เป็นหน่วยย่อยของโครงสร้าง HTML ในแต่ละ element จะใช้ Tag เพื่อบอกให้ทราบว่าแต่ละ element มีหน้าที่และโครงสร้างเป็นอย่างไร</p>
-<p><strong>ประเภทของ</strong><strong> Element</strong></p>
+<p><strong>ประเภทของ Element</strong></p>
 <p>1.Void Elements เป็นเอลิเมนต์ที่มีเพียงแท็กเปิด ได้แก่ &lt;br&gt; &lt;hr&gt; เป็นต้น</p>
 <p>2.Row Text Elements เป็นเอลิเมนต์ที่ประกอบด้วย 3 ส่วน ได้แก่ แท็กเปิด ข้อความ และ แท็กปิด ได้แก่ &lt;script&gt; และ &lt;style&gt; เป็นต้น มีรูปแบบการเขียน เช่น </p>
 <div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;style&gt;
@@ -220,7 +220,7 @@ aleart(“hello world”);
 <div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>  &lt;/body&gt; 
 &lt;/html&gt;</code></pre></div>
 <p><strong>แสดงผลลัพธ์</strong></p>
-<p><strong>เราสามารถเพิ่มคุณสมบัติ</strong><strong> Attributes </strong><strong>ให้กับ</strong><strong> </strong><strong>แท็กได้เช่น</strong></p>
+<p><strong>เราสามารถเพิ่มคุณสมบัติ Attributes ให้กับ แท็กได้เช่น</strong></p>
 <p><strong>ตัวอย่างการเขียนโปแกรม</strong></p>
 <div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt; 
 &lt;html lang=&quot;en&quot;&gt; 
@@ -231,7 +231,7 @@ aleart(“hello world”);
   &lt;/head&gt; 
   &lt;body&gt; 
     &lt;h1&gt;แท็กคู่คือ &lt;/h1&gt;&lt;br&gt;</code></pre></div>
-<p><strong>เราสามารถใช้แท็ก</strong><strong> </strong><strong>โดยเพิ่มคุณสมบัติ</strong><strong> Attributes </strong><strong>ได้ดังนี้</strong><strong>&lt;</strong><strong>br</strong><strong>&gt;</strong></p>
+<p><strong>เราสามารถใช้แท็ก โดยเพิ่มคุณสมบัติ Attributes ได้ดังนี้&lt;br&gt;</strong></p>
 <div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;h2&gt;type=&quot;1|a|A|i|I&quot;&lt;/h2&gt;
 &lt;ol type=&quot;1&quot;&gt; 
   &lt;li&gt; รายการย่อย&lt;/li&gt;
@@ -298,9 +298,9 @@ aleart(“hello world”);
   &lt;html&gt;
 &lt;body&gt;
 &lt;form name=&quot;login&quot; action=&quot;login.php&quot; method=&quot;post&quot;&gt;</code></pre></div>
-<p><strong>ชื่อ</strong><strong>: &lt;input type=&quot;text&quot; name=&quot;</strong><strong>firstname</strong><strong>&quot;&gt;&lt;</strong><strong>br</strong><strong>&gt;</strong></p>
-<p><strong>นามสกุล</strong><strong>: &lt;input type=&quot;text&quot; name=&quot;</strong><strong>lastname</strong><strong>&quot;&gt;&lt;</strong><strong>br</strong><strong>&gt;</strong></p>
-<p><strong>รหัสผ่าน</strong><strong>: &lt;input type=&quot;password&quot; name=&quot;</strong><strong>pwd</strong><strong>&quot;&gt;&lt;</strong><strong>br</strong><strong>&gt;</strong></p>
+<p><strong>ชื่อ: &lt;input type=&quot;text&quot; name=&quot;firstname&quot;&gt;&lt;br&gt;</strong></p>
+<p><strong>นามสกุล: &lt;input type=&quot;text&quot; name=&quot;lastname&quot;&gt;&lt;br&gt;</strong></p>
+<p><strong>รหัสผ่าน: &lt;input type=&quot;password&quot; name=&quot;pwd&quot;&gt;&lt;br&gt;</strong></p>
 <div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;input type=&quot;radio&quot; name=&quot;like&quot; value=&quot;like&quot;&gt;ชอบ&lt;br&gt;
 &lt;input type=&quot;radio&quot; name=&quot;like&quot; value=&quot;don&#x27;tlike&quot;&gt;ไม่ชอบ&lt;br&gt;
 &lt;input type=&quot;checkbox&quot; name=&quot;language&quot; value=&quot;japanese&quot;&gt;พูดภาษาญี่ปุ่นได้&lt;br&gt;
@@ -315,12 +315,12 @@ aleart(“hello world”);
 <h2 id="s12">3.10 แท็กมัลติมีเดียและแท็กใหม่ใน HTML5 (Multimedia &amp; Graphic Elements)</h2>
 <p>ใน HTML5 ได้มีการเพิ่มแท็กใหม่เข้ามาเพื่อขยายขีดความสามารถในการสร้างเว็บไซต์ ได้แก่</p>
 <p class="cap">ตารางที่ 3-3 แท็กโครงสร้างและแท็กใหม่ใน HTML5</p>
-<div class="tw"><table><tr><th>&lt;article&gt;</th><th>Tag ที่อ้างถึงบทความ</th></tr><tr><td>&lt;aside&gt;</td><td>Tag ที่อ้างถึงข้อความที่ถูกเขียนขึ้นและจัดวางไว้ด้านใดด้านหนึ่งของเว็บ สามารถศึกษาวิธี สร้าง Sideder ด้วย เอเลเม็นท์ aside ได้ที่นี่</td></tr><tr><td>&lt;bdi&gt;</td><td>เป็นการแยกส่วนของข้อความ เพราะบางครั้งการใช้ภาษาที่ต่างกัน ทำให้คอมพิวเตอร์สับสนในการจัดลำดับ</td></tr><tr><td>&lt;command&gt;</td><td>จัดการกับปุ่มคำสั่งต่างๆ</td></tr><tr><td>&lt;details&gt;</td><td>ข้อมูลที่สามารถ ซ่อนหรือเรียกดูได้</td></tr><tr><td>&lt;summary&gt;</td><td>ใช้ร่วมกับ &lt;details&gt; element เป็นส่วนหัวที่จะโชว์ข้อความเสมอ</td></tr><tr><td>&lt;figure&gt;</td><td>จัดกลุ่มของข้อมูลในส่วนของ ภาพ ไดอะแกรม สื่อต่างๆ เพื่อให้สื่อเหล่านั้นและข้อความถูกจัดวางไว้ร่วมกัน</td></tr><tr><td>&lt;figcaption&gt;</td><td>คำอธิบาย ของ&lt;figure&gt; element ที่ถูกจัดกลุ่มไว้ด้วยกัน</td></tr><tr><td>&lt;footer&gt;</td><td>Tag ที่อ้างถึงส่วนท้ายหรือล่างสุดของเอกสาร</td></tr><tr><td>&lt;header&gt;</td><td>Tag ที่อ้างถึงส่วนหัวหรือบนสุดของเอกสาร</td></tr><tr><td>&lt;hgroup&gt;</td><td>กลุ่มที่มี &lt;h1&gt; ถึง &lt;h6&gt; ที่สามารถนำมาใช้ได้ในนี้ ถ้าหากว่า ใน heading มีการวางหัวข้อไว้หลายหัวข้อ</td></tr><tr><td>&lt;mark&gt;</td><td>เป็นการไฮไลต์ข้อความ</td></tr><tr><td>&lt;meter&gt;</td><td>ใช้ในการวัด และโชว์ผลลัพธ์แบบแท่ง เช่นความจุต่างๆ ผลการค้นหา แต่ไม่ความใช้ในส่วนของการทำงานประมวลผล</td></tr><tr><td>&lt;nav&gt;</td><td>Tag ที่อ้างส่วนของเมนู</td></tr><tr><td>&lt;progress&gt;</td><td>โชว์การประมวลผลแบบแท่ง</td></tr><tr><td>&lt;ruby&gt;</td><td>ใช้เพิ่มคำอธิบายประกอบ สำหรับตัวอักษรของเอเชียฝั่งตะวันออก</td></tr><tr><td>&lt;rt&gt;</td><td>เพิ่มคำอธิบาย หรือการออกเสียงสำหรับตัวอักษรของเอเชียฝั่งตะวันออก</td></tr><tr><td>&lt;rp&gt;</td><td>ใช้เพื่อ โชว์ในเบราว์เซอร์ที่ไม่ซัพพอร์ท ruby Tag</td></tr><tr><td>&lt;section&gt;</td><td>Tag ที่อ้างส่วนต่างๆของเอกสาร</td></tr><tr><td>&lt;time&gt;</td><td>อ้างถึง การเขียนวันที่หรือเวลา</td></tr><tr><td>&lt;wbr&gt;</td><td>เป็นการจัดการกับตัวอักษรในส่วนของการขึ้นบรรทัดใหม่</td></tr></table></div>
+<div class="tw"><table><tr><th>&lt;article&gt;</th><th>Tag ที่อ้างถึงบทความ</th></tr><tr><td>&lt;aside&gt;</td><td>Tag ที่อ้างถึงข้อความที่ถูกเขียนขึ้นและจัดวางไว้ด้านใดด้านหนึ่งของเว็บ สามารถศึกษาวิธี สร้าง Sideder ด้วย เอเลเม็นท์ aside ได้ที่นี่</td></tr><tr><td>&lt;bdi&gt;</td><td>เป็นการแยกส่วนของข้อความ เพราะบางครั้งการใช้ภาษาที่ต่างกัน ทำให้คอมพิวเตอร์สับสนในการจัดลำดับ</td></tr><tr><td>&lt;command&gt;</td><td>จัดการกับปุ่มคำสั่งต่าง ๆ</td></tr><tr><td>&lt;details&gt;</td><td>ข้อมูลที่สามารถ ซ่อนหรือเรียกดูได้</td></tr><tr><td>&lt;summary&gt;</td><td>ใช้ร่วมกับ &lt;details&gt; element เป็นส่วนหัวที่จะโชว์ข้อความเสมอ</td></tr><tr><td>&lt;figure&gt;</td><td>จัดกลุ่มของข้อมูลในส่วนของ ภาพ ไดอะแกรม สื่อต่าง ๆ เพื่อให้สื่อเหล่านั้นและข้อความถูกจัดวางไว้ร่วมกัน</td></tr><tr><td>&lt;figcaption&gt;</td><td>คำอธิบาย ของ&lt;figure&gt; element ที่ถูกจัดกลุ่มไว้ด้วยกัน</td></tr><tr><td>&lt;footer&gt;</td><td>Tag ที่อ้างถึงส่วนท้ายหรือล่างสุดของเอกสาร</td></tr><tr><td>&lt;header&gt;</td><td>Tag ที่อ้างถึงส่วนหัวหรือบนสุดของเอกสาร</td></tr><tr><td>&lt;hgroup&gt;</td><td>กลุ่มที่มี &lt;h1&gt; ถึง &lt;h6&gt; ที่สามารถนำมาใช้ได้ในนี้ ถ้าหากว่า ใน heading มีการวางหัวข้อไว้หลายหัวข้อ</td></tr><tr><td>&lt;mark&gt;</td><td>เป็นการไฮไลต์ข้อความ</td></tr><tr><td>&lt;meter&gt;</td><td>ใช้ในการวัด และโชว์ผลลัพธ์แบบแท่ง เช่นความจุต่าง ๆ ผลการค้นหา แต่ไม่ความใช้ในส่วนของการทำงานประมวลผล</td></tr><tr><td>&lt;nav&gt;</td><td>Tag ที่อ้างส่วนของเมนู</td></tr><tr><td>&lt;progress&gt;</td><td>โชว์การประมวลผลแบบแท่ง</td></tr><tr><td>&lt;ruby&gt;</td><td>ใช้เพิ่มคำอธิบายประกอบ สำหรับตัวอักษรของเอเชียฝั่งตะวันออก</td></tr><tr><td>&lt;rt&gt;</td><td>เพิ่มคำอธิบาย หรือการออกเสียงสำหรับตัวอักษรของเอเชียฝั่งตะวันออก</td></tr><tr><td>&lt;rp&gt;</td><td>ใช้เพื่อ โชว์ในเบราว์เซอร์ที่ไม่ซัพพอร์ท ruby Tag</td></tr><tr><td>&lt;section&gt;</td><td>Tag ที่อ้างส่วนต่าง ๆของเอกสาร</td></tr><tr><td>&lt;time&gt;</td><td>อ้างถึง การเขียนวันที่หรือเวลา</td></tr><tr><td>&lt;wbr&gt;</td><td>เป็นการจัดการกับตัวอักษรในส่วนของการขึ้นบรรทัดใหม่</td></tr></table></div>
 <p>Media Elements ใหม่ใน HTML5</p>
-<p>สร้างมาเพื่อการใช้สื่อมัลติมีเดียต่างๆในเว็บ</p>
+<p>สร้างมาเพื่อการใช้สื่อมัลติมีเดียต่าง ๆในเว็บ</p>
 <p class="cap">ตารางที่ 3-4 แท็กมีเดียใหม่ใน HTML5</p>
 <div class="tw"><table><tr><th>&lt;audio&gt;</th><th>เพิ่มเสียงเข้ามาในเว็บของคุณ</th></tr><tr><td>&lt;video&gt;</td><td>เพิ่มวีดีโอเข้ามาในเว็บของคุณ</td></tr><tr><td>&lt;source&gt;</td><td>เพิ่มสื่อได้หลายตัวเข้ามาในเว็บของคุณโดยใช้ได้กัย &lt;video&gt; และ &lt;audio&gt;</td></tr><tr><td>&lt;embed&gt;</td><td>สำหรับจัดวาง สื่อที่นำมากจากภายนอก หรือ Plug-in ด้วย</td></tr><tr><td>&lt;track&gt;</td><td>ใช้สำหรับการลำดับ ของ &lt;video&gt; และ &lt;audio&gt;</td></tr></table></div>
-<p><strong>แท็ก</strong><strong> &lt;canvas&gt;</strong></p>
+<p><strong>แท็ก &lt;canvas&gt;</strong></p>
 <p class="cap">ตารางที่ 3-5 แท็ก &lt;canvas&gt; ใน HTML5</p>
 <div class="tw"><table><tr><th>&lt;canvas&gt;</th><th>สำหรับ การเขียนภาพกราฟฟิค โดยใช้ สคริปเข้ามาจัดการและส่วนใหญ่จะใช้ JavaScript</th></tr></table></div>
 <p>Form Elements ใหม่ใน HTML5</p>
@@ -342,17 +342,16 @@ aleart(“hello world”);
 <p><strong>      Your browser does not support the video tag.</strong></p>
 <div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;/video&gt;
 &lt;iframe width=&quot;420&quot; height=&quot;315&quot;</code></pre></div>
-<p><strong>src</strong><strong>=&quot;<a href="https://www.youtube.com/embed/tgbNymZ7vqY&quot;&gt;" target="_blank" rel="noopener noreferrer">https://www.youtube.com/embed/tgbNymZ7vqY&quot;&gt;</a></strong></p>
+<p><strong>src=&quot;<a href="https://www.youtube.com/embed/tgbNymZ7vqY&quot;&gt;" target="_blank" rel="noopener noreferrer">https://www.youtube.com/embed/tgbNymZ7vqY&quot;&gt;</a></strong></p>
 <div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;/iframe&gt; 
   &lt;/body&gt; 
 &lt;/html&gt;</code></pre></div>
 <p><strong>การแสดงผลลัพธ์</strong></p>
-<h2 id="s13">3.11 แท็กโครงสร้างเชิงความหมายใน HTML5 (Semantic Elements) (จีราวุธ วารินทร์, 2564; Mozilla Developer Network [MDN], 2024)</h2>
+<h2 id="s13">3.11 แท็กโครงสร้างเชิงความหมายใน HTML5 (Semantic Elements) (จีราวุธ วารินทร์, 2564; Mozilla Developer Network [MDN], 2024b)</h2>
 <p>จุดเด่นสำคัญของ HTML5 คือการนำเสนอแท็กเชิงความหมาย (Semantic Tags) ซึ่งเป็นแท็กที่บ่งบอกบทบาทหน้าที่ของเนื้อหาภายในตัวมันเอง ช่วยให้โค้ดมีความเป็นระเบียบ อ่านเข้าใจง่าย เพิ่มคะแนนการจัดอันดับการค้นหา (SEO: Search Engine Optimization) และช่วยให้โปรแกรมอ่านหน้าจอสำหรับผู้พิการ (Screen Readers) สามารถเข้าใจโครงสร้างได้อย่างสมบูรณ์ โดยแท็กสำคัญประกอบด้วย:<br>• &lt;header&gt;: กำหนดส่วนหัวของหน้าเว็บเพจหรือส่วนหัวของบทความ มักบรรจุโลโก้ ชื่อเรื่อง หรือแถบค้นหา<br>• &lt;nav&gt;: กำหนดบล็อกสำหรับลิงก์ระบบนำทางหลักของเว็บไซต์ (Navigation Links)<br>• &lt;main&gt;: กำหนดขอบเขตเนื้อหาหลักที่มีความโดดเด่นของหน้าเว็บเพจนั้น (ในแต่ละหน้าควรมี &lt;main&gt; เพียงอันเดียว)<br>• &lt;article&gt;: กำหนดเนื้อหาสาระที่เป็นเอกเทศในตัวเอง เช่น บทความข่าว โพสต์บล็อก หรือการ์ดรีวิวสินค้า<br>• &lt;section&gt;: กำหนดส่วนของเนื้อหาที่จัดกลุ่มตามหัวข้อที่สัมพันธ์กัน<br>• &lt;aside&gt;: กำหนดเนื้อหาเสริมด้านข้าง (Sidebar) เช่น เมนูลัด แบนเนอร์ หรือลิงก์ที่เกี่ยวข้อง<br>• &lt;footer&gt;: กำหนดส่วนท้ายของหน้าเว็บหรือส่วนท้ายของเอกสาร แสดงข้อมูลลิขสิทธิ์และช่องทางการติดต่อ</p>
-<p><em>(</em><em>ที่มา</em><em>: World Wide Web Consortium [W3C], 2024)</em></p>
 <h2 id="s14">3.12 การตรวจสอบความถูกต้องของฟอร์มด้วย HTML5 (Native Form Validation)</h2>
-<p>HTML5 มีกลไกตรวจสอบความถูกต้องของข้อมูลในแบบฟอร์มโดยตรงผ่านเบราว์เซอร์ ช่วยลดภาระการเขียน JavaScript ตรวจสอบเบื้องต้น (บัญชา ปะสีละเตสัง, 2565) เช่น การใช้ required เพื่อบังคับกรอก, pattern=&quot;[0-9]{10}&quot; สำหรับหมายเลขโทรศัพท์ 10 หลัก, type=&quot;email&quot; ตรวจสอบรูปแบบอีเมล, และ type=&quot;date&quot; ให้เลือกวันที่ตามปฏิทินสากล</p>
-<h2 id="s15">3.13 เทคนิคการใช้ AI ช่วยสร้างและตรวจสอบโครงสร้าง HTML (AI-Assisted HTML Development) (World Wide Web Consortium [W3C], 2024; Open Web Application Security Project [OWASP], 2023)</h2>
+<p>HTML5 มีกลไกตรวจสอบความถูกต้องของข้อมูลในแบบฟอร์มโดยตรงผ่านเบราว์เซอร์ ช่วยลดภาระการเขียน JavaScript ตรวจสอบเบื้องต้น (บัญชา ปะสีละเตสัง, 2565ข) เช่น การใช้ required เพื่อบังคับกรอก, pattern=&quot;[0-9]{10}&quot; สำหรับหมายเลขโทรศัพท์ 10 หลัก, type=&quot;email&quot; ตรวจสอบรูปแบบอีเมล, และ type=&quot;date&quot; ให้เลือกวันที่ตามปฏิทินสากล</p>
+<h2 id="s15">3.13 เทคนิคการใช้ AI ช่วยสร้างและตรวจสอบโครงสร้าง HTML (AI-Assisted HTML Development) (World Wide Web Consortium [W3C], 2024; Open Web Application Security Project [OWASP], 2023b)</h2>
 <p>ในการพัฒนาเว็บยุคปัจจุบัน นักพัฒนาสามารถนำเครื่องมือปัญญาประดิษฐ์ (AI Assistants เช่น GitHub Copilot, ChatGPT, Gemini) มาช่วยเพิ่มความสะดวกรวดเร็วในการเขียนโค้ด HTML5 ตลอดจนตรวจสอบโครงสร้างแท็กและความถูกต้องตามมาตรฐานสากลได้อย่างมีประสิทธิภาพ</p>
 <h3 id="s16">3.13.1 การใช้ AI สร้างโครงสร้าง Semantic HTML และแบบฟอร์ม</h3>
 <p>1. การแปลงเค้าโครงเป็นโค้ด HTML: นักพัฒนาสามารถบรรยายองค์ประกอบของหน้าเว็บที่ต้องการ เพื่อให้ AI ร่างโค้ดโครงสร้างตามมาตรฐาน HTML5 โดยอัตโนมัติ เช่น:<br>   Prompt: &quot;ช่วยสร้างโครงสร้าง HTML5 Semantic Structure สำหรับหน้าบล็อกบทความ ประกอบด้วย header, nav, main, article 2 ชิ้น, aside สำหรับบทความยอดนิยม และ footer โดยใช้แท็กที่ถูกต้องตามหลัก W3C (World Wide Web Consortium [W3C], 2024)&quot;<br>2. การสร้างแบบฟอร์มพร้อมระบบตรวจสอบ (Form Validation): AI สามารถช่วยสร้างแท็ก &lt;input&gt; พร้อมกำหนด Attribute เช่น required, type=&#x27;email&#x27;, minlength, maxlength และ pattern (Regex) ช่วยลดข้อผิดพลาดในการเขียนโค้ดได้อย่างมาก</p>
@@ -367,24 +366,24 @@ aleart(“hello world”);
 <h2 id="s21">สรุป</h2>
 <p>ภาษา HTML เป็นภาษาโครงสร้างมาร์กอัปที่เป็นรากฐานของทุกเว็บไซต์ โดยประกอบด้วย Element, Tag เดี่ยว และ Tag คู่ ซึ่งสามารถกำหนดคุณลักษณะเพิ่มเติมผ่าน Attribute ได้ การพัฒนามาตรฐานสู่ HTML5 ได้นำเสนอแท็กเชิงความหมาย (Semantic Elements) เช่น &lt;header&gt;, &lt;nav&gt;, &lt;main&gt;, &lt;article&gt;, &lt;section&gt;, &lt;footer&gt; ซึ่งช่วยยกระดับทั้งการจัดอันดับการค้นหา (SEO) และการเข้าถึงข้อมูลตามมาตรฐานสากล นอกจากนี้ยังมีแท็กจัดการสื่อมัลติมีเดีย (&lt;video&gt;, &lt;audio&gt;, &lt;canvas&gt;) และการพัฒนาแบบฟอร์มที่มีระบบตรวจสอบข้อมูลในตัว การเขียน HTML5 ในยุคปัจจุบันได้รับการสนับสนุนจากเครื่องมือแก้ไขโค้ดที่ทรงพลังอย่าง VS Code ร่วมกับ Emmet และการนำผู้ช่วย AI มาประยุกต์ใช้เพื่อตรวจสอบความถูกต้อง เพิ่มความรวดเร็ว และทำให้โค้ดมีความเป็นมาตรฐานสากลสูงสุด</p>
 <h2 id="s22">แบบฝึกหัด</h2>
-<p><strong>คำชี้แจง</strong><strong>: </strong><strong>จงทำแบบฝึกหัดต่อไปนี้เพื่อทบทวนความรู้ความเข้าใจ</strong></p>
-<p><strong>ตอนที่</strong><strong> 1: </strong><strong>แบบฝึกหัดเชิงทฤษฎีและการวิเคราะห์</strong><strong> (Theoretical &amp; Analytical Exercises)</strong></p>
+<p><strong>คำชี้แจง: จงทำแบบฝึกหัดต่อไปนี้เพื่อทบทวนความรู้ความเข้าใจ</strong></p>
+<p><strong>ตอนที่ 1: แบบฝึกหัดเชิงทฤษฎีและการวิเคราะห์ (Theoretical &amp; Analytical Exercises)</strong></p>
 <p>1. จงอธิบายความแตกต่างระหว่าง Tag, Element และ Attribute ในภาษา HTML พร้อมยกตัวอย่างประกอบให้ชัดเจน</p>
 <p>2. จงอธิบายความแตกต่างระหว่างแท็กคู่ (Paired Tags) และแท็กเดี่ยวหรือแท็กว่าง (Empty/Void Tags) พร้อมระบุตัวอย่างแท็กอย่างละ 3 ตัวอย่าง</p>
 <p>3. แท็กโครงสร้างเชิงความหมาย (Semantic Elements เช่น &lt;header&gt;, &lt;nav&gt;, &lt;main&gt;, &lt;article&gt;, &lt;footer&gt;) ใน HTML5 มีข้อได้เปรียบเหนือการใช้แท็ก &lt;div&gt; เพียงอย่างเดียวอย่างไร ทั้งในแง่ของ SEO และการเข้าถึงเว็บไซต์ (Web Accessibility)</p>
 <p>4. ในการสร้างแบบฟอร์ม (Form) บนเว็บ จงอธิบายบทบาทหน้าที่ของ Attribute name, action, และ method (GET vs POST) ว่ามีความแตกต่างกันอย่างไรในการส่งผ่านข้อมูล</p>
 <p>5. จงอธิบายว่าปัญญาประดิษฐ์ (AI Coding Assistants) สามารถช่วยนักพัฒนาในการเขียนและตรวจสอบโค้ด HTML5 ได้อย่างไรบ้าง พร้อมยกตัวอย่าง Prompt ที่มีประสิทธิภาพในการสร้างแบบฟอร์มรับข้อมูล 1 ตัวอย่าง</p>
-<p><strong>ตอนที่</strong><strong> 2: </strong><strong>แบบฝึกหัดประยุกต์และการเขียนโปรแกรม</strong><strong> (Applied &amp; Programming Exercises)</strong></p>
+<p><strong>ตอนที่ 2: แบบฝึกหัดประยุกต์และการเขียนโปรแกรม (Applied &amp; Programming Exercises)</strong></p>
 <p> 1.ให้นักศึกษาเขียนโปรแกรมเพื่อสร้างตาราง 7 คอลัมน์ 5 แถวดังนี้</p>
 <p>2.ให้นักศึกษาเขียนโปรแกรมเพื่อสร้างแบบฟอร์มสมัครงานดังนี้</p>
 <p>3.ให้นักศึกษาเขียนโปรแกรมสร้างลิงก์ไปยังหน้าต่าง ๆ ดังนี้</p>
 <h2 id="s23">เอกสารอ้างอิง</h2>
 <p>จีราวุธ วารินทร์. (2564). พัฒนาเว็บไซต์สมัยใหม่ด้วย HTML5 JavaScript + CSS3 ฉบับสมบูรณ์. กรุงเทพฯ: รีไวว่า.</p>
-<p>บัญชา ปะสีละเตสัง. (2565). พัฒนา Web Application ยุคใหม่ด้วย HTML5 และ CSS3. กรุงเทพฯ: ซีเอ็ดยูเคชั่น.</p>
-<p>Duckett, J. (2021). HTML and CSS: Design and Build Websites (Updated ed.). Indianapolis, IN: John Wiley &amp; Sons.</p>
-<p>Mozilla Developer Network [MDN]. (2024). HTML5 Reference and Living Standard: Semantic Elements and Forms. Retrieved from <a href="https://developer.mozilla.org/en-US/docs/Web/HTML" target="_blank" rel="noopener noreferrer">https://developer.mozilla.org/en-US/docs/Web/HTML</a></p>
-<p>Open Web Application Security Project [OWASP]. (2023). HTML5 Security Cheat Sheet. Retrieved from <a href="https://cheatsheetseries.owasp.org/" target="_blank" rel="noopener noreferrer">https://cheatsheetseries.owasp.org/</a></p>
-<p>World Wide Web Consortium [W3C]. (2024). HTML Living Standard &amp; Nu HTML Checker (v.Nu). Retrieved from <a href="https://validator.w3.org/nu/" target="_blank" rel="noopener noreferrer">https://validator.w3.org/nu/</a></p>
+<p>บัญชา ปะสีละเตสัง. (2565ข). พัฒนา Web Application ยุคใหม่ด้วย HTML5 และ CSS3. กรุงเทพฯ: ซีเอ็ดยูเคชั่น.</p>
+<p>Duckett, J. (2011). HTML &amp; CSS: Design and build websites. Indianapolis, IN: John Wiley &amp; Sons.</p>
+<p>Mozilla Developer Network [MDN]. (2024b). HTML: HyperText Markup Language. Retrieved from <a href="https://developer.mozilla.org/en-US/docs/Web/HTML" target="_blank" rel="noopener noreferrer">https://developer.mozilla.org/en-US/docs/Web/HTML</a></p>
+<p>Open Web Application Security Project [OWASP]. (2023b). HTML5 security. OWASP Cheat Sheet Series. Retrieved from <a href="https://cheatsheetseries.owasp.org/cheatsheets/HTML5_Security_Cheat_Sheet.html" target="_blank" rel="noopener noreferrer">https://cheatsheetseries.owasp.org/cheatsheets/HTML5_Security_Cheat_Sheet.html</a></p>
+<p>World Wide Web Consortium [W3C]. (2024). Nu Html Checker. Retrieved from <a href="https://validator.w3.org/nu/" target="_blank" rel="noopener noreferrer">https://validator.w3.org/nu/</a></p>
 <label class="donebox"><input type="checkbox" id="done"><span>ทำเครื่องหมายว่าอ่านบทนี้แล้ว</span></label>
 <div class="pager"><a class="pn" href="ch2.html"><small>บทก่อนหน้า</small><b>บทที่ 2 พื้นฐานสำหรับการเขียนโปรแกรมบนเว็บ</b></a><a class="pn next" href="ch4.html"><small>บทถัดไป</small><b>บทที่ 4 พื้นฐาน CSS</b></a></div>
 </article></div>

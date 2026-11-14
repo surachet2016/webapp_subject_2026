@@ -62,7 +62,7 @@
 <p>เมื่อได้ชื่อโดเมนที่เหมาะสมกับแบรนด์หรือธุรกิจแล้ว ควรใส่ใจคุณภาพการให้บริการของเว็บไซต์ควบคู่กันด้วย เพื่อสร้างแบรนด์ที่ดี ง่ายต่อการกล่าวถึงและควรค่าแก่การบอกต่อ</p>
 <p><strong>ข้อพิจารณาในการเลือกผู้ให้บริการจดทะเบียนโดเมน</strong></p>
 <ul><li>ความสะดวกในการจดทะเบียนและเปิดใช้งานโดเมนด้วยตนเองผ่านระบบจดทะเบียนโดเมน (Domain Name Registration)</li><li>ความหลากหลายของนามสกุลโดเมน ทั้งนามสกุลไทย (.th) และนามสกุลสากล</li><li>ความสะดวกและปลอดภัยของระบบชำระค่าบริการที่รองรับหลายช่องทาง</li><li>การรองรับการชำระเงินด้วยบัตรเครดิตผ่านหน้าเว็บไซต์ของผู้ให้บริการ</li><li>การออกใบกำกับภาษีอิเล็กทรอนิกส์ (e-Tax Invoice) ได้</li></ul>
-<p><strong>ขั้นตอน</strong><strong>การจดทะเบียนโดเมนเนม</strong></p>
+<p><strong>ขั้นตอนการจดทะเบียนโดเมนเนม</strong></p>
 <p>1. เลือกผู้ให้บริการที่จดทะเบียนโดเมน (Domain Registrar):</p>
 <p>   - เลือกผู้ให้บริการที่เชื่อถือได้และเป็นที่นิยม เช่น GoDaddy และ Namecheap หรือผู้ให้บริการอื่น</p>
 <p>   - ตรวจสอบราคา, บริการที่มีอยู่, และความสะดวกในการจัดการโดเมน</p>
@@ -120,12 +120,12 @@
 <p>เมื่อพบโฮสต์เว็บและเครื่องมือสร้างเว็บไซต์ที่ตรงตามความต้องการแล้ว จึงดำเนินการจดทะเบียนชื่อโดเมนที่เหมาะสมกับเว็บไซต์ต่อไป</p>
 <h2 id="s11">10.3 การอัพโหลดเว็บไซต์ขึ้นสู่Server</h2>
 <h3 id="s12">วิธีการ UploadFile ขึ้น Server โดยใช้ โปรแกรม FileZilla</h3>
-<p><strong>โปรแกรม</strong><strong> </strong><strong>FileZilla</strong><strong> </strong><strong>เป็นโปรแกรม</strong><strong> FTP </strong><strong>สำหรับอัปโหลดเว็บไซต์</strong><strong> </strong><strong>ขึ้นไปยัง</strong><strong> Server</strong><br><br><strong>หากยังไม่มีโปรแ</strong><strong>กร</strong><strong>มสามารถดาวน์โหลดโปรแกรมได้จากเว็บไซต์ทางการ:  </strong></p>
+<p><strong>โปรแกรม FileZilla เป็นโปรแกรม FTP สำหรับอัปโหลดเว็บไซต์ ขึ้นไปยัง Server</strong><br><br><strong>หากยังไม่มีโปรแกรมสามารถดาวน์โหลดโปรแกรมได้จากเว็บไซต์ทางการ:  </strong></p>
 <ul><li>เปิดโปรแกรม FileZilla คลิกที่เมนู File เลือก Site Manager... หรือกดคีย์ลัด Ctrl+S</li><li>คลิก New Site</li><li>กรอก IP หรือโดเมน ลงในช่อง Host</li><li>กรอกพอร์ต 21 หรือ 22</li><li>เลือก Protocol เป็น FTP - File Transfer Protocol</li><li>กรอก Username และ Password ลงในช่อง User และ Password</li><li>กด Quickconnect</li></ul>
 <p>เพียงเท่านี้ก็จะสามารถเชื่อมต่อ และใช้งานได้ปกติแล้ว<br><br>หมายเหตุ : ไฟล์เว็บไซต์ที่ต้องการอัปโหลดขึ้นไปบน Server จะต้องอยู่ในDirectory httpdocs </p>
 <p><br>ขั้นตอนที่ 1 ป้อนข้อมูล Host Username Password และ Port</p>
 <p>ขั้นตอนที่ 2 กดปุ่ม Quickconnect จะได้หน้าต่าง</p>
-<h2 id="s13">10.4 การรักษาความมั่นคงปลอดภัยด้วย HTTPS และใบรับรองอิเล็กทรอนิกส์ (SSL/TLS Certificates) (Cloudflare, 2024; ISRG, 2024; OWASP, 2023)</h2>
+<h2 id="s13">10.4 การรักษาความมั่นคงปลอดภัยด้วย HTTPS และใบรับรองอิเล็กทรอนิกส์ (SSL/TLS Certificates) (Cloudflare, 2024; ISRG, 2024; OWASP, 2023f)</h2>
 <p>ในยุคปัจจุบัน การเผยแพร่เว็บไซต์จำเป็นต้องทำงานภายใต้โพรโทคอล HTTPS (Hypertext Transfer Protocol Secure) เพื่อเข้ารหัสข้อมูลการสื่อสารระหว่างเว็บเบราว์เซอร์กับเว็บเซิร์ฟเวอร์ ป้องกันการดักจับข้อมูล (Eavesdropping) หรือการปลอมแปลงข้อมูล (Man-in-the-Middle Attack) โดยเฉพาะข้อมูลรหัสผ่านและข้อมูลส่วนบุคคล ทั้งยังเป็นปัจจัยสำคัญในการจัดอันดับผลการค้นหาบน Google (SEO Factor)</p>
 <h3 id="s14">10.3.1 การส่งออกและนำเข้าฐานข้อมูล (.sql) เพื่อย้ายขึ้นโฮสติ้ง</h3>
 <p>เว็บไซต์ที่ใช้ฐานข้อมูล (เช่น PHP กับ MySQL หรือ WordPress) ต้องย้ายฐานข้อมูลขึ้นโฮสติ้งพร้อมไฟล์เว็บ ขั้นตอนมาตรฐานคือส่งออกฐานข้อมูลบนเครื่องเป็นไฟล์ .sql แล้วนำเข้าที่โฮสติ้ง</p>
@@ -143,7 +143,7 @@ mysql -u ชื่อผู้ใช้บนโฮสติ้ง -p ชื่�
 <p>ข้อควรรู้: บัญชี GitHub แบบฟรีต้องใช้ Repository สาธารณะ และเว็บที่เผยแพร่เป็นสาธารณะเสมอ แม้ในแผนที่ให้ใช้กับ Repository ส่วนตัว จึงต้องไม่ใส่ข้อมูลลับในไฟล์ใด ๆ นอกจากนี้เว็บโครงการอยู่ใต้ชื่อ Repository จึงควรอ้างไฟล์ด้วย path สัมพัทธ์ เช่น css/style.css ไม่ใช่ /css/style.css และควรตรวจตัวพิมพ์เล็กใหญ่ของชื่อไฟล์ให้ตรงกัน ส่วนการนำส่งอัตโนมัติด้วย GitHub Actions ดูหัวข้อ 10.6 ข้อมูลขั้นตอนนี้ตรวจจากเอกสารของ GitHub ผู้เขียนยังไม่ได้เผยแพร่เว็บจริงเนื่องจากต้องใช้บัญชีผู้ใช้</p>
 <h3 id="s16">10.4.1 การติดตั้งใบรับรองความปลอดภัยฟรี (Let&#x27;s Encrypt และ Cloudflare)</h3>
 <p>• Let&#x27;s Encrypt: องค์กรออกใบรับรองความปลอดภัยแบบเปิด (Open Certificate Authority) ที่ให้บริการใบรับรอง SSL/TLS ฟรีสำหรับโดเมนเนม โดยระบบโฮสติ้งส่วนใหญ่ (cPanel / DirectAdmin) มีฟังก์ชันติดตั้งและต่ออายุอัตโนมัติ (Auto-Renew ทุก 90 วัน)<br>• Cloudflare SSL / Edge Certificates: บริการเครือข่ายส่งมอบเนื้อหา (CDN: Content Delivery Network) ที่ช่วยเข้ารหัสข้อมูล HTTPS ที่จุด Edge Server และช่วยป้องกันการโจมตีแบบปฏิเสธการให้บริการ (DDoS Protection) ได้อย่างมีประสิทธิภาพ</p>
-<h2 id="s17">10.5 การนำส่งเว็บไซต์สมัยใหม่ด้วยระบบอัตโนมัติ (CI/CD) และระบบชื่อโดเมน (DNS) (ศุภชัย สมพานิช, 2566; ICANN, 2024)</h2>
+<h2 id="s17">10.5 การนำส่งเว็บไซต์สมัยใหม่ด้วยระบบอัตโนมัติ (CI/CD) และระบบชื่อโดเมน (DNS) (ศุภชัย สมพานิช, 2566ก; ICANN, 2024)</h2>
 <p>แม้ว่าการอัปโหลดไฟล์ผ่าน FTP/SFTP จะยังคงเป็นวิธีที่เข้าใจง่าย แต่องค์กรและนักพัฒนาเว็บระดับสากลได้เปลี่ยนผ่าน สู่กระบวนการนำส่งซอฟต์แวร์แบบอัตโนมัติ (Automated Deployment) ดังนี้:<br>1. การควบคุมเวอร์ชันด้วย Git และ GitHub: ช่วยให้นักพัฒนาสามารถบันทึกประวัติการเปลี่ยนแปลงโค้ด และทำงานร่วมกันเป็นทีมได้อย่างเป็นระบบ<br>2. ระบบ Continuous Integration &amp; Continuous Deployment (CI/CD): เช่น GitHub Actions ซึ่งสามารถตั้งค่าให้รันการทดสอบโค้ดโดยอัตโนมัติ และทำการอัปโหลดไฟล์ขึ้นสู่ Cloud Server ทันทีที่มีการ Merge โค้ดเข้าสู่ Branch หลัก (Main/Master)<br>3. แพลตฟอร์มคลาวด์แบบ Serverless / PaaS (เช่น Vercel, Netlify, Cloudflare Pages): รองรับการผูกกับ GitHub โดยตรง ทำการ Build และกระจายไฟล์เว็บไซต์ไปยังเซิร์ฟเวอร์ทั่วโลก (Global CDN) ภายในไม่กี่วินาที</p>
 <p>โครงสร้างระเบียน DNS ที่สำคัญ: A Record (เชื่อมชื่อโดเมนไปยัง IPv4 Address ของเซิร์ฟเวอร์), CNAME (กำหนดชื่อโดเมนเสมือนไปยังโดเมนหลัก), MX (ชี้ไปยัง Mail Server สำหรับรับส่งอีเมลองค์กร), และ TXT (ใช้สำหรับยืนยันความเป็นเจ้าของและตั้งค่า SPF/DKIM)</p>
 <h2 id="s18">10.6 เทคนิคการใช้ AI ช่วยตรวจสอบประสิทธิภาพและความปลอดภัยของเว็บไซต์ (Google Developers, 2024; Cloudflare, 2024) (AI-Assisted DevOps &amp; Auditing)</h2>
@@ -206,12 +206,12 @@ Header always set Strict-Transport-Security &quot;max-age=31536000; includeSubDo
 <p>3.ให้นักศึกษาอธิบายวิธีการเลือก Web Hosting ที่ดี</p>
 <p>4.ให้นักศึกษาอัปโหลดข้อมูลเว็บไซต์ขึ้นสู่บน Server จริง</p>
 <h2 id="s25">เอกสารอ้างอิง</h2>
-<p>ศุภชัย สมพานิช. (2566). DevOps และ CI/CD Pipeline สำหรับนักพัฒนาเว็บแอปพลิเคชัน. นนทบุรี: ไอดีซี พรีเมียร์.</p>
-<p>Cloudflare. (2024). Learning Center: What is DNS, SSL/TLS, and How Cloud Networks Work. Retrieved from <a href="https://www.cloudflare.com/learning/" target="_blank" rel="noopener noreferrer">https://www.cloudflare.com/learning/</a></p>
-<p>Google Developers. (2024). Google Lighthouse: Automated Auditing, Performance, and SEO Tool for Web Developers. Retrieved from <a href="https://developer.chrome.com/docs/lighthouse/" target="_blank" rel="noopener noreferrer">https://developer.chrome.com/docs/lighthouse/</a></p>
-<p>Internet Corporation for Assigned Names and Numbers [ICANN]. (2024). Beginner&#x27;s Guide to Domain Names and DNS. Retrieved from <a href="https://www.icann.org/" target="_blank" rel="noopener noreferrer">https://www.icann.org/</a></p>
-<p>Internet Security Research Group [ISRG]. (2024). Let&#x27;s Encrypt: Free, Automated, and Open Certificate Authority Documentation. Retrieved from <a href="https://letsencrypt.org/docs/" target="_blank" rel="noopener noreferrer">https://letsencrypt.org/docs/</a></p>
-<p>Open Web Application Security Project [OWASP]. (2023). Transport Layer Protection (TLS) Cheat Sheet. Retrieved from <a href="https://cheatsheetseries.owasp.org/" target="_blank" rel="noopener noreferrer">https://cheatsheetseries.owasp.org/</a></p>
+<p>ศุภชัย สมพานิช. (2566ก). DevOps และ CI/CD Pipeline สำหรับนักพัฒนาเว็บแอปพลิเคชัน. นนทบุรี: ไอดีซี พรีเมียร์.</p>
+<p>Cloudflare. (2024). Learning Center. Retrieved from <a href="https://www.cloudflare.com/learning/" target="_blank" rel="noopener noreferrer">https://www.cloudflare.com/learning/</a></p>
+<p>Google Developers. (2024). Lighthouse. Chrome for Developers. Retrieved from <a href="https://developer.chrome.com/docs/lighthouse/" target="_blank" rel="noopener noreferrer">https://developer.chrome.com/docs/lighthouse/</a></p>
+<p>Internet Corporation for Assigned Names and Numbers [ICANN]. (2024). ICANN for beginners. Retrieved from <a href="https://www.icann.org/resources/pages/beginners-guides-2012-03-06-en" target="_blank" rel="noopener noreferrer">https://www.icann.org/resources/pages/beginners-guides-2012-03-06-en</a></p>
+<p>Internet Security Research Group [ISRG]. (2024). Documentation. Let&#x27;s Encrypt. Retrieved from <a href="https://letsencrypt.org/docs/" target="_blank" rel="noopener noreferrer">https://letsencrypt.org/docs/</a></p>
+<p>Open Web Application Security Project [OWASP]. (2023f). Transport layer security. OWASP Cheat Sheet Series. Retrieved from <a href="https://cheatsheetseries.owasp.org/cheatsheets/Transport_Layer_Security_Cheat_Sheet.html" target="_blank" rel="noopener noreferrer">https://cheatsheetseries.owasp.org/cheatsheets/Transport_Layer_Security_Cheat_Sheet.html</a></p>
 <label class="donebox"><input type="checkbox" id="done"><span>ทำเครื่องหมายว่าอ่านบทนี้แล้ว</span></label>
 <div class="pager"><a class="pn" href="ch9.html"><small>บทก่อนหน้า</small><b>บทที่ 9 การใช้โปรแกรมสำเร็จรูปเพื่อจัดทำเว็บไซต์</b></a><a class="pn next" href="../worksheets.html"><small>ขั้นต่อไป</small><b>ทำใบงานประจำบท</b></a></div>
 </article></div>
