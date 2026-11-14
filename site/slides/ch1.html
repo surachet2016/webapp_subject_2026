@@ -1,0 +1,618 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="สไลด์บทที่ 1 แนวคิดและหลักการออกแบบเว็บไซต์ รายวิชาการเขียนโปรแกรมบนเว็บ 07-034-210 พร้อมตัวอย่างที่กดลองได้">
+<meta name="theme-color" content="#1e1b4b">
+<title>สไลด์บทที่ 1 แนวคิดและหลักการออกแบบเว็บไซต์ · การเขียนโปรแกรมบนเว็บ</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%234338ca'/%3E%3Cpath d='M26 20 14 32l12 12M38 20l12 12-12 12' fill='none' stroke='%23fff' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<style>
+@font-face{font-family:Sarabun;src:url(../assets/fonts/Sarabun-400-thai.woff2) format("woff2");font-weight:400;unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+@font-face{font-family:Sarabun;src:url(../assets/fonts/Sarabun-400-latin.woff2) format("woff2");font-weight:400;unicode-range:U+0000-00FF,U+2000-206F,U+2190-21FF,U+2212}
+@font-face{font-family:Sarabun;src:url(../assets/fonts/Sarabun-600-thai.woff2) format("woff2");font-weight:600;unicode-range:U+0E01-0E5B}
+@font-face{font-family:Sarabun;src:url(../assets/fonts/Sarabun-600-latin.woff2) format("woff2");font-weight:600;unicode-range:U+0000-00FF,U+2000-206F}
+@font-face{font-family:Sarabun;src:url(../assets/fonts/Sarabun-700-thai.woff2) format("woff2");font-weight:700;unicode-range:U+0E01-0E5B}
+@font-face{font-family:Sarabun;src:url(../assets/fonts/Sarabun-700-latin.woff2) format("woff2");font-weight:700;unicode-range:U+0000-00FF,U+2000-206F}
+@font-face{font-family:Mono;src:url(../assets/fonts/JetBrainsMono-400-latin.woff2) format("woff2")}
+:root{--ink:#14172b;--muted:#5a6078;--brand:#4338ca;--brand2:#7c3aed;--accent:#f59e0b;--ok:#059669;--bad:#dc2626;--bg:#f7f7fb;--card:#fff;--line:#e3e5f0;--dark:#0f1226}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--dark);font-family:Sarabun,"Noto Sans Thai",system-ui,sans-serif;color:var(--ink);overflow:hidden}
+a{color:var(--brand)}
+#stage{position:absolute;left:50%;top:50%;width:1280px;height:720px;transform-origin:center;transform:translate(-50%,-50%)}
+.slide{position:absolute;inset:0;background:var(--bg);border-radius:18px;overflow:hidden;padding:56px 72px;opacity:0;visibility:hidden;transform:translateX(40px);transition:opacity .45s ease,transform .45s ease,visibility .45s}
+.slide.on{opacity:1;visibility:visible;transform:none}
+.slide.prev{transform:translateX(-40px)}
+.slide.dark{background:radial-gradient(1200px 600px at 80% -10%,#4f46e5 0,transparent 60%),radial-gradient(900px 500px at -10% 110%,#7c3aed 0,transparent 55%),var(--dark);color:#fff}
+.slide.dark .muted{color:#c7cbe8}
+h1{font-size:64px;line-height:1.15;font-weight:700}
+h2{font-size:44px;line-height:1.2;font-weight:700;margin-bottom:18px}
+h3{font-size:26px;font-weight:700;margin-bottom:8px}
+p,li{font-size:26px;line-height:1.55}
+.muted{color:var(--muted)}
+.kicker{font-size:20px;font-weight:600;letter-spacing:.04em;color:var(--brand2);margin-bottom:6px}
+.dark .kicker{color:#c4b5fd}
+.tag{display:inline-block;font-size:16px;font-weight:600;padding:4px 12px;border-radius:999px;background:#ede9fe;color:#5b21b6;margin-right:6px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:center}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 22px;box-shadow:0 8px 24px rgba(20,23,43,.06)}
+.card p,.card li{font-size:20px}
+ul.b{padding-left:28px}
+ul.b li{margin:6px 0}
+.code{font-family:Mono,ui-monospace,monospace;font-size:17px;line-height:1.5;background:#0f1226;color:#e8eaf8;border-radius:12px;padding:16px 18px;white-space:pre;overflow:auto}
+.btn{font:inherit;font-size:18px;font-weight:600;border:0;border-radius:10px;padding:10px 18px;background:var(--brand);color:#fff;cursor:pointer}
+.btn.alt{background:#e0e7ff;color:#312e81}
+.foot{position:absolute;left:72px;right:400px;bottom:18px;gap:24px;display:flex;justify-content:space-between;font-size:14px;color:var(--muted)}
+.dark .foot{color:#9aa2c8}
+.src{position:absolute;right:72px;bottom:40px;font-size:13px;color:var(--muted)}
+/* links */
+.links{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:10px}
+.lk{display:block;text-decoration:none;color:inherit;background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;transition:transform .2s,box-shadow .2s}
+.lk:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(67,56,202,.18)}
+.lk b{display:block;font-size:21px;color:var(--brand)}
+.lk span{display:block;font-size:17px;color:var(--muted);margin-top:4px}
+.lk small{display:block;font-size:13px;color:#8b90a8;margin-top:6px}
+/* hud */
+#bar{position:fixed;left:0;top:0;height:4px;background:linear-gradient(90deg,#818cf8,#f59e0b);transition:width .3s;z-index:5}
+#hud{position:fixed;right:14px;bottom:12px;display:flex;gap:8px;z-index:5}
+#hud{background:rgba(15,18,38,.78);border-radius:12px;padding:4px}
+#hud button{font:inherit;font-size:15px;border:0;border-radius:8px;padding:6px 12px;background:rgba(255,255,255,.14);color:#fff;cursor:pointer}
+#hud span{color:#c7cbe8;font-size:15px;padding:6px 4px}
+#toc{position:fixed;inset:0;background:rgba(15,18,38,.96);z-index:9;display:none;padding:40px;overflow:auto}
+#toc.on{display:block}
+#toc h2{color:#fff;font-size:32px}
+#toc ol{columns:2;color:#fff;padding-left:28px}
+#toc li{font-size:20px;margin:6px 0;cursor:pointer}
+#toc li:hover{color:#fbbf24}
+/* cover 3D */
+.scene{perspective:1100px}
+.browser{width:420px;height:270px;border-radius:14px;background:#fff;box-shadow:0 30px 60px rgba(0,0,0,.35);overflow:hidden;position:absolute}
+.browser .bt{height:30px;background:#eef0f8;display:flex;align-items:center;gap:6px;padding:0 12px}
+.browser .bt i{width:10px;height:10px;border-radius:50%;background:#f87171}.browser .bt i:nth-child(2){background:#fbbf24}.browser .bt i:nth-child(3){background:#34d399}
+.float1{transform:rotateY(-24deg) rotateX(8deg);animation:fl 7s ease-in-out infinite}
+.float2{transform:rotateY(-24deg) rotateX(8deg) translateZ(-120px);animation:fl 7s ease-in-out -2.5s infinite;opacity:.9}
+@keyframes fl{50%{translate:0 -16px}}
+/* exploded page anatomy */
+.anat{position:relative;width:520px;height:440px;transform-style:preserve-3d;transform:translateX(40px) rotateX(55deg) rotateZ(-35deg) scale(.78);transition:transform .8s}
+.anat.flat{transform:scale(.9)}
+.ly{position:absolute;left:0;width:520px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;color:#fff;transition:transform .8s,box-shadow .8s;box-shadow:0 18px 30px rgba(0,0,0,.25)}
+.ly.h{top:0;height:80px;background:#4f46e5}
+.ly.n{top:86px;height:44px;background:#7c3aed}
+.ly.b{top:136px;height:230px;background:#0ea5e9}
+.ly.f{top:372px;height:68px;background:#334155}
+.anat.split .ly.h{transform:translateZ(150px)}.anat.split .ly.n{transform:translateZ(100px)}.anat.split .ly.b{transform:translateZ(50px)}
+.anat.flat .ly{transform:none}
+/* structures svg */
+.svgbox{background:#fff;border:1px solid var(--line);border-radius:16px;height:430px;display:flex;align-items:center;justify-content:center}
+.tabs{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.tabs button{font:inherit;font-size:18px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 16px;cursor:pointer}
+.tabs button.on{background:var(--brand);color:#fff;border-color:var(--brand)}
+.edge{stroke:#94a3b8;stroke-width:3;fill:none;stroke-dasharray:400;stroke-dashoffset:400;animation:draw 1.2s ease forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.node{animation:pop .5s ease both}
+@keyframes pop{from{transform:scale(0);opacity:0}}
+/* fitts */
+.arena{position:relative;height:300px;background:#fff;border:1px dashed #c7cbe8;border-radius:14px}
+.tgt{position:absolute;border:0;border-radius:10px;background:var(--brand);color:#fff;font:inherit;font-weight:600;cursor:pointer}
+/* palette */
+.sw{height:84px;border-radius:12px;display:flex;align-items:flex-end;padding:8px 10px;font-size:14px;font-family:Mono,monospace}
+.prev-ui{border-radius:14px;overflow:hidden;border:1px solid var(--line)}
+.prev-ui .ph{padding:14px 18px;color:#fff;font-weight:700;font-size:20px}
+.prev-ui .pb{padding:16px 18px;background:#fff}
+.ratio{font-size:56px;font-weight:700}
+.pass{color:var(--ok)}.fail{color:var(--bad)}
+input[type=range]{width:100%;accent-color:var(--brand)}
+input[type=color]{width:56px;height:40px;border:0;background:none}
+label{font-size:18px;font-weight:600}
+/* fidelity */
+.fid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px;height:300px;border-radius:14px;border:1px solid var(--line);background:#fff;transition:all .5s}
+.fid div{border-radius:8px;transition:all .5s}
+/* responsive */
+.devwrap{background:#e9ebf5;border-radius:16px;height:430px;display:flex;align-items:flex-start;justify-content:center;padding:18px;overflow:hidden}
+.dev{background:#fff;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.12);padding:12px;transition:width .25s;overflow:hidden;height:390px}
+.dev .rh{height:34px;border-radius:6px;background:#4f46e5;margin-bottom:10px}
+.dev .rg{display:grid;gap:10px}
+.dev .rg i{display:block;height:90px;border-radius:8px;background:#c7d2fe}
+/* motion demos */
+.hov{transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s}
+.hov:hover{transform:translateY(-8px);box-shadow:0 18px 36px rgba(67,56,202,.25)}
+.skel{height:18px;border-radius:6px;margin:10px 0;background:linear-gradient(90deg,#e5e7eb 25%,#f3f4f6 50%,#e5e7eb 75%);background-size:200% 100%;animation:sk 1.4s infinite}
+@keyframes sk{to{background-position:-200% 0}}
+.spin3d{width:110px;height:110px;position:relative;transform-style:preserve-3d;animation:rot 9s linear infinite;margin:46px auto 40px}
+.spin3d div{position:absolute;inset:0;border-radius:14px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:22px;color:#fff;opacity:.93}
+@keyframes rot{to{transform:rotateX(360deg) rotateY(720deg)}}
+.pipe{display:flex;align-items:center;gap:10px;margin-top:20px}
+.pipe .st{flex:1;text-align:center;background:#fff;border:2px solid var(--line);border-radius:14px;padding:16px 8px;font-size:19px;font-weight:600;transition:all .4s}
+.pipe .st.lit{border-color:var(--brand);background:#eef2ff;transform:translateY(-6px)}
+.pipe .ar{font-size:26px;color:#a5b4fc}
+textarea,input[type=text]{font:inherit;font-size:17px;width:100%;border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+iframe.run{width:100%;height:320px;border:1px solid var(--line);border-radius:12px;background:#fff}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="bar"></div>
+<div id="stage">
+
+<!-- 1 ปก -->
+<section class="slide dark" data-title="ปก">
+  <div style="position:absolute;left:72px;top:150px;width:620px">
+    <p class="kicker">รายวิชา 07-034-210 การเขียนโปรแกรมบนเว็บ · บทที่ 1</p>
+    <h1>แนวคิดและหลักการ<br>ออกแบบเว็บไซต์</h1>
+    <p class="muted" style="margin-top:18px">UX/UI ที่ดี การใช้สีและฟอนต์ เว็บที่รองรับทุกอุปกรณ์ แอนิเมชัน และการใช้ AI ช่วยออกแบบ</p>
+    <p class="muted" style="margin-top:28px;font-size:20px">ดร.สุรเชษฐ์ สังขพันธ์ · กด → หรือ Space เพื่อไปสไลด์ถัดไป · กด O เพื่อดูสารบัญ</p>
+  </div>
+  <div class="scene" style="position:absolute;right:40px;top:120px;width:520px;height:460px">
+    <div class="browser float2" style="left:110px;top:150px"><div class="bt"><i></i><i></i><i></i></div>
+      <div style="padding:14px"><div style="height:18px;width:60%;background:#e0e7ff;border-radius:6px"></div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:14px"><div style="height:120px;background:#fde68a;border-radius:8px"></div><div style="height:120px;background:#bbf7d0;border-radius:8px"></div><div style="height:120px;background:#fbcfe8;border-radius:8px"></div></div></div></div>
+    <div class="browser float1" style="left:0;top:0"><div class="bt"><i></i><i></i><i></i></div>
+      <div style="padding:16px"><div style="height:46px;background:linear-gradient(90deg,#4f46e5,#7c3aed);border-radius:8px"></div><div style="height:14px;width:70%;background:#e5e7eb;border-radius:6px;margin-top:14px"></div><div style="height:14px;width:50%;background:#e5e7eb;border-radius:6px;margin-top:8px"></div><div style="width:120px;height:36px;background:#f59e0b;border-radius:8px;margin-top:16px"></div></div></div>
+  </div>
+  <div class="foot"><span>ภาพประกอบในสไลด์ชุดนี้สร้างด้วย SVG/CSS โดยใช้ปัญญาประดิษฐ์ (AI) ช่วยสร้าง</span><span>พ.ศ. 2569</span></div>
+</section>
+
+<!-- 2 เป้าหมาย -->
+<section class="slide" data-title="เป้าหมายของบทนี้">
+  <p class="kicker">เป้าหมายของบทนี้</p>
+  <h2>เรียนจบบทนี้ นักศึกษาจะ...</h2>
+  <div class="grid2" style="align-items:start">
+    <ul class="b">
+      <li>อธิบายองค์ประกอบและโครงสร้างของเว็บไซต์ได้</li>
+      <li>ใช้หลัก UX/UI สี ฟอนต์ และการจัดลำดับสายตา</li>
+      <li>วางแผนงานตั้งแต่ Sitemap → Wireframe → Prototype</li>
+      <li>ออกแบบให้รองรับทุกอุปกรณ์และทุกคนเข้าถึงได้</li>
+      <li>ใช้ AI ช่วยออกแบบอย่างรู้เท่าทันและมีจริยธรรม</li>
+    </ul>
+    <div class="card">
+      <h3>ผลลัพธ์การเรียนรู้ (CLO) ของบทนี้</h3>
+      <p><b>CLO1</b> อธิบายแนวคิด องค์ประกอบ โครงสร้าง และหลักการออกแบบเว็บไซต์ได้อย่างถูกต้อง</p>
+      <p style="margin-top:8px"><b>CLO2</b> วิเคราะห์ความต้องการของผู้ใช้ และจัดทำขอบเขตงานและโครงสร้างเว็บไซต์ได้</p>
+      <p style="margin-top:8px"><b>CLO7</b> ทำงานร่วมกับผู้อื่นและนำเสนอแนวคิดได้อย่างชัดเจน</p>
+      <p class="muted" style="margin-top:10px;font-size:16px">ใบงานที่ 1: Sitemap, Wireframe และต้นแบบด้วย Figma + AI</p>
+    </div>
+  </div>
+  <div class="foot"><span>บทที่ 1 แนวคิดและหลักการออกแบบเว็บไซต์</span><span></span></div>
+</section>
+
+<!-- 3 5-second test -->
+<section class="slide" data-title="ทดสอบ 5 วินาที">
+  <p class="kicker">เริ่มด้วยคำถาม</p>
+  <h2>ผู้ใช้ตัดสินใจภายในไม่กี่วินาที</h2>
+  <div class="grid2">
+    <div>
+      <p>ลองดูหน้าเว็บทางขวา <b>5 วินาที</b> แล้วตอบว่า</p>
+      <ul class="b" style="margin-top:8px"><li>เว็บนี้เกี่ยวกับอะไร</li><li>ปุ่มที่ควรกดคืออะไร</li><li>รู้สึกน่าเชื่อถือไหม</li></ul>
+      <div style="margin-top:22px;display:flex;gap:10px"><button class="btn" data-ux="bad">แบบที่ 1</button><button class="btn alt" data-ux="good">แบบที่ 2</button></div>
+      <p class="muted" style="font-size:18px;margin-top:12px">เปรียบเทียบสองแบบ: สิ่งที่ต่างคือลำดับสายตา ช่องว่าง สี และความชัดเจนของปุ่ม</p>
+    </div>
+    <div id="uxdemo" class="card" style="height:440px;padding:0;overflow:hidden"></div>
+  </div>
+</section>
+
+<!-- 4 anatomy 3D -->
+<section class="slide" data-title="1.1 องค์ประกอบหลักของหน้าเว็บ">
+  <p class="kicker">1.1 องค์ประกอบหลักของหน้าเว็บไซต์</p>
+  <h2>แยกชั้นหน้าเว็บให้เห็นเป็น 3 มิติ</h2>
+  <div class="grid2">
+    <div>
+      <ul class="b">
+        <li><b style="color:#4f46e5">Header</b> โลโก้ ชื่อเว็บ เมนูหลัก บอกว่า "อยู่ที่ไหน"</li>
+        <li><b style="color:#7c3aed">Navigation</b> เส้นทางไปส่วนต่าง ๆ</li>
+        <li><b style="color:#0284c7">Body</b> เนื้อหา ภาพ ฟอร์ม ปุ่ม CTA</li>
+        <li><b style="color:#334155">Footer</b> ลิขสิทธิ์ ติดต่อ นโยบาย ลิงก์โซเชียล</li>
+      </ul>
+      <div style="margin-top:18px;display:flex;gap:10px"><button class="btn" id="anSplit">แยกชั้น</button><button class="btn alt" id="anFlat">มองตรง</button></div>
+      <p class="muted" style="font-size:18px;margin-top:12px">ใน HTML5 ใช้แท็ก &lt;header&gt; &lt;nav&gt; &lt;main&gt; &lt;footer&gt; ตรงกับชั้นเหล่านี้ (บทที่ 3)</p>
+    </div>
+    <div class="scene" style="height:520px;display:flex;align-items:center;justify-content:center">
+      <div class="anat split" id="anat"><div class="ly h">Header</div><div class="ly n">Navigation</div><div class="ly b">Body (เนื้อหา)</div><div class="ly f">Footer</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 structures -->
+<section class="slide" data-title="1.2 โครงสร้างของเว็บไซต์">
+  <p class="kicker">1.2 โครงสร้างของเว็บไซต์</p>
+  <h2>เลือกโครงสร้างให้เหมาะกับเนื้อหา</h2>
+  <div class="grid2" style="grid-template-columns:420px 1fr;align-items:start">
+    <div>
+      <div class="tabs" id="stTabs"><button data-st="seq" class="on">เรียงลำดับ</button><button data-st="tree">ลำดับขั้น</button><button data-st="grid">ตาราง</button><button data-st="web">ใยแมงมุม</button></div>
+      <div class="card" id="stText" style="min-height:260px"></div>
+    </div>
+    <div class="svgbox"><svg id="stSvg" viewBox="0 0 640 400" width="640" height="400"></svg></div>
+  </div>
+</section>
+
+<!-- 6 real examples -->
+<section class="slide" data-title="ดูเว็บจริงที่ออกแบบดี">
+  <p class="kicker">ดูของจริง (เปิดในแท็บใหม่)</p>
+  <h2>เว็บและระบบออกแบบที่ควรศึกษา</h2>
+  <div class="links">
+    <a class="lk" href="https://www.gov.uk/" target="_blank" rel="noopener noreferrer"><b>GOV.UK</b><span>สังเกต: ภาษาเรียบง่าย ช่องค้นหาเด่น เข้าถึงได้ทุกคน</span><small>gov.uk</small></a>
+    <a class="lk" href="https://design-system.service.gov.uk/" target="_blank" rel="noopener noreferrer"><b>GOV.UK Design System</b><span>สังเกต: ส่วนประกอบมาตรฐานพร้อมเหตุผลการออกแบบ</span><small>design-system.service.gov.uk</small></a>
+    <a class="lk" href="https://stripe.com/" target="_blank" rel="noopener noreferrer"><b>Stripe</b><span>สังเกต: ลำดับสายตา ภาพเคลื่อนไหว และปุ่ม CTA ชัด</span><small>stripe.com</small></a>
+    <a class="lk" href="https://m3.material.io/" target="_blank" rel="noopener noreferrer"><b>Material Design 3</b><span>สังเกต: ระบบสี ตัวอักษร และส่วนประกอบของ Google</span><small>m3.material.io</small></a>
+    <a class="lk" href="https://developer.apple.com/design/human-interface-guidelines" target="_blank" rel="noopener noreferrer"><b>Apple Human Interface Guidelines</b><span>สังเกต: หลักการออกแบบแอปที่ใช้ง่าย</span><small>developer.apple.com</small></a>
+    <a class="lk" href="https://www.awwwards.com/" target="_blank" rel="noopener noreferrer"><b>Awwwards</b><span>สังเกต: แรงบันดาลใจด้านแอนิเมชันและเลย์เอาต์</span><small>awwwards.com</small></a>
+  </div>
+  <div class="card" style="margin-top:18px"><p><b>กิจกรรม 5 นาที:</b> เลือก 1 เว็บ แล้วบอกเพื่อนว่า Header, เมนู, ปุ่มหลัก และ Footer อยู่ตรงไหน และอะไรทำให้ใช้ง่าย</p></div>
+</section>
+
+<!-- 7 principles -->
+<section class="slide" data-title="1.4 หลักการออกแบบเว็บไซต์">
+  <p class="kicker">1.4 หลักการออกแบบเว็บไซต์ · ยึดผู้ใช้เป็นศูนย์กลาง (User-Centered Design)</p>
+  <h2>หลักที่ใช้ได้กับทุกเว็บ</h2>
+  <div class="grid3">
+    <div class="card hov"><h3>เรียบง่าย ใช้ง่าย</h3><p>ตัดสิ่งรบกวน ให้ผู้ใช้เห็นเนื้อหาหลักเร็ว</p></div>
+    <div class="card hov"><h3>สม่ำเสมอ</h3><p>สี ฟอนต์ ปุ่ม และตำแหน่งเมนูเหมือนกันทุกหน้า</p></div>
+    <div class="card hov"><h3>ลำดับความสำคัญ</h3><p>ขนาด น้ำหนัก สี บอกว่าอะไรสำคัญที่สุด</p></div>
+    <div class="card hov"><h3>นำทางชัดเจน</h3><p>รู้ว่าอยู่ที่ไหน ไปต่อทางไหน กลับอย่างไร</p></div>
+    <div class="card hov"><h3>เร็วและเบา</h3><p>ภาพขนาดเหมาะสม โหลดเร็ว ไม่ทำให้รอ</p></div>
+    <div class="card hov"><h3>ทุกคนเข้าถึงได้</h3><p>ตัวอักษรอ่านง่าย สีตัดกันพอ ใช้คีย์บอร์ดได้</p></div>
+  </div>
+  <p class="muted" style="font-size:18px;margin-top:16px">ลองชี้เมาส์ที่การ์ด: การยกตัวขึ้นเล็กน้อยบอกผู้ใช้ว่า "กดได้" (ดูเรื่องแอนิเมชันอีกครั้งในสไลด์ที่ 17)</p>
+</section>
+
+<!-- 8 Fitts -->
+<section class="slide" data-title="กฎของฟิตส์ (Fitts's Law)">
+  <p class="kicker">1.4.1 กฎจิตวิทยาสำหรับ UX (Yablonski, 2024)</p>
+  <h2>กฎของฟิตส์: ปุ่มใหญ่และใกล้ กดได้เร็วกว่า</h2>
+  <div class="grid2" style="align-items:start">
+    <div>
+      <p>ลองกดปุ่มให้เร็วที่สุด 5 ครั้ง แล้วเทียบเวลาเฉลี่ย</p>
+      <div style="display:flex;gap:10px;margin:14px 0"><button class="btn" id="fitSmall">ปุ่มเล็กไกล</button><button class="btn alt" id="fitBig">ปุ่มใหญ่ใกล้</button></div>
+      <p id="fitOut" style="font-size:22px">เลือกรูปแบบ แล้วกดปุ่มที่ปรากฏ</p>
+      <p class="muted" style="font-size:18px;margin-top:10px">นำไปใช้: ปุ่มสั่งซื้อ/ลงทะเบียนต้องใหญ่พอสำหรับนิ้ว (อย่างน้อยประมาณ 44×44 px) และอยู่ในตำแหน่งที่เอื้อมถึง</p>
+    </div>
+    <div class="arena" id="arena"></div>
+  </div>
+  <a class="src" href="https://lawsofux.com/fittss-law/" target="_blank" rel="noopener noreferrer">อ่านต่อ: lawsofux.com</a>
+</section>
+
+<!-- 9 Hick & Miller -->
+<section class="slide" data-title="กฎของฮิกและมิลเลอร์">
+  <p class="kicker">1.4.1 กฎจิตวิทยาสำหรับ UX</p>
+  <h2>ตัวเลือกน้อย และแบ่งข้อมูลเป็นก้อน</h2>
+  <div class="grid2" style="align-items:start">
+    <div class="card"><h3>กฎของฮิก (Hick's Law)</h3><p>ตัวเลือกยิ่งมาก ตัดสินใจยิ่งช้า</p>
+      <div style="display:flex;gap:8px;margin:10px 0"><button class="btn alt" data-hick="12">เมนู 12 ข้อ</button><button class="btn" data-hick="5">เมนู 5 ข้อ</button></div>
+      <div id="hick" style="display:flex;flex-wrap:wrap;gap:6px"></div></div>
+    <div class="card"><h3>กฎของมิลเลอร์ (Miller's Law)</h3><p>จำได้ครั้งละประมาณ 7±2 ชิ้น จึงต้องแบ่งก้อน (Chunking)</p>
+      <p style="font-family:Mono,monospace;font-size:30px;margin-top:14px">0812345678</p>
+      <p style="font-family:Mono,monospace;font-size:30px;color:var(--ok)">081-234-5678</p>
+      <p class="muted" style="font-size:17px">ตัวอย่างอื่น: ฟอร์มยาวแบ่งเป็นหลายขั้นตอน สินค้าจัดเป็นกลุ่มละ 4–6 รายการ</p></div>
+  </div>
+</section>
+
+<!-- 10 F/Z -->
+<section class="slide" data-title="การกวาดสายตา F-Pattern และ Z-Pattern">
+  <p class="kicker">1.4.1 การจัดระเบียบสายตา (Visual Hierarchy)</p>
+  <h2>ผู้ใช้ไม่อ่านทุกคำ แต่กวาดสายตา</h2>
+  <div class="grid2">
+    <div>
+      <div class="tabs"><button class="on" data-eye="F">F-Pattern</button><button data-eye="Z">Z-Pattern</button></div>
+      <p id="eyeText"></p>
+    </div>
+    <div class="svgbox"><svg id="eye" viewBox="0 0 520 380" width="520" height="380"></svg></div>
+  </div>
+  <a class="src" href="https://www.nngroup.com/articles/f-shaped-pattern-reading-web-content/" target="_blank" rel="noopener noreferrer">อ่านต่อ: Nielsen Norman Group</a>
+</section>
+
+<!-- 11 color -->
+<section class="slide" data-title="การใช้สีบนเว็บ">
+  <p class="kicker">การใช้สีที่ถูกต้อง</p>
+  <h2>เลือกสีหลัก แล้วให้ระบบสร้างชุดสี</h2>
+  <div class="grid2" style="grid-template-columns:1fr 1.1fr;align-items:start">
+    <div>
+      <label>สีหลักของแบรนด์ <input type="color" id="hue" value="#4338ca"></label>
+      <div class="grid4" id="pal" style="margin-top:14px"></div>
+      <ul class="b" style="margin-top:14px"><li style="font-size:20px"><b>60-30-10</b>: พื้นหลัง 60% สีรอง 30% สีเน้น 10%</li><li style="font-size:20px">ใช้สีบอกความหมาย: เขียว=สำเร็จ แดง=ผิดพลาด</li><li style="font-size:20px">อย่าใช้สีอย่างเดียวบอกข้อมูล ให้มีข้อความหรือไอคอนด้วย</li></ul>
+    </div>
+    <div class="prev-ui" id="pv"><div class="ph" id="pvh">ระบบลงทะเบียนเรียน</div><div class="pb"><p style="font-size:20px">ตัวอย่างหน้าจอที่ใช้ชุดสีทางซ้าย</p><button class="btn" id="pvb" style="margin-top:10px">ลงทะเบียน</button> <button class="btn alt" id="pva" style="margin-top:10px">ดูรายละเอียด</button><p id="pvn" style="margin-top:12px;font-size:18px;padding:8px 12px;border-radius:8px">✓ บันทึกข้อมูลแล้ว</p></div></div>
+  </div>
+  <a class="src" href="https://m3.material.io/styles/color/system/overview" target="_blank" rel="noopener noreferrer">อ่านต่อ: ระบบสี Material Design 3</a>
+</section>
+
+<!-- 12 contrast -->
+<section class="slide" data-title="ความเปรียบต่างของสี (WCAG)">
+  <p class="kicker">การใช้สีที่ถูกต้อง · WCAG 2.2</p>
+  <h2>ตรวจความเปรียบต่างของสีตัวอักษรกับพื้น</h2>
+  <div class="grid2">
+    <div>
+      <div style="display:flex;gap:24px"><label>สีตัวอักษร<br><input type="color" id="fg" value="#94a3b8"></label><label>สีพื้น<br><input type="color" id="bgc" value="#ffffff"></label></div>
+      <div class="card" style="margin-top:14px"><div class="ratio" id="ratio">0:1</div><p id="verdict"></p></div>
+      <p class="muted" style="font-size:18px;margin-top:10px">เกณฑ์ระดับ AA: ข้อความปกติต้องได้อย่างน้อย 4.5:1 ข้อความขนาดใหญ่อย่างน้อย 3:1</p>
+    </div>
+    <div class="card" id="sample" style="height:330px"><h3 style="font-size:32px">ข้อความหัวเรื่อง</h3><p>ตัวอย่างเนื้อหาภาษาไทยสำหรับทดสอบการอ่าน นักศึกษาลองเปลี่ยนสีทางซ้ายแล้วดูว่าอ่านง่ายขึ้นหรือยากขึ้น</p></div>
+  </div>
+  <a class="src" href="https://webaim.org/resources/contrastchecker/" target="_blank" rel="noopener noreferrer">เครื่องมือจริง: WebAIM Contrast Checker</a>
+</section>
+
+<!-- 13 typography -->
+<section class="slide" data-title="การใช้ฟอนต์บนเว็บ">
+  <p class="kicker">การใช้ฟอนต์ (Typography)</p>
+  <h2>ฟอนต์ภาษาไทยบนเว็บต้องอ่านง่ายก่อนสวย</h2>
+  <div class="grid2" style="align-items:start">
+    <div>
+      <label>ขนาดตัวอักษร <span id="fsV">18</span> px</label><input type="range" id="fs" min="12" max="28" value="18">
+      <label style="display:block;margin-top:10px">ระยะห่างบรรทัด <span id="lhV">1.6</span></label><input type="range" id="lh" min="1" max="2.2" step="0.1" value="1.6">
+      <label style="display:block;margin-top:10px">ฟอนต์</label>
+      <div class="tabs" id="ff"><button class="on" data-f="Sarabun">Sarabun</button><button data-f="system-ui">ฟอนต์ระบบ</button><button data-f="serif">มีหัว (Serif)</button></div>
+      <ul class="b"><li style="font-size:19px">เนื้อหาภาษาไทยควร 16 px ขึ้นไป ระยะบรรทัดประมาณ 1.5–1.8</li><li style="font-size:19px">ใช้ไม่เกิน 2 ตระกูลฟอนต์ ต่างกันด้วยขนาดและน้ำหนัก</li><li style="font-size:19px">โหลดเฉพาะน้ำหนักที่ใช้ และตรวจสิทธิการใช้ฟอนต์</li></ul>
+    </div>
+    <div class="card" id="typo" style="height:420px;overflow:hidden"><h3 style="font-size:1.6em">การออกแบบเว็บไซต์เพื่อผู้ใช้</h3><p style="font-size:1em">เว็บไซต์ที่ดีช่วยให้ผู้ใช้ทำงานสำเร็จได้รวดเร็ว ตัวอักษรที่อ่านง่าย ระยะห่างที่พอดี และความยาวบรรทัดที่เหมาะสม ทำให้ผู้ใช้อ่านเนื้อหาได้นานโดยไม่ล้าสายตา ภาษาไทยมีสระและวรรณยุกต์ซ้อนบนล่าง จึงต้องการระยะบรรทัดมากกว่าภาษาอังกฤษ</p></div>
+  </div>
+  <a class="src" href="https://fonts.google.com/?subset=thai" target="_blank" rel="noopener noreferrer">ฟอนต์ไทยฟรี: Google Fonts (ตรวจใบอนุญาตทุกครั้ง)</a>
+</section>
+
+<!-- 14 process & fidelity -->
+<section class="slide" data-title="1.5 กระบวนการพัฒนาเว็บไซต์">
+  <p class="kicker">1.5 กระบวนการพัฒนาเว็บไซต์</p>
+  <h2>จากความต้องการสู่เว็บจริง</h2>
+  <div class="pipe" id="proc"><div class="st">ความต้องการ</div><span class="ar">→</span><div class="st">Sitemap</div><span class="ar">→</span><div class="st">Wireframe</div><span class="ar">→</span><div class="st">Mockup</div><span class="ar">→</span><div class="st">Prototype</div><span class="ar">→</span><div class="st">พัฒนา/ทดสอบ</div><span class="ar">→</span><div class="st">ดูแลรักษา</div></div>
+  <div class="grid2" style="margin-top:26px;align-items:start">
+    <div><label>เลื่อนดูระดับความสมจริง (Fidelity)</label><input type="range" id="fidR" min="0" max="2" step="1" value="0"><p id="fidT" style="font-size:22px;margin-top:8px"></p></div>
+    <div class="fid" id="fid"><div style="grid-column:1/3;height:40px"></div><div style="height:150px"></div><div style="height:150px"></div><div style="grid-column:1/3;height:46px"></div></div>
+  </div>
+</section>
+
+<!-- 15 responsive -->
+<section class="slide" data-title="1.6 Responsive และ Mobile-First">
+  <p class="kicker">1.6.1 Mobile-First และจุดตัดหน้าจอ (Breakpoints)</p>
+  <h2>ลากดูว่าเลย์เอาต์เปลี่ยนตามความกว้างจออย่างไร</h2>
+  <div class="grid2" style="grid-template-columns:400px 1fr;align-items:start">
+    <div>
+      <label>ความกว้างหน้าจอ <span id="wV">360</span> px</label><input type="range" id="wR" min="320" max="1280" value="360">
+      <p id="bpT" style="font-size:22px;margin-top:10px"></p>
+      <div class="code" style="font-size:13px;margin-top:10px">/* Mobile-First: เริ่มที่จอเล็ก */
+.grid { grid-template-columns: 1fr; }
+@media (min-width: 768px) {
+  .grid { grid-template-columns: 1fr 1fr; }
+}
+@media (min-width: 1200px) {
+  .grid { grid-template-columns: repeat(3, 1fr); }
+}</div>
+    </div>
+    <div class="devwrap"><div class="dev" id="dev"><div class="rh"></div><div class="rg" id="rg"><i></i><i></i><i></i><i></i><i></i><i></i></div></div></div>
+  </div>
+</section>
+
+<!-- 16 WCAG -->
+<section class="slide" data-title="1.6.2 การเข้าถึงได้ (WCAG POUR)">
+  <p class="kicker">1.6.2 มาตรฐาน WCAG 2.2 (W3C, 2023)</p>
+  <h2>เว็บที่ทุกคนใช้ได้: หลัก POUR</h2>
+  <div class="grid4">
+    <div class="card hov"><h3 style="color:#4f46e5">P รับรู้ได้</h3><p>ภาพมี alt คำบรรยายวิดีโอ สีตัดกันพอ</p></div>
+    <div class="card hov"><h3 style="color:#7c3aed">O ใช้งานได้</h3><p>ใช้คีย์บอร์ดได้ เห็นกรอบโฟกัส ไม่มีเวลาบีบคั้น</p></div>
+    <div class="card hov"><h3 style="color:#0284c7">U เข้าใจได้</h3><p>ภาษาชัด เมนูอยู่ที่เดิม ข้อความแจ้งข้อผิดพลาดบอกวิธีแก้</p></div>
+    <div class="card hov"><h3 style="color:#059669">R รองรับได้</h3><p>HTML ถูกมาตรฐาน ใช้ได้กับโปรแกรมอ่านหน้าจอ</p></div>
+  </div>
+  <div class="card" style="margin-top:18px"><p><b>ลองเลย:</b> กดปุ่ม Tab บนคีย์บอร์ดตอนนี้ แล้วดูว่ามีกรอบโฟกัสที่ลิงก์หรือปุ่มไหม → <a href="https://www.w3.org/WAI/standards-guidelines/wcag/" target="_blank" rel="noopener noreferrer">อ่านมาตรฐาน WCAG ที่ W3C</a></p></div>
+</section>
+
+<!-- 17 motion -->
+<section class="slide" data-title="แอนิเมชันบนเว็บ">
+  <p class="kicker">แอนิเมชันที่สวยและมีความหมาย</p>
+  <h2>แอนิเมชันต้องช่วยผู้ใช้ ไม่ใช่แค่สวย</h2>
+  <div class="grid3">
+    <div class="card hov"><h3>Hover / Feedback</h3><p>ชี้ที่การ์ดนี้ การยกตัวบอกว่ากดได้ ใช้เวลา 150–300 ms</p></div>
+    <div class="card"><h3>Skeleton Loading</h3><div class="skel" style="width:90%"></div><div class="skel" style="width:70%"></div><div class="skel" style="width:80%"></div><p style="font-size:17px">บอกว่ากำลังโหลด ลดความรู้สึกว่ารอนาน</p></div>
+    <div class="card" style="text-align:center"><h3>3D Transform</h3><div class="scene"><div class="spin3d" id="cube"></div></div><p style="font-size:17px">CSS 3D ใช้ดึงความสนใจได้ แต่ใช้แต่พอดี</p></div>
+  </div>
+  <ul class="b" style="margin-top:14px"><li style="font-size:20px">เคารพผู้ใช้ที่ตั้งค่าลดการเคลื่อนไหว ด้วย <code>@media (prefers-reduced-motion: reduce)</code> (สไลด์นี้ก็ทำ)</li></ul>
+  <a class="src" href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_animations/Using_CSS_animations" target="_blank" rel="noopener noreferrer">อ่านต่อ: CSS Animations (MDN)</a>
+</section>
+
+<!-- 18 AI animation -->
+<section class="slide" data-title="ใช้ AI ช่วยทำแอนิเมชัน">
+  <p class="kicker">ใช้ AI ช่วยทำแอนิเมชัน (ต้องตรวจเองทุกครั้ง)</p>
+  <h2>จากคำสั่ง (Prompt) สู่แอนิเมชันจริง</h2>
+  <div class="grid2" style="align-items:start">
+    <div>
+      <div class="card" style="font-size:18px"><b>Prompt ตัวอย่าง</b><p style="font-size:18px;margin-top:6px">"เขียน CSS ให้การ์ดสินค้าค่อย ๆ เลื่อนขึ้นและจางเข้ามาทีละใบเมื่อโหลดหน้า ใช้เวลาใบละ 0.4 วินาที เว้นช่วงใบละ 0.1 วินาที และปิดแอนิเมชันเมื่อผู้ใช้ตั้งค่า prefers-reduced-motion"</p></div>
+      <div class="code" style="margin-top:12px;font-size:15px">.card { animation: up .4s ease both; }
+.card:nth-child(2) { animation-delay: .1s; }
+.card:nth-child(3) { animation-delay: .2s; }
+@keyframes up { from { opacity:0; translate:0 24px; } }
+@media (prefers-reduced-motion: reduce) {
+  .card { animation: none; }
+}</div>
+    </div>
+    <div>
+      <button class="btn" id="aiPlay">▶ เล่นผลลัพธ์</button>
+      <div id="aiDemo" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px"></div>
+      <div class="card" style="margin-top:14px"><p style="font-size:18px"><b>ตรวจสอบก่อนใช้:</b> เวลาและจังหวะเหมาะไหม ใช้ได้ทุกเบราว์เซอร์ไหม ปิดได้ตามการตั้งค่าผู้ใช้ไหม และบันทึกว่าใช้ AI ส่วนไหน</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 19 AI tools -->
+<section class="slide" data-title="1.7 เครื่องมือ AI สำหรับออกแบบ">
+  <p class="kicker">1.7.1 เครื่องมือ AI สำหรับออกแบบและสร้างต้นแบบ</p>
+  <h2>AI เปลี่ยนไอเดียเป็นหน้าจอได้เร็วขึ้น</h2>
+  <div class="pipe" id="aiPipe"><div class="st">ไอเดีย/โจทย์</div><span class="ar">→</span><div class="st">Prompt</div><span class="ar">→</span><div class="st">AI สร้าง UI</div><span class="ar">→</span><div class="st">คนตรวจ/แก้</div><span class="ar">→</span><div class="st">โค้ดจริง/ทดสอบ</div></div>
+  <div class="links" style="margin-top:22px">
+    <a class="lk" href="https://v0.app/" target="_blank" rel="noopener noreferrer"><b>v0 (Vercel)</b><span>สร้างหน้าเว็บและส่วนประกอบจากข้อความ</span><small>v0.app</small></a>
+    <a class="lk" href="https://stitch.withgoogle.com/" target="_blank" rel="noopener noreferrer"><b>Google Stitch</b><span>สร้างดีไซน์หน้าจอแอปและเว็บจากข้อความหรือภาพ</span><small>stitch.withgoogle.com</small></a>
+    <a class="lk" href="https://www.figma.com/" target="_blank" rel="noopener noreferrer"><b>Figma</b><span>ออกแบบ Wireframe/Prototype มีฟีเจอร์ AI ช่วย</span><small>figma.com</small></a>
+  </div>
+  <p class="muted" style="font-size:18px;margin-top:14px">ใช้บัญชีของตนเอง อ่านเงื่อนไขการใช้งาน และห้ามใส่ข้อมูลส่วนบุคคลของผู้อื่นลงในเครื่องมือ AI</p>
+</section>
+
+<!-- 20 prompt builder -->
+<section class="slide" data-title="1.7.2 กรอบการเขียน Prompt">
+  <p class="kicker">1.7.2 กรอบการสั่งงาน AI (Role · Context · Requirements · Constraints · Output)</p>
+  <h2>ลองประกอบ Prompt ของตัวเอง</h2>
+  <div class="grid2" style="align-items:start">
+    <div style="display:grid;gap:8px">
+      <label>Role (บทบาท)<input type="text" id="pR" value="Senior UI/UX Designer"></label>
+      <label>Context (บริบท)<input type="text" id="pC" value="เว็บร้านกาแฟในชุมชน กลุ่มผู้ใช้คือนักศึกษา"></label>
+      <label>Requirements (ความต้องการ)<input type="text" id="pQ" value="Hero section, เมนูกาแฟ 3 คอลัมน์, ปุ่มสั่งซื้อ"></label>
+      <label>Constraints (ข้อจำกัด)<input type="text" id="pK" value="Mobile-first, WCAG 2.2 contrast ≥ 4.5:1, Semantic HTML5"></label>
+      <label>Output (รูปแบบผลลัพธ์)<input type="text" id="pO" value="HTML5 + CSS ไฟล์เดียว พร้อมคอมเมนต์อธิบาย"></label>
+    </div>
+    <div><div class="code" id="pOut" style="white-space:pre-wrap;height:330px;font-size:16px"></div><button class="btn" id="pCopy" style="margin-top:10px">คัดลอก Prompt</button> <span id="pMsg" class="muted" style="font-size:16px"></span></div>
+  </div>
+</section>
+
+<!-- 21 ethics -->
+<section class="slide" data-title="1.7.3 ข้อควรระวังในการใช้ AI">
+  <p class="kicker">1.7.3 ข้อควรระวังและจริยธรรม</p>
+  <h2>AI ช่วยได้มาก แต่คนต้องรับผิดชอบ</h2>
+  <div class="grid4">
+    <div class="card"><h3>ตรวจทุกครั้ง</h3><p>AI อาจสร้างโค้ดผิดหรือล้าสมัย (Hallucination) ต้องทดสอบเอง</p></div>
+    <div class="card"><h3>ลิขสิทธิ์</h3><p>ภาพ ฟอนต์ โค้ดที่ได้ ต้องตรวจสิทธิการใช้งานและอ้างอิง</p></div>
+    <div class="card"><h3>ข้อมูลส่วนบุคคล</h3><p>ไม่ใส่ข้อมูลจริงของผู้อื่นลง AI (PDPA)</p></div>
+    <div class="card"><h3>เปิดเผยการใช้</h3><p>บันทึกการใช้ AI แนบกับงานที่ส่ง (เกณฑ์จริยธรรม)</p></div>
+  </div>
+  <div class="card" style="margin-top:18px;background:#fff7ed;border-color:#fed7aa"><p>การใช้ AI โดยไม่เปิดเผย หรือคัดลอกผลงานผู้อื่น ถือเป็นการทุจริตทางวิชาการ ดูรายละเอียดในหน้า <a href="../assessment.html" target="_blank">เกณฑ์การประเมินผล</a></p></div>
+</section>
+
+<!-- 22 code run -->
+<section class="slide" data-title="1.7.4 ลองรันโค้ดเลย์เอาต์">
+  <p class="kicker">1.7.4 โครงหน้าเว็บเชิงความหมาย รองรับ Mobile-First</p>
+  <h2>ลองรันโครงหน้าเว็บจริง</h2>
+  <div class="grid2" style="align-items:start">
+    <textarea id="code" spellcheck="false" style="font-family:Mono,monospace;font-size:14px;height:420px;background:#0f1226;color:#e8eaf8;border:0">&lt;header style="background:#4338ca;color:#fff;padding:12px"&gt;
+  &lt;b&gt;วิชาการเขียนโปรแกรมบนเว็บ&lt;/b&gt;
+&lt;/header&gt;
+&lt;nav style="padding:8px;background:#ede9fe"&gt;หน้าแรก · บทเรียน · ใบงาน&lt;/nav&gt;
+&lt;main style="display:grid;gap:10px;padding:10px;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr))"&gt;
+  &lt;article style="background:#e0e7ff;padding:12px;border-radius:8px"&gt;บทที่ 1&lt;/article&gt;
+  &lt;article style="background:#e0e7ff;padding:12px;border-radius:8px"&gt;บทที่ 2&lt;/article&gt;
+  &lt;article style="background:#e0e7ff;padding:12px;border-radius:8px"&gt;บทที่ 3&lt;/article&gt;
+&lt;/main&gt;
+&lt;footer style="padding:10px;color:#666"&gt;© 2569 รายวิชา 07-034-210&lt;/footer&gt;</textarea>
+    <div><button class="btn" id="run">▶ ลองรัน</button><span class="muted" style="font-size:16px"> แก้โค้ดทางซ้ายแล้วกดรันใหม่ได้</span><iframe class="run" id="out" title="ผลลัพธ์" sandbox="allow-same-origin" style="margin-top:10px"></iframe></div>
+  </div>
+</section>
+
+<!-- 23 summary -->
+<section class="slide dark" data-title="สรุปและงานที่ได้รับมอบหมาย">
+  <p class="kicker">สรุปบทที่ 1</p>
+  <h2>ออกแบบเพื่อผู้ใช้ ตั้งแต่โครงสร้างจนถึงรายละเอียด</h2>
+  <div class="grid2" style="align-items:start">
+    <ul class="b" style="color:#fff">
+      <li>หน้าเว็บมี Header, Navigation, Body, Footer</li>
+      <li>เลือกโครงสร้างเว็บให้เหมาะกับเนื้อหา</li>
+      <li>ใช้กฎ UX สี ฟอนต์ และลำดับสายตา</li>
+      <li>Mobile-First และ WCAG ทำให้ทุกคนใช้ได้</li>
+      <li>AI ช่วยได้ แต่ต้องตรวจและเปิดเผยการใช้</li>
+    </ul>
+    <div class="card" style="color:var(--ink)"><h3>งานสัปดาห์นี้</h3><p>ใบงานที่ 1: Sitemap, Wireframe 2 หน้า และต้นแบบด้วย Figma + AI</p><p style="margin-top:8px">แบบฝึกหัดท้ายบทที่ 1 ส่งผ่าน Google Classroom</p><p style="margin-top:10px"><a href="../worksheets/ws1.html" target="_blank">เปิดใบงานที่ 1</a> · <a href="../chapters/ch1.html" target="_blank">อ่านบทที่ 1</a></p></div>
+  </div>
+  <div class="foot"><span>อ้างอิงหลัก: เอกสารประกอบการสอนบทที่ 1; Yablonski (2024); W3C (2023); Bootstrap Core Team (2024a)</span><span>ภาพประกอบสร้างด้วย SVG/CSS โดยใช้ AI ช่วยสร้าง</span></div>
+</section>
+
+</div>
+<div id="hud"><button id="bPrev" aria-label="สไลด์ก่อนหน้า">←</button><span id="cnt"></span><button id="bNext" aria-label="สไลด์ถัดไป">→</button><button id="bToc">สารบัญ</button><button id="bFull">เต็มจอ</button><a href="../chapters/ch1.html" style="font-size:15px;border-radius:8px;padding:6px 12px;background:rgba(255,255,255,.12);color:#fff;text-decoration:none">ออก</a></div>
+<div id="toc"><h2>สารบัญสไลด์บทที่ 1</h2><ol id="tocList"></ol><p style="color:#c7cbe8;margin-top:14px;font-size:18px">กด Esc หรือ O เพื่อปิด</p></div>
+<script>
+(function(){
+var S=[].slice.call(document.querySelectorAll('.slide')),i=0,st=document.getElementById('stage');
+function fit(){var s=Math.min(innerWidth/1280,innerHeight/720)*0.98;st.style.transform='translate(-50%,-50%) scale('+s+')'}
+addEventListener('resize',fit);fit();
+function go(n){n=Math.max(0,Math.min(S.length-1,n));S.forEach(function(e,k){e.classList.toggle('on',k===n);e.classList.toggle('prev',k<n)});i=n;
+ document.getElementById('cnt').textContent=(n+1)+' / '+S.length;document.getElementById('bar').style.width=((n+1)/S.length*100)+'%';
+ history.replaceState(null,'','#'+(n+1));var f=S[n].dataset.enter;if(f&&window[f])window[f]()}
+document.addEventListener('keydown',function(e){if(/INPUT|TEXTAREA/.test(document.activeElement.tagName))return;
+ if(['ArrowRight','PageDown',' '].indexOf(e.key)>-1){e.preventDefault();go(i+1)}else if(['ArrowLeft','PageUp'].indexOf(e.key)>-1){go(i-1)}
+ else if(e.key==='Home')go(0);else if(e.key==='End')go(S.length-1);else if(e.key==='o'||e.key==='O')toc();else if(e.key==='Escape')document.getElementById('toc').classList.remove('on');else if(e.key==='f'||e.key==='F')full()});
+var tx=null;document.addEventListener('touchstart',function(e){tx=e.touches[0].clientX},{passive:true});
+document.addEventListener('touchend',function(e){if(tx===null)return;var d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>60)go(i+(d<0?1:-1));tx=null});
+document.getElementById('bPrev').onclick=function(){go(i-1)};document.getElementById('bNext').onclick=function(){go(i+1)};
+function toc(){document.getElementById('toc').classList.toggle('on')}document.getElementById('bToc').onclick=toc;
+function full(){if(!document.fullscreenElement)document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();else document.exitFullscreen()}document.getElementById('bFull').onclick=full;
+var tl=document.getElementById('tocList');S.forEach(function(s,k){var li=document.createElement('li');li.textContent=s.dataset.title;li.onclick=function(){go(k);toc()};tl.appendChild(li)});
+// 5-second UX demo
+var ux=document.getElementById('uxdemo');
+var BAD='<div style="padding:10px;background:#ff0;font-family:serif;font-size:13px;color:#f0f">ยินดีต้อนรับ!!! โปรโมชั่น ข่าว สินค้า บริการ ติดต่อ เกี่ยวกับ FAQ ลงทะเบียน เข้าสู่ระบบ ดาวน์โหลด แผนที่</div><div style="padding:10px;font-size:13px;line-height:1.2;color:#999;background:#eee">'+'ร้านกาแฟบ้านสวนของเรามีเมล็ดกาแฟคัดพิเศษ เปิดทุกวัน มีโปรโมชันมากมาย สั่งได้ ส่งไว '.repeat(8)+'</div><div style="display:flex;gap:4px;padding:8px"><button style="font-size:11px">สั่งซื้อ</button><button style="font-size:11px">ดู</button><button style="font-size:11px">แชร์</button><button style="font-size:11px">ถูกใจ</button></div>';
+var GOOD='<div style="padding:14px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #eee"><b style="color:#7c2d12;font-size:20px">☕ บ้านสวนคอฟฟี่</b><span style="font-size:15px;color:#555">เมนู · สาขา · ติดต่อ</span></div><div style="padding:34px 24px;background:linear-gradient(135deg,#fef3c7,#fde68a)"><div style="font-size:34px;font-weight:700;color:#451a03;line-height:1.2">กาแฟคั่วสดจากสวน<br>ส่งถึงมือใน 30 นาที</div><p style="font-size:18px;color:#78350f;margin-top:8px">เมล็ดคัดพิเศษ คั่วทุกเช้า</p><button style="margin-top:16px;font:inherit;font-size:18px;font-weight:700;background:#7c2d12;color:#fff;border:0;border-radius:10px;padding:12px 22px">สั่งเลย</button></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:16px"><div style="height:70px;background:#fff7ed;border-radius:8px"></div><div style="height:70px;background:#fff7ed;border-radius:8px"></div><div style="height:70px;background:#fff7ed;border-radius:8px"></div></div>';
+function uxs(k){ux.innerHTML=k==='bad'?BAD:GOOD}uxs('bad');[].forEach.call(document.querySelectorAll('[data-ux]'),function(b){b.onclick=function(){uxs(b.dataset.ux)}});
+// anatomy
+var an=document.getElementById('anat');document.getElementById('anSplit').onclick=function(){an.className='anat split'};document.getElementById('anFlat').onclick=function(){an.className='anat flat'};
+// structures
+var SV=document.getElementById('stSvg'),TX=document.getElementById('stText');
+var STS={seq:{t:'<h3>แบบเรียงลำดับ</h3><p>อ่านตามลำดับจากหน้าแรกไปหน้าสุดท้าย เหมาะกับบทเรียนออนไลน์ แบบทดสอบ หรือขั้นตอนสมัครสมาชิก</p>',n:[[60,200],[200,200],[340,200],[480,200],[600,200]],e:[[0,1],[1,2],[2,3],[3,4]]},
+tree:{t:'<h3>แบบลำดับขั้น</h3><p>แตกหมวดหมู่จากหน้าแรก นิยมที่สุดในเว็บองค์กรและมหาวิทยาลัย ควรเข้าถึงข้อมูลได้ในไม่กี่คลิก</p>',n:[[320,60],[140,190],[320,190],[500,190],[80,320],[200,320],[440,320],[560,320]],e:[[0,1],[0,2],[0,3],[1,4],[1,5],[3,6],[3,7]]},
+grid:{t:'<h3>แบบตาราง</h3><p>ไปได้ทั้งแนวนอนและแนวตั้ง เหมาะกับข้อมูลที่มีสองมิติ เช่น สินค้าแยกตามหมวดและราคา</p>',n:[[160,100],[320,100],[480,100],[160,220],[320,220],[480,220],[160,340],[320,340],[480,340]],e:[[0,1],[1,2],[3,4],[4,5],[6,7],[7,8],[0,3],[3,6],[1,4],[4,7],[2,5],[5,8]]},
+web:{t:'<h3>แบบใยแมงมุม</h3><p>ทุกหน้าเชื่อมโยงกันได้อิสระ เหมาะกับเว็บความรู้ เช่น Wikipedia แต่ต้องมีเมนูชัดเพื่อไม่ให้หลงทาง</p>',n:[[320,200],[160,90],[480,90],[560,250],[420,340],[200,340],[90,240]],e:[[0,1],[0,2],[0,3],[0,4],[0,5],[0,6],[1,2],[2,3],[3,4],[4,5],[5,6],[6,1],[1,4],[2,5]]}};
+function stDraw(k){var d=STS[k],s='';d.e.forEach(function(e,j){var a=d.n[e[0]],b=d.n[e[1]];s+='<path class="edge" style="animation-delay:'+(j*0.06)+'s" d="M'+a[0]+' '+a[1]+' L'+b[0]+' '+b[1]+'"/>'});
+ d.n.forEach(function(p,j){s+='<g class="node" style="animation-delay:'+(j*0.08)+'s;transform-origin:'+p[0]+'px '+p[1]+'px"><rect x="'+(p[0]-40)+'" y="'+(p[1]-24)+'" width="80" height="48" rx="10" fill="'+(j===0?'#4f46e5':'#e0e7ff')+'"/><text x="'+p[0]+'" y="'+(p[1]+7)+'" text-anchor="middle" font-size="18" font-family="Sarabun" fill="'+(j===0?'#fff':'#312e81')+'">'+(j===0?'หน้าแรก':'หน้า '+(j+1))+'</text></g>'});
+ SV.innerHTML=s;TX.innerHTML=d.t}
+stDraw('seq');[].forEach.call(document.querySelectorAll('#stTabs button'),function(b){b.onclick=function(){[].forEach.call(b.parentNode.children,function(x){x.classList.remove('on')});b.classList.add('on');stDraw(b.dataset.st)}});
+// fitts
+var ar=document.getElementById('arena'),fo=document.getElementById('fitOut'),mode=null,times=[],t0=0;
+function place(){ar.innerHTML='';var b=document.createElement('button');b.className='tgt';var big=mode==='big';var w=big?150:42,h=big?60:26;b.style.width=w+'px';b.style.height=h+'px';b.textContent=big?'กดตรงนี้':'';
+ var x=big?(220+Math.random()*60):(Math.random()<.5?8:500),y=big?(110+Math.random()*60):(Math.random()*260);b.style.left=x+'px';b.style.top=y+'px';
+ b.onclick=function(){times.push(performance.now()-t0);if(times.length<5){place()}else{var av=times.reduce(function(a,c){return a+c},0)/times.length;fo.innerHTML='เวลาเฉลี่ย <b>'+Math.round(av)+' ms</b> ('+(big?'ปุ่มใหญ่ใกล้':'ปุ่มเล็กไกล')+') ลองอีกแบบแล้วเทียบกัน';ar.innerHTML=''}};ar.appendChild(b);t0=performance.now()}
+document.getElementById('fitSmall').onclick=function(){mode='small';times=[];fo.textContent='กดปุ่มสีม่วงที่ปรากฏ 5 ครั้ง';place()};
+document.getElementById('fitBig').onclick=function(){mode='big';times=[];fo.textContent='กดปุ่มสีม่วงที่ปรากฏ 5 ครั้ง';place()};
+// hick
+var HK=['หน้าแรก','ข่าว','กิจกรรม','หลักสูตร','บุคลากร','ดาวน์โหลด','ติดต่อ','คำถามพบบ่อย','แผนที่','รับสมัคร','วิจัย','ศิษย์เก่า'];
+function hick(n){var h=document.getElementById('hick');h.innerHTML='';(n==5?['หน้าแรก','หลักสูตร','รับสมัคร','ข่าวสาร','ติดต่อ']:HK).forEach(function(t){var s=document.createElement('span');s.textContent=t;s.style.cssText='font-size:17px;background:#eef2ff;border-radius:8px;padding:6px 10px';h.appendChild(s)})}
+hick(12);[].forEach.call(document.querySelectorAll('[data-hick]'),function(b){b.onclick=function(){hick(+b.dataset.hick)}});
+// eye pattern
+var EY=document.getElementById('eye'),ET=document.getElementById('eyeText');
+function eye(k){var wf='<rect x="20" y="20" width="480" height="40" rx="6" fill="#e0e7ff"/>';for(var r=0;r<6;r++)wf+='<rect x="20" y="'+(80+r*46)+'" width="'+(k==='F'?(r<2?440:200-r*15):460)+'" height="20" rx="5" fill="#e5e7eb"/>';
+ if(k==='Z')wf='<rect x="20" y="20" width="120" height="40" rx="6" fill="#e0e7ff"/><rect x="380" y="20" width="120" height="40" rx="6" fill="#fde68a"/><rect x="60" y="120" width="400" height="120" rx="10" fill="#ede9fe"/><rect x="20" y="300" width="160" height="50" rx="10" fill="#e5e7eb"/><rect x="340" y="300" width="160" height="50" rx="10" fill="#f59e0b"/>';
+ var p=k==='F'?'M30 40 L480 40 M30 40 L30 115 L440 115 M30 115 L30 300':'M60 40 L460 40 L80 320 L440 325';
+ EY.innerHTML=wf+'<path d="'+p+'" stroke="#dc2626" stroke-width="5" fill="none" stroke-linecap="round" style="stroke-dasharray:1400;stroke-dashoffset:1400;animation:draw 2.4s ease forwards"/>';
+ ET.innerHTML=k==='F'?'<b>F-Pattern</b> หน้าที่มีข้อความมาก ผู้ใช้อ่านแถวบนเต็ม แถวถัดไปสั้นลง แล้วไล่ลงด้านซ้าย <br>→ ใส่คำสำคัญไว้ต้นบรรทัดและหัวข้อ':'<b>Z-Pattern</b> หน้าที่มีข้อความน้อย เช่น Landing Page สายตาวิ่งจากโลโก้ → มุมขวาบน → ทแยงลง → ปุ่มขวาล่าง <br>→ วางปุ่ม CTA ที่ปลายเส้นทาง'}
+eye('F');[].forEach.call(document.querySelectorAll('[data-eye]'),function(b){b.onclick=function(){[].forEach.call(b.parentNode.children,function(x){x.classList.remove('on')});b.classList.add('on');eye(b.dataset.eye)}});
+// color palette
+function hex2rgb(h){h=h.replace('#','');return [parseInt(h.substr(0,2),16),parseInt(h.substr(2,2),16),parseInt(h.substr(4,2),16)]}
+function rgb2hsl(r,g,b){r/=255;g/=255;b/=255;var mx=Math.max(r,g,b),mn=Math.min(r,g,b),h,s,l=(mx+mn)/2;if(mx===mn){h=s=0}else{var d=mx-mn;s=l>.5?d/(2-mx-mn):d/(mx+mn);h=mx===r?(g-b)/d+(g<b?6:0):mx===g?(b-r)/d+2:(r-g)/d+4;h/=6}return [h*360,s*100,l*100]}
+function hsl(h,s,l){return 'hsl('+Math.round(h)+','+Math.round(s)+'%,'+Math.round(l)+'%)'}
+function pal(){var c=hex2rgb(document.getElementById('hue').value),q=rgb2hsl(c[0],c[1],c[2]),h=q[0],s=Math.max(q[1],45);
+ var P=[['หลัก (Primary)',hsl(h,s,42),'#fff'],['รอง (Secondary)',hsl(h+30,s*.8,55),'#fff'],['เน้น (Accent)',hsl(h+180,85,50),'#111'],['พื้น (Surface)',hsl(h,30,97),'#111']];
+ document.getElementById('pal').innerHTML=P.map(function(p){return '<div class="sw" style="background:'+p[1]+';color:'+p[2]+'">'+p[0]+'</div>'}).join('');
+ document.getElementById('pvh').style.background=P[0][1];document.getElementById('pvb').style.background=P[0][1];document.getElementById('pva').style.background=P[3][1];document.getElementById('pva').style.color=P[0][1];
+ var n=document.getElementById('pvn');n.style.background='#dcfce7';n.style.color='#166534';document.getElementById('pv').querySelector('.pb').style.background=P[3][1];document.getElementById('pvb').style.boxShadow='inset 0 -4px 0 '+P[2][1]}
+document.getElementById('hue').oninput=pal;pal();
+// contrast
+function lum(c){var a=c.map(function(v){v/=255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4)});return .2126*a[0]+.7152*a[1]+.0722*a[2]}
+function con(){var f=document.getElementById('fg').value,b=document.getElementById('bgc').value,L1=lum(hex2rgb(f)),L2=lum(hex2rgb(b)),r=(Math.max(L1,L2)+.05)/(Math.min(L1,L2)+.05);
+ document.getElementById('ratio').textContent=r.toFixed(2)+':1';var smp=document.getElementById('sample');smp.style.color=f;smp.style.background=b;
+ var ok=r>=4.5,big=r>=3,aaa=r>=7;document.getElementById('verdict').innerHTML='ข้อความปกติ AA: '+(ok?'<b class="pass">ผ่าน</b>':'<b class="fail">ไม่ผ่าน</b>')+' · ข้อความใหญ่ AA: '+(big?'<b class="pass">ผ่าน</b>':'<b class="fail">ไม่ผ่าน</b>')+' · AAA: '+(aaa?'<b class="pass">ผ่าน</b>':'<b class="fail">ไม่ผ่าน</b>')}
+document.getElementById('fg').oninput=con;document.getElementById('bgc').oninput=con;con();
+// typography
+var ty=document.getElementById('typo');function typ(){var f=document.getElementById('fs').value,l=document.getElementById('lh').value;document.getElementById('fsV').textContent=f;document.getElementById('lhV').textContent=l;ty.style.fontSize=f+'px';ty.style.lineHeight=l}
+document.getElementById('fs').oninput=typ;document.getElementById('lh').oninput=typ;typ();
+[].forEach.call(document.querySelectorAll('#ff button'),function(b){b.onclick=function(){[].forEach.call(b.parentNode.children,function(x){x.classList.remove('on')});b.classList.add('on');ty.style.fontFamily=b.dataset.f}});
+// process pipeline animate
+function lightPipe(id){var st=[].slice.call(document.querySelectorAll('#'+id+' .st')),k=0;st.forEach(function(x){x.classList.remove('lit')});var t=setInterval(function(){if(k>0)st[k-1].classList.remove('lit');if(k>=st.length){clearInterval(t);st.forEach(function(x){x.classList.add('lit')});return}st[k].classList.add('lit');k++},450)}
+window.enterProc=function(){lightPipe('proc')};window.enterAi=function(){lightPipe('aiPipe')};
+S.forEach(function(s){if(s.dataset.title.indexOf('1.5')===0)s.dataset.enter='enterProc';if(s.dataset.title.indexOf('1.7 เครื่องมือ')===0)s.dataset.enter='enterAi'});
+// fidelity
+var FD=[['Wireframe: กล่องเทา ไม่มีสีและเนื้อหาจริง ใช้คุยเรื่องโครงสร้าง',function(d){return '#e5e7eb'}],['Mockup: ใส่สี ฟอนต์ ภาพ ให้เห็นหน้าตาจริง แต่ยังกดไม่ได้',function(d,j){return ['#4f46e5','#fde68a','#bbf7d0','#334155'][j]}],['Prototype: กดและเปลี่ยนหน้าได้ ใช้ทดสอบกับผู้ใช้จริง (ลองชี้เมาส์)',function(d,j){return ['#4f46e5','#fde68a','#bbf7d0','#334155'][j]}]];
+function fid(){var v=+document.getElementById('fidR').value,box=document.getElementById('fid');document.getElementById('fidT').textContent=FD[v][0];
+ [].forEach.call(box.children,function(d,j){d.style.background=FD[v][1](d,j);d.style.boxShadow=v===2?'0 6px 14px rgba(0,0,0,.15)':'none';d.style.cursor=v===2?'pointer':'default';d.classList.toggle('hov',v===2)})}
+document.getElementById('fidR').oninput=fid;fid();
+// responsive
+function resp(){var w=+document.getElementById('wR').value,dv=document.getElementById('dev'),rg=document.getElementById('rg');document.getElementById('wV').textContent=w;
+ var sc=Math.min(1,600/w);dv.style.width=(w*sc)+'px';var cols=w>=1200?3:w>=768?2:1;rg.style.gridTemplateColumns='repeat('+cols+',1fr)';
+ document.getElementById('bpT').innerHTML=(w<768?'<b>มือถือ</b> (&lt; 768 px) แสดง 1 คอลัมน์':w<1200?'<b>แท็บเล็ต</b> (768–1199 px) แสดง 2 คอลัมน์':'<b>เดสก์ท็อป</b> (≥ 1200 px) แสดง 3 คอลัมน์')+(sc<1?' · ย่อภาพลงเพื่อให้พอดีสไลด์':'')}
+document.getElementById('wR').oninput=resp;resp();
+// cube
+var cb=document.getElementById('cube'),FC=[['HTML','#e34f26','rotateY(0deg)'],['CSS','#1572b6','rotateY(90deg)'],['JS','#d4b106','rotateY(180deg)'],['PHP','#777bb4','rotateY(-90deg)'],['SQL','#00758f','rotateX(90deg)'],['UX','#7c3aed','rotateX(-90deg)']];
+cb.innerHTML=FC.map(function(f){return '<div style="background:'+f[1]+';transform:'+f[2]+' translateZ(55px)">'+f[0]+'</div>'}).join('');
+// AI animation demo
+document.getElementById('aiPlay').onclick=function(){var d=document.getElementById('aiDemo');d.innerHTML='';for(var k=0;k<6;k++){var c=document.createElement('div');c.className='card';c.style.cssText='height:90px;animation:aiup .4s ease both;animation-delay:'+(k*0.1)+'s';c.innerHTML='<b style="font-size:18px">สินค้า '+(k+1)+'</b>';d.appendChild(c)}};
+var stl=document.createElement('style');stl.textContent='@keyframes aiup{from{opacity:0;translate:0 24px}}';document.head.appendChild(stl);
+// prompt builder
+var PF=['pR','pC','pQ','pK','pO'];function pb(){var v=PF.map(function(k){return document.getElementById(k).value});
+ document.getElementById('pOut').textContent='Role: ทำหน้าที่เป็น '+v[0]+'\nContext: '+v[1]+'\nRequirements: ออกแบบหน้าเว็บที่มี '+v[2]+'\nConstraints: '+v[3]+'\nOutput: '+v[4]}
+PF.forEach(function(k){document.getElementById(k).oninput=pb});pb();
+document.getElementById('pCopy').onclick=function(){var t=document.getElementById('pOut').textContent;(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){document.getElementById('pMsg').textContent='คัดลอกแล้ว'},function(){document.getElementById('pMsg').textContent='คัดลอกไม่ได้ ให้เลือกข้อความเอง'})};
+// run code
+function run(){document.getElementById('out').srcdoc='<!doctype html><html lang="th"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><body style="margin:0;font-family:sans-serif">'+document.getElementById('code').value+'</body></html>'}
+document.getElementById('run').onclick=run;run();
+function fromHash(){var n=Math.max(0,(parseInt(location.hash.slice(1),10)||1)-1);if(n!==i||!S[n].classList.contains('on'))go(n)}
+addEventListener('hashchange',fromHash);fromHash();
+})();
+</script>
+</body>
+</html>
