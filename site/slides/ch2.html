@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="สไลด์บทที่ 2 พื้นฐานสำหรับการเขียนโปรแกรมบนเว็บ รายวิชา 07-034-210 พร้อมตัวอย่างที่กดลองได้">
+<meta name="theme-color" content="#1e1b4b">
+<title>สไลด์บทที่ 2 พื้นฐานสำหรับการเขียนโปรแกรมบนเว็บ · การเขียนโปรแกรมบนเว็บ</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%234338ca'/%3E%3Cpath d='M26 20 14 32l12 12M38 20l12 12-12 12' fill='none' stroke='%23fff' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="deck.css">
+<style>
+/* เฉพาะบทที่ 2 */
+.flow{position:relative;height:380px;background:#fff;border:1px solid var(--line);border-radius:16px}
+.box{position:absolute;width:200px;height:110px;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:700;font-size:20px;color:#fff;text-align:center;line-height:1.25}
+.box small{font-weight:400;font-size:16px;opacity:.9}
+.pkt{position:absolute;padding:8px 16px;border-radius:999px;font-size:18px;font-weight:700;background:#f59e0b;color:#111;transition:left .9s ease,top .9s ease,opacity .3s;white-space:nowrap}
+.layers{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.layer{border-radius:16px;padding:18px;color:#fff;min-height:250px}
+.badge{display:inline-block;background:rgba(255,255,255,.2);border-radius:8px;padding:3px 10px;margin:4px 4px 0 0;font-size:16px;font-weight:600}
+.trio{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;height:400px;overflow:auto}
+.sql td,.sql th{border:1px solid var(--line);padding:6px 10px;font-size:17px}
+.sql{border-collapse:collapse;width:100%}
+.sql th{background:#eef2ff}
+.tree{font-family:Mono,monospace;font-size:17px;line-height:1.9}
+.tree span{cursor:pointer;border-radius:6px;padding:1px 6px}
+.tree span:hover,.tree span.hl{background:#fde68a}
+.mini{border:1px solid var(--line);border-radius:12px;padding:14px;background:#fff}
+.mini .hl{outline:3px solid #f59e0b;outline-offset:2px;border-radius:4px}
+.era{flex:1;border-radius:14px;padding:14px;cursor:pointer;color:#fff;transition:transform .3s,box-shadow .3s}
+.era.on{transform:translateY(-10px);box-shadow:0 16px 30px rgba(0,0,0,.2)}
+.git{display:flex;gap:10px;align-items:center;margin-top:12px}
+.git .st{flex:1;text-align:center;border:2px dashed var(--line);border-radius:14px;padding:16px 6px;background:#fff;font-weight:600;font-size:18px;min-height:110px}
+.file{display:inline-block;background:#e0e7ff;border-radius:8px;padding:4px 10px;margin-top:8px;font-family:Mono,monospace;font-size:15px;transition:all .5s}
+.chk label{display:flex;gap:10px;align-items:flex-start;font-weight:400;font-size:20px;margin:8px 0;cursor:pointer}
+.chk input{width:22px;height:22px;margin-top:4px;accent-color:var(--ok)}
+.meter{height:16px;border-radius:999px;background:#e5e7eb;overflow:hidden}
+.meter i{display:block;height:100%;background:linear-gradient(90deg,#f59e0b,#059669);width:0;transition:width .4s}
+.code.json{white-space:pre-wrap;height:300px}
+.cl{display:inline-block;padding:2px 8px;border-radius:6px;font-weight:700;font-size:16px;color:#fff}
+</style>
+</head>
+<body>
+<div id="stage">
+
+<section class="slide dark" data-title="ปก">
+  <div style="position:absolute;left:72px;top:160px;width:640px">
+    <p class="kicker">รายวิชา 07-034-210 การเขียนโปรแกรมบนเว็บ · บทที่ 2</p>
+    <h1 style="font-size:56px">พื้นฐานสำหรับ<br>การเขียนโปรแกรม<br>บนเว็บ</h1>
+    <p class="muted" style="margin-top:18px">เว็บทำงานอย่างไร HTTP/HTTPS ฝั่งผู้ใช้กับฝั่งเซิร์ฟเวอร์ ฐานข้อมูล API เครื่องมือ และ AI ผู้ช่วยเขียนโค้ด</p>
+    <p class="muted" style="margin-top:28px;font-size:20px">ดร.สุรเชษฐ์ สังขพันธ์ · กด → หรือ Space ไปสไลด์ถัดไป · กด O ดูสารบัญ</p>
+  </div>
+  <svg style="position:absolute;right:60px;top:150px" width="460" height="420" viewBox="0 0 460 420" aria-hidden="true">
+    <defs><linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#818cf8"/><stop offset="1" stop-color="#f59e0b"/></linearGradient></defs>
+    <g fill="none" stroke="url(#g1)" stroke-width="3" stroke-dasharray="8 8"><path d="M80 210 C160 80 300 80 380 210"><animate attributeName="stroke-dashoffset" from="0" to="-64" dur="1.6s" repeatCount="indefinite"/></path><path d="M380 230 C300 360 160 360 80 230"><animate attributeName="stroke-dashoffset" from="0" to="-64" dur="1.6s" repeatCount="indefinite"/></path></g>
+    <rect x="10" y="170" width="140" height="90" rx="14" fill="#fff"/><text x="80" y="222" text-anchor="middle" font-family="Sarabun" font-size="22" font-weight="700" fill="#312e81">เบราว์เซอร์</text>
+    <rect x="310" y="170" width="140" height="90" rx="14" fill="#fff"/><text x="380" y="222" text-anchor="middle" font-family="Sarabun" font-size="22" font-weight="700" fill="#312e81">เซิร์ฟเวอร์</text>
+    <text x="230" y="70" text-anchor="middle" font-family="Mono" font-size="20" fill="#fde68a">GET /index.html</text>
+    <text x="230" y="380" text-anchor="middle" font-family="Mono" font-size="20" fill="#bbf7d0">200 OK</text>
+  </svg>
+  <div class="foot"><span>ภาพประกอบในสไลด์ชุดนี้สร้างด้วย SVG/CSS โดยใช้ปัญญาประดิษฐ์ (AI) ช่วยสร้าง</span><span>พ.ศ. 2569</span></div>
+</section>
+
+<section class="slide" data-title="เป้าหมายของบทนี้">
+  <p class="kicker">เป้าหมายของบทนี้</p>
+  <h2>เรียนจบบทนี้ นักศึกษาจะ...</h2>
+  <div class="grid2" style="align-items:start">
+    <ul class="b">
+      <li>อธิบายการทำงานของเว็บ ตั้งแต่เบราว์เซอร์ถึงฐานข้อมูล</li>
+      <li>แยกบทบาทของ HTML, CSS, JavaScript, PHP และฐานข้อมูล</li>
+      <li>เข้าใจ HTTP/HTTPS, REST API และ JSON</li>
+      <li>รู้จักเครื่องมือ VS Code, Git/GitHub และ AI ผู้ช่วยเขียนโค้ด</li>
+      <li>พัฒนาเว็บโดยเคารพ พ.ร.บ.คุ้มครองข้อมูลส่วนบุคคล (PDPA)</li>
+    </ul>
+    <div class="card">
+      <h3>ผลลัพธ์การเรียนรู้ (CLO) ของบทนี้</h3>
+      <p><b>CLO1</b> อธิบายแนวคิด องค์ประกอบ โครงสร้าง และหลักการออกแบบเว็บไซต์ได้อย่างถูกต้อง</p>
+      <p style="margin-top:8px"><b>CLO3</b> ใช้ภาษาและเครื่องมือในการพัฒนา จัดตั้ง และบริหารเว็บไซต์ให้ทำงานได้ตามข้อกำหนด</p>
+      <p style="margin-top:8px"><b>CLO6</b> พัฒนาเว็บไซต์โดยอ้างอิงแหล่งที่มา เคารพสิทธิการใช้งาน และรับผิดชอบต่องาน</p>
+      <p class="muted" style="margin-top:10px;font-size:16px">ใบงานที่ 2: เตรียมเครื่องมือพัฒนาเว็บ (VS Code, XAMPP/MAMP, Git และ GitHub)</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-title="เว็บทำงานอย่างไร">
+  <p class="kicker">เว็บทำงานอย่างไร</p>
+  <h2>พิมพ์ URL แล้วเกิดอะไรขึ้นบ้าง</h2>
+  <div class="flow" id="flow">
+    <div class="box" style="left:30px;top:130px;background:#4f46e5">เบราว์เซอร์<small>ฝั่งผู้ใช้ (Client)</small></div>
+    <div class="box" style="left:320px;top:20px;background:#0ea5e9">DNS<small>ชื่อโดเมน → IP</small></div>
+    <div class="box" style="left:580px;top:130px;background:#7c3aed">เว็บเซิร์ฟเวอร์<small>Apache + PHP</small></div>
+    <div class="box" style="left:880px;top:130px;background:#059669">ฐานข้อมูล<small>MySQL</small></div>
+    <div class="pkt" id="pkt" style="left:50px;top:280px;opacity:0"></div>
+  </div>
+  <div style="display:flex;gap:10px;margin-top:14px;align-items:center"><button class="btn" id="flowNext">ขั้นถัดไป ▶</button><button class="btn alt" id="flowReset">เริ่มใหม่</button><p id="flowTxt" style="font-size:21px;margin-left:8px">กด "ขั้นถัดไป" เพื่อดูทีละขั้น</p></div>
+  <a class="src" href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Getting_started/Web_standards/How_the_web_works" target="_blank" rel="noopener noreferrer">อ่านต่อ: How the web works (MDN)</a>
+</section>
+
+<section class="slide" data-title="2.8 Front-end และ Back-end">
+  <p class="kicker">2.8 Front-end และ Back-end</p>
+  <h2>สามชั้นของเว็บแอปพลิเคชัน</h2>
+  <div class="layers">
+    <div class="layer hov" style="background:linear-gradient(160deg,#4f46e5,#6366f1)"><h3>Front-end (หน้าบ้าน)</h3><p style="font-size:19px">ทำงานในเบราว์เซอร์ สิ่งที่ผู้ใช้เห็นและโต้ตอบ</p><span class="badge">HTML</span><span class="badge">CSS</span><span class="badge">JavaScript</span><span class="badge">Bootstrap</span></div>
+    <div class="layer hov" style="background:linear-gradient(160deg,#7c3aed,#a855f7)"><h3>Back-end (หลังบ้าน)</h3><p style="font-size:19px">ทำงานบนเซิร์ฟเวอร์ ประมวลผล ตรวจสิทธิ์ ติดต่อฐานข้อมูล</p><span class="badge">PHP</span><span class="badge">ASP.NET Core</span><span class="badge">Node.js</span><span class="badge">Python</span></div>
+    <div class="layer hov" style="background:linear-gradient(160deg,#059669,#10b981)"><h3>ฐานข้อมูล</h3><p style="font-size:19px">เก็บข้อมูลถาวร เช่น สมาชิก สินค้า คำสั่งซื้อ</p><span class="badge">MySQL/MariaDB</span><span class="badge">PostgreSQL</span><span class="badge">MongoDB</span></div>
+  </div>
+  <div class="card" style="margin-top:18px"><p><b>ลองคิด:</b> ปุ่ม "ลงทะเบียน" ในเว็บมหาวิทยาลัย ส่วนไหนคือหน้าบ้าน ส่วนไหนคือหลังบ้าน และข้อมูลไปเก็บที่ใด</p></div>
+</section>
+
+<section class="slide" data-title="HTML · CSS · JavaScript">
+  <p class="kicker">2.1 HTML · 2.4 CSS · JavaScript</p>
+  <h2>โครงสร้าง + รูปแบบ + พฤติกรรม</h2>
+  <div class="grid2" style="grid-template-columns:420px 1fr;align-items:start">
+    <div>
+      <p>เปิด/ปิดทีละภาษา แล้วดูผลทางขวา</p>
+      <div class="chk" style="margin-top:8px">
+        <label><input type="checkbox" checked disabled> <span><b>HTML</b> โครงสร้างและเนื้อหา (ปิดไม่ได้ เพราะเป็นฐาน)</span></label>
+        <label><input type="checkbox" id="useCss" checked> <span><b>CSS</b> สี ฟอนต์ เลย์เอาต์</span></label>
+        <label><input type="checkbox" id="useJs" checked> <span><b>JavaScript</b> การโต้ตอบ เช่น นับคนกดถูกใจ</span></label>
+      </div>
+      <p class="muted" style="font-size:18px;margin-top:10px">เว็บสมัยใหม่แยกสามส่วนนี้ออกจากกัน ทำให้แก้ไขและดูแลง่าย</p>
+    </div>
+    <div class="trio" id="trio"></div>
+  </div>
+</section>
+
+<section class="slide" data-title="สคริปต์ฝั่งผู้ใช้และฝั่งเซิร์ฟเวอร์">
+  <p class="kicker">2.2 ASP.NET Core · 2.3 PHP · Client-side กับ Server-side</p>
+  <h2>โค้ดทำงานที่ไหน</h2>
+  <div class="grid2" style="align-items:start">
+    <div class="card"><h3>ฝั่งเซิร์ฟเวอร์ (PHP)</h3><div class="code" style="font-size:15px">&lt;?php
+  $name = "สมชาย";
+  echo "&lt;h1&gt;สวัสดี $name&lt;/h1&gt;";
+?&gt;</div><p style="margin-top:10px">เซิร์ฟเวอร์รันโค้ด แล้วส่ง <b>ผลลัพธ์ HTML</b> ไปให้เบราว์เซอร์ ผู้ใช้กด View Source จะไม่เห็นโค้ด PHP</p></div>
+    <div class="card"><h3>สิ่งที่เบราว์เซอร์ได้รับ</h3><div class="code" style="font-size:15px">&lt;h1&gt;สวัสดี สมชาย&lt;/h1&gt;</div>
+      <h3 style="margin-top:16px">ฝั่งผู้ใช้ (JavaScript)</h3><p>โค้ดถูกส่งไปทั้งไฟล์และรันในเบราว์เซอร์ ผู้ใช้มองเห็นและแก้ได้ จึง<b>ห้าม</b>ตรวจสิทธิ์หรือเก็บรหัสลับในฝั่งนี้</p></div>
+  </div>
+  <a class="src" href="https://www.php.net/" target="_blank" rel="noopener noreferrer">php.net · dotnet.microsoft.com/apps/aspnet</a>
+</section>
+
+<section class="slide" data-title="2.5–2.6 ฐานข้อมูล SQL และ NoSQL">
+  <p class="kicker">2.5 ฐานข้อมูลเชิงสัมพันธ์ · 2.6 NoSQL</p>
+  <h2>ข้อมูลชุดเดียวกัน เก็บได้สองแบบ</h2>
+  <div class="tabs" id="dbTabs"><button class="on" data-db="sql">ตาราง (RDBMS / MySQL)</button><button data-db="doc">เอกสาร JSON (NoSQL / MongoDB)</button></div>
+  <div class="grid2" style="align-items:start">
+    <div id="dbView"></div>
+    <div class="card" id="dbTxt"></div>
+  </div>
+</section>
+
+<section class="slide" data-title="เลือก SQL หรือ NoSQL">
+  <p class="kicker">2.6 เปรียบเทียบ</p>
+  <h2>เลือกให้เหมาะกับงาน ไม่มีแบบไหนดีที่สุด</h2>
+  <div class="grid2" style="align-items:start">
+    <div class="card"><h3 style="color:#4338ca">RDBMS (SQL)</h3><ul class="b"><li>โครงสร้างตายตัว (Schema) ข้อมูลสม่ำเสมอ</li><li>ความสัมพันธ์ระหว่างตาราง JOIN ได้</li><li>ธุรกรรมแบบ ACID เหมาะกับการเงิน ทะเบียน</li></ul></div>
+    <div class="card"><h3 style="color:#059669">NoSQL</h3><ul class="b"><li>โครงสร้างยืดหยุ่น เพิ่มฟิลด์ได้ง่าย</li><li>ขยายระบบแนวนอน รองรับข้อมูลมาก</li><li>4 แบบ: Key-Value, Document, Column, Graph</li></ul></div>
+  </div>
+  <p class="muted" style="font-size:20px;margin-top:14px">ในรายวิชานี้ใช้ MySQL (บทที่ 8) เพราะเหมาะกับระบบที่มีความสัมพันธ์ชัดเจน เช่น นักศึกษา–รายวิชา–ผลการเรียน</p>
+  <a class="src" href="https://www.mongodb.com/" target="_blank" rel="noopener noreferrer">mongodb.com · mysql.com</a>
+</section>
+
+<section class="slide" data-title="2.7 เว็บเบราว์เซอร์และ DevTools">
+  <p class="kicker">2.7 เว็บเบราว์เซอร์</p>
+  <h2>เบราว์เซอร์ไม่ได้แค่แสดงผล แต่เป็นเครื่องมือของนักพัฒนา</h2>
+  <div class="grid3">
+    <div class="card hov"><h3>เอนจินแสดงผล</h3><p>Blink (Chrome, Edge), WebKit (Safari), Gecko (Firefox) แปลง HTML/CSS เป็นภาพ</p></div>
+    <div class="card hov"><h3>DevTools (F12)</h3><p>ดูโครงสร้าง แก้ CSS สด ดู Console และแท็บ Network ที่แสดงทุกคำขอ HTTP</p></div>
+    <div class="card hov"><h3>ความเข้ากันได้</h3><p>ฟีเจอร์ใหม่บางอย่างยังไม่รองรับทุกเบราว์เซอร์ ต้องตรวจก่อนใช้</p></div>
+  </div>
+  <div class="card" style="margin-top:18px"><p><b>ลองเลย:</b> กด F12 บนสไลด์นี้ เปิดแท็บ Elements แล้วชี้ที่หัวข้อ จะเห็นแท็ก &lt;h2&gt; ที่เราเขียน → ตรวจฟีเจอร์ที่ <a href="https://caniuse.com/" target="_blank" rel="noopener noreferrer">caniuse.com</a></p></div>
+</section>
+
+<section class="slide" data-title="2.8.1 HTTP และรหัสสถานะ">
+  <p class="kicker">2.8.1 โปรโตคอล HTTP (MDN, 2024d)</p>
+  <h2>คำขอ–การตอบกลับ และรหัสสถานะ</h2>
+  <div class="grid2" style="grid-template-columns:1fr 1fr;align-items:start">
+    <div>
+      <div class="tabs" id="stTabs"><button class="on" data-c="200">200</button><button data-c="201">201</button><button data-c="301">301</button><button data-c="404">404</button><button data-c="403">403</button><button data-c="500">500</button></div>
+      <div class="card" id="stTxt" style="min-height:150px"></div>
+      <p class="muted" style="font-size:18px;margin-top:10px">กลุ่ม: 1xx ข้อมูล · 2xx สำเร็จ · 3xx ย้ายที่ · 4xx ผิดที่ฝั่งผู้ใช้ · 5xx ผิดที่เซิร์ฟเวอร์</p>
+    </div>
+    <div class="code" id="stCode" style="height:330px;white-space:pre-wrap"></div>
+  </div>
+  <a class="src" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status" target="_blank" rel="noopener noreferrer">อ่านต่อ: HTTP response status codes (MDN)</a>
+</section>
+
+<section class="slide" data-title="HTTPS และ TLS">
+  <p class="kicker">2.8.1 HTTPS</p>
+  <h2>HTTPS = HTTP ที่เดินทางผ่านช่องทางเข้ารหัส (TLS)</h2>
+  <div class="grid2" style="align-items:start">
+    <div>
+      <ul class="b"><li><b>เข้ารหัส</b> คนกลางดักอ่านไม่ได้</li><li><b>ตรวจความถูกต้อง</b> ข้อมูลไม่ถูกแก้ระหว่างทาง</li><li><b>ยืนยันตัวตน</b> ด้วยใบรับรองจาก CA</li><li>พอร์ต HTTP 80 · HTTPS 443</li></ul>
+      <div style="display:flex;gap:10px;margin-top:14px"><button class="btn alt" data-tls="http">ส่งผ่าน HTTP</button><button class="btn" data-tls="https">ส่งผ่าน HTTPS</button></div>
+    </div>
+    <div class="svgbox" style="height:380px"><svg id="tls" viewBox="0 0 520 340" width="520" height="340"></svg></div>
+  </div>
+  <p class="muted" style="font-size:18px;margin-top:10px">ใบรับรองฟรีแบบอัตโนมัติ: Let's Encrypt (ใช้จริงในบทที่ 10)</p>
+</section>
+
+<section class="slide" data-title="2.11 REST API และ JSON">
+  <p class="kicker">2.11 Web Service · 2.22 RESTful API และ JSON</p>
+  <h2>ลองส่งคำขอไปยัง API จำลอง</h2>
+  <div class="grid2" style="grid-template-columns:430px 1fr;align-items:start">
+    <div>
+      <div class="tabs" id="apiTabs"><button class="on" data-m="GET">GET</button><button data-m="POST">POST</button><button data-m="PUT">PUT</button><button data-m="DELETE">DELETE</button></div>
+      <div class="card" id="apiTxt"></div>
+      <button class="btn" id="liveBtn" style="margin-top:12px">ดึงข้อมูลจริงจาก JSONPlaceholder</button>
+      <p class="muted" style="font-size:15px;margin-top:6px">ปุ่มนี้ส่งคำขอไป jsonplaceholder.typicode.com (API ทดลองที่ให้ข้อมูลสมมติ) ต้องต่ออินเทอร์เน็ต</p>
+    </div>
+    <div class="code json" id="apiOut"></div>
+  </div>
+</section>
+
+<section class="slide" data-title="2.15 DOM Tree">
+  <p class="kicker">2.15 DOM (Document Object Model)</p>
+  <h2>เบราว์เซอร์มอง HTML เป็นต้นไม้</h2>
+  <div class="grid2" style="align-items:start">
+    <div class="card tree" id="tree"></div>
+    <div><p class="muted" style="font-size:18px">ชี้เมาส์ที่โหนดในต้นไม้ ส่วนที่ตรงกันในหน้าเว็บจะถูกไฮไลต์</p>
+      <div class="mini" id="mini" style="margin-top:10px"><header data-n="header" style="background:#eef2ff;padding:8px;border-radius:6px"><h3 data-n="h1" style="font-size:22px">ร้านกาแฟบ้านสวน</h3></header><main data-n="main" style="padding:8px"><p data-n="p" style="font-size:18px">เมล็ดคั่วสดทุกเช้า</p><button data-n="button" class="btn" style="margin-top:6px">สั่งเลย</button></main></div>
+      <p style="font-size:19px;margin-top:12px">JavaScript ใช้ DOM ค้นหาและแก้โหนด เช่น <code>document.querySelector('button')</code> (บทที่ 6)</p></div>
+  </div>
+  <a class="src" href="https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model" target="_blank" rel="noopener noreferrer">อ่านต่อ: DOM (MDN)</a>
+</section>
+
+<section class="slide" data-title="2.13 Ajax และ Fetch API">
+  <p class="kicker">2.13 Ajax และ Fetch API</p>
+  <h2>โหลดทั้งหน้า หรือโหลดเฉพาะส่วนที่เปลี่ยน</h2>
+  <div class="grid2" style="align-items:start">
+    <div class="card" style="text-align:center"><h3>แบบเดิม: โหลดทั้งหน้า</h3><div id="fullPage" style="height:180px;border-radius:10px;background:#eef2ff;display:flex;align-items:center;justify-content:center;font-size:22px;transition:opacity .25s">หน้าเว็บ</div><button class="btn alt" id="btnFull" style="margin-top:10px">กดถูกใจ (รีโหลด)</button><p id="fullTime" class="muted" style="font-size:17px"></p></div>
+    <div class="card" style="text-align:center"><h3>Fetch: อัปเดตบางส่วน</h3><div style="height:180px;border-radius:10px;background:#ecfdf5;display:flex;align-items:center;justify-content:center;font-size:22px">หน้าเว็บ <span id="likeN" style="margin-left:10px;font-weight:700;color:#059669">❤ 12</span></div><button class="btn" id="btnFetch" style="margin-top:10px">กดถูกใจ (fetch)</button><p class="muted" style="font-size:17px">ผู้ใช้ไม่เสียตำแหน่งที่อ่านอยู่ และส่งข้อมูลน้อยกว่า</p></div>
+  </div>
+  <p class="muted" style="font-size:18px;margin-top:10px">jQuery (2.12) เคยใช้ทำ Ajax อย่างแพร่หลาย ปัจจุบันใช้ fetch() ของเบราว์เซอร์ได้โดยตรง</p>
+</section>
+
+<section class="slide" data-title="2.16–2.17 Framework และ MVC">
+  <p class="kicker">2.16 เฟรมเวิร์ก · 2.17 สถาปัตยกรรม MVC</p>
+  <h2>แยกงานเป็น Model · View · Controller</h2>
+  <div class="grid2" style="align-items:start">
+    <div class="svgbox" style="height:380px"><svg viewBox="0 0 520 360" width="520" height="360" id="mvc"></svg></div>
+    <div>
+      <div class="links" style="grid-template-columns:1fr;gap:10px">
+        <a class="lk" href="https://react.dev/" target="_blank" rel="noopener noreferrer"><b>React</b><span>ไลบรารีสร้าง UI แบบคอมโพเนนต์ (Meta)</span></a>
+        <a class="lk" href="https://angular.dev/" target="_blank" rel="noopener noreferrer"><b>Angular</b><span>เฟรมเวิร์กเต็มรูปแบบ (Google)</span></a>
+        <a class="lk" href="https://vuejs.org/" target="_blank" rel="noopener noreferrer"><b>Vue.js</b><span>เรียนง่าย ค่อย ๆ นำมาใช้ได้</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-title="2.18 CMS และ 2.19 ยุคของเว็บ">
+  <p class="kicker">2.19 ยุคสมัยของเทคโนโลยีเว็บไซต์</p>
+  <h2>จากเว็บอ่านอย่างเดียว สู่ยุคเอเจนต์ AI</h2>
+  <div style="display:flex;gap:14px" id="eras">
+    <div class="era on" data-e="0" style="background:#64748b"><h3>Web 1.0</h3><p style="font-size:18px">ราว ค.ศ. 1990–2004</p></div>
+    <div class="era" data-e="1" style="background:#4f46e5"><h3>Web 2.0</h3><p style="font-size:18px">ตั้งแต่ ค.ศ. 2004</p></div>
+    <div class="era" data-e="2" style="background:#7c3aed"><h3>Web 3.0</h3><p style="font-size:18px">Semantic Web</p></div>
+    <div class="era" data-e="3" style="background:#059669"><h3>Web 4.0</h3><p style="font-size:18px">AI Agents</p></div>
+  </div>
+  <div class="card" id="eraTxt" style="margin-top:18px;min-height:170px"></div>
+  <p class="muted" style="font-size:18px;margin-top:10px">CMS เช่น <a href="https://wordpress.org/" target="_blank" rel="noopener noreferrer">WordPress</a> และ <a href="https://www.joomla.org/" target="_blank" rel="noopener noreferrer">Joomla!</a> ทำให้คนทั่วไปสร้างเว็บได้ในยุค Web 2.0 (เรียนในบทที่ 9)</p>
+</section>
+
+<section class="slide" data-title="2.20 VS Code, Git และ GitHub">
+  <p class="kicker">2.20 Text Editor/IDE · Git และ GitHub</p>
+  <h2>เก็บประวัติโค้ดด้วย Git</h2>
+  <div class="git" id="git">
+    <div class="st" id="g0">โฟลเดอร์งาน<br><small>Working</small><div id="gf"><span class="file">index.html</span></div></div><span class="ar" style="font-size:26px;color:#a5b4fc">→</span>
+    <div class="st" id="g1">เตรียม commit<br><small>Staging</small></div><span class="ar" style="font-size:26px;color:#a5b4fc">→</span>
+    <div class="st" id="g2">ประวัติในเครื่อง<br><small>Local repo</small></div><span class="ar" style="font-size:26px;color:#a5b4fc">→</span>
+    <div class="st" id="g3">GitHub<br><small>Remote</small></div>
+  </div>
+  <div style="display:flex;gap:10px;margin-top:14px;align-items:center"><button class="btn" id="gitBtn">git add</button><button class="btn alt" id="gitReset">เริ่มใหม่</button><code id="gitCmd" style="font-size:20px;margin-left:10px"></code></div>
+  <div class="links" style="margin-top:16px">
+    <a class="lk" href="https://code.visualstudio.com/" target="_blank" rel="noopener noreferrer"><b>Visual Studio Code</b><span>โปรแกรมเขียนโค้ดหลักของรายวิชา</span></a>
+    <a class="lk" href="https://git-scm.com/" target="_blank" rel="noopener noreferrer"><b>Git</b><span>ระบบควบคุมเวอร์ชัน</span></a>
+    <a class="lk" href="https://github.com/" target="_blank" rel="noopener noreferrer"><b>GitHub</b><span>เก็บโค้ดออนไลน์ ทำงานร่วมกัน</span></a>
+  </div>
+</section>
+
+<section class="slide" data-title="2.21 AI ผู้ช่วยเขียนโปรแกรม">
+  <p class="kicker">2.21 เครื่องมือช่วยเขียนโปรแกรมอัจฉริยะ (GitHub, 2024; Google Cloud, 2024)</p>
+  <h2>AI Pair Programming: ให้ AI ช่วย แต่เราเป็นคนขับ</h2>
+  <div class="grid2" style="align-items:start">
+    <div>
+      <div class="code" style="white-space:pre-wrap;font-size:15px;height:250px">Context: ระบบลงทะเบียนนักศึกษา ใช้ PHP 8 + MySQL
+Task: เขียนฟังก์ชันตรวจรูปแบบรหัสนักศึกษา 10 หลัก
+Constraints: ใช้ prepared statement, ไม่ใช้ไลบรารีภายนอก
+Output: โค้ดพร้อมคอมเมนต์ และกรณีทดสอบ 3 กรณี</div>
+      <p class="muted" style="font-size:17px;margin-top:8px">ตัวอย่าง Prompt แบบระบุบริบท งาน ข้อจำกัด และรูปแบบผลลัพธ์</p>
+    </div>
+    <div class="card"><h3>ก่อนใช้โค้ดจาก AI</h3><ul class="b"><li style="font-size:20px">อ่านและอธิบายโค้ดได้ทุกบรรทัด</li><li style="font-size:20px">ทดสอบด้วยข้อมูลหลายกรณี</li><li style="font-size:20px">ตรวจความปลอดภัย (SQL Injection, XSS)</li><li style="font-size:20px">ห้ามวางรหัสผ่านหรือข้อมูลส่วนบุคคลจริง</li><li style="font-size:20px">บันทึกการใช้ AI แนบงาน</li></ul></div>
+  </div>
+  <div class="links" style="grid-template-columns:1fr 1fr;margin-top:12px">
+    <a class="lk" href="https://github.com/features/copilot" target="_blank" rel="noopener noreferrer"><b>GitHub Copilot</b><span>ผู้ช่วยเขียนโค้ดใน VS Code</span></a>
+    <a class="lk" href="https://cloud.google.com/products/gemini/code-assist" target="_blank" rel="noopener noreferrer"><b>Gemini Code Assist</b><span>ผู้ช่วยเขียนโค้ดของ Google</span></a>
+  </div>
+</section>
+
+<section class="slide" data-title="2.23 PDPA สำหรับนักพัฒนาเว็บ">
+  <p class="kicker">2.23 พ.ร.บ. คุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562 (PDPA)</p>
+  <h2>เช็กลิสต์ก่อนเปิดเว็บที่เก็บข้อมูลผู้ใช้</h2>
+  <div class="grid2" style="grid-template-columns:1.2fr 1fr;align-items:start">
+    <div class="chk" id="pdpa">
+      <label><input type="checkbox"> <span>มีประกาศความเป็นส่วนตัว บอกว่าเก็บอะไร เพื่ออะไร นานเท่าใด</span></label>
+      <label><input type="checkbox"> <span>เก็บเท่าที่จำเป็น (Data Minimization) ไม่ขอข้อมูลเกินงาน</span></label>
+      <label><input type="checkbox"> <span>มีฐานทางกฎหมายหรือขอความยินยอมที่ชัดเจน</span></label>
+      <label><input type="checkbox"> <span>รักษาความปลอดภัย: HTTPS, เข้ารหัสรหัสผ่าน, จำกัดสิทธิ์</span></label>
+      <label><input type="checkbox"> <span>ให้ผู้ใช้ขอดู แก้ไข หรือลบข้อมูลของตนได้</span></label>
+      <label><input type="checkbox"> <span>มีแผนแจ้งเหตุละเมิดข้อมูลต่อสำนักงานฯ ภายใน 72 ชั่วโมง</span></label>
+    </div>
+    <div class="card"><h3>ความพร้อม</h3><div class="meter"><i id="pdpaM"></i></div><p id="pdpaT" style="margin-top:10px;font-size:22px"></p><p class="muted" style="font-size:16px;margin-top:10px">สรุปจากเนื้อหาบทที่ 2 หัวข้อ 2.23 ไม่ใช่คำแนะนำทางกฎหมาย</p><p style="font-size:18px;margin-top:8px"><a href="https://www.pdpc.or.th/" target="_blank" rel="noopener noreferrer">สำนักงานคณะกรรมการคุ้มครองข้อมูลส่วนบุคคล</a></p></div>
+  </div>
+</section>
+
+<section class="slide dark" data-title="สรุปและงานที่ได้รับมอบหมาย">
+  <p class="kicker">สรุปบทที่ 2</p>
+  <h2>รู้จักเส้นทางของข้อมูลบนเว็บ ก่อนลงมือเขียน</h2>
+  <div class="grid2" style="align-items:start">
+    <ul class="b" style="color:#fff">
+      <li>เบราว์เซอร์ส่งคำขอ HTTP(S) เซิร์ฟเวอร์ประมวลผลแล้วตอบกลับ</li>
+      <li>หน้าบ้าน HTML/CSS/JS · หลังบ้าน PHP · ข้อมูลอยู่ในฐานข้อมูล</li>
+      <li>API และ JSON เชื่อมระบบต่าง ๆ เข้าด้วยกัน</li>
+      <li>Git/GitHub เก็บประวัติงาน AI ช่วยได้แต่ต้องตรวจ</li>
+      <li>เก็บข้อมูลผู้ใช้ต้องทำตาม PDPA</li>
+    </ul>
+    <div class="card" style="color:var(--ink)"><h3>งานสัปดาห์นี้</h3><p>ใบงานที่ 2: ติดตั้ง VS Code, XAMPP/MAMP, Git และสร้าง Repository บน GitHub</p><p style="margin-top:8px">แบบฝึกหัดท้ายบทที่ 2 ส่งผ่าน Google Classroom</p><p style="margin-top:10px"><a href="../worksheets/ws2.html" target="_blank">เปิดใบงานที่ 2</a> · <a href="../chapters/ch2.html" target="_blank">อ่านบทที่ 2</a></p></div>
+  </div>
+  <div class="foot"><span>อ้างอิงหลัก: เอกสารประกอบการสอนบทที่ 2; MDN (2024d); Fielding (2000); พ.ร.บ.คุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562</span><span></span></div>
+</section>
+
+</div>
+<script src="deck.js" data-ch="2" data-back="../chapters/ch2.html"></script>
+<script>
+(function(){
+var $=function(id){return document.getElementById(id)};
+// 3 flow
+var FL=[["พิมพ์ URL","เบราว์เซอร์รับที่อยู่ เช่น www.example.com",50,280],["ถาม DNS","เบราว์เซอร์ถาม DNS ว่าโดเมนนี้อยู่ที่ IP ใด",330,150],["ได้ IP","DNS ตอบเลข IP ของเซิร์ฟเวอร์กลับมา",60,280],["GET /","เบราว์เซอร์ส่งคำขอ HTTP ไปยังเว็บเซิร์ฟเวอร์",600,280],["SELECT ...","PHP ดึงข้อมูลจากฐานข้อมูล",900,280],["ข้อมูล","ฐานข้อมูลส่งผลลัพธ์กลับให้ PHP",620,280],["200 OK + HTML","เซิร์ฟเวอร์ส่งหน้า HTML กลับมา",60,280],["แสดงผล","เบราว์เซอร์แสดงหน้าเว็บ แล้วโหลด CSS JS ภาพเพิ่ม",50,60]];
+var fi=-1;function flow(){fi++;if(fi>=FL.length){fi=FL.length-1}var s=FL[fi],p=$("pkt");p.style.opacity=1;p.textContent=s[0];p.style.left=s[2]+"px";p.style.top=s[3]+"px";$("flowTxt").innerHTML="<b>ขั้นที่ "+(fi+1)+"/"+FL.length+"</b> "+s[1]}
+$("flowNext").onclick=flow;$("flowReset").onclick=function(){fi=-1;var p=$("pkt");p.style.opacity=0;p.style.left="50px";p.style.top="280px";$("flowTxt").textContent='กด "ขั้นถัดไป" เพื่อดูทีละขั้น'};
+// 5 trio
+var likes=0;function trio(){var c=$("useCss").checked,j=$("useJs").checked;
+ var html='<article'+(c?' style="font-family:Sarabun;background:linear-gradient(135deg,#fef3c7,#fde68a);border-radius:16px;padding:22px;box-shadow:0 10px 24px rgba(0,0,0,.08)"':'')+'><h2'+(c?' style="font-size:32px;color:#78350f"':'')+'>เมนูแนะนำ: ลาเต้เย็น</h2><p'+(c?' style="font-size:20px;color:#78350f"':'')+'>กาแฟคั่วกลาง นมสด น้ำแข็งเกล็ด</p><p'+(c?' style="font-size:28px;font-weight:700;color:#b45309"':'')+'>55 บาท</p><button id="likeB"'+(c?' style="font:inherit;font-size:20px;border:0;border-radius:10px;padding:10px 18px;background:#7c2d12;color:#fff;cursor:pointer"':'')+'>❤ ถูกใจ <span id="lc">'+likes+'</span></button></article>';
+ $("trio").innerHTML=html;var b=$("likeB");if(j)b.onclick=function(){likes++;$("lc").textContent=likes};else b.onclick=function(){alert("ยังไม่มี JavaScript ปุ่มนี้จึงทำอะไรไม่ได้")}}
+$("useCss").onchange=trio;$("useJs").onchange=trio;trio();
+// 7 db
+var DB={sql:['<table class="sql"><tr><th>student_id</th><th>name</th><th>major</th></tr><tr><td>6601001</td><td>Napat</td><td>IT</td></tr><tr><td>6601002</td><td>Kanya</td><td>IT</td></tr></table><table class="sql" style="margin-top:12px"><tr><th>student_id</th><th>course</th><th>grade</th></tr><tr><td>6601001</td><td>07-034-210</td><td>A</td></tr><tr><td>6601001</td><td>07-034-105</td><td>B+</td></tr><tr><td>6601002</td><td>07-034-210</td><td>B</td></tr></table>','<h3>แบบตาราง</h3><p>ข้อมูลแยกเป็นตาราง เชื่อมกันด้วยคีย์ (student_id) ดึงรวมด้วย JOIN ข้อมูลไม่ซ้ำซ้อน</p><div class="code" style="font-size:14px;margin-top:8px">SELECT s.name, r.course, r.grade\nFROM students s JOIN results r\n  ON s.student_id = r.student_id;</div>'],
+doc:['<div class="code" style="font-size:15px;white-space:pre">{\n  "student_id": "6601001",\n  "name": "Napat",\n  "major": "IT",\n  "results": [\n    { "course": "07-034-210", "grade": "A" },\n    { "course": "07-034-105", "grade": "B+" }\n  ]\n}</div>','<h3>แบบเอกสาร (Document)</h3><p>ข้อมูลของนักศึกษาหนึ่งคนอยู่ในเอกสาร JSON เดียว อ่านครั้งเดียวได้ครบ เพิ่มฟิลด์ใหม่ได้ง่าย แต่ข้อมูลอาจซ้ำซ้อนเมื่อหลายเอกสารใช้ข้อมูลเดียวกัน</p>']};
+function db(k){$("dbView").innerHTML=DB[k][0];$("dbTxt").innerHTML=DB[k][1]}db("sql");Deck.tabs($("dbTabs"),function(b){db(b.dataset.db)});
+// 10 status
+var SC={"200":["OK","คำขอสำเร็จ ได้ข้อมูลตามที่ขอ","GET /courses HTTP/1.1\nHost: www.example.com\n\nHTTP/1.1 200 OK\nContent-Type: text/html; charset=UTF-8\n\n<!DOCTYPE html> ..."],"201":["Created","สร้างข้อมูลใหม่สำเร็จ มักตอบกลับคำขอ POST","POST /api/students HTTP/1.1\nContent-Type: application/json\n\n{\"name\":\"Kanya\"}\n\nHTTP/1.1 201 Created\nLocation: /api/students/15"],"301":["Moved Permanently","หน้าย้ายถาวร เบราว์เซอร์จะไปที่อยู่ใหม่เอง เช่น บังคับจาก http เป็น https","GET / HTTP/1.1\nHost: example.com\n\nHTTP/1.1 301 Moved Permanently\nLocation: https://example.com/"],"404":["Not Found","ไม่พบหน้าที่ขอ มักเกิดจากพิมพ์ URL ผิดหรือลิงก์เสีย","GET /cuorses HTTP/1.1\n\nHTTP/1.1 404 Not Found"],"403":["Forbidden","เซิร์ฟเวอร์เข้าใจคำขอ แต่ไม่อนุญาตให้เข้าถึง","GET /admin HTTP/1.1\n\nHTTP/1.1 403 Forbidden"],"500":["Internal Server Error","เกิดข้อผิดพลาดในโปรแกรมฝั่งเซิร์ฟเวอร์ เช่น โค้ด PHP ผิด","POST /register.php HTTP/1.1\n\nHTTP/1.1 500 Internal Server Error"]};
+function sc(c){var v=SC[c];var col=c[0]==="2"?"#059669":c[0]==="3"?"#0284c7":c[0]==="4"?"#d97706":"#dc2626";$("stTxt").innerHTML='<span class="cl" style="background:'+col+'">'+c+'</span> <b style="font-size:22px">'+v[0]+'</b><p style="margin-top:8px">'+v[1]+'</p>';$("stCode").textContent=v[2]}
+sc("200");Deck.tabs($("stTabs"),function(b){sc(b.dataset.c)});
+// 11 tls
+function tls(k){var lock=k==="https",msg=lock?"x8#Kq!2@Lp9...":"รหัสผ่าน=1234";
+ $("tls").innerHTML='<rect x="10" y="130" width="120" height="80" rx="12" fill="#4f46e5"/><text x="70" y="176" text-anchor="middle" font-size="18" fill="#fff" font-family="Sarabun">ผู้ใช้</text><rect x="390" y="130" width="120" height="80" rx="12" fill="#7c3aed"/><text x="450" y="176" text-anchor="middle" font-size="18" fill="#fff" font-family="Sarabun">เซิร์ฟเวอร์</text>'+
+ '<path d="M130 170 L390 170" stroke="'+(lock?"#059669":"#94a3b8")+'" stroke-width="'+(lock?10:4)+'" '+(lock?'':'stroke-dasharray="8 8"')+'/>'+
+ '<g><rect x="150" y="140" width="120" height="30" rx="8" fill="#fde68a"><animate attributeName="x" from="140" to="270" dur="2s" repeatCount="indefinite"/></rect><text font-size="14" font-family="Mono" fill="#111" y="160"><animate attributeName="x" from="146" to="276" dur="2s" repeatCount="indefinite"/>'+msg+'</text></g>'+
+ '<circle cx="260" cy="270" r="34" fill="#fee2e2"/><text x="260" y="278" text-anchor="middle" font-size="26">🕵</text><text x="260" y="325" text-anchor="middle" font-size="17" font-family="Sarabun" fill="'+(lock?"#059669":"#dc2626")+'">'+(lock?"คนกลางเห็นแต่ข้อมูลที่ถูกเข้ารหัส":"คนกลางอ่านข้อมูลได้ทันที")+'</text>'+(lock?'<text x="260" y="110" text-anchor="middle" font-size="30">🔒</text>':'')}
+tls("http");[].forEach.call(document.querySelectorAll("[data-tls]"),function(b){b.onclick=function(){tls(b.dataset.tls)}});
+// 12 api
+var API={GET:["GET /api/students/1","ขอข้อมูลนักศึกษารหัส 1","HTTP/1.1 200 OK\nContent-Type: application/json\n\n{\n  \"id\": 1,\n  \"name\": \"Napat Srisuk\",\n  \"major\": \"IT\"\n}"],POST:["POST /api/students","สร้างนักศึกษาใหม่ ส่งข้อมูลใน body","Request body:\n{ \"name\": \"Kanya Thongdee\", \"major\": \"IT\" }\n\nHTTP/1.1 201 Created\n{ \"id\": 2, \"name\": \"Kanya Thongdee\", \"major\": \"IT\" }"],PUT:["PUT /api/students/2","แก้ไขข้อมูลนักศึกษารหัส 2 ทั้งรายการ","Request body:\n{ \"name\": \"Kanya Thongdee\", \"major\": \"DBT\" }\n\nHTTP/1.1 200 OK\n{ \"id\": 2, \"name\": \"Kanya Thongdee\", \"major\": \"DBT\" }"],DELETE:["DELETE /api/students/2","ลบนักศึกษารหัส 2","HTTP/1.1 204 No Content"]};
+function api(m){var a=API[m];$("apiTxt").innerHTML='<p style="font-family:Mono,monospace;font-size:19px"><b>'+a[0]+'</b></p><p style="margin-top:6px">'+a[1]+'</p><p class="muted" style="font-size:15px;margin-top:6px">ตัวอย่างจำลอง ข้อมูลสมมติ</p>';$("apiOut").textContent=a[2]}
+api("GET");Deck.tabs($("apiTabs"),function(b){api(b.dataset.m)});
+$("liveBtn").onclick=function(){$("apiOut").textContent="กำลังส่ง GET https://jsonplaceholder.typicode.com/users/1 ...";fetch("https://jsonplaceholder.typicode.com/users/1").then(function(r){var st=r.status;return r.json().then(function(j){$("apiOut").textContent="HTTP "+st+"\n\n"+JSON.stringify({id:j.id,name:j.name,email:j.email,website:j.website},null,2)+"\n\n(ข้อมูลสมมติจาก JSONPlaceholder)"})}).catch(function(e){$("apiOut").textContent="เชื่อมต่อไม่สำเร็จ: "+e.message+"\nตรวจการเชื่อมต่ออินเทอร์เน็ต"})};
+// 13 dom
+var T=[["html",0],["head",1],["title",2],["body",1],["header",2],["h1",3],["main",2],["p",3],["button",3]];
+$("tree").innerHTML=T.map(function(t){return '<div style="padding-left:'+(t[1]*26)+'px">'+(t[1]?"└─ ":"")+'<span data-t="'+t[0]+'">&lt;'+t[0]+'&gt;</span></div>'}).join("");
+[].forEach.call(document.querySelectorAll("#tree span"),function(s){s.onmouseenter=function(){[].forEach.call(document.querySelectorAll("#mini [data-n]"),function(e){e.classList.toggle("hl",e.dataset.n===s.dataset.t||(s.dataset.t==="body"))});s.classList.add("hl")};s.onmouseleave=function(){s.classList.remove("hl");[].forEach.call(document.querySelectorAll("#mini .hl"),function(e){e.classList.remove("hl")})}});
+// 14 ajax
+var ln=12;$("btnFull").onclick=function(){var f=$("fullPage"),t0=performance.now();f.style.opacity=.05;f.textContent="กำลังโหลดทั้งหน้า...";setTimeout(function(){f.style.opacity=1;f.textContent="หน้าเว็บ (โหลดใหม่ทั้งหน้า)";$("fullTime").textContent="จำลองเวลารอ "+Math.round(performance.now()-t0)+" ms และหน้าเลื่อนกลับไปบนสุด"},900)};
+$("btnFetch").onclick=function(){ln++;$("likeN").textContent="❤ "+ln};
+// 15 mvc
+function mvc(){var M=[["Model","ข้อมูล/ฐานข้อมูล",180,20,160,"#059669"],["Controller","รับคำขอ ประมวลผล",180,150,160,"#7c3aed"],["View","แสดงผลให้ผู้ใช้",20,280,160,"#4f46e5"],["ผู้ใช้","เบราว์เซอร์",360,280,140,"#f59e0b"]];
+ var s='<defs><marker id="ah" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker></defs>';
+ [[420,278,322,212,"1 คำขอ",392,236,"start"],[240,148,240,84,"2 ขอข้อมูล",232,122,"end"],[280,82,280,146,"3 ส่งข้อมูล",290,122,"start"],[200,212,118,276,"4 เลือกหน้า",150,236,"end"],[182,310,356,310,"5 หน้าเว็บ",269,300,"middle"]].forEach(function(e,j){s+='<path class="edge" style="animation-delay:'+(j*.35)+'s" d="M'+e[0]+' '+e[1]+' L'+e[2]+' '+e[3]+'" marker-end="url(#ah)"/><text x="'+e[5]+'" y="'+e[6]+'" font-size="15" font-weight="600" font-family="Sarabun" fill="#334155" text-anchor="'+e[7]+'">'+e[4]+'</text>'});
+ M.forEach(function(m,j){var cx=m[2]+m[4]/2;s+='<g class="node" style="animation-delay:'+(j*.15)+'s;transform-origin:'+cx+'px '+(m[3]+30)+'px"><rect x="'+m[2]+'" y="'+m[3]+'" width="'+m[4]+'" height="62" rx="12" fill="'+m[5]+'"/><text x="'+cx+'" y="'+(m[3]+28)+'" text-anchor="middle" font-size="20" font-weight="700" font-family="Sarabun" fill="#fff">'+m[0]+'</text><text x="'+cx+'" y="'+(m[3]+50)+'" text-anchor="middle" font-size="14" font-family="Sarabun" fill="#fff">'+m[1]+'</text></g>'});
+ $("mvc").innerHTML=s}
+Deck.onEnter(15,mvc);mvc();
+// 16 eras
+var ER=["<h3>Web 1.0 อ่านอย่างเดียว</h3><p>หน้าเว็บคงที่ (Static) เจ้าของเว็บเป็นผู้สร้างเนื้อหา ผู้ใช้อ่านได้อย่างเดียว เช่น เว็บแนะนำองค์กรยุคแรก</p>","<h3>Web 2.0 อ่านและเขียน</h3><p>ผู้ใช้สร้างเนื้อหาเอง โซเชียลมีเดีย บล็อก วิกิ Ajax ทำให้เว็บโต้ตอบได้เหมือนแอป</p>","<h3>Web 3.0 เว็บเชิงความหมาย</h3><p>ข้อมูลมีความหมายที่เครื่องเข้าใจ (Semantic Web) ผสาน AI เชื่อมต่อทุกที่ และแนวคิดเครือข่ายกระจายอำนาจ</p>","<h3>Web 4.0 ยุคเอเจนต์ AI</h3><p>ระบบ AI ทำงานแทนผู้ใช้ได้หลายขั้นตอน เช่น ค้นหา เปรียบเทียบ และทำรายการให้ นักพัฒนาต้องออกแบบเว็บให้ทั้งคนและ AI ใช้ได้อย่างปลอดภัย</p>"];
+function era(k){[].forEach.call(document.querySelectorAll(".era"),function(e){e.classList.toggle("on",+e.dataset.e===k)});$("eraTxt").innerHTML=ER[k]}
+era(0);[].forEach.call(document.querySelectorAll(".era"),function(e){e.onclick=function(){era(+e.dataset.e)}});
+// 17 git
+var gs=0,GC=["git add index.html","git commit -m \"เพิ่มหน้าแรก\"","git push origin main"],GB=["git add","git commit","git push","เสร็จแล้ว"];
+function gitDraw(){var f=$("gf");$("g"+gs).appendChild(f);for(var k=0;k<4;k++)$("g"+k).style.borderColor=k===gs?"#4338ca":"";$("gitBtn").textContent=GB[gs];$("gitCmd").textContent=gs?"$ "+GC[gs-1]:""}
+$("gitBtn").onclick=function(){if(gs<3){gs++;gitDraw()}};$("gitReset").onclick=function(){gs=0;gitDraw()};gitDraw();
+// 19 pdpa
+function pd(){var b=[].slice.call(document.querySelectorAll("#pdpa input")),n=b.filter(function(x){return x.checked}).length;$("pdpaM").style.width=(n/b.length*100)+"%";$("pdpaT").innerHTML=n===b.length?'<b style="color:#059669">ครบทุกข้อ พร้อมเปิดใช้งาน</b>':"ผ่าน "+n+" จาก "+b.length+" ข้อ"}
+[].forEach.call(document.querySelectorAll("#pdpa input"),function(x){x.onchange=pd});pd();
+Deck.onEnter(3,function(){});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+/* ชุดสไตล์กลางสำหรับสไลด์แบบโต้ตอบ รายวิชา 07-034-210 (ใช้ร่วมกันทุกบท ยกเว้นบทที่ 1 ที่สร้างก่อน) */
+@font-face{font-family:Sarabun;src:url(../assets/fonts/Sarabun-400-thai.woff2) format("woff2");font-weight:400;unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+@font-face{font-family:Sarabun;src:url(../assets/fonts/Sarabun-400-latin.woff2) format("woff2");font-weight:400;unicode-range:U+0000-00FF,U+2000-206F,U+2190-21FF,U+2212}
+@font-face{font-family:Sarabun;src:url(../assets/fonts/Sarabun-600-thai.woff2) format("woff2");font-weight:600;unicode-range:U+0E01-0E5B}
+@font-face{font-family:Sarabun;src:url(../assets/fonts/Sarabun-600-latin.woff2) format("woff2");font-weight:600;unicode-range:U+0000-00FF,U+2000-206F}
+@font-face{font-family:Sarabun;src:url(../assets/fonts/Sarabun-700-thai.woff2) format("woff2");font-weight:700;unicode-range:U+0E01-0E5B}
+@font-face{font-family:Sarabun;src:url(../assets/fonts/Sarabun-700-latin.woff2) format("woff2");font-weight:700;unicode-range:U+0000-00FF,U+2000-206F}
+@font-face{font-family:Mono;src:url(../assets/fonts/JetBrainsMono-400-latin.woff2) format("woff2")}
+:root{--ink:#14172b;--muted:#5a6078;--brand:#4338ca;--brand2:#7c3aed;--accent:#f59e0b;--ok:#059669;--bad:#dc2626;--bg:#f7f7fb;--card:#fff;--line:#e3e5f0;--dark:#0f1226}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--dark);font-family:Sarabun,"Noto Sans Thai",system-ui,sans-serif;color:var(--ink);overflow:hidden}
+a{color:var(--brand)}
+#stage{position:absolute;left:50%;top:50%;width:1280px;height:720px;transform-origin:center;transform:translate(-50%,-50%)}
+.slide{position:absolute;inset:0;background:var(--bg);border-radius:18px;overflow:hidden;padding:56px 72px;opacity:0;visibility:hidden;transform:translateX(40px);transition:opacity .45s ease,transform .45s ease,visibility .45s}
+.slide.on{opacity:1;visibility:visible;transform:none}
+.slide.prev{transform:translateX(-40px)}
+.slide.dark{background:radial-gradient(1200px 600px at 80% -10%,#4f46e5 0,transparent 60%),radial-gradient(900px 500px at -10% 110%,#7c3aed 0,transparent 55%),var(--dark);color:#fff}
+.slide.dark .muted{color:#c7cbe8}
+h1{font-size:64px;line-height:1.15;font-weight:700}
+h2{font-size:44px;line-height:1.2;font-weight:700;margin-bottom:18px}
+h3{font-size:26px;font-weight:700;margin-bottom:8px}
+p,li{font-size:26px;line-height:1.55}
+.muted{color:var(--muted)}
+.kicker{font-size:20px;font-weight:600;letter-spacing:.04em;color:var(--brand2);margin-bottom:6px}
+.dark .kicker{color:#c4b5fd}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:center}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 22px;box-shadow:0 8px 24px rgba(20,23,43,.06)}
+.card p,.card li{font-size:20px}
+ul.b{padding-left:28px}
+ul.b li{margin:6px 0}
+.code{font-family:Mono,ui-monospace,monospace;font-size:16px;line-height:1.5;background:#0f1226;color:#e8eaf8;border-radius:12px;padding:16px 18px;white-space:pre;overflow:auto}
+.btn{font:inherit;font-size:18px;font-weight:600;border:0;border-radius:10px;padding:10px 18px;background:var(--brand);color:#fff;cursor:pointer}
+.btn.alt{background:#e0e7ff;color:#312e81}
+.foot{position:absolute;left:72px;right:400px;bottom:18px;display:flex;gap:24px;justify-content:space-between;font-size:14px;color:var(--muted)}
+.dark .foot{color:#9aa2c8}
+.src{position:absolute;right:72px;bottom:40px;font-size:13px;color:var(--muted)}
+.links{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:10px}
+.lk{display:block;text-decoration:none;color:inherit;background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;transition:transform .2s,box-shadow .2s}
+.lk:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(67,56,202,.18)}
+.lk b{display:block;font-size:21px;color:var(--brand)}
+.lk span{display:block;font-size:17px;color:var(--muted);margin-top:4px}
+.lk small{display:block;font-size:13px;color:#8b90a8;margin-top:6px}
+.hov{transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s}
+.hov:hover{transform:translateY(-8px);box-shadow:0 18px 36px rgba(67,56,202,.25)}
+.tabs{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.tabs button{font:inherit;font-size:18px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 16px;cursor:pointer}
+.tabs button.on{background:var(--brand);color:#fff;border-color:var(--brand)}
+.svgbox{background:#fff;border:1px solid var(--line);border-radius:16px;display:flex;align-items:center;justify-content:center}
+.pipe{display:flex;align-items:center;gap:10px;margin-top:20px}
+.pipe .st{flex:1;text-align:center;background:#fff;border:2px solid var(--line);border-radius:14px;padding:16px 8px;font-size:19px;font-weight:600;transition:all .4s}
+.pipe .st.lit{border-color:var(--brand);background:#eef2ff;transform:translateY(-6px)}
+.pipe .ar{font-size:26px;color:#a5b4fc}
+textarea,input[type=text]{font:inherit;font-size:17px;width:100%;border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+label{font-size:18px;font-weight:600}
+input[type=range]{width:100%;accent-color:var(--brand)}
+iframe.run{width:100%;height:320px;border:1px solid var(--line);border-radius:12px;background:#fff}
+.edge{stroke:#94a3b8;stroke-width:3;fill:none;stroke-dasharray:600;stroke-dashoffset:600;animation:draw 1.2s ease forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.node{animation:pop .5s ease both}
+@keyframes pop{from{transform:scale(0);opacity:0}}
+/* HUD ที่ deck.js สร้าง */
+#bar{position:fixed;left:0;top:0;height:4px;background:linear-gradient(90deg,#818cf8,#f59e0b);transition:width .3s;z-index:5}
+#hud{position:fixed;right:14px;bottom:12px;display:flex;gap:8px;z-index:5;background:rgba(15,18,38,.78);border-radius:12px;padding:4px}
+#hud button,#hud a{font:inherit;font-size:15px;border:0;border-radius:8px;padding:6px 12px;background:rgba(255,255,255,.14);color:#fff;cursor:pointer;text-decoration:none}
+#hud span{color:#c7cbe8;font-size:15px;padding:6px 4px}
+#toc{position:fixed;inset:0;background:rgba(15,18,38,.96);z-index:9;display:none;padding:40px;overflow:auto}
+#toc.on{display:block}
+#toc h2{color:#fff;font-size:32px}
+#toc ol{columns:2;color:#fff;padding-left:28px}
+#toc li{font-size:20px;margin:6px 0;cursor:pointer}
+#toc li:hover{color:#fbbf24}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
