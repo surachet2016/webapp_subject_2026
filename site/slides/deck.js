@@ -23,7 +23,7 @@
   function toc() { document.getElementById("toc").classList.toggle("on"); }
   function full() { if (!document.fullscreenElement) { if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen(); } else document.exitFullscreen(); }
   document.addEventListener("keydown", function (e) {
-    if (/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) return;
+    var ae = document.activeElement; if (/INPUT|TEXTAREA|SELECT/.test(ae.tagName) || ae.isContentEditable) return;
     if (["ArrowRight", "PageDown", " "].indexOf(e.key) > -1) { e.preventDefault(); go(i + 1); }
     else if (["ArrowLeft", "PageUp"].indexOf(e.key) > -1) go(i - 1);
     else if (e.key === "Home") go(0); else if (e.key === "End") go(S.length - 1);

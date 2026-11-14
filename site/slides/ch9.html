@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="สไลด์บทที่ 9 โปรแกรมสำเร็จรูป WordPress และ Joomla รายวิชา 07-034-210 พร้อมตัวอย่างที่กดลองได้">
+<meta name="theme-color" content="#1e1b4b">
+<title>สไลด์บทที่ 9 WordPress และ CMS · การเขียนโปรแกรมบนเว็บ</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%234338ca'/%3E%3Cpath d='M26 20 14 32l12 12M38 20l12 12-12 12' fill='none' stroke='%23fff' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="deck.css">
+<style>
+/* เฉพาะบทที่ 9 */
+.chip{font:inherit;font-size:16px;border:2px solid var(--line);background:#fff;border-radius:12px;padding:5px 12px;cursor:pointer}
+.chip.on{border-color:var(--accent);background:#fffbeb}
+.sim{display:inline-block;font-size:13px;background:#fef3c7;color:#92400e;border-radius:6px;padding:2px 8px;margin-left:6px;vertical-align:middle}
+.flip{perspective:900px;height:150px;cursor:pointer}
+.flip .in{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d}
+.flip.on .in{transform:rotateY(180deg)}
+.flip .f,.flip .b{position:absolute;inset:0;backface-visibility:hidden;border-radius:16px;padding:16px;display:flex;flex-direction:column;justify-content:center}
+.flip .f{background:linear-gradient(135deg,#21759b,#4f46e5);color:#fff}
+.flip .f b{font-size:40px;line-height:1}
+.flip .f span{font-size:19px;font-weight:600;margin-top:6px}
+.flip .b{background:#fff;border:1px solid var(--line);transform:rotateY(180deg);font-size:17px;line-height:1.5}
+.stp{display:flex;gap:6px;margin-bottom:12px}
+.stp i{flex:1;height:8px;border-radius:99px;background:#e5e7eb;transition:background .3s}
+.stp i.on{background:linear-gradient(90deg,#6366f1,#21759b)}
+.browser{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.browser .bar{background:#f1f5f9;padding:8px 12px;font-family:Mono,monospace;font-size:15px;border-bottom:1px solid var(--line);display:flex;gap:8px;align-items:center}
+.browser .bar i{width:10px;height:10px;border-radius:50%;background:#cbd5e1;display:inline-block}
+.browser .body{padding:16px;min-height:220px;font-size:18px}
+.wpadmin{display:grid;grid-template-columns:150px 1fr;min-height:250px}
+.wpadmin .sb{background:#1d2327;color:#c3c4c7;font-size:15px;padding:8px 0}
+.wpadmin .sb div{padding:6px 12px}.wpadmin .sb div.on{background:#2271b1;color:#fff}
+.rad label{display:flex;gap:10px;align-items:center;font-weight:400;font-size:18px;margin:6px 0;cursor:pointer}
+.rad input{width:20px;height:20px;accent-color:#2271b1}
+.rad code{font-size:15px;color:#4338ca}
+.plug{border:2px solid var(--line);border-radius:14px;padding:12px 14px;background:#fff;cursor:pointer;transition:all .2s}
+.plug:hover{transform:translateY(-3px)}
+.plug.ok{border-color:#059669;background:#ecfdf5}.plug.no{border-color:#dc2626;background:#fef2f2}
+.plug b{font-size:19px}.plug p{font-size:15px;margin-top:4px;line-height:1.5}
+.ed{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;height:430px;overflow:auto}
+.blk{position:relative;border:1px dashed transparent;border-radius:8px;padding:6px 40px 6px 10px;margin:4px 0;transition:all .3s}
+.blk:hover,.blk.sel{border-color:#2271b1}
+.blk .tl{position:absolute;right:4px;top:4px;display:none;flex-direction:column;gap:2px}
+.blk:hover .tl,.blk.sel .tl{display:flex}
+.blk .tl button{border:0;background:#1d2327;color:#fff;border-radius:4px;font-size:12px;width:24px;height:20px;cursor:pointer}
+.blk h2{font-size:28px;margin:0}.blk p{font-size:18px;margin:0}
+.blk .img{height:110px;border-radius:8px;background:linear-gradient(135deg,#a5b4fc,#f9a8d4);display:flex;align-items:center;justify-content:center;font-size:16px;color:#312e81}
+.blk .wbtn{display:inline-block;background:#2271b1;color:#fff;border-radius:6px;padding:8px 16px;font-size:16px}
+.blk[contenteditable]:focus{outline:none}
+.code{white-space:pre-wrap}
+.fse{display:grid;grid-template-rows:56px 1fr 46px;gap:8px;height:330px}
+.fse div{border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;cursor:pointer;transition:transform .2s;font-size:18px}
+.fse div:hover,.fse div.on{transform:scale(1.02);box-shadow:0 10px 22px rgba(0,0,0,.18)}
+.chk label{display:flex;gap:10px;align-items:flex-start;font-weight:400;font-size:19px;margin:6px 0;cursor:pointer}
+.chk input{width:22px;height:22px;margin-top:4px;accent-color:var(--ok)}
+.meter{height:16px;border-radius:999px;background:#e5e7eb;overflow:hidden}
+.meter i{display:block;height:100%;background:linear-gradient(90deg,#f59e0b,#059669);width:0;transition:width .4s}
+.lines{font-family:Mono,monospace;font-size:14px;line-height:1.6;background:#0f1226;color:#e8eaf8;border-radius:12px;padding:10px 4px}
+.lines div{padding:0 12px;border-radius:6px;white-space:pre-wrap;cursor:pointer}
+.lines div:hover{background:rgba(255,255,255,.08)}.lines div.hl{background:rgba(245,158,11,.35)}
+.lines .c{color:#94a3b8}
+.qz{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin-bottom:8px}
+.qz p{font-size:18px}
+.qz .a{font-size:16px;margin-top:4px;min-height:22px}
+.serp{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;font-family:Arial,Sarabun,sans-serif}
+.serp .u{font-size:14px;color:#202124}.serp .t{font-size:20px;color:#1a0dab;margin-top:4px;line-height:1.3}.serp .d{font-size:15px;color:#4d5156;margin-top:4px;line-height:1.5}
+.cnt{font-family:Mono,monospace;font-size:14px}
+.vars label{display:block;font-size:17px;margin-top:8px}
+.vars input,.vars textarea{font:inherit;font-size:17px;border:1px solid var(--line);border-radius:8px;padding:6px 10px;width:100%}
+</style>
+</head>
+<body>
+<div id="stage">
+
+<section class="slide dark" data-title="ปก">
+  <div style="position:absolute;left:72px;top:170px;width:640px">
+    <p class="kicker">รายวิชา 07-034-210 การเขียนโปรแกรมบนเว็บ · บทที่ 9</p>
+    <h1 style="font-size:52px">โปรแกรมสำเร็จรูป<br>WordPress และ Joomla</h1>
+    <p class="muted" style="margin-top:18px">ติดตั้ง CMS ลิงก์ถาวร ปลั๊กอิน Block Editor และ Full Site Editing ความปลอดภัย สิทธิการใช้งาน GPL และ AI กับ SEO</p>
+    <p class="muted" style="margin-top:24px;font-size:20px">ดร.สุรเชษฐ์ สังขพันธ์ · กด → หรือ Space ไปสไลด์ถัดไป · กด O ดูสารบัญ</p>
+  </div>
+  <svg style="position:absolute;right:80px;top:140px" width="420" height="440" viewBox="0 0 420 440" aria-hidden="true">
+    <rect x="20" y="20" width="380" height="300" rx="16" fill="#fff"/>
+    <rect x="20" y="20" width="380" height="34" rx="16" fill="#1d2327"/><rect x="20" y="40" width="380" height="14" fill="#1d2327"/>
+    <rect x="20" y="54" width="90" height="266" fill="#2c3338"/>
+    <g fill="#c3c4c7"><rect x="34" y="72" width="60" height="10" rx="4"/><rect x="34" y="96" width="50" height="10" rx="4"/><rect x="34" y="120" width="56" height="10" rx="4"/></g>
+    <rect x="128" y="74" width="250" height="34" rx="6" fill="#e0e7ff"><animate attributeName="width" values="0;250" dur="1s" fill="freeze"/></rect>
+    <rect x="128" y="120" width="250" height="80" rx="6" fill="#bfdbfe"><animate attributeName="height" values="0;80" begin=".6s" dur="1s" fill="freeze"/></rect>
+    <rect x="128" y="212" width="120" height="34" rx="6" fill="#2271b1"><animate attributeName="opacity" values="0;1" begin="1.2s" dur=".6s" fill="freeze"/></rect>
+    <circle cx="210" cy="380" r="46" fill="#21759b" stroke="#fff" stroke-width="5"/>
+    <text x="210" y="398" text-anchor="middle" font-family="Georgia,serif" font-size="52" font-weight="700" fill="#fff">W</text>
+  </svg>
+  <div class="foot"><span>ภาพประกอบสร้างด้วย SVG/CSS โดยใช้ AI ช่วยสร้าง · หน้าจอ WordPress ในสไลด์เป็นภาพจำลอง</span><span style="white-space:nowrap">พ.ศ. 2569</span></div>
+</section>
+
+<section class="slide" data-title="เป้าหมายของบทนี้">
+  <p class="kicker">เป้าหมายของบทนี้</p>
+  <h2>เรียนจบบทนี้ นักศึกษาจะ...</h2>
+  <div class="grid2" style="align-items:start">
+    <ul class="b">
+      <li>อธิบายว่า CMS คืออะไร และเลือกใช้เมื่อใด</li>
+      <li>ติดตั้ง WordPress บน XAMPP/MAMP และตั้งค่าพื้นฐาน</li>
+      <li>สร้างเนื้อหาด้วย Block Editor และปลั๊กอิน</li>
+      <li>ดูแลความปลอดภัยและเคารพสิทธิ GPL ของธีม/ปลั๊กอิน</li>
+      <li>ใช้ AI ช่วยเขียนและทำ SEO อย่างมีจริยธรรม</li>
+    </ul>
+    <div class="card">
+      <h3>ผลลัพธ์การเรียนรู้ (CLO) ของบทนี้</h3>
+      <p><b>CLO3</b> ใช้ภาษาและเครื่องมือในการพัฒนา จัดตั้ง และบริหารเว็บไซต์ให้ทำงานได้ตามข้อกำหนด</p>
+      <p style="margin-top:6px"><b>CLO5</b> ประยุกต์ความรู้พัฒนาเว็บไซต์แก้ปัญหาจากสถานการณ์ที่กำหนด พร้อมทดสอบและปรับปรุง</p>
+      <p style="margin-top:6px"><b>CLO6</b> พัฒนาเว็บไซต์โดยอ้างอิงแหล่งที่มาของข้อมูลและผลงาน และเคารพสิทธิการใช้งาน</p>
+      <p class="muted" style="margin-top:8px;font-size:16px">ใบงานที่ 9: จัดทำเว็บไซต์ด้วย WordPress (Block Editor &amp; AI Integration)</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-title="9.1 CMS คืออะไร">
+  <p class="kicker">9.1 โปรแกรมสำเร็จรูป WordPress, Joomla (จีราวุธ วารินทร์, 2565; วิศัลย์ ลักษมีวาสิน, 2566)</p>
+  <h2>CMS = ระบบที่ให้คนทั่วไปจัดการเนื้อหาได้เอง</h2>
+  <div class="grid3">
+    <div class="card hov"><h3>เขียนเอง (บทที่ 3–8)</h3><p>ควบคุมได้ทุกจุด เหมาะกับระบบเฉพาะทาง เช่น ระบบลงทะเบียน แต่ใช้เวลาและต้องมีนักพัฒนาดูแล</p></div>
+    <div class="card hov" style="border-color:#21759b"><h3 style="color:#21759b">WordPress</h3><p>เริ่มจากบล็อก ใช้ง่าย ธีมและปลั๊กอินมาก เหมาะกับเว็บองค์กร ข่าว ร้านค้า (WooCommerce)</p></div>
+    <div class="card hov" style="border-color:#f44321"><h3 style="color:#c2410c">Joomla!</h3><p>จัดการสิทธิผู้ใช้และหลายภาษาได้ละเอียดในตัว เหมาะกับพอร์ทัลหรือเว็บที่มีสมาชิกหลายระดับ</p></div>
+  </div>
+  <div class="card" style="margin-top:16px"><p>ทั้งสองระบบสร้างด้วย <b>PHP + MySQL</b> ที่เรียนในบทที่ 7–8 จึงติดตั้งบน XAMPP/MAMP ได้ และแก้ไขธีมได้เมื่อเข้าใจโค้ด</p></div>
+  <div class="links" style="margin-top:12px">
+    <a class="lk" href="https://wordpress.org/" target="_blank" rel="noopener noreferrer"><b>WordPress.org</b><span>ดาวน์โหลดและเอกสาร</span></a>
+    <a class="lk" href="https://www.joomla.org/" target="_blank" rel="noopener noreferrer"><b>Joomla.org</b><span>ดาวน์โหลด Joomla!</span></a>
+    <a class="lk" href="https://docs.joomla.org/" target="_blank" rel="noopener noreferrer"><b>Joomla! Documentation</b><span>คู่มือการใช้งาน</span></a>
+  </div>
+</section>
+
+<section class="slide" data-title="9.1.1 ทำไมเลือก WordPress">
+  <p class="kicker">9.1.1 เหตุผล 5 ประการที่ควรเลือกใช้ WordPress</p>
+  <h2>คลิกการ์ดเพื่อดูเหตุผล</h2>
+  <div class="grid3" id="flips" style="grid-template-columns:repeat(3,1fr)">
+    <div class="flip"><div class="in"><div class="f"><b>1</b><span>ประหยัดเงินและเวลา</span></div><div class="b">ตัวระบบฟรี ธีมสำเร็จรูปช่วยให้ขึ้นเว็บได้ในไม่กี่วัน ค่าใช้จ่ายหลักคือโฮสติ้งและโดเมน</div></div></div>
+    <div class="flip"><div class="in"><div class="f"><b>2</b><span>คนทั่วไปใช้ได้</span></div><div class="b">เขียนบทความผ่านหน้าแอดมินคล้ายโปรแกรมพิมพ์เอกสาร เจ้าหน้าที่อัปเดตข่าวเองได้</div></div></div>
+    <div class="flip"><div class="in"><div class="f"><b>3</b><span>ยืดหยุ่นสูง</span></div><div class="b">เปลี่ยนธีมได้ เพิ่มความสามารถด้วยปลั๊กอิน เช่น ฟอร์ม ร้านค้า หลายภาษา</div></div></div>
+    <div class="flip"><div class="in"><div class="f"><b>4</b><span>SEO และมือถือ</span></div><div class="b">ลิงก์ถาวรอ่านง่าย ธีมสมัยใหม่รองรับหน้าจอมือถือ มีปลั๊กอินช่วยทำ SEO</div></div></div>
+    <div class="flip"><div class="in"><div class="f"><b>5</b><span>ความปลอดภัย</span></div><div class="b">มีทีมดูแลและออกอัปเดตสม่ำเสมอ แต่ปลอดภัยจริงเมื่อผู้ดูแล<b>อัปเดตและตั้งค่าถูกต้อง</b> (9.4)</div></div></div>
+    <div class="card" style="display:flex;align-items:center"><p style="font-size:18px">ข้อเสียที่ต้องรู้: ปลั๊กอินมากเกินทำให้ช้าและเสี่ยง ต้องอัปเดตสม่ำเสมอ และระบบเฉพาะทางอาจต้องเขียนเอง</p></div>
+  </div>
+</section>
+
+<section class="slide" data-title="9.2 ติดตั้ง WordPress">
+  <p class="kicker">9.2 การใช้งานโปรแกรมสำเร็จรูป WordPress</p>
+  <h2>ติดตั้งบนเครื่องตัวเองใน 5 ขั้น</h2>
+  <div class="stp" id="inStp"><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="grid2" style="grid-template-columns:1fr 1.1fr;align-items:start">
+    <div><div class="card" id="inTxt" style="min-height:300px"></div><div style="display:flex;gap:8px;margin-top:10px"><button class="btn alt" id="inPrev">◀ ก่อนหน้า</button><button class="btn" id="inNext">ขั้นถัดไป ▶</button></div></div>
+    <div class="browser"><div class="bar"><i></i><i></i><i></i><span id="inUrl"></span></div><div class="body" id="inView"></div></div>
+  </div>
+</section>
+
+<section class="slide" data-title="9.2.1 ลิงก์ถาวร">
+  <p class="kicker">9.2.1 การตั้งค่าลิงก์ถาวร (Permalinks)</p>
+  <h2>URL ที่คนอ่านออก ดีต่อผู้ใช้และ SEO</h2>
+  <div class="grid2" style="align-items:start">
+    <div>
+      <div class="card rad" id="plRad">
+        <b style="font-size:17px">Settings › Permalinks</b>
+        <label><input type="radio" name="pl" value="plain"> Plain <code>/?p=123</code></label>
+        <label><input type="radio" name="pl" value="day"> Day and name <code>/2026/11/14/sample-post/</code></label>
+        <label><input type="radio" name="pl" value="num"> Numeric <code>/archives/123</code></label>
+        <label><input type="radio" name="pl" value="post" checked> Post name <code>/sample-post/</code></label>
+      </div>
+      <label style="display:flex;gap:10px;align-items:center;font-weight:400;margin-top:12px"><input type="checkbox" id="plRw" style="width:22px;height:22px"> เปิด mod_rewrite ใน httpd.conf แล้ว</label>
+    </div>
+    <div>
+      <div class="browser"><div class="bar"><i></i><i></i><i></i><span id="plUrl"></span></div><div class="body" id="plView" style="min-height:180px"></div></div>
+      <div class="card" style="margin-top:10px"><p style="font-size:16px">ถ้าเลือก Post name แล้วหน้าอื่นขึ้น 404 ให้เปิด <code>LoadModule rewrite_module</code> (ลบ # หน้าบรรทัด) และตั้ง <code>AllowOverride All</code> แล้วรีสตาร์ต Apache · ผู้เขียนทดสอบกับ MAMP 7.4 แล้ว</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-title="9.2.2 เลือกปลั๊กอิน">
+  <p class="kicker">9.2.2 การติดตั้งปลั๊กอินแบบฟอร์มติดต่อ</p>
+  <h2>ปลั๊กอินฟอร์มติดต่อ ตัวไหนน่าติดตั้ง?</h2>
+  <p class="muted" style="font-size:17px">ข้อมูลปลั๊กอินด้านล่างเป็นตัวอย่างสมมติเพื่อฝึกพิจารณา คลิกตัวที่คิดว่าเหมาะที่สุด</p>
+  <div class="grid3" id="plugs" style="margin-top:8px">
+    <div class="plug" data-p="0"><b>Quick Contact Pro</b><p>อัปเดตล่าสุด 3 ปีที่แล้ว · ติดตั้ง 2,000+ · ทดสอบถึง WP 5.8 · ⭐ 3.1</p></div>
+    <div class="plug" data-p="1"><b>Simple Form Builder</b><p>อัปเดตล่าสุด 2 สัปดาห์ · ติดตั้ง 1 ล้าน+ · ทดสอบถึงรุ่นล่าสุด · ⭐ 4.6 · มีระบบกันสแปม</p></div>
+    <div class="plug" data-p="2"><b>Mega Forms (Nulled)</b><p>ดาวน์โหลดจากเว็บแจกฟรี · รุ่น Pro ที่ปกติขาย · ไม่มีอัปเดต · ไม่ทราบผู้พัฒนา</p></div>
+  </div>
+  <div class="card" id="plugTxt" style="margin-top:14px;min-height:110px"><p style="font-size:19px">เกณฑ์: อัปเดตสม่ำเสมอ · รองรับ WordPress รุ่นที่ใช้ · ผู้ใช้มาก คะแนนดี · ดาวน์โหลดจากแหล่งทางการ · ติดตั้งเท่าที่จำเป็น</p></div>
+</section>
+
+<section class="slide" data-title="9.3.1 Block Editor">
+  <p class="kicker">9.3.1 การจัดเนื้อหาด้วยระบบบล็อก (Block-Based Architecture) (WordPress.org, 2024)</p>
+  <h2>ทุกอย่างคือบล็อก ลองเพิ่ม ลบ สลับลำดับ</h2>
+  <div class="grid2" style="grid-template-columns:1fr 1fr;align-items:start">
+    <div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px"><button class="chip" data-add="heading">+ Heading</button><button class="chip" data-add="paragraph">+ Paragraph</button><button class="chip" data-add="image">+ Image</button><button class="chip" data-add="buttons">+ Button</button><button class="chip" data-add="list">+ List</button></div>
+      <div class="ed" id="ed"></div>
+      <p class="muted" style="font-size:15px;margin-top:4px">คลิกข้อความเพื่อแก้ไขได้ · ชี้บล็อกเพื่อเลื่อนขึ้น ลง หรือลบ</p>
+    </div>
+    <div><p style="font-weight:600;font-size:17px">สิ่งที่ WordPress บันทึกลงฐานข้อมูล (post_content)</p><div class="code" id="edOut" style="font-size:13px;height:440px;overflow:auto"></div></div>
+  </div>
+</section>
+
+<section class="slide" data-title="9.3.2 Full Site Editing">
+  <p class="kicker">9.3.2 แนวคิด Full Site Editing (FSE)</p>
+  <h2>แก้ทั้งเว็บด้วยบล็อก ไม่ใช่แค่เนื้อหา</h2>
+  <div class="grid2" style="align-items:start">
+    <div class="fse" id="fse">
+      <div data-k="header" style="background:#21759b">Template Part: Header</div>
+      <div data-k="tpl" style="background:#4f46e5;flex-direction:column;gap:8px">Template: Single Post<span style="font-weight:400;font-size:15px;background:rgba(255,255,255,.2);border-radius:8px;padding:4px 10px" data-k="content">Post Content (บล็อกจากบทความ)</span></div>
+      <div data-k="footer" style="background:#334155">Template Part: Footer</div>
+    </div>
+    <div class="card" id="fseTxt" style="min-height:330px"><h3>คลิกส่วนต่าง ๆ ทางซ้าย</h3><p>เพื่อดูว่าแต่ละส่วนแก้ที่ไหน</p></div>
+  </div>
+  <p class="muted" style="font-size:17px;margin-top:10px">ใช้กับธีมแบบบล็อก (Block Theme) เช่น ธีมค่าเริ่มต้นรุ่นใหม่ของ WordPress · เมนู Appearance › Editor</p>
+</section>
+
+<section class="slide" data-title="9.4 ความปลอดภัยและการบำรุงรักษา">
+  <p class="kicker">9.4 การรักษาความมั่นคงปลอดภัยและการบำรุงรักษาระบบ CMS (OWASP, 2023c; วิศัลย์ ลักษมีวาสิน, 2566)</p>
+  <h2>เช็กลิสต์ดูแลเว็บ WordPress</h2>
+  <div class="grid2" style="grid-template-columns:1.3fr 1fr;align-items:start">
+    <div class="chk" id="secChk">
+      <label><input type="checkbox"> <span>อัปเดต WordPress ธีม และปลั๊กอินสม่ำเสมอ</span></label>
+      <label><input type="checkbox"> <span>สำรองไฟล์และฐานข้อมูลอัตโนมัติ ทดสอบกู้คืนได้</span></label>
+      <label><input type="checkbox"> <span>รหัสผ่านแข็งแรง + ยืนยันตัวตน 2 ชั้น (2FA)</span></label>
+      <label><input type="checkbox"> <span>ไม่ใช้ชื่อผู้ใช้ admin และจำกัดการเดารหัสผ่าน</span></label>
+      <label><input type="checkbox"> <span>ลบธีม/ปลั๊กอินที่ไม่ใช้ ไม่ใช้ของ Nulled</span></label>
+      <label><input type="checkbox"> <span>ให้สิทธิผู้ใช้เท่าที่จำเป็น (Editor, Author)</span></label>
+      <label><input type="checkbox"> <span>ใช้ HTTPS และปิดการแก้ไฟล์ผ่านหน้าเว็บ</span></label>
+    </div>
+    <div class="card"><h3>สถานะความปลอดภัย</h3><div class="meter"><i id="secM"></i></div><p id="secT" style="margin-top:10px;font-size:22px"></p><p class="muted" style="font-size:16px;margin-top:8px">ช่องโหว่ส่วนใหญ่ของ CMS มาจากปลั๊กอินที่ไม่อัปเดตและรหัสผ่านอ่อน ตรงกับหมวด Vulnerable Components และ Authentication Failures ของ OWASP Top 10</p></div>
+  </div>
+</section>
+
+<section class="slide" data-title="9.4.1 wp-config.php และ .htaccess">
+  <p class="kicker">9.4.1 ตัวอย่างโค้ดเสริมความปลอดภัยในไฟล์ wp-config.php และ .htaccess</p>
+  <h2>คลิกแต่ละบรรทัดเพื่อดูความหมาย</h2>
+  <div class="grid2" style="grid-template-columns:1.2fr 1fr;align-items:start">
+    <div class="lines" id="cfg"></div>
+    <div class="card" id="cfgTxt" style="min-height:300px"><p style="font-size:19px">คลิกบรรทัดทางซ้าย</p></div>
+  </div>
+</section>
+
+<section class="slide" data-title="9.4.2 สิทธิการใช้งาน GPL">
+  <p class="kicker">9.4.2 สิทธิการใช้งานของธีมและปลั๊กอิน (GPL) (WordPress.org, 2024)</p>
+  <h2>GPL ให้เสรีภาพ 4 ข้อ ลองตอบ ถูก หรือ ผิด</h2>
+  <div class="grid2" style="grid-template-columns:1fr 1.25fr;align-items:start">
+    <div class="card"><ol style="padding-left:24px"><li style="font-size:19px">ใช้งานได้ทุกวัตถุประสงค์</li><li style="font-size:19px">ศึกษาและแก้ไขซอร์สโค้ด</li><li style="font-size:19px">แจกจ่ายสำเนาต่อ</li><li style="font-size:19px">แจกจ่ายฉบับที่แก้ไขแล้ว</li></ol><p style="font-size:17px;margin-top:8px">ฉบับที่แจกต่อต้องเป็น GPL ด้วย (Copyleft) · GPL ไม่ได้แปลว่าต้องฟรี</p><p class="muted" id="qzScore" style="font-size:18px;margin-top:10px"></p></div>
+    <div id="qz"></div>
+  </div>
+</section>
+
+<section class="slide" data-title="9.5 AI และ SEO">
+  <p class="kicker">9.5.1 AI ช่วยสร้างบทความ · 9.5.2 SEO อัจฉริยะด้วย AI และข้อควรระวัง</p>
+  <h2>ตรวจหัวเรื่องและคำอธิบายก่อนเผยแพร่</h2>
+  <div class="grid2" style="grid-template-columns:1fr 1fr;align-items:start">
+    <div class="vars">
+      <label>Focus Keyword<input id="sK" value="เทรนด์การพัฒนาเว็บ"></label>
+      <label>Meta Title <span class="cnt" id="cT"></span><input id="sT" value="เทรนด์การพัฒนาเว็บปี 2026 ที่นักศึกษาไอทีควรรู้"></label>
+      <label>Meta Description <span class="cnt" id="cD"></span><textarea id="sD" rows="3">สรุปเทรนด์การพัฒนาเว็บปี 2026 ทั้ง AI ผู้ช่วยเขียนโค้ด เว็บที่โหลดเร็ว และความปลอดภัย พร้อมแนวทางฝึกทักษะสำหรับนักศึกษา</textarea></label>
+      <label>Slug<input id="sS" value="web-development-trends-2026"></label>
+    </div>
+    <div><p style="font-weight:600;font-size:17px">ตัวอย่างการแสดงในผลการค้นหา <span class="sim">จำลอง</span></p><div class="serp" id="serp"></div><div class="card" id="seoChk" style="margin-top:10px"></div></div>
+  </div>
+</section>
+
+<section class="slide" data-title="9.5.3 Prompt และจริยธรรม">
+  <p class="kicker">9.5.3 กรอบคำสั่ง AI สำหรับการสร้างบทความและเพิ่มประสิทธิภาพ SEO</p>
+  <h2>AI ช่วยร่าง มนุษย์ตรวจและรับผิดชอบ</h2>
+  <div class="grid2" style="align-items:start">
+    <div>
+      <div class="code" style="font-size:15px;height:290px">Role: SEO Content Strategist
+Task: เขียนบทความภาษาไทย 800 คำ
+  หัวข้อ "เทรนด์การพัฒนาเว็บปี 2026"
+Constraints:
+- Focus Keyword
+- Meta Title ไม่เกิน 60 ตัวอักษร
+- Meta Description ไม่เกิน 160 ตัวอักษร
+- หัวข้อย่อย H2/H3 ตามโครงสร้างเนื้อหา
+- ข้อความ Alt ของภาพประกอบ 3 ภาพ
+- ระบุแหล่งอ้างอิงที่ตรวจสอบได้</div>
+      <p class="muted" style="font-size:16px;margin-top:6px">ปรับจากตัวอย่างในหัวข้อ 9.5.3</p>
+    </div>
+    <div class="card"><h3>ข้อควรระวังทางจริยธรรม</h3><ul class="b"><li style="font-size:19px">ตรวจข้อเท็จจริงทุกข้อ AI อาจแต่งข้อมูล (Hallucination)</li><li style="font-size:19px">ไม่ผลิตบทความขยะจำนวนมากเพื่อปั่นอันดับ</li><li style="font-size:19px">ภาพจาก AI ตรวจสิทธิ์และระบุว่าสร้างด้วย AI</li><li style="font-size:19px">อ้างอิงแหล่งที่มา ไม่คัดลอกงานผู้อื่น</li><li style="font-size:19px">ไม่ใส่ข้อมูลส่วนบุคคลของสมาชิกเว็บลงใน AI</li></ul></div>
+  </div>
+  <div class="links" style="margin-top:12px">
+    <a class="lk" href="https://developer.wordpress.org/" target="_blank" rel="noopener noreferrer"><b>WordPress Developer Resources</b><span>WordPress.org (2024)</span></a>
+    <a class="lk" href="https://owasp.org/www-project-top-ten/" target="_blank" rel="noopener noreferrer"><b>OWASP Top 10</b><span>ความเสี่ยงหลักของเว็บแอป</span></a>
+    <a class="lk" href="https://developers.google.com/search/docs/fundamentals/creating-helpful-content" target="_blank" rel="noopener noreferrer"><b>Creating helpful content</b><span>แนวทางเนื้อหาของ Google Search</span></a>
+  </div>
+</section>
+
+<section class="slide dark" data-title="สรุปและงานที่ได้รับมอบหมาย">
+  <p class="kicker">สรุปบทที่ 9</p>
+  <h2>CMS ช่วยให้สร้างเว็บเร็ว แต่ผู้ดูแลต้องรับผิดชอบ</h2>
+  <div class="grid2" style="align-items:start">
+    <ul class="b" style="color:#fff">
+      <li>WordPress/Joomla สร้างด้วย PHP + MySQL ติดตั้งบน XAMPP/MAMP ได้</li>
+      <li>ตั้ง Permalink เป็น Post name · เลือกปลั๊กอินจากแหล่งทางการ</li>
+      <li>Block Editor และ Full Site Editing จัดเนื้อหาและโครงหน้าด้วยบล็อก</li>
+      <li>อัปเดต สำรองข้อมูล 2FA สิทธิผู้ใช้ และเคารพ GPL</li>
+      <li>AI ช่วยเขียนและทำ SEO แต่มนุษย์ต้องตรวจเสมอ</li>
+    </ul>
+    <div class="card" style="color:var(--ink)"><h3>งานสัปดาห์นี้</h3><p>ใบงานที่ 9: จัดทำเว็บไซต์ด้วย WordPress (Block Editor &amp; AI Integration)</p><p style="margin-top:8px">แบบฝึกหัดท้ายบทที่ 9 ส่งผ่าน Google Classroom</p><p style="margin-top:10px"><a href="../worksheets/ws9.html" target="_blank">เปิดใบงานที่ 9</a> · <a href="../chapters/ch9.html" target="_blank">อ่านบทที่ 9</a></p></div>
+  </div>
+  <div class="foot"><span>อ้างอิงหลัก: เอกสารประกอบการสอนบทที่ 9; จีราวุธ วารินทร์ (2565); วิศัลย์ ลักษมีวาสิน (2566); WordPress.org (2024); Joomla! Project (2024); OWASP (2023c)</span><span></span></div>
+</section>
+
+</div>
+<script src="deck.js" data-ch="9" data-back="../chapters/ch9.html"></script>
+<script>
+(function(){
+var $=function(id){return document.getElementById(id)};
+var all=function(q){return [].slice.call(document.querySelectorAll(q))};
+var esc=function(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")};
+// 4 flip
+all("#flips .flip").forEach(function(f){f.onclick=function(){f.classList.toggle("on")}});
+// 5 install stepper
+var IN=[["ดาวน์โหลด WordPress","ดาวน์โหลดไฟล์ .zip จาก wordpress.org (หรือ th.wordpress.org สำหรับภาษาไทย) แล้วแตกไฟล์","https://wordpress.org/download/",'<p>📦 wordpress-6.x.zip</p><p style="margin-top:8px" class="muted">ดาวน์โหลดจากแหล่งทางการเท่านั้น</p>'],
+["วางไฟล์ใน htdocs","คัดลอกโฟลเดอร์ wordpress ไปไว้ที่ C:\\xampp\\htdocs\\mysite (macOS MAMP: /Applications/MAMP/htdocs/mysite) แล้วเปิด Apache และ MySQL","file explorer",'<p style="font-family:Mono,monospace;font-size:16px">htdocs/<br>└── mysite/<br>&nbsp;&nbsp;&nbsp;&nbsp;├── wp-admin/<br>&nbsp;&nbsp;&nbsp;&nbsp;├── wp-content/<br>&nbsp;&nbsp;&nbsp;&nbsp;├── wp-includes/<br>&nbsp;&nbsp;&nbsp;&nbsp;└── wp-config-sample.php</p>'],
+["สร้างฐานข้อมูล","เปิด phpMyAdmin สร้างฐานข้อมูลใหม่ เช่น wp_mysite เลือก Collation utf8mb4_unicode_ci (บทที่ 8)","localhost/phpmyadmin/",'<p><b>Create database</b></p><p style="margin-top:8px;font-family:Mono,monospace;font-size:16px">wp_mysite · utf8mb4_unicode_ci</p><p style="margin-top:8px;color:#059669">✓ Database wp_mysite has been created.</p>'],
+["รันตัวติดตั้ง","เปิด localhost/mysite แล้วกรอกชื่อฐานข้อมูล ผู้ใช้ รหัสผ่าน host = localhost ตัวติดตั้งจะสร้างไฟล์ wp-config.php ให้","localhost/mysite/wp-admin/setup-config.php",'<p style="font-size:16px">Database Name: <b>wp_mysite</b><br>Username: <b>root</b><br>Database Host: <b>localhost</b><br>Table Prefix: <b>wp_</b> (เปลี่ยนได้เพื่อความปลอดภัย)</p>'],
+["ตั้งชื่อเว็บและผู้ดูแล","ตั้งชื่อเว็บไซต์ ชื่อผู้ใช้ (ไม่ใช้ admin) รหัสผ่านแข็งแรง อีเมล แล้วเข้าสู่ระบบที่ /wp-admin","localhost/mysite/wp-admin/",'<div class="wpadmin"><div class="sb"><div class="on">Dashboard</div><div>Posts</div><div>Pages</div><div>Appearance</div><div>Plugins</div><div>Settings</div></div><div style="padding:12px"><b>ยินดีต้อนรับสู่ WordPress!</b><p class="muted" style="font-size:15px;margin-top:6px">เริ่มสร้างหน้าแรก เขียนบทความ หรือเลือกธีม</p></div></div>']];
+var ii=0;function inShow(){var s=IN[ii];all("#inStp i").forEach(function(x,k){x.classList.toggle("on",k<=ii)});$("inTxt").innerHTML='<p class="muted" style="font-size:16px">ขั้นที่ '+(ii+1)+' / 5</p><h3 style="margin-top:4px">'+s[0]+'</h3><p style="font-size:19px">'+esc(s[1])+'</p>';$("inUrl").textContent=s[2];$("inView").innerHTML=s[3]}
+$("inNext").onclick=function(){ii=Math.min(4,ii+1);inShow()};$("inPrev").onclick=function(){ii=Math.max(0,ii-1);inShow()};inShow();
+// 6 permalinks
+var PL={plain:"localhost/mysite/?p=123",day:"localhost/mysite/2026/11/14/sample-post/",num:"localhost/mysite/archives/123",post:"localhost/mysite/sample-post/"};
+function pl(){var v=document.querySelector("input[name=pl]:checked").value,rw=$("plRw").checked;$("plUrl").textContent=PL[v];
+ if(v!=="plain"&&!rw)$("plView").innerHTML='<h3 style="color:#dc2626">404 Not Found</h3><p style="font-size:16px">The requested URL was not found on this server.</p><p class="muted" style="font-size:15px;margin-top:6px">Apache ยังไม่เปิด mod_rewrite จึงแปลง URL สวย ๆ ไปหา index.php ไม่ได้ <span class="sim">จำลอง</span></p>';
+ else $("plView").innerHTML='<h3>Sample Post</h3><p style="font-size:17px">เนื้อหาบทความตัวอย่าง</p><p class="muted" style="font-size:15px;margin-top:6px">'+(v==="post"?"✓ URL สั้น อ่านออก มีคำสำคัญ เหมาะกับ SEO":v==="plain"?"ใช้ได้โดยไม่ต้องตั้งค่า แต่ URL ไม่บอกเนื้อหา":"ใช้ได้ แต่ยาวหรือไม่บอกเนื้อหา")+' <span class="sim">จำลอง</span></p>'}
+all("input[name=pl]").forEach(function(r){r.onchange=pl});$("plRw").onchange=pl;pl();
+// 7 plugins
+var PG=[["no","อัปเดตครั้งล่าสุดนานมาก อาจมีช่องโหว่ที่ไม่ถูกแก้ และอาจใช้กับ WordPress รุ่นใหม่ไม่ได้"],["ok","เหมาะที่สุด: อัปเดตสม่ำเสมอ ผู้ใช้มาก รองรับรุ่นล่าสุด คะแนนดี มีระบบกันสแปม ดาวน์โหลดจาก WordPress.org"],["no","ห้ามใช้: Nulled คือของละเมิดลิขสิทธิ์ ผิดกฎหมาย และมักฝังโค้ดอันตรายหรือ Backdoor (9.4.2)"]];
+all("#plugs .plug").forEach(function(p){p.onclick=function(){all("#plugs .plug").forEach(function(x){x.classList.remove("ok","no")});var g=PG[p.dataset.p];p.classList.add(g[0]);$("plugTxt").innerHTML='<p style="font-size:19px;color:'+(g[0]==="ok"?"#059669":"#dc2626")+'"><b>'+(g[0]==="ok"?"✓ ":"✗ ")+'</b>'+g[1]+'</p>'}});
+// 8 block editor
+var BL=[{t:"heading",v:"ร้านกาแฟบ้านสวน"},{t:"paragraph",v:"เมล็ดกาแฟคั่วสดทุกเช้า บรรยากาศสวนร่มรื่น"},{t:"image",v:"ภาพหน้าร้าน"},{t:"buttons",v:"ดูเมนู"}];
+var DEF={heading:"หัวข้อใหม่",paragraph:"พิมพ์ข้อความที่นี่",image:"ภาพใหม่",buttons:"ปุ่มใหม่",list:"ลาเต้\nมอคค่า"};
+function inner(b){if(b.t==="heading")return '<h2 contenteditable="true">'+esc(b.v)+'</h2>';if(b.t==="paragraph")return '<p contenteditable="true">'+esc(b.v)+'</p>';if(b.t==="image")return '<div class="img">🖼 '+esc(b.v)+' (alt)</div>';if(b.t==="buttons")return '<span class="wbtn" contenteditable="true">'+esc(b.v)+'</span>';return '<ul contenteditable="true" style="padding-left:22px;font-size:18px">'+b.v.split("\n").map(function(x){return "<li>"+esc(x)+"</li>"}).join("")+'</ul>'}
+function ser(b){var v=esc(b.v);if(b.t==="heading")return '<!-- wp:heading -->\n<h2 class="wp-block-heading">'+v+'</h2>\n<!-- /wp:heading -->';if(b.t==="paragraph")return '<!-- wp:paragraph -->\n<p>'+v+'</p>\n<!-- /wp:paragraph -->';if(b.t==="image")return '<!-- wp:image {"id":42} -->\n<figure class="wp-block-image"><img src=".../shop.jpg" alt="'+v+'"/></figure>\n<!-- /wp:image -->';if(b.t==="buttons")return '<!-- wp:buttons -->\n<div class="wp-block-buttons"><!-- wp:button -->\n<div class="wp-block-button"><a class="wp-block-button__link">'+v+'</a></div>\n<!-- /wp:button --></div>\n<!-- /wp:buttons -->';return '<!-- wp:list -->\n<ul>'+b.v.split("\n").map(function(x){return "<li>"+esc(x)+"</li>"}).join("")+'</ul>\n<!-- /wp:list -->'}
+function edOut(){$("edOut").textContent=BL.map(ser).join("\n\n")}
+function ed(){$("ed").innerHTML=BL.map(function(b,i){return '<div class="blk" data-i="'+i+'"><div class="tl"><button data-m="-1" title="เลื่อนขึ้น">▲</button><button data-m="1" title="เลื่อนลง">▼</button><button data-m="x" title="ลบ">✕</button></div>'+inner(b)+'</div>'}).join("");
+ all("#ed .blk").forEach(function(d){var i=+d.dataset.i;all.call(null,"#ed .blk[data-i='"+i+"'] .tl button").forEach(function(btn){btn.onclick=function(){var m=btn.dataset.m;if(m==="x")BL.splice(i,1);else{var j=i+Number(m);if(j<0||j>=BL.length)return;var t=BL[i];BL[i]=BL[j];BL[j]=t}ed()}});
+  var ce=d.querySelector("[contenteditable]");if(ce)ce.addEventListener("input",function(){BL[i].v=BL[i].t==="list"?[].map.call(ce.querySelectorAll("li"),function(l){return l.textContent}).join("\n"):ce.textContent;edOut()})});edOut()}
+all("[data-add]").forEach(function(b){b.onclick=function(){BL.push({t:b.dataset.add,v:DEF[b.dataset.add]});ed();$("ed").scrollTop=1e6}});ed();
+// 9 FSE
+var FS={header:["Template Part: Header","ส่วนหัวใช้ร่วมกันทุกหน้า มีโลโก้ ชื่อเว็บ เมนูนำทาง แก้ครั้งเดียวเปลี่ยนทั้งเว็บ"],tpl:["Template: Single Post","แม่แบบของหน้าบทความ กำหนดว่าจะแสดงชื่อเรื่อง วันที่ ผู้เขียน ภาพเด่น และเนื้อหาในตำแหน่งใด"],content:["Post Content","ช่องที่ดึงบล็อกจากบทความแต่ละเรื่องมาแสดง ผู้เขียนแก้ใน Block Editor ตามปกติ"],footer:["Template Part: Footer","ส่วนท้าย มีข้อมูลติดต่อ ลิขสิทธิ์ ลิงก์นโยบายความเป็นส่วนตัว (PDPA บทที่ 2)"]};
+all("#fse [data-k]").forEach(function(d){d.onclick=function(e){e.stopPropagation();all("#fse .on").forEach(function(x){x.classList.remove("on")});d.classList.add("on");var f=FS[d.dataset.k];$("fseTxt").innerHTML='<h3 style="color:#21759b">'+f[0]+'</h3><p>'+f[1]+'</p><p class="muted" style="font-size:17px;margin-top:12px">ก่อนมี FSE ต้องแก้ไฟล์ PHP ของธีม เช่น header.php, single.php, footer.php</p>'}});
+// 10 security
+function sec(){var c=all("#secChk input"),n=c.filter(function(x){return x.checked}).length;$("secM").style.width=(n/c.length*100)+"%";$("secT").textContent="ผ่าน "+n+" จาก "+c.length+" ข้อ"+(n===c.length?" ดีมาก ✓":"")}
+all("#secChk input").forEach(function(x){x.onchange=sec});sec();
+// 11 config lines
+var CF=[["// wp-config.php",""],["define('DISALLOW_FILE_EDIT', true);","ปิดเมนูแก้ไขไฟล์ธีมและปลั๊กอินในหน้าแอดมิน ถ้าบัญชีแอดมินถูกเจาะ ผู้โจมตีจะฝังโค้ดผ่านหน้าเว็บไม่ได้ทันที"],["define('WP_HTTP_BLOCK_EXTERNAL', false);","ค่าที่ควบคุมการเชื่อมต่อออกไปภายนอก ค่า false คืออนุญาตตามปกติ (ถ้าตั้ง true ต้องระบุโดเมนที่อนุญาตด้วย WP_ACCESSIBLE_HOSTS มิฉะนั้นการอัปเดตจะใช้ไม่ได้)"],["define('FORCE_SSL_ADMIN', true);","บังคับใช้ HTTPS ในหน้าผู้ดูแลระบบ รหัสผ่านและคุกกี้จึงไม่ถูกดักอ่าน (ต้องมีใบรับรอง SSL ก่อน บทที่ 10)"],["",""],["# .htaccess",""],["<Files wp-config.php>","เริ่มกฎสำหรับไฟล์ wp-config.php ซึ่งเก็บรหัสผ่านฐานข้อมูล"],["  order allow,deny","รูปแบบคำสั่งของ Apache 2.2 กำหนดลำดับการตรวจ (Apache 2.4 ขึ้นไปเขียนเป็น Require all denied ได้)"],["  deny from all","ปฏิเสธทุกคำขอที่เปิดไฟล์นี้ผ่านเบราว์เซอร์"],["</Files>",""],["<Files xmlrpc.php>","ไฟล์ XML-RPC มักถูกใช้เดารหัสผ่านจำนวนมากและโจมตีแบบ DDoS ถ้าไม่ใช้แอปหรือบริการที่ต้องพึ่งไฟล์นี้ ให้ปิด"],["  order allow,deny",""],["  deny from all",""],["</Files>",""]];
+$("cfg").innerHTML=CF.map(function(l,k){return '<div data-k="'+k+'"'+(l[0].indexOf("#")===0||l[0].indexOf("//")===0?' class="c"':'')+'>'+esc(l[0]||" ")+'</div>'}).join("");
+all("#cfg div").forEach(function(d){d.onclick=function(){var k=+d.dataset.k,x=CF[k];if(!x[1]){for(var j=k;j>=0;j--)if(CF[j][1]){k=j;break}}all("#cfg .hl").forEach(function(e){e.classList.remove("hl")});d.classList.add("hl");$("cfgTxt").innerHTML='<p style="font-family:Mono,monospace;font-size:16px;color:#4338ca;word-break:break-all">'+esc(CF[k][0].trim())+'</p><p style="font-size:20px;margin-top:8px">'+(CF[k][1]||"ส่วนประกอบของกฎ")+'</p><p class="muted" style="font-size:15px;margin-top:10px">สำรองไฟล์ก่อนแก้ทุกครั้ง แก้ผิดอาจทำให้เว็บขึ้น 500</p>'}});
+// 12 GPL quiz
+var QZ=[["ขายธีม WordPress ที่เราพัฒนาเองได้",true,"ถูก GPL ไม่ได้บังคับให้ฟรี ขายได้ แต่ผู้ซื้อได้เสรีภาพ 4 ข้อ"],["ดาวน์โหลดธีม Pro แบบ Nulled มาใช้ได้ เพราะเป็น GPL",false,"ผิด แม้โค้ดเป็น GPL แต่ของ Nulled มักแก้โค้ดฝังมัลแวร์ ไม่ได้รับอัปเดต และรวมไฟล์ที่มีลิขสิทธิ์แยก ควรซื้อหรือดาวน์โหลดจากแหล่งทางการ"],["ภาพและฟอนต์ที่มากับธีม อยู่ภายใต้ GPL เสมอ",false,"ผิด ภาพ ฟอนต์ ไอคอน อาจใช้ใบอนุญาตแยก เช่น Creative Commons หรือ SIL OFL ต้องตรวจก่อนนำไปใช้ซ้ำ"],["บทความและภาพถ่ายที่เราเขียนบนเว็บ WordPress ต้องเป็น GPL",false,"ผิด GPL ครอบคลุมเฉพาะโค้ด เนื้อหาที่เราสร้างเป็นลิขสิทธิ์ของเราเอง"]];
+var score={};function qz(){$("qz").innerHTML=QZ.map(function(q,i){return '<div class="qz"><p>'+(i+1)+'. '+q[0]+'</p><div style="display:flex;gap:6px;margin-top:6px"><button class="chip" data-q="'+i+'|1">ถูก</button><button class="chip" data-q="'+i+'|0">ผิด</button></div><p class="a" id="qa'+i+'"></p></div>'}).join("");
+ all("[data-q]").forEach(function(b){b.onclick=function(){var p=b.dataset.q.split("|"),i=+p[0],ok=(p[1]==="1")===QZ[i][1];all('[data-q^="'+i+'|"]').forEach(function(x){x.classList.toggle("on",x===b)});score[i]=ok;$("qa"+i).innerHTML='<span style="color:'+(ok?"#059669":"#dc2626")+'">'+(ok?"✓ ":"✗ ")+QZ[i][2]+'</span>';var n=Object.keys(score).filter(function(k){return score[k]}).length;$("qzScore").textContent="ตอบถูก "+n+" / "+QZ.length}})}qz();
+// 13 SEO
+function seo(){var k=$("sK").value.trim(),t=$("sT").value,d=$("sD").value,s=$("sS").value.trim();var tl=[...t].length,dl=[...d].length;
+ $("cT").textContent="("+tl+"/60)";$("cT").style.color=tl>60?"#dc2626":"#059669";$("cD").textContent="("+dl+"/160)";$("cD").style.color=dl>160?"#dc2626":"#059669";
+ var tt=tl>60?[...t].slice(0,57).join("")+"...":t,dd=dl>160?[...d].slice(0,157).join("")+"...":d;
+ $("serp").innerHTML='<div class="u">mysite.ac.th › '+esc(s)+'</div><div class="t">'+esc(tt)+'</div><div class="d">'+esc(dd)+'</div>';
+ var C=[[tl>0&&tl<=60,"Meta Title ไม่เกิน 60 ตัวอักษร"],[dl>=70&&dl<=160,"Meta Description 70–160 ตัวอักษร"],[k&&t.indexOf(k)>-1,"มี Focus Keyword ในหัวเรื่อง"],[k&&d.indexOf(k)>-1,"มี Focus Keyword ในคำอธิบาย"],[/^[a-z0-9-]+$/.test(s),"Slug เป็นตัวพิมพ์เล็ก ตัวเลข และขีดกลาง"]];
+ $("seoChk").innerHTML=C.map(function(c){return '<p style="font-size:17px;color:'+(c[0]?"#059669":"#dc2626")+'">'+(c[0]?"✓ ":"✗ ")+c[1]+'</p>'}).join("")+'<p class="muted" style="font-size:14px;margin-top:4px">ตัวเลขเป็นแนวทางทั่วไป เครื่องมือค้นหาอาจตัดตามความกว้างจริงของข้อความ</p>'}
+["sK","sT","sD","sS"].forEach(function(i){$(i).oninput=seo});seo();
+})();
+</script>
+</body>
+</html>
