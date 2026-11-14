@@ -1,0 +1,1697 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="จัดรูปแบบด้วย Selector, Box Model, Flexbox และ Grid">
+<meta name="theme-color" content="#4338ca">
+<title>บทที่ 4 พื้นฐาน CSS · การโปรแกรมบนเว็บ</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%234338ca'/%3E%3Cpath d='M26 20 14 32l12 12M38 20l12 12-12 12' fill='none' stroke='%23fff' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preload" href="../assets/fonts/Sarabun-400-thai.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css">
+<script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+
+</head>
+<body class="ch-page">
+<a class="skip" href="#main">ข้ามไปยังเนื้อหา</a>
+<header class="top"><div class="wrap nav">
+<a class="brand" href="../index.html" aria-label="หน้าแรก การโปรแกรมบนเว็บ"><span class="logo" aria-hidden="true">&lt;/&gt;</span><span class="bt"><b>การโปรแกรมบนเว็บ</b><small>07-034-210</small></span></a>
+<button id="menuBtn" class="iconbtn menu-btn" type="button" aria-expanded="false" aria-controls="menu" aria-label="เปิดเมนู"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v2H3V6Zm0 5h18v2H3v-2Zm0 5h18v2H3v-2Z"/></svg></button>
+<nav id="menu" aria-label="เมนูหลัก">
+<a href="../chapters.html" aria-current="page">บทเรียน</a><a href="../worksheets.html">ใบงาน</a><a href="../start.html">เริ่มต้นใช้งาน</a><a href="../about.html">เกี่ยวกับรายวิชา</a>
+</nav>
+<button id="theme" class="iconbtn" type="button" aria-label="สลับโหมดมืดและสว่าง"><span class="i-moon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5Z"/></svg></span><span class="i-sun"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg></span></button>
+</div><div id="bar" class="bar" aria-hidden="true"></div></header>
+<main id="main">
+<div class="chead s2"><div class="wrap">
+<nav class="crumb" aria-label="เส้นทาง"><a href="../index.html">หน้าแรก</a><span>/</span><a href="../chapters.html">บทเรียน</a><span>/</span><span aria-current="page">บทที่ 4</span></nav>
+<div class="chrow"><span class="badge b-s2 big" aria-hidden="true">CSS</span><div><p class="kicker">บทที่ 4 · สร้างหน้าเว็บ</p><h1>พื้นฐาน CSS</h1><p class="cdesc">จัดรูปแบบด้วย Selector, Box Model, Flexbox และ Grid</p></div></div>
+<ul class="meta"><li><b>72</b> นาที อ่าน</li><li><b>19</b> หัวข้อหลัก</li><li><b>51</b> ตัวอย่างลองรันได้</li></ul>
+</div></div>
+<div class="wrap layout">
+<aside class="side" aria-label="สารบัญบทนี้"><details class="tocbox" open><summary>สารบัญบทนี้</summary><ol><li><a href="#s1">บทนำ</a></li><li><a href="#s2">เนื้อหา</a></li><li><a href="#s3">4.1 รูปแบบ CSS</a></li><li><a href="#s4">4.2 CSS Style Sheet</a></li><li><a href="#s8">4.3 CSS Selectors</a></li><li><a href="#s11">4.4 CSS Color</a></li><li><a href="#s12">4.5 CSS Borders</a></li><li><a href="#s15">4.6 CSS Margins</a></li><li><a href="#s16">4.7 CSS Padding</a></li><li><a href="#s17">4.8 CSS Layout</a></li><li><a href="#s18">4.9 CSS Grid Layout Module</a></li><li><a href="#s19">4.10 CSS3</a></li><li><a href="#s20">4.11 CSS Flexbox</a></li><li><a href="#s22">4.12 ตัวแปรใน CSS และหน่วยวัดสมัยใหม่ (CSS Custom Properties &amp; Modern Units)</a></li><li><a href="#s25">4.13 การออกแบบตอบสนองด้วยมีเดียคิวรี (Responsive Web Design with Media Queries)</a></li><li><a href="#s26">4.14 เทคนิคการใช้ AI ช่วยกำหนดสไตล์และจัดเลย์เอาต์ CSS (AI-Assisted CSS Development)</a></li><li><a href="#s32">สรุป</a></li><li><a href="#s33">แบบฝึกหัด</a></li><li><a href="#s34">เอกสารอ้างอิง</a></li></ol></details></aside>
+<article class="chapter prose" data-ch="4">
+<p class="note"><b>หมายเหตุ</b> หน้านี้ไม่แสดงภาพประกอบ (ดูภาพได้ในเอกสารประกอบการสอนฉบับเต็ม) ตัวอย่าง HTML ครบหน้ามีปุ่ม "ลองรัน" กดเพื่อดูผลได้ทันที</p>
+<h2 id="s1">บทนำ</h2>
+<p>ภาษา CSS (Cascading Style Sheets) เป็นกลไกสำคัญที่ใช้สำหรับกำหนดรูปแบบการแสดงผล ความสวยงาม และการจัดวางองค์ประกอบ ของเอกสาร HTML บนหน้าเว็บเพจ โดยทำหน้าที่แยกส่วนของการนำเสนอ (Presentation) ออกจากส่วนของโครงสร้างเนื้อหา (Structure) ช่วยให้การบำรุงรักษาและการปรับแต่งรูปแบบทำได้อย่างสะดวกรวดเร็วและมีมาตรฐานเดียวกันทั้งเว็บไซต์ ในบทนี้นักศึกษาจะได้เรียนรู้ตั้งแต่ รูปแบบไวยากรณ์พื้นฐาน การใช้งานตัวเลือก (Selectors), โมเดลกล่อง (Box Model: Margin, Border, Padding), เทคโนโลยีการจัดเลย์เอาต์สมัยใหม่ด้วย CSS Grid และ CSS Flexbox, การใช้งานตัวแปร (CSS Variables), การออกแบบที่ตอบสนองต่อทุกขนาดหน้าจอ (Responsive Design with Media Queries) ตลอดจนการประยุกต์ใช้ปัญญาประดิษฐ์ (AI) ในการช่วยเขียนโค้ดและแก้ไขข้อผิดพลาดทางด้านสไตล์อย่างมีประสิทธิภาพ</p>
+<h2 id="s2">เนื้อหา</h2>
+<h2 id="s3">4.1 รูปแบบ CSS (จีราวุธ วารินทร์, 2564; Keith, 2021)</h2>
+<p>รูปแบบ CSS ประกอบด้วยตัวเลือกและบล็อกการประกาศ</p>
+<p>อธิบายรูปแบบ CSS ได้ดังนี้</p>
+<p>Selector (ตัวเลือก) คือส่วนที่ระบุองค์ประกอบ HTML ที่ต้องการจัดรูปแบบ<br>Declaration (การประกาศ) คือคำสั่งกำหนดรูปแบบ บล็อกการประกาศหนึ่งบล็อกมีได้ตั้งแต่หนึ่งการประกาศขึ้นไป<br>Property (คุณสมบัติ) คือชื่อลักษณะที่ต้องการกำหนด เช่น color หรือ font-size</p>
+<p>แต่ละการประกาศประกอบด้วยชื่อคุณสมบัติและค่า โดยคั่นด้วยเครื่องหมายทวิภาค (:)<br>Value (ค่า) คือค่าที่กำหนดให้กับคุณสมบัตินั้น</p>
+<p>เมื่อมีหลายการประกาศ ให้คั่นแต่ละการประกาศด้วยเครื่องหมายอัฒภาค (;) และล้อมบล็อกการประกาศด้วยเครื่องหมายปีกกา { }</p>
+<h2 id="s4">4.2 CSS Style Sheet</h2>
+<p>CSS เขียนได้ 3 รูปแบบ แต่ละรูปแบบเหมาะกับวัตถุประสงค์การใช้งานต่างกัน ทั้งสามรูปแบบใช้ไวยากรณ์ของ CSS เหมือนกัน ต่างกันเพียงตำแหน่งที่เขียนคำสั่ง ได้แก่</p>
+<ul><li>Inline Style Sheet</li><li>Internal Style Sheet</li><li>External Style Sheet</li></ul>
+<h3 id="s5">4.2.1 Inline Style Sheet</h3>
+<p>Inline Style Sheet คือการเขียนคำสั่ง CSS ไว้ในแท็ก HTML โดยตรงผ่านแอตทริบิวต์ style ในรูปแบบ style=&quot;คำสั่ง CSS&quot;</p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Inline Style&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1 style=&quot;color: darkgreen; text-align: center;&quot;&gt;ยินดีต้อนรับสู่ชมรมถ่ายภาพ&lt;/h1&gt;
+&lt;p style=&quot;color: #444444; font-size: 20px;&quot;&gt;สไตล์ถูกเขียนไว้ในแท็กนี้โดยตรง&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<h3 id="s6">4.2.2 Internal Style Sheet</h3>
+<p>Internal Style Sheet ใช้กำหนดรูปแบบให้เฉพาะหน้าเว็บเพจหนึ่ง ๆ โดยเขียนไว้ในแท็ก &lt;style&gt; ภายในส่วน &lt;head&gt; ของหน้านั้น</p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Internal Style&lt;/title&gt;
+&lt;style&gt;
+  body { background-color: #fff4e0; font-family: sans-serif; }
+  h1   { color: #8b3a00; }
+  p    { color: #333333; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;ร้านกาแฟริมน้ำ&lt;/h1&gt;
+&lt;p&gt;เปิดบริการทุกวัน เวลา 08.00 - 17.00 น.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<h3 id="s7">4.2.3 External Style Sheet</h3>
+<p>External Style Sheet คือการเขียน CSS แยกไว้ในไฟล์ภายนอกที่มีนามสกุล .css เมื่อต้องการให้สไตล์มีผลกับเอกสาร HTML ใดให้เชื่อมโยงไฟล์ CSS นั้นเข้ากับเอกสาร ตัวอย่างนี้สร้างไฟล์สองไฟล์ในโฟลเดอร์เดียวกัน คือไฟล์ HTML และไฟล์ style.css</p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;External Style&lt;/title&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;style.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;ห้องสมุดชุมชน&lt;/h1&gt;
+&lt;p&gt;เปิดให้ยืมหนังสือทุกวันเสาร์และวันอาทิตย์&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p><strong>ส่วนในไฟล์ style.css ให้เขียนโปรแกรมดังนี้</strong></p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>body {
+  background-color: #e8f4f8;
+  font-family: sans-serif;
+}
+h1 {
+  color: #15557a;
+}
+p {
+  color: #333333;
+  line-height: 1.6;
+}</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<h2 id="s8">4.3 CSS Selectors (Mozilla Developer Network [MDN], 2024)</h2>
+<p><strong>ตัวเลือกใน CSS แบ่งออกเป็น 5 ประเภท ดังนี้</strong></p>
+<ul><li>ตัวเลือกอย่างง่าย (เลือกองค์ประกอบตามชื่อ, id, คลาส)</li><li>ตัวเลือก Combinator (เลือกองค์ประกอบตามความสัมพันธ์เฉพาะระหว่างองค์ประกอบเหล่านั้น)</li><li>ตัวเลือกระดับเทียม (เลือกองค์ประกอบตามสถานะที่กำหนด)</li><li>ตัวเลือกองค์ประกอบหลอก (เลือกและจัดรูปแบบส่วนหนึ่งขององค์ประกอบ)</li><li>ตัวเลือกแอตทริบิวต์ (เลือกองค์ประกอบตามแอตทริบิวต์หรือค่าแอตทริบิวต์)</li></ul>
+<p><strong>1 </strong><strong>ตัวเลือกอย่างง่าย</strong></p>
+<p>ตัวเลือกอย่างง่ายประกอบไปด้วย 3 รูปแบบดังนี้</p>
+<ul><li>ตัวเลือกตามชื่อแท็ก (Element Selector): เลือกทุกองค์ประกอบที่มีชื่อแท็กตรงกับที่ระบุ</li></ul>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Element Selector&lt;/title&gt;
+&lt;style&gt;
+  p {
+    text-align: center;
+    color: #b3261e;
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;p&gt;ย่อหน้าทุกตัวใช้สไตล์เดียวกัน&lt;/p&gt;
+&lt;p id=&quot;second&quot;&gt;ย่อหน้านี้มี id แต่ยังใช้สไตล์ของแท็ก p&lt;/p&gt;
+&lt;p&gt;ย่อหน้าที่สาม&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<ul><li>ตัวเลือกแบบ ID: ใช้เครื่องหมาย # ตามด้วยค่า id ขององค์ประกอบ เลือกเฉพาะองค์ประกอบที่มี id ตรงกัน ซึ่งควรไม่ซ้ำกันภายในหน้าเว็บ</li></ul>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;ID Selector&lt;/title&gt;
+&lt;style&gt;
+  #notice {
+    text-align: center;
+    color: #b3261e;
+    font-weight: bold;
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;p&gt;ย่อหน้าทั่วไปไม่ได้รับสไตล์&lt;/p&gt;
+&lt;p id=&quot;notice&quot;&gt;ประกาศ: ปิดทำการวันหยุดนักขัตฤกษ์&lt;/p&gt;
+&lt;p&gt;ย่อหน้าทั่วไปอีกตัวหนึ่ง&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<ul><li>ตัวเลือกแบบ Class</li></ul>
+<p>ตัวเลือกแบบ Class (Class Selector): ใช้เครื่องหมายจุด (.) ตามด้วยชื่อคลาส เลือกทุกองค์ประกอบที่มีแอตทริบิวต์ class ตรงกับชื่อนั้น</p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Class Selector&lt;/title&gt;
+&lt;style&gt;
+  .highlight {
+    text-align: center;
+    color: #1b5e20;
+    background-color: #e8f5e9;
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1 class=&quot;highlight&quot;&gt;หัวข้อที่ใช้คลาส highlight&lt;/h1&gt;
+&lt;p class=&quot;highlight&quot;&gt;ย่อหน้าที่ใช้คลาส highlight&lt;/p&gt;
+&lt;p&gt;ย่อหน้านี้ไม่ได้ระบุคลาส&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p><strong>2</strong><strong> </strong><strong>ตัวเลือก</strong><strong> Combinator</strong></p>
+<p>Combinator คือสัญลักษณ์ที่ใช้อธิบายความสัมพันธ์ระหว่างตัวเลือก</p>
+<p>ตัวเลือก CSS หนึ่งชุดประกอบด้วยตัวเลือกอย่างง่ายได้มากกว่าหนึ่งตัว โดยใช้ Combinator เชื่อมระหว่างตัวเลือกเหล่านั้น</p>
+<p>CSS มี Combinator 4 ชนิด ได้แก่</p>
+<ul><li>ตัวเลือกผู้สืบทอด (เว้นวรรค): เลือกองค์ประกอบ &lt;p&gt; ทั้งหมดที่อยู่ภายในองค์ประกอบ &lt;div&gt;</li></ul>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>div p {
+    background-color: yellow;
+}</code></pre></div>
+<ul><li>ตัวเลือกลูก (&gt;): เลือกเฉพาะองค์ประกอบ &lt;p&gt; ที่เป็นลูกโดยตรงของ &lt;div&gt;</li></ul>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>div &gt; p {
+    background-color: yellow;
+}</code></pre></div>
+<ul><li>ตัวเลือกพี่น้องที่อยู่ติดกัน (+): เลือกเฉพาะองค์ประกอบ &lt;p&gt; ตัวแรกที่อยู่ถัดจาก &lt;div&gt; โดยตรงและมีพาเรนต์เดียวกัน</li></ul>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>div + p {
+    background-color: yellow;
+}</code></pre></div>
+<ul><li>ตัวเลือกพี่น้องทั่วไป (~): เลือกองค์ประกอบ &lt;p&gt; ทั้งหมดที่อยู่หลัง &lt;div&gt; และมีพาเรนต์เดียวกัน</li></ul>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>div ~ p {
+    background-color: yellow;
+}</code></pre></div>
+<h3 id="s9">ตัวเลือกผู้สืบทอด</h3>
+<p>ตัวเลือกผู้สืบทอดจะจับคู่องค์ประกอบทั้งหมดที่อยู่ภายในองค์ประกอบที่ระบุ ไม่ว่าจะอยู่ลึกกี่ระดับ</p>
+<p>ตัวอย่างต่อไปนี้เลือกองค์ประกอบ &lt;p&gt; ทั้งหมดภายในองค์ประกอบ &lt;div&gt;:</p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Descendant Selector&lt;/title&gt;
+&lt;style&gt;
+  div p {
+    background-color: #fff3a3;
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;p&gt;ย่อหน้านอก div ไม่ถูกเลือก&lt;/p&gt;
+&lt;div&gt;
+  &lt;p&gt;ย่อหน้าใน div ถูกเลือก&lt;/p&gt;
+  &lt;section&gt;
+    &lt;p&gt;ย่อหน้าที่อยู่ลึกลงไปอีกระดับก็ถูกเลือก&lt;/p&gt;
+  &lt;/section&gt;
+&lt;/div&gt;
+&lt;p&gt;ย่อหน้านอก div อีกตัวหนึ่ง&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<p><strong>3</strong><strong> </strong><strong>ตัวเลือกระดับเทีย</strong><strong>ม</strong><strong> Pseudo-class</strong></p>
+<p>Pseudo-class (คลาสเทียม) ใช้กำหนดสถานะพิเศษขององค์ประกอบ<br>ตัวอย่างการใช้งาน เช่น</p>
+<ul><li>กำหนดรูปแบบเมื่อผู้ใช้เลื่อนเมาส์ไปอยู่เหนือองค์ประกอบ</li><li>กำหนดรูปแบบของลิงก์ที่เคยเข้าชมและยังไม่เคยเข้าชมให้แตกต่างกัน</li><li>กำหนดรูปแบบเมื่อองค์ประกอบได้รับโฟกัส</li></ul>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Pseudo-class&lt;/title&gt;
+&lt;style&gt;
+  a:link    { color: #0b57d0; }
+  a:visited { color: #6a1b9a; }
+  a:hover   { color: #d81b60; background-color: #fde7f0; }
+  a:active  { color: #e65100; }
+  input:focus {
+    background-color: #e0f7fa;
+    outline: 2px solid #0097a7;
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;p&gt;&lt;a href=&quot;https://example.com/&quot;&gt;ลิงก์ตัวอย่าง (เลื่อนเมาส์มาที่ลิงก์)&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;ชื่อ: &lt;input type=&quot;text&quot; value=&quot;คลิกที่ช่องนี้เพื่อดูสถานะโฟกัส&quot;&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p> แสดงผลลัพธ์</p>
+<p><strong>4</strong><strong> </strong><strong>องค์ประกอบเทียม</strong><strong> </strong><strong>Pseudo-Elements</strong></p>
+<p>Pseudo-element (องค์ประกอบเทียม) ใช้กำหนดรูปแบบให้กับบางส่วนขององค์ประกอบ<br>ตัวอย่างการใช้งาน เช่น</p>
+<ul><li>กำหนดรูปแบบตัวอักษรตัวแรกหรือบรรทัดแรกขององค์ประกอบ</li><li>แทรกเนื้อหาก่อนหรือหลังเนื้อหาขององค์ประกอบ</li></ul>
+<p>รูปแบบ</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>selector::pseudo-element {
+  property: value;
+}</code></pre></div>
+<p>องค์ประกอบเทียมบรรทัดแรก (::first-line)<br>ใช้กำหนดสไตล์พิเศษให้กับบรรทัดแรกของข้อความ<br>ตัวอย่างต่อไปนี้กำหนดรูปแบบบรรทัดแรกของข้อความในองค์ประกอบ &lt;p&gt; ทุกตัว:<br>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Pseudo-element&lt;/title&gt;
+&lt;style&gt;
+  p {
+    width: 340px;
+  }
+  p::first-line {
+    color: #0d47a1;
+    font-weight: bold;
+    font-size: 130%;
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;</code></pre></div>
+<p>&lt;p&gt;บรรทัดแรกของย่อหน้านี้จะถูกกำหนดสีและขนาดตัวอักษรต่างจากบรรทัดอื่น ส่วนข้อความที่ขึ้นบรรทัดใหม่จะแสดงผลตามปกติ&lt;/p&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<p>หมายเหตุ: ::first-line ใช้ได้กับองค์ประกอบระดับบล็อกเท่านั้น<br>คุณสมบัติที่ใช้ร่วมกับ ::first-line ได้ มีดังนี้</p>
+<ul><li>font properties</li><li>color properties</li><li>background properties</li><li>word-spacing</li><li>letter-spacing</li><li>text-decoration</li><li>vertical-align</li><li>text-transform</li><li>line-height</li><li>clear</li></ul>
+<h3 id="s10">5 ตัวเลือกแอตทริบิวต์ CSS Attribute Selectors</h3>
+<p>ผู้พัฒนาสามารถเลือกจัดรูปแบบองค์ประกอบ HTML ที่มีแอตทริบิวต์หรือค่าของแอตทริบิวต์ตามที่กำหนดได้</p>
+<p>ตัวเลือก [แอตทริบิวต์]<br>ใช้เลือกองค์ประกอบที่มีแอตทริบิวต์ตามที่ระบุ<br>ตัวอย่างต่อไปนี้เลือกองค์ประกอบ &lt;a&gt; ทุกตัวที่มีแอตทริบิวต์ target:</p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Attribute Selector&lt;/title&gt;
+&lt;style&gt;
+  a[target] {
+    background-color: #ffe082;
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;p&gt;&lt;a href=&quot;https://example.com/a&quot; target=&quot;_blank&quot;&gt;ลิงก์ที่เปิดแท็บใหม่&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://example.com/b&quot; target=&quot;_top&quot;&gt;ลิงก์ที่มี target เป็น _top&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://example.com/c&quot;&gt;ลิงก์ที่ไม่มี target&lt;/a&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Attribute Ends-with Selector&lt;/title&gt;
+&lt;style&gt;
+  [class$=&quot;note&quot;] {
+    background-color: #c8e6c9;
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;p class=&quot;note&quot;&gt;คลาส note (ลงท้ายด้วย note)&lt;/p&gt;
+&lt;p class=&quot;side-note&quot;&gt;คลาส side-note (ลงท้ายด้วย note)&lt;/p&gt;
+&lt;p class=&quot;important&quot;&gt;คลาส important (ไม่ลงท้ายด้วย note)&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Attribute Selector with Form&lt;/title&gt;
+&lt;style&gt;
+  input[type=&quot;text&quot;] {
+    width: 180px;
+    display: block;
+    margin-bottom: 10px;
+    background-color: #fff59d;
+  }
+  input[type=&quot;button&quot;] {
+    width: 120px;
+    display: block;
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;form&gt;</code></pre></div>
+<p>  ชื่อ:</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>  &lt;input type=&quot;text&quot; name=&quot;firstname&quot; value=&quot;สมชาย&quot;&gt;</code></pre></div>
+<p>  นามสกุล:</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>  &lt;input type=&quot;text&quot; name=&quot;lastname&quot; value=&quot;ใจดี&quot;&gt;
+  &lt;input type=&quot;button&quot; value=&quot;บันทึก&quot;&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<h2 id="s11">4.4 CSS Color</h2>
+<p>CSS ระบุสีได้หลายรูปแบบ ได้แก่ ชื่อสีที่กำหนดไว้ล่วงหน้า (Color Names) และค่า RGB, HEX, HSL, RGBA และ HSLA</p>
+<ul><li>การระบุชื่อสีโดยตรง Color names</li></ul>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Color Names&lt;/title&gt;
+&lt;style&gt;
+  h2 { margin: 4px 0; padding: 6px; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h2 style=&quot;background-color: Crimson;&quot;&gt;Crimson&lt;/h2&gt;
+&lt;h2 style=&quot;background-color: Gold;&quot;&gt;Gold&lt;/h2&gt;
+&lt;h2 style=&quot;background-color: SeaGreen;&quot;&gt;SeaGreen&lt;/h2&gt;
+&lt;h2 style=&quot;background-color: SteelBlue;&quot;&gt;SteelBlue&lt;/h2&gt;
+&lt;h2 style=&quot;background-color: Orchid;&quot;&gt;Orchid&lt;/h2&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<ul><li>การกำหนดค่าสี RGB</li></ul>
+<p>รูปแบบ</p>
+<p>rgb(<em>red,</em> <em>green</em>, <em>blue</em>)</p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;RGB Colors&lt;/title&gt;
+&lt;style&gt;
+  h2 { margin: 4px 0; padding: 6px; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h2 style=&quot;background-color: rgb(220, 20, 60);&quot;&gt;rgb(220, 20, 60)&lt;/h2&gt;
+&lt;h2 style=&quot;background-color: rgb(30, 144, 255);&quot;&gt;rgb(30, 144, 255)&lt;/h2&gt;
+&lt;h2 style=&quot;background-color: rgb(46, 139, 87);&quot;&gt;rgb(46, 139, 87)&lt;/h2&gt;
+&lt;h2 style=&quot;background-color: rgb(255, 140, 0);&quot;&gt;rgb(255, 140, 0)&lt;/h2&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<ul><li>HEX Value</li></ul>
+<p>การกำหนดค่าสีเป็นเลขฐาน 16</p>
+<p>รูปแบบ</p>
+<p>#<em>rrggbb</em></p>
+<p><em>ตัวอย่างการเขียนโปรแกรม</em></p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;HEX Colors&lt;/title&gt;
+&lt;style&gt;
+  h2 { margin: 4px 0; padding: 6px; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h2 style=&quot;background-color: #dc143c;&quot;&gt;#dc143c&lt;/h2&gt;
+&lt;h2 style=&quot;background-color: #1e90ff;&quot;&gt;#1e90ff&lt;/h2&gt;
+&lt;h2 style=&quot;background-color: #2e8b57;&quot;&gt;#2e8b57&lt;/h2&gt;
+&lt;h2 style=&quot;background-color: #ff8c00;&quot;&gt;#ff8c00&lt;/h2&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p><em>แสดงผลลัพธ์</em></p>
+<ul><li><strong>HSL Value</strong></li></ul>
+<p>ใน CSS สามารถระบุสีด้วยเฉดสี (Hue) ความอิ่มตัว (Saturation) และความสว่าง (Lightness) หรือ HSL ในรูปแบบดังนี้:</p>
+<p>รูปแบบ</p>
+<p>hsl(<em>hue</em>, <em>saturation</em>, <em>lightness</em>)</p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;HSL Colors&lt;/title&gt;
+&lt;style&gt;
+  h2 { margin: 4px 0; padding: 6px; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h2 style=&quot;background-color: hsl(0, 75%, 50%);&quot;&gt;hsl(0, 75%, 50%)&lt;/h2&gt;
+&lt;h2 style=&quot;background-color: hsl(120, 60%, 40%);&quot;&gt;hsl(120, 60%, 40%)&lt;/h2&gt;
+&lt;h2 style=&quot;background-color: hsl(210, 80%, 50%);&quot;&gt;hsl(210, 80%, 50%)&lt;/h2&gt;
+&lt;h2 style=&quot;background-color: hsl(45, 100%, 50%);&quot;&gt;hsl(45, 100%, 50%)&lt;/h2&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<h2 id="s12">4.5 CSS Borders</h2>
+<p>คุณสมบัติเกี่ยวกับเส้นขอบ (border) ของ CSS ช่วยให้กำหนดรูปแบบ ความกว้าง และสีของเส้นขอบขององค์ประกอบได้</p>
+<h3 id="s13">CSS Border Style</h3>
+<p>คุณสมบัติ border-style ระบุชนิดของเส้นขอบที่แสดง</p>
+<p>ค่าที่ใช้ได้ มีดังนี้</p>
+<ul><li>dotted - เส้นขอบแบบจุด</li><li>dashed - เส้นขอบแบบเส้นประ</li><li>solid - เส้นขอบแบบเส้นทึบ</li><li>double - เส้นขอบแบบเส้นคู่</li><li>groove - เส้นขอบสามมิติแบบร่อง ลักษณะที่เห็นขึ้นกับค่า border-color</li><li>ridge - เส้นขอบสามมิติแบบสัน ลักษณะที่เห็นขึ้นกับค่า border-color</li><li>inset - เส้นขอบสามมิติแบบกดลง ลักษณะที่เห็นขึ้นกับค่า border-color</li><li>outset - เส้นขอบสามมิติแบบนูนขึ้น ลักษณะที่เห็นขึ้นกับค่า border-color</li><li>none - ไม่มีเส้นขอบ</li><li>hidden - เส้นขอบแบบซ่อน</li></ul>
+<p>คุณสมบัติ border-style กำหนดค่าได้ตั้งแต่หนึ่งถึงสี่ค่า (สำหรับเส้นขอบด้านบน ขวา ล่าง และซ้ายตามลำดับ)</p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Border Style&lt;/title&gt;
+&lt;style&gt;
+  p { padding: 6px; margin: 8px; }
+  .dotted { border-style: dotted; }
+  .dashed { border-style: dashed; }
+  .solid  { border-style: solid; }
+  .double { border-style: double; }
+  .groove { border-style: groove; }
+  .ridge  { border-style: ridge; }
+  .inset  { border-style: inset; }
+  .outset { border-style: outset; }
+  .none   { border-style: none; }
+  .hidden { border-style: hidden; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;p class=&quot;dotted&quot;&gt;เส้นขอบแบบจุด (dotted)&lt;/p&gt;
+&lt;p class=&quot;dashed&quot;&gt;เส้นขอบแบบเส้นประ (dashed)&lt;/p&gt;
+&lt;p class=&quot;solid&quot;&gt;เส้นขอบแบบเส้นทึบ (solid)&lt;/p&gt;
+&lt;p class=&quot;double&quot;&gt;เส้นขอบแบบเส้นคู่ (double)&lt;/p&gt;
+&lt;p class=&quot;groove&quot;&gt;เส้นขอบแบบร่อง (groove)&lt;/p&gt;
+&lt;p class=&quot;ridge&quot;&gt;เส้นขอบแบบสัน (ridge)&lt;/p&gt;
+&lt;p class=&quot;inset&quot;&gt;เส้นขอบแบบกดลง (inset)&lt;/p&gt;
+&lt;p class=&quot;outset&quot;&gt;เส้นขอบแบบนูนขึ้น (outset)&lt;/p&gt;
+&lt;p class=&quot;none&quot;&gt;ไม่มีเส้นขอบ (none)&lt;/p&gt;
+&lt;p class=&quot;hidden&quot;&gt;เส้นขอบแบบซ่อน (hidden)&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<h3 id="s14">CSS Border Width</h3>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Border Width&lt;/title&gt;
+&lt;style&gt;
+  p { padding: 6px; margin: 8px; border-style: solid; }
+  .w1 { border-width: 1px; }
+  .w2 { border-width: thin; }
+  .w3 { border-width: medium; }
+  .w4 { border-width: thick; }
+  .w5 { border-width: 8px; border-style: double; }
+  .w6 { border-width: 2px 10px 2px 10px; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;p class=&quot;w1&quot;&gt;ความกว้าง 1px&lt;/p&gt;
+&lt;p class=&quot;w2&quot;&gt;ความกว้างแบบ thin&lt;/p&gt;
+&lt;p class=&quot;w3&quot;&gt;ความกว้างแบบ medium&lt;/p&gt;
+&lt;p class=&quot;w4&quot;&gt;ความกว้างแบบ thick&lt;/p&gt;
+&lt;p class=&quot;w5&quot;&gt;เส้นคู่กว้าง 8px&lt;/p&gt;
+&lt;p class=&quot;w6&quot;&gt;กำหนดความกว้างแต่ละด้านต่างกัน&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<ul><li>CSS Border Color</li></ul>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Border Color&lt;/title&gt;
+&lt;style&gt;
+  p { padding: 6px; margin: 8px; border-width: 4px; }
+  .c1 { border-style: solid;  border-color: crimson; }
+  .c2 { border-style: solid;  border-color: seagreen; }
+  .c3 { border-style: dotted; border-color: royalblue; }
+  .c4 { border-style: solid;  border-color: crimson seagreen royalblue gold; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;p class=&quot;c1&quot;&gt;เส้นขอบสีแดง&lt;/p&gt;
+&lt;p class=&quot;c2&quot;&gt;เส้นขอบสีเขียว&lt;/p&gt;
+&lt;p class=&quot;c3&quot;&gt;เส้นจุดสีน้ำเงิน&lt;/p&gt;
+&lt;p class=&quot;c4&quot;&gt;กำหนดสีแต่ละด้านต่างกัน&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<ul><li><strong>CSS </strong><strong>Border Side</strong></li></ul>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Border Sides&lt;/title&gt;
+&lt;style&gt;
+  body { text-align: center; }
+  p { padding: 8px; margin: 8px; border-width: 4px; }
+  .one   { border-style: dotted; }
+  .two   { border-style: dotted solid; }
+  .three { border-style: dotted solid double; }
+  .four  { border-style: dotted solid double dashed; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;p class=&quot;one&quot;&gt;ค่าเดียว: ใช้กับทั้งสี่ด้าน&lt;/p&gt;
+&lt;p class=&quot;two&quot;&gt;สองค่า: บน-ล่าง และ ซ้าย-ขวา&lt;/p&gt;
+&lt;p class=&quot;three&quot;&gt;สามค่า: บน, ซ้าย-ขวา, ล่าง&lt;/p&gt;
+&lt;p class=&quot;four&quot;&gt;สี่ค่า: บน, ขวา, ล่าง, ซ้าย&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<ul><li><strong>CSS </strong><strong>Border Shorthand</strong></li></ul>
+<p>คุณสมบัติ border เป็นคุณสมบัติชวเลขที่รวมการกำหนดความกว้าง ลักษณะ และสีของเส้นขอบไว้ในการประกาศเดียว</p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Border Shorthand&lt;/title&gt;
+&lt;style&gt;
+  p {
+    border-bottom: 4px solid #c62828;
+    background-color: #eeeeee;
+    padding: 8px;
+  }
+  p.left {
+    border-bottom: none;
+    border-left: 8px solid #1565c0;
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;p&gt;ย่อหน้านี้มีเส้นขอบล่างสีแดง&lt;/p&gt;
+&lt;p class=&quot;left&quot;&gt;ย่อหน้านี้มีเส้นขอบซ้ายสีน้ำเงิน&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<ul><li><strong>CSS Rounded Borders</strong></li></ul>
+<p>คุณสมบัติ border-radius ใช้ทำให้เส้นขอบขององค์ประกอบโค้งมน:</p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Rounded Borders&lt;/title&gt;
+&lt;style&gt;
+  p { border: 2px solid #6a1b9a; padding: 10px; margin: 8px; }
+  .r1 { border-radius: 4px; }
+  .r2 { border-radius: 12px; }
+  .r3 { border-radius: 30px; }
+  .r4 { border-radius: 40px 4px; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;p&gt;ไม่กำหนดความโค้งมน&lt;/p&gt;
+&lt;p class=&quot;r1&quot;&gt;border-radius: 4px&lt;/p&gt;
+&lt;p class=&quot;r2&quot;&gt;border-radius: 12px&lt;/p&gt;
+&lt;p class=&quot;r3&quot;&gt;border-radius: 30px&lt;/p&gt;
+&lt;p class=&quot;r4&quot;&gt;border-radius: 40px 4px&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<h2 id="s15">4.6 CSS Margins</h2>
+<p>คุณสมบัติ margin (ระยะขอบ) ใช้สร้างพื้นที่ว่างรอบองค์ประกอบ โดยอยู่นอกเส้นขอบขององค์ประกอบ</p>
+<p>ผู้พัฒนาสามารถกำหนดระยะขอบของแต่ละด้านขององค์ประกอบได้อย่างอิสระ (ด้านบน ขวา ล่าง และซ้าย)</p>
+<p>ระยะขอบแต่ละด้าน<br>CSS มีคุณสมบัติสำหรับกำหนดระยะขอบของแต่ละด้านขององค์ประกอบ ดังนี้</p>
+<ul><li>margin-top</li><li>margin-right</li><li>margin-bottom</li><li>margin-left</li></ul>
+<p>คุณสมบัติระยะขอบทุกตัวรับค่าต่อไปนี้ได้</p>
+<ul><li>auto - ให้เบราว์เซอร์คำนวณระยะขอบเอง</li><li><em>length - ระบุเป็นหน่วยความยาว เช่น px, pt, cm</em></li><li><em>% - ระบุเป็นร้อยละของความกว้างขององค์ประกอบที่บรรจุอยู่</em></li><li>inherit - สืบทอดค่าระยะขอบจากองค์ประกอบพาเรนต์</li></ul>
+<p>หมายเหตุ: ระยะขอบกำหนดเป็นค่าลบได้</p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Margin Sides&lt;/title&gt;
+&lt;style&gt;
+  div {
+    border: 1px solid #333333;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    margin-right: 80px;
+    margin-left: 40px;
+    background-color: #bbdefb;
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div&gt;กล่องที่ 1 กำหนดระยะขอบแต่ละด้านแยกกัน&lt;/div&gt;
+&lt;div&gt;กล่องที่ 2 ใช้สไตล์เดียวกัน&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<p>ต้วอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Margin Shorthand&lt;/title&gt;
+&lt;style&gt;
+  div {
+    border: 1px solid #333333;
+    margin: 10px 40px 20px 60px;
+    background-color: #c8e6c9;
+  }
+  div.auto {
+    width: 300px;
+    margin: 20px auto;
+    background-color: #ffe0b2;
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div&gt;margin: 10px 40px 20px 60px (บน ขวา ล่าง ซ้าย)&lt;/div&gt;
+&lt;div class=&quot;auto&quot;&gt;margin: 20px auto (จัดกึ่งกลางในแนวนอน)&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<ul><li>การยุบรวมระยะขอบ (Margin Collapse)</li></ul>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Margin Collapse&lt;/title&gt;
+&lt;style&gt;
+  h1 { margin: 0 0 40px 0; background-color: #ffe0b2; }
+  h2 { margin: 25px 0 0 0; background-color: #c5cae9; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;หัวข้อที่ 1 (margin-bottom: 40px)&lt;/h1&gt;
+&lt;h2&gt;หัวข้อที่ 2 (margin-top: 25px)&lt;/h2&gt;
+&lt;p&gt;ระยะห่างระหว่างหัวข้อทั้งสองเท่ากับ 40px ซึ่งเป็นค่าที่มากกว่า ไม่ใช่ 65px&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<p class="cap">ตารางที่ 4-1 คุณสมบัติของ CSS margin</p>
+<div class="tw"><table><tr><th>คุณสมบัติ</th><th>คำอธิบาย</th></tr><tr><td>margin</td><td>คุณสมบัติชวเลขที่กำหนดระยะขอบทั้งสี่ด้านในการประกาศเดียว</td></tr><tr><td>margin-bottom</td><td>กำหนดระยะขอบด้านล่างขององค์ประกอบ</td></tr><tr><td>margin-left</td><td>กำหนดระยะขอบด้านซ้ายขององค์ประกอบ</td></tr><tr><td>margin-right</td><td>กำหนดระยะขอบด้านขวาขององค์ประกอบ</td></tr><tr><td>margin-top</td><td>กำหนดระยะขอบด้านบนขององค์ประกอบ</td></tr></table></div>
+<h2 id="s16">4.7 CSS Padding</h2>
+<p>คุณสมบัติ padding (ระยะเว้นใน) ใช้สร้างพื้นที่ว่างรอบเนื้อหาขององค์ประกอบ โดยอยู่ภายในเส้นขอบ</p>
+<p>CSS มีคุณสมบัติสำหรับกำหนดระยะเว้นในของแต่ละด้านขององค์ประกอบ ดังนี้</p>
+<ul><li>padding-top</li><li>padding-right</li><li>padding-bottom</li><li>padding-left</li></ul>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Padding Sides&lt;/title&gt;
+&lt;style&gt;
+  div {
+    border: 1px solid #333333;
+    background-color: #d1c4e9;
+    padding-top: 40px;
+    padding-right: 20px;
+    padding-bottom: 40px;
+    padding-left: 80px;
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div&gt;กล่องนี้กำหนดระยะเว้นในของแต่ละด้านต่างกัน&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Padding and box-sizing&lt;/title&gt;
+&lt;style&gt;
+  div { margin-bottom: 12px; }
+  div.a {
+    width: 300px;
+    padding: 25px;
+    background-color: #ffe082;
+  }
+  div.b {
+    width: 300px;
+    padding: 25px;
+    box-sizing: border-box;
+    background-color: #b2ebf2;
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;a&quot;&gt;กล่อง A: width 300px + padding 25px ทำให้กว้างรวม 350px&lt;/div&gt;
+&lt;div class=&quot;b&quot;&gt;กล่อง B: ใช้ box-sizing: border-box กว้างรวม 300px&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<p>ภาพสรุปความสัมพันธ์การใช้งาน Margin Border Padding และ Content</p>
+<p><em>(ที่มา: Mozilla Developer Network [MDN], 2024)</em></p>
+<h2 id="s17">4.8 CSS Layout</h2>
+<p>คุณสมบัติ float กำหนดการลอยตัวขององค์ประกอบ ส่วนคุณสมบัติ clear กำหนดว่าองค์ประกอบใดไม่ให้ลอยอยู่ติดด้านใดขององค์ประกอบที่ลอยตัว</p>
+<p>คุณสมบัติ float<br>คุณสมบัติ float ใช้กำหนดตำแหน่งและการจัดวางเนื้อหา เช่น ให้รูปภาพลอยไปทางซ้ายของข้อความภายในคอนเทนเนอร์<br>คุณสมบัติ float รับค่าได้ดังนี้<br>    left - องค์ประกอบลอยไปทางซ้ายของคอนเทนเนอร์</p>
+<p>img {<br>  float: left;<br>}<br>    right - องค์ประกอบลอยไปทางขวาของคอนเทนเนอร์</p>
+<p>img {<br>  float: right;<br>}<br>    none - องค์ประกอบไม่ลอย (แสดงตามตำแหน่งปกติในเนื้อหา) เป็นค่าเริ่มต้น</p>
+<p>img {<br>  float: none;<br>}<br>    inherit - องค์ประกอบสืบทอดค่า float จากพาเรนต์</p>
+<p><br>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Float&lt;/title&gt;
+&lt;style&gt;
+  .frame { border: 3px solid #00796b; padding: 8px; }
+  .photo {
+    float: right;
+    width: 110px;
+    height: 80px;
+    margin: 0 0 8px 12px;
+    background-color: #80cbc4;
+    text-align: center;
+    line-height: 80px;
+  }
+  .clearfix { overflow: auto; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;frame clearfix&quot;&gt;
+  &lt;div class=&quot;photo&quot;&gt;ภาพ&lt;/div&gt;
+  &lt;p&gt;รูปภาพจำลองทางขวาใช้ float: right ทำให้ข้อความไหลล้อมรอบ</code></pre></div>
+<p>  เมื่อกล่องที่ลอยสูงกว่าข้อความ กรอบหลักจะไม่หุ้มกล่องที่ลอยอยู่</p>
+<p>  จึงใส่ overflow: auto ให้กรอบเพื่อให้หุ้มเนื้อหาทั้งหมด&lt;/p&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<p>คุณสมบัติ float ยังใช้จัดวางกล่องหลายกล่องให้เรียงต่อกันในแนวนอนได้ ดังตัวอย่าง</p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Float Layout&lt;/title&gt;
+&lt;style&gt;
+  div { float: left; padding: 15px; color: white; }
+  .a { background: #c62828; }
+  .b { background: #ef6c00; }
+  .c { background: #2e7d32; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;a&quot;&gt;กล่อง A&lt;/div&gt;
+&lt;div class=&quot;b&quot;&gt;กล่อง B&lt;/div&gt;
+&lt;div class=&quot;c&quot;&gt;กล่อง C&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<h2 id="s18">4.9 CSS Grid Layout Module</h2>
+<p>CSS Grid Layout Module เป็นระบบจัดวางแบบกริดที่ประกอบด้วยแถวและคอลัมน์ ช่วยให้ออกแบบหน้าเว็บได้ง่ายขึ้นโดยไม่ต้องใช้ float และ position</p>
+<p>องค์ประกอบกริด<br>เลย์เอาต์กริดประกอบด้วยองค์ประกอบหลัก (คอนเทนเนอร์) และองค์ประกอบย่อยตั้งแต่หนึ่งรายการขึ้นไป</p>
+<p>คอนเทนเนอร์กริด<br>การทำให้องค์ประกอบ HTML เป็นคอนเทนเนอร์กริดต้องกำหนดคุณสมบัติ display เป็น grid หรือ inline-grid<br>คอนเทนเนอร์กริดประกอบด้วยรายการกริดที่วางอยู่ในคอลัมน์และแถว</p>
+<p>คุณสมบัติ grid-template-columns<br>คุณสมบัติ grid-template-columns กำหนดจำนวนคอลัมน์ในกริดและความกว้างของแต่ละคอลัมน์<br>ค่าที่กำหนดเป็นรายการที่คั่นด้วยช่องว่าง โดยแต่ละค่าระบุความกว้างของคอลัมน์ที่ตรงกัน<br>หากต้องการกริด 4 คอลัมน์ ให้ระบุความกว้าง 4 ค่า ใช้ auto เมื่อต้องการให้ความกว้างปรับตามเนื้อหา และใช้ 1fr เมื่อต้องการให้ทุกคอลัมน์กว้างเท่ากัน</p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;grid-template-columns&lt;/title&gt;
+&lt;style&gt;
+  .grid {
+    display: grid;
+    gap: 8px;
+    grid-template-columns: auto auto auto auto;
+    background-color: #37474f;
+    padding: 8px;
+  }
+  .grid &gt; div {
+    background-color: #eceff1;
+    text-align: center;
+    padding: 16px 0;
+    font-size: 24px;
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h2&gt;สี่คอลัมน์ขนาดเท่ากัน&lt;/h2&gt;
+&lt;div class=&quot;grid&quot;&gt;
+  &lt;div&gt;1&lt;/div&gt;
+  &lt;div&gt;2&lt;/div&gt;
+  &lt;div&gt;3&lt;/div&gt;
+  &lt;div&gt;4&lt;/div&gt;
+  &lt;div&gt;5&lt;/div&gt;
+  &lt;div&gt;6&lt;/div&gt;
+  &lt;div&gt;7&lt;/div&gt;
+  &lt;div&gt;8&lt;/div&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p> แสดงผลลัพธ์</p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;grid-template-columns (ขนาดต่างกัน)&lt;/title&gt;
+&lt;style&gt;
+  .grid {
+    display: grid;
+    gap: 8px;
+    grid-template-columns: 70px 160px auto 50px;
+    background-color: #37474f;
+    padding: 8px;
+  }
+  .grid &gt; div {
+    background-color: #eceff1;
+    text-align: center;
+    padding: 16px 0;
+    font-size: 24px;
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h2&gt;กำหนดความกว้างแต่ละคอลัมน์&lt;/h2&gt;
+&lt;div class=&quot;grid&quot;&gt;
+  &lt;div&gt;1&lt;/div&gt;
+  &lt;div&gt;2&lt;/div&gt;
+  &lt;div&gt;3&lt;/div&gt;
+  &lt;div&gt;4&lt;/div&gt;
+  &lt;div&gt;5&lt;/div&gt;
+  &lt;div&gt;6&lt;/div&gt;
+  &lt;div&gt;7&lt;/div&gt;
+  &lt;div&gt;8&lt;/div&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p> แสดงผลลัพธ์</p>
+<p>ตััวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;grid-template-rows&lt;/title&gt;
+&lt;style&gt;
+  .grid {
+    display: grid;
+    gap: 8px;
+    grid-template-columns: auto auto auto;
+    grid-template-rows: 50px 100px;
+    background-color: #37474f;
+    padding: 8px;
+  }
+  .grid &gt; div {
+    background-color: #eceff1;
+    text-align: center;
+    padding: 16px 0;
+    font-size: 24px;
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h2&gt;กำหนดความสูงของแถว&lt;/h2&gt;
+&lt;div class=&quot;grid&quot;&gt;
+  &lt;div&gt;1&lt;/div&gt;
+  &lt;div&gt;2&lt;/div&gt;
+  &lt;div&gt;3&lt;/div&gt;
+  &lt;div&gt;4&lt;/div&gt;
+  &lt;div&gt;5&lt;/div&gt;
+  &lt;div&gt;6&lt;/div&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>คุณสมบัติ justify-content<br>คุณสมบัติ justify-content ใช้จัดแนวกริดทั้งหมดภายในคอนเทนเนอร์ในแนวนอน</p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;justify-content&lt;/title&gt;
+&lt;style&gt;
+  .grid {
+    display: grid;
+    justify-content: space-evenly;
+    grid-template-columns: 60px 60px 60px;
+    gap: 8px;
+    background-color: #37474f;
+    padding: 8px;
+  }
+  .grid &gt; div {
+    background-color: #eceff1;
+    text-align: center;
+    padding: 16px 0;
+    font-size: 22px;
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h2&gt;justify-content: space-evenly&lt;/h2&gt;
+&lt;div class=&quot;grid&quot;&gt;
+  &lt;div&gt;1&lt;/div&gt;
+  &lt;div&gt;2&lt;/div&gt;
+  &lt;div&gt;3&lt;/div&gt;
+  &lt;div&gt;4&lt;/div&gt;
+  &lt;div&gt;5&lt;/div&gt;
+  &lt;div&gt;6&lt;/div&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p> แสดงผลข้อมูล</p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;justify-content&lt;/title&gt;
+&lt;style&gt;
+  .grid {
+    display: grid;
+    justify-content: space-between;
+    grid-template-columns: 60px 60px 60px;
+    gap: 8px;
+    background-color: #37474f;
+    padding: 8px;
+  }
+  .grid &gt; div {
+    background-color: #eceff1;
+    text-align: center;
+    padding: 16px 0;
+    font-size: 22px;
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h2&gt;justify-content: space-between&lt;/h2&gt;
+&lt;div class=&quot;grid&quot;&gt;
+  &lt;div&gt;1&lt;/div&gt;
+  &lt;div&gt;2&lt;/div&gt;
+  &lt;div&gt;3&lt;/div&gt;
+  &lt;div&gt;4&lt;/div&gt;
+  &lt;div&gt;5&lt;/div&gt;
+  &lt;div&gt;6&lt;/div&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;justify-content&lt;/title&gt;
+&lt;style&gt;
+  .grid {
+    display: grid;
+    justify-content: center;
+    grid-template-columns: 60px 60px 60px;
+    gap: 8px;
+    background-color: #37474f;
+    padding: 8px;
+  }
+  .grid &gt; div {
+    background-color: #eceff1;
+    text-align: center;
+    padding: 16px 0;
+    font-size: 22px;
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h2&gt;justify-content: center&lt;/h2&gt;
+&lt;div class=&quot;grid&quot;&gt;
+  &lt;div&gt;1&lt;/div&gt;
+  &lt;div&gt;2&lt;/div&gt;
+  &lt;div&gt;3&lt;/div&gt;
+  &lt;div&gt;4&lt;/div&gt;
+  &lt;div&gt;5&lt;/div&gt;
+  &lt;div&gt;6&lt;/div&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลข้อมูล</p>
+<p>นอกจากนี้ยังกำหนดตำแหน่งเริ่มและตำแหน่งสิ้นสุดของรายการกริดด้วยคุณสมบัติ start และ end ได้ ดังตัวอย่าง</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>.grid {
+   display: grid;
+  justify-content: start;
+}
+.grid {
+   display: grid;
+  justify-content: end;
+}</code></pre></div>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;grid-column-start / grid-column-end&lt;/title&gt;
+&lt;style&gt;
+  .grid {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    gap: 6px;
+    background-color: #37474f;
+    padding: 8px;
+  }
+  .item {
+    background-color: #eceff1;
+    border: 1px solid #546e7a;
+    padding: 18px;
+    font-size: 22px;
+    text-align: center;
+  }
+  .item1 { grid-column-start: 1; grid-column-end: 3; background-color: #ffe082; }
+  .item4 { grid-column-start: 2; grid-column-end: 4; background-color: #b2dfdb; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;grid&quot;&gt;
+  &lt;div class=&quot;item item1&quot;&gt;1 (คอลัมน์ 1-2)&lt;/div&gt;
+  &lt;div class=&quot;item&quot;&gt;2&lt;/div&gt;
+  &lt;div class=&quot;item&quot;&gt;3&lt;/div&gt;
+  &lt;div class=&quot;item item4&quot;&gt;4 (คอลัมน์ 2-3)&lt;/div&gt;
+  &lt;div class=&quot;item&quot;&gt;5&lt;/div&gt;
+  &lt;div class=&quot;item&quot;&gt;6&lt;/div&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p> แสดงผลลัพธ์</p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;grid-template-areas&lt;/title&gt;
+&lt;style&gt;
+  .item1 { grid-area: header; }
+  .item2 { grid-area: menu; }
+  .item3 { grid-area: main; }
+  .item4 { grid-area: right; }
+  .item5 { grid-area: footer; }
+  .grid {
+    display: grid;</code></pre></div>
+<p>    grid-template-areas:</p>
+<p>      &#x27;header header header header header header&#x27;</p>
+<p>      &#x27;menu main main main right right&#x27;</p>
+<p>      &#x27;menu footer footer footer footer footer&#x27;;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>    gap: 8px;
+    background-color: #37474f;
+    padding: 8px;
+  }
+  .grid &gt; div {
+    background-color: #eceff1;
+    text-align: center;
+    padding: 20px 0;
+    font-size: 20px;
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;grid&quot;&gt;
+  &lt;div class=&quot;item1&quot;&gt;ส่วนหัว&lt;/div&gt;
+  &lt;div class=&quot;item2&quot;&gt;เมนู&lt;/div&gt;
+  &lt;div class=&quot;item3&quot;&gt;เนื้อหาหลัก&lt;/div&gt;
+  &lt;div class=&quot;item4&quot;&gt;ด้านขวา&lt;/div&gt;
+  &lt;div class=&quot;item5&quot;&gt;ส่วนท้าย&lt;/div&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Responsive Grid Layout&lt;/title&gt;
+&lt;style&gt;
+  * { box-sizing: border-box; }
+  body { font-family: sans-serif; margin: 0; padding: 8px; }
+  .header { grid-area: header; background: #cfd8dc; padding: 20px; text-align: center; font-size: 26px; }
+  .col1 { grid-area: col1; background: #ffe0b2; padding: 20px; }
+  .col2 { grid-area: col2; background: #c8e6c9; padding: 20px; }
+  .col3 { grid-area: col3; background: #bbdefb; padding: 20px; }
+  .footer { grid-area: footer; background: #cfd8dc; padding: 12px; text-align: center; }
+  .grid {
+    display: grid;</code></pre></div>
+<p>    grid-template-areas:</p>
+<p>      &#x27;header header header&#x27;</p>
+<p>      &#x27;col1 col2 col3&#x27;</p>
+<p>      &#x27;footer footer footer&#x27;;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>    gap: 8px;
+  }
+  @media (max-width: 600px) {
+    .grid {</code></pre></div>
+<p>      grid-template-areas:</p>
+<p>        &#x27;header&#x27;</p>
+<p>        &#x27;col1&#x27;</p>
+<p>        &#x27;col2&#x27;</p>
+<p>        &#x27;col3&#x27;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>        &#x27;footer&#x27;;
+    }
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;grid&quot;&gt;
+  &lt;div class=&quot;header&quot;&gt;ส่วนหัวเว็บไซต์&lt;/div&gt;
+  &lt;div class=&quot;col1&quot;&gt;คอลัมน์ 1&lt;/div&gt;
+  &lt;div class=&quot;col2&quot;&gt;คอลัมน์ 2&lt;/div&gt;
+  &lt;div class=&quot;col3&quot;&gt;คอลัมน์ 3&lt;/div&gt;
+  &lt;div class=&quot;footer&quot;&gt;ส่วนท้ายเว็บไซต์&lt;/div&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลข้อมูล</p>
+<p class="cap">ตารางที่ 4-2 คุณสมบัติของ CSS Grid</p>
+<div class="tw"><table><tr><th>คุณสมบัติ</th><th>คำอธิบาย</th></tr><tr><td>column-gap</td><td>ระยะห่างระหว่างคอลัมน์</td></tr><tr><td>gap</td><td>คุณสมบัติชวเลขสำหรับกำหนด row-gap และ column-gap พร้อมกัน</td></tr><tr><td>grid</td><td>คุณสมบัติชวเลขที่รวมการกำหนด grid-template-rows, grid-template-columns, grid-template-areas, grid-auto-rows, grid-auto-columns และ grid-auto-flow</td></tr><tr><td>grid-area</td><td>ตั้งชื่อให้รายการกริด หรือใช้เป็นคุณสมบัติชวเลขสำหรับกำหนดตำแหน่งเริ่มและสิ้นสุดของแถวและคอลัมน์</td></tr><tr><td>grid-auto-columns</td><td>ขนาดเริ่มต้นของคอลัมน์ที่กริดสร้างขึ้นโดยอัตโนมัติ</td></tr><tr><td>grid-auto-flow</td><td>วิธีที่กริดวางรายการที่ไม่ได้กำหนดตำแหน่งไว้ (เรียงตามแถวหรือตามคอลัมน์)</td></tr><tr><td>grid-auto-rows</td><td>ขนาดเริ่มต้นของแถวที่กริดสร้างขึ้นโดยอัตโนมัติ</td></tr><tr><td>grid-column</td><td>คุณสมบัติชวเลขสำหรับ grid-column-start และ grid-column-end</td></tr><tr><td>grid-column-end</td><td>ตำแหน่งที่รายการกริดสิ้นสุดในแนวคอลัมน์</td></tr><tr><td>grid-column-gap</td><td>ระยะห่างระหว่างคอลัมน์ (ชื่อเดิมของ column-gap)</td></tr><tr><td>grid-column-start</td><td>ตำแหน่งที่รายการกริดเริ่มต้นในแนวคอลัมน์</td></tr><tr><td>grid-gap</td><td>คุณสมบัติชวเลขสำหรับ grid-row-gap และ grid-column-gap (ชื่อเดิมของ gap)</td></tr><tr><td>grid-row</td><td>คุณสมบัติชวเลขสำหรับ grid-row-start และ grid-row-end</td></tr><tr><td>grid-row-end</td><td>ตำแหน่งที่รายการกริดสิ้นสุดในแนวแถว</td></tr><tr><td>grid-row-gap</td><td>ระยะห่างระหว่างแถว (ชื่อเดิมของ row-gap)</td></tr><tr><td>grid-row-start</td><td>ตำแหน่งที่รายการกริดเริ่มต้นในแนวแถว</td></tr><tr><td>grid-template</td><td>คุณสมบัติชวเลขสำหรับ grid-template-rows, grid-template-columns และ grid-template-areas</td></tr><tr><td>grid-template-areas</td><td>กำหนดผังของกริดโดยอ้างอิงชื่อพื้นที่ที่ตั้งไว้ด้วย grid-area</td></tr><tr><td>grid-template-columns</td><td>กำหนดจำนวนและความกว้างของคอลัมน์ในกริด</td></tr><tr><td>grid-template-rows</td><td>กำหนดจำนวนและความสูงของแถวในกริด</td></tr><tr><td>row-gap</td><td>ระยะห่างระหว่างแถว</td></tr></table></div>
+<h2 id="s19">4.10 CSS3</h2>
+<p>CSS3 แบ่งข้อกำหนดออกเป็นโมดูล (Module) ที่พัฒนาและปรับปรุงแยกกัน แต่ละโมดูลกำหนดคุณสมบัติและค่าสำหรับควบคุมการแสดงผลของ HTML ซึ่งใช้งานผ่านตัวเลือก (Selectors) ต่างจาก CSS2 ที่เป็นข้อกำหนดเดียวขนาดใหญ่ โดยเรื่องตัวเลือกก็ถูกแยกเป็นโมดูล CSS Selectors ด้วย</p>
+<p>CSS3 เพิ่มความสามารถใหม่หลายประการ ได้แก่</p>
+<p>       - Border Radius</p>
+<p>       - Border Images </p>
+<p>       - Box Shadow </p>
+<p>       - Multi-Column Layout </p>
+<p>       - Font-face </p>
+<p>       - Attribute Selectors</p>
+<p>       - Opacity and RGBA</p>
+<p><strong>โมดูลหลักของ CSS3 ได้แก่</strong></p>
+<p>    -Selectors</p>
+<p>    -Box Model</p>
+<p>    -Backgrounds and Borders</p>
+<p>    -Text Effects</p>
+<p>    -2D/3D Transformations</p>
+<p>    -Animations</p>
+<p>    -Multiple Column Layout</p>
+<p>    -User Interface</p>
+<ul><li><strong>CSS3 Borders</strong></li></ul>
+<p><strong>การใส่เงาให้กรอบภาพ</strong></p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;box-shadow&lt;/title&gt;
+&lt;style&gt;
+  div {
+    width: 300px;
+    height: 100px;
+    margin: 20px;
+    padding: 12px;
+    background-color: #fff59d;
+    box-shadow: 8px 8px 6px #9e9e9e;
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div&gt;กล่องข้อความที่มีเงา&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<ul><li><strong>CSS3 </strong><strong>Font</strong></li></ul>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;font-family&lt;/title&gt;
+&lt;style&gt;
+  .serif { font-family: Georgia, &quot;Times New Roman&quot;, serif; }
+  .sans  { font-family: Arial, Helvetica, sans-serif; }
+  .mono  { font-family: &quot;Courier New&quot;, monospace; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;ตัวอย่าง font-family&lt;/h1&gt;
+&lt;p class=&quot;serif&quot;&gt;This paragraph uses a serif font.&lt;/p&gt;
+&lt;p class=&quot;sans&quot;&gt;This paragraph uses a sans-serif font.&lt;/p&gt;
+&lt;p class=&quot;mono&quot;&gt;This paragraph uses a monospace font.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<ul><li><strong>CSS3 Font-face</strong></li></ul>
+<p>ในอดีตการใช้ฟอนต์บนเว็บไซต์มีข้อจำกัดทั้งด้านลิขสิทธิ์และการแสดงผล โดยเฉพาะฟอนต์ภาษาไทย ผู้พัฒนาจึงมักใช้ฟอนต์ในกลุ่ม Web Safe Fonts เช่น Tahoma ซึ่งมีให้เลือกน้อย หากต้องการใช้ฟอนต์อื่นต้องแปลงข้อความเป็นรูปภาพ ซึ่งมีข้อเสีย เช่น</p>
+<p>- เครื่องมือค้นหาและโปรแกรมอ่านหน้าจอไม่สามารถอ่านข้อความที่เป็นรูปภาพได้</p>
+<p>- ไฟล์ภาพทำให้หน้าเว็บมีขนาดใหญ่และโหลดช้าลง</p>
+<p>- ไม่สามารถคัดลอกข้อความได้</p>
+<p>- แก้ไขข้อความยาก ต้องสร้างภาพใหม่</p>
+<p>ข้อจำกัดเหล่านี้หมดไปด้วยกฎ @font-face ของ CSS3 ที่ช่วยให้นำฟอนต์ที่ต้องการมาใช้บนเว็บไซต์ได้ โดยข้อความยังคงเป็นข้อความทั่วไปทุกประการ</p>
+<p>การกำหนดฟอนต์ด้วย @font-face มีรูปแบบดังนี้</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>@font-face
+{font-family:Font Name;}     </code></pre></div>
+<p>กรณีต้องการใช้ฟอนต์ที่ผู้ใช้ทั่วไปอาจไม่มีในเครื่อง ต้องอัปโหลดไฟล์ฟอนต์ไว้บนเซิร์ฟเวอร์ แล้วกำหนดชื่อ font-family และตำแหน่งของไฟล์ฟอนต์ด้วย URL</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>@font-face
+{ font-family: Font Name;
+src: url(&#x27;ที่อยู่ URL ของฟอนต์ที่เราชอบ&#x27;) }
+  h1
+{font-family:Font name}</code></pre></div>
+<p>วิธีการใช้ @font-face</p>
+<p>ค้นหาและดาวน์โหลดฟอนต์ที่ต้องการจากอินเทอร์เน็ต โดยตรวจสอบสิทธิ์การใช้งานฟอนต์ก่อนเสมอ</p>
+<p>เช่น </p>
+<p>เมื่อดาวน์โหลดแล้วให้แตกไฟล์ จะได้ไฟล์ฟอนต์ในรูปแบบต่าง ๆ เช่น eot, svg, ttf, woff รวมทั้งไฟล์ประกอบ เช่น demo.html และ stylesheet.css จากนั้นอัปโหลดไปยังเซิร์ฟเวอร์เพื่อใช้งาน ปัจจุบันนิยมใช้รูปแบบ woff2 เป็นหลัก</p>
+<p>ปัจจุบันเบราว์เซอร์หลักทุกตัวรองรับ @font-face ผู้พัฒนาสามารถตรวจสอบรายละเอียดเวอร์ชันที่รองรับได้จากเว็บไซต์ Can I use</p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;@font-face&lt;/title&gt;
+&lt;style&gt;
+  @font-face {
+    font-family: DemoThai;
+    src: url(&quot;fonts/THSarabunNew.ttf&quot;);
+  }
+  h1, div {
+    font-family: DemoThai;
+    font-size: 32px;
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;กฎ @font-face&lt;/h1&gt;
+&lt;div&gt;ข้อความนี้ใช้ฟอนต์ที่โหลดจากไฟล์ในโฟลเดอร์ fonts ของเว็บไซต์&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<h2 id="s20">4.11 CSS Flexbox</h2>
+<p>ใน CSS การกำหนดขนาดและตำแหน่งของกล่องใช้โหมดการจัดวาง (Layout Mode) ซึ่งมีดังนี้</p>
+<ul><li><strong>block - จัดวางเนื้อหาแบบบล็อก</strong></li><li><strong>inline - จัดวางเนื้อหาต่อเนื่องในบรรทัดเหมือนข้อความ</strong></li><li><strong>table - จัดวางเนื้อหาแบบตาราง</strong></li><li><strong>position - กำหนดตำแหน่งขององค์ประกอบได้อย่างอิสระ</strong></li></ul>
+<p>เมื่อเว็บสมัยใหม่มีความซับซ้อนมากขึ้น โหมดการจัดวางแบบเดิมทำให้เขียนโค้ดไม่สะดวก CSS3 จึงเพิ่มโหมดใหม่ที่เรียกว่า Flex Layout หรือ Flexible Box (Flexbox) ซึ่งช่วยให้กล่องมีความยืดหยุ่นมากขึ้น</p>
+<p>Flex Layout คล้ายกับ block layout แต่ไม่ใช้คุณสมบัติบางตัว เช่น float และมีคุณสมบัติใหม่เพิ่มขึ้น ความสามารถหลักของ Flex Layout ได้แก่</p>
+<ul><li><strong>ทิศทาง (Orientation): กำหนดแนวการเรียงกล่องได้ ทั้งบนลงล่าง ล่างขึ้นบน ซ้ายไปขวา และขวาไปซ้าย</strong></li><li><strong>ขนาด (Sizing): กำหนดให้ขนาดกล่องปรับตามพื้นที่ว่างที่เหลือได้โดยอัตโนมัติ</strong></li><li><strong>ลำดับ (Ordering): เลือกลำดับการแสดงผลของกล่องได้ และลำดับอาจแตกต่างกันตามขนาดของวิวพอร์ต (Viewport)</strong></li><li><strong>การจัดแนว (Alignment): กำหนดการจัดแนวกล่องได้ ทั้งชิดซ้าย กึ่งกลาง และชิดขวา ทั้งแนวนอนและแนวตั้ง</strong></li></ul>
+<p><strong>การ</strong><strong>ใช้งาน</strong><strong> Flexbox</strong></p>
+<p>การใช้ความสามารถของ Flexbox ต้องสร้าง Flex Container ก่อน โดยปกติการกำหนดโหมดการจัดวาง (Layout Mode) ให้กับองค์ประกอบใดจะกำหนดคุณสมบัติ display ไว้ที่องค์ประกอบนั้น แต่สำหรับ Flexbox ต้องกำหนดคุณสมบัติ display ไว้ที่องค์ประกอบที่เป็นคอนเทนเนอร์แทน ดังตัวอย่างโค้ดต่อไปนี้</p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Flex Container&lt;/title&gt;
+&lt;style&gt;
+  .flex-container {
+    display: flex;
+    background-color: #455a64;
+  }
+  .flex-container &gt; div {
+    background-color: #eceff1;
+    margin: 8px;
+    padding: 16px;
+    font-size: 26px;
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h2&gt;สร้าง Flex Container&lt;/h2&gt;
+&lt;div class=&quot;flex-container&quot;&gt;
+  &lt;div&gt;1&lt;/div&gt;
+  &lt;div&gt;2&lt;/div&gt;
+  &lt;div&gt;3&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;รายการภายในคอนเทนเนอร์เรียงต่อกันในแนวนอนโดยอัตโนมัติ&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;flex-direction: column&lt;/title&gt;
+&lt;style&gt;
+  .flex-container {
+    display: flex;
+    flex-direction: column;
+    background-color: #455a64;
+  }
+
+  .flex-container &gt; div {
+    background-color: #eceff1;
+    width: 90px;
+    margin: 8px;
+    text-align: center;
+    line-height: 60px;
+    font-size: 26px;
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h2&gt;flex-direction: column&lt;/h2&gt;
+&lt;div class=&quot;flex-container&quot;&gt;
+  &lt;div&gt;1&lt;/div&gt;
+  &lt;div&gt;2&lt;/div&gt;
+  &lt;div&gt;3&lt;/div&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;flex-direction: column-reverse&lt;/title&gt;
+&lt;style&gt;
+  .flex-container {
+    display: flex;
+    flex-direction: column-reverse;
+    background-color: #455a64;
+  }
+
+  .flex-container &gt; div {
+    background-color: #eceff1;
+    width: 90px;
+    margin: 8px;
+    text-align: center;
+    line-height: 60px;
+    font-size: 26px;
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h2&gt;flex-direction: column-reverse&lt;/h2&gt;
+&lt;div class=&quot;flex-container&quot;&gt;
+  &lt;div&gt;1&lt;/div&gt;
+  &lt;div&gt;2&lt;/div&gt;
+  &lt;div&gt;3&lt;/div&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;flex-direction: row&lt;/title&gt;
+&lt;style&gt;
+  .flex-container {
+    display: flex;
+    flex-direction: row;
+    background-color: #455a64;
+  }
+
+  .flex-container &gt; div {
+    background-color: #eceff1;
+    width: 90px;
+    margin: 8px;
+    text-align: center;
+    line-height: 60px;
+    font-size: 26px;
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h2&gt;flex-direction: row&lt;/h2&gt;
+&lt;div class=&quot;flex-container&quot;&gt;
+  &lt;div&gt;1&lt;/div&gt;
+  &lt;div&gt;2&lt;/div&gt;
+  &lt;div&gt;3&lt;/div&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<p><strong>flex-wrap</strong></p>
+<p><strong>ตั</strong>วอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;flex-wrap&lt;/title&gt;
+&lt;style&gt;
+  #box {
+    width: 220px;
+    height: 200px;
+    border: 1px solid #90a4ae;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  #box div {
+    width: 70px;
+    height: 70px;
+    text-align: center;
+    line-height: 70px;
+    font-size: 24px;
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h2&gt;flex-wrap: wrap&lt;/h2&gt;
+&lt;div id=&quot;box&quot;&gt;
+  &lt;div style=&quot;background-color: #ef9a9a;&quot;&gt;A&lt;/div&gt;
+  &lt;div style=&quot;background-color: #ffe082;&quot;&gt;B&lt;/div&gt;
+  &lt;div style=&quot;background-color: #a5d6a7;&quot;&gt;C&lt;/div&gt;
+  &lt;div style=&quot;background-color: #90caf9;&quot;&gt;D&lt;/div&gt;
+  &lt;div style=&quot;background-color: #ce93d8;&quot;&gt;E&lt;/div&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<ul><li><strong>Flexbox Layout</strong></li></ul>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Nested Flexbox Layout&lt;/title&gt;
+&lt;style&gt;
+  * { box-sizing: border-box; }
+  body { display: flex; min-height: 100vh; flex-direction: row; margin: 0; font-family: sans-serif; }
+  nav { background: #c5e1a5; flex: 1; padding: 12px; }
+  .right { display: flex; flex-direction: column; flex: 5; }
+  header { background: #ffe082; padding: 16px; }
+  .inner { display: flex; flex-direction: row; flex: 1; }
+  article { background: #e1f5fe; flex: 3; padding: 12px; }
+  aside { background: #f8bbd0; flex: 1; padding: 12px; }
+  footer { background: #cfd8dc; padding: 12px; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;nav&gt;เมนู&lt;/nav&gt;
+&lt;div class=&quot;right&quot;&gt;
+  &lt;header&gt;ส่วนหัว&lt;/header&gt;
+  &lt;div class=&quot;inner&quot;&gt;
+    &lt;article&gt;บทความ&lt;/article&gt;
+    &lt;aside&gt;ข้างบทความ&lt;/aside&gt;
+  &lt;/div&gt;
+  &lt;footer&gt;ส่วนท้าย&lt;/footer&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Flexbox Page Layout with order&lt;/title&gt;
+&lt;style&gt;
+  * { box-sizing: border-box; }
+  body { display: flex; min-height: 100vh; flex-direction: column; margin: 0; font-family: sans-serif; }
+  header, footer { background: #cfd8dc; padding: 14px; }
+  .main { display: flex; flex: 1; }
+  .main &gt; article { flex: 1; background: #e1f5fe; padding: 12px; }
+  .main &gt; nav, .main &gt; aside { flex: 0 0 20vw; background: #fff9c4; padding: 12px; }
+  .main &gt; nav { order: -1; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;header&gt;ส่วนหัว&lt;/header&gt;
+&lt;div class=&quot;main&quot;&gt;
+  &lt;article&gt;บทความ (อยู่ตรงกลาง)&lt;/article&gt;
+  &lt;nav&gt;เมนู (ย้ายไปไว้ซ้ายด้วย order: -1)&lt;/nav&gt;
+  &lt;aside&gt;ข้างบทความ&lt;/aside&gt;
+&lt;/div&gt;
+&lt;footer&gt;ส่วนท้าย&lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Flexbox Form&lt;/title&gt;
+&lt;style&gt;
+  .form { display: flex; flex-direction: column; background: #f3e5f5; border-radius: 4px; padding: 14px; font-family: sans-serif; }
+  .row { display: flex; justify-content: center; }
+  .col { display: flex; flex-direction: column; padding: 10px; }
+  .group { display: flex; margin-bottom: 8px; }
+  .group label { width: 90px; padding-top: 4px; }
+  .actions { display: flex; justify-content: center; gap: 10px; padding: 8px; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;form class=&quot;form&quot;&gt;
+  &lt;div class=&quot;row&quot;&gt;
+    &lt;div class=&quot;col&quot;&gt;
+      &lt;div class=&quot;group&quot;&gt;&lt;label&gt;ชื่อ&lt;/label&gt;&lt;input type=&quot;text&quot;&gt;&lt;/div&gt;
+      &lt;div class=&quot;group&quot;&gt;&lt;label&gt;นามสกุล&lt;/label&gt;&lt;input type=&quot;text&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;col&quot;&gt;
+      &lt;div class=&quot;group&quot;&gt;&lt;label&gt;อีเมล&lt;/label&gt;&lt;input type=&quot;text&quot;&gt;&lt;/div&gt;
+      &lt;div class=&quot;group&quot;&gt;&lt;label&gt;โทรศัพท์&lt;/label&gt;&lt;input type=&quot;text&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;actions&quot;&gt;&lt;button type=&quot;button&quot;&gt;ส่งข้อมูล&lt;/button&gt;&lt;button type=&quot;reset&quot;&gt;ล้างค่า&lt;/button&gt;&lt;/div&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Flexbox Navigation Bar&lt;/title&gt;
+&lt;style&gt;
+  .nav { display: flex; background: #00695c; color: white; border-radius: 4px; padding: 14px; font-family: sans-serif; }
+  .nav ul { list-style-type: none; padding: 0; margin: 0; display: flex; flex: 3; }
+  .nav li { margin-right: 14px; }
+  .nav input { flex: 1; min-width: 0; }
+  .nav a { color: white; text-decoration: none; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;nav class=&quot;nav&quot;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&quot;#&quot;&gt;หน้าแรก&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;#&quot;&gt;ข่าวสาร&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;#&quot;&gt;กิจกรรม&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;#&quot;&gt;ติดต่อ&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;input type=&quot;search&quot; placeholder=&quot;ค้นหา&quot;&gt;
+&lt;/nav&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<h3 id="s21">ลักษณะการแสดงผลของ Flexbox Container เมื่อย่อหน้าจอให้แคบลง</h3>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Flexbox Cards&lt;/title&gt;
+&lt;style&gt;
+  .cards { display: flex; flex-wrap: wrap; align-items: stretch; font-family: sans-serif; }
+  .card {
+    flex: 0 0 200px;
+    margin: 10px;
+    border: 1px solid #b0bec5;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.25);
+  }
+  .card .thumb { height: 80px; }
+  .card .text { padding: 0 14px 14px; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;cards&quot;&gt;
+  &lt;div class=&quot;card&quot;&gt;
+    &lt;div class=&quot;thumb&quot; style=&quot;background-color: #ef9a9a;&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;text&quot;&gt;&lt;h3&gt;การ์ดที่ 1&lt;/h3&gt;&lt;p&gt;ข้อความอธิบายสั้น ๆ&lt;/p&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;card&quot;&gt;
+    &lt;div class=&quot;thumb&quot; style=&quot;background-color: #a5d6a7;&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;text&quot;&gt;&lt;h3&gt;การ์ดที่ 2&lt;/h3&gt;&lt;p&gt;ข้อความอธิบายยาวกว่าเล็กน้อยเพื่อให้การ์ดสูงต่างกัน&lt;/p&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;card&quot;&gt;
+    &lt;div class=&quot;thumb&quot; style=&quot;background-color: #90caf9;&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;text&quot;&gt;&lt;h3&gt;การ์ดที่ 3&lt;/h3&gt;&lt;p&gt;ข้อความอธิบาย&lt;/p&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;card&quot;&gt;
+    &lt;div class=&quot;thumb&quot; style=&quot;background-color: #ce93d8;&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;text&quot;&gt;&lt;h3&gt;การ์ดที่ 4&lt;/h3&gt;&lt;p&gt;ข้อความอธิบาย&lt;/p&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<p>ตารางต่อไปนี้แสดงคุณสมบัติของ CSS Flexbox Container ทั้งหมด:</p>
+<p class="cap">ตารางที่ 4-3 คุณสมบัติของ CSS Flexbox Container</p>
+<div class="tw"><table><tr><th>คุณสมบัติ</th><th>คำอธิบาย</th></tr><tr><td>align-content</td><td>จัดแนวของบรรทัด (flex lines) ในแกนขวางเมื่อรายการถูกตัดขึ้นบรรทัดใหม่ด้วย flex-wrap</td></tr><tr><td>align-items</td><td>จัดแนวรายการในแกนขวาง (cross axis) เช่น ชิดบน กึ่งกลาง หรือยืดเต็มความสูง</td></tr><tr><td>display</td><td>กำหนดให้องค์ประกอบเป็นกล่องแบบ flex (ค่า flex หรือ inline-flex)</td></tr><tr><td>flex-direction</td><td>กำหนดทิศทางของแกนหลักที่ใช้เรียงรายการ (แนวแถวหรือแนวคอลัมน์ รวมทั้งแบบย้อนกลับ)</td></tr><tr><td>flex-flow</td><td>คุณสมบัติชวเลขสำหรับ flex-direction และ flex-wrap</td></tr><tr><td>flex-wrap</td><td>กำหนดว่ารายการจะถูกตัดขึ้นบรรทัดใหม่หรือไม่เมื่อพื้นที่ในบรรทัดไม่พอ</td></tr><tr><td>justify-content</td><td>จัดแนวรายการในแกนหลัก (main axis) เมื่อรายการใช้พื้นที่ไม่เต็ม</td></tr></table></div>
+<h2 id="s22">4.12 ตัวแปรใน CSS และหน่วยวัดสมัยใหม่ (CSS Custom Properties &amp; Modern Units) (Verou, 2023)</h2>
+<p>CSS Custom Properties หรือที่นิยมเรียกว่า &quot;ตัวแปรใน CSS (CSS Variables)&quot; เป็นคุณสมบัติสำคัญที่ช่วยให้นักพัฒนา สามารถประกาศค่าข้อมูล เช่น ค่าสี ขนาดแบบอักษร หรือระยะห่าง ไว้ที่จุดเดียว แล้วนำไปอ้างอิงใช้ซ้ำได้ทั่วทั้งสไตล์ชีต ช่วยเพิ่มความเป็นระเบียบและทำให้การสลับธีมสี (เช่น Dark Mode / Light Mode) ทำได้อย่างมีประสิทธิภาพสูง</p>
+<h3 id="s23">4.12.1 การประกาศและเรียกใช้งานตัวแปรใน CSS</h3>
+<p>การประกาศตัวแปรส่วนกลางมักประกาศไว้ภายใน Pseudo-class :root เพื่อให้สามารถเรียกใช้งานได้จากทุกองค์ประกอบในหน้าเว็บ:<br>:root {<br>  --primary-color: #0d6efd;      /* สีหลักของแบรนด์ */<br>  --secondary-color: #6c757d;    /* สีรอง */<br>  --base-font-size: 16px;        /* ขนาดฟอนต์พื้นฐาน */<br>  --border-radius: 8px;          /* ความโค้งมนของขอบ */<br>}<br><br>เมื่อต้องการนำตัวแปรไปใช้งาน จะใช้ฟังก์ชัน var() เช่น:<br>button.btn-primary {<br>  background-color: var(--primary-color);<br>  border-radius: var(--border-radius);<br>  color: #ffffff;<br>}</p>
+<h3 id="s24">4.12.2 หน่วยวัดสัมพัทธ์สมัยใหม่ (Modern CSS Units)</h3>
+<p>เพื่อรองรับการแสดงผลบนอุปกรณ์ที่มีความละเอียดแตกต่างกัน นักพัฒนาควรเลือกใช้หน่วยวัดแบบสัมพัทธ์ (Relative Units) แทนหน่วยคงที่ (px):<br>• rem (Root EM): อิงตามขนาดตัวอักษรของแท็ก &lt;html&gt; (ค่าเริ่มต้นมาตรฐานคือ 1rem = 16px) เหมาะสำหรับการกำหนดขนาดตัวอักษรและระยะ Margin/Padding<br>• em: อิงตามขนาดตัวอักษรของ Element แม่ (Parent Element)<br>• vw (Viewport Width) และ vh (Viewport Height): เทียบเป็นร้อยละของความกว้างและความสูงของหน้าจอเบราว์เซอร์ (100vh = เต็มความสูงหน้าจอ)<br>• ฟังก์ชันคำนวณขั้นสูง: clamp(min, preferred, max) ช่วยควบคุมขนาดตัวอักษรหรือเลย์เอาต์ให้ยืดหยุ่นระหว่างค่าต่ำสุดและสูงสุดโดยอัตโนมัติ</p>
+<h2 id="s25">4.13 การออกแบบตอบสนองด้วยมีเดียคิวรี (Responsive Web Design with Media Queries) (Keith, 2021; Coyier, 2022)</h2>
+<p>มีเดียคิวรี (Media Queries) เป็นหัวใจสำคัญของ Responsive Web Design โดยช่วยให้ CSS สามารถตรวจสอบขนาดหน้าจอ ความละเอียด และทิศทางการแสดงผลของอุปกรณ์ จากนั้นจึงเลือกใช้ชุดคำสั่งสไตล์ที่เหมาะสมกับอุปกรณ์นั้น ๆ โดยอัตโนมัติ<br><br>ตัวอย่างการเขียน Media Queries ตามแนวคิด Mobile-First:<br>/* สไตล์เริ่มต้นสำหรับหน้าจอขนาดเล็ก (สมาร์ตโฟน) */<br>.container {<br>  width: 100%;<br>  display: flex;<br>  flex-direction: column;<br>}<br><br>/* เมื่อขนาดหน้าจอมีขนาดตั้งแต่ 768px ขึ้นไป (แท็บเล็ตและเดสก์ท็อป) */<br>@media (min-width: 768px) {<br>  .container {<br>    flex-direction: row;        /* สลับการจัดวางเป็นแนวนอน */<br>    justify-content: space-between;<br>  }<br>}</p>
+<h2 id="s26">4.14 เทคนิคการใช้ AI ช่วยกำหนดสไตล์และจัดเลย์เอาต์ CSS (Verou, 2023; Coyier, 2022) (AI-Assisted CSS Development)</h2>
+<p>การจัดการเลย์เอาต์และคุณสมบัติทางด้านภาพของ CSS มักมีความซับซ้อน โดยเฉพาะการจัดวางแบบ Flexbox, Grid และการสร้าง Animation ที่สวยงาม เครื่องมือผู้ช่วย AI (เช่น GitHub Copilot, Cursor, ChatGPT) จึงเข้ามามีบทบาทอย่างยิ่งในการช่วยร่างสไตล์และแก้ปัญหา</p>
+<h3 id="s27">4.14.1 การสร้างเลย์เอาต์และการจัดสไตล์ด้วยคำสั่งภาษาธรรมชาติ</h3>
+<p>นักพัฒนาสามารถบรรยายการจัดวางที่ต้องการเพื่อให้ AI สังเคราะห์โค้ด CSS ที่กระชับและถูกต้องตามมาตรฐาน เช่น:<br>Prompt: &quot;ช่วยเขียน CSS Flexbox เพื่อจัดให้การ์ดสินค้า 3 ใบเรียงตัวแนวนอนและอยู่กึ่งกลางหน้าจอ โดยเมื่อดูบนหน้าจอมือถือ (&lt;768px) ให้เรียงตัวแนวตั้ง และใส่เงาแบบนุ่มนวล (Soft Box-Shadow)&quot;<br>AI จะสร้างโค้ดที่มีทั้งการตั้งค่า display: flex, justify-content: center, gap, และ @media ให้เสร็จสิ้นทันที</p>
+<h3 id="s28">4.14.2 การใช้ AI ค้นหาและแก้ไขปัญหาเลย์เอาต์แตก (CSS Debugging)</h3>
+<p>• การตรวจสอบปัญหา Overflow: เมื่อหน้าเว็บเกิดแถบเลื่อนแนวนอน (Horizontal Scroll) โดยไม่พึงประสงค์ สามารถส่งโค้ด HTML/CSS ให้ AI วิเคราะห์ว่าเกิดจาก Element ใดที่มีความกว้างเกินขนาดหน้าจอ<br>• การวิเคราะห์ลำดับความสำคัญ (CSS Specificity Conflicts): ช่วยวิเคราะห์หาสาเหตุที่สไตล์ที่เขียนไม่แสดงผลอันเนื่องมาจากความสำคัญของตัวเลือก (ID vs Class vs Inline) ทับซ้อนกัน<br>• การแปลงโค้ดแบบดั้งเดิม (float) สู่ Flexbox/Grid: ให้ AI ปรับปรุงโค้ดเลย์เอาต์ยุคเก่าให้กลายเป็นมาตรฐานสมัยใหม่ที่สะอาดและยืดหยุ่นขึ้น</p>
+<h3 id="s29">4.14.3 ข้อควรระวังในการใช้ AI พัฒนา CSS</h3>
+<p>• หลีกเลี่ยงการใช้ !important พร่ำเพรื่อ: AI มักแก้ปัญหาความสำคัญของสไตล์ด้วยการเติม !important ซึ่งเป็นแนวทางปฏิบัติที่ไม่ดี (Bad Practice) ทำให้อนาคตแก้ไขได้ยาก นักพัฒนาต้องปรับที่โครงสร้างตัวเลือกให้เหมาะสม<br>• การทดสอบข้ามเบราว์เซอร์ (Cross-Browser Testing): คุณสมบัติ CSS ใหม่ ๆ บางรายการอาจยังไม่รองรับในเบราว์เซอร์รุ่นเก่า ต้องตรวจสอบตารางความเข้ากันได้ (Can I use?) เสมอ</p>
+<h3 id="s30">4.14.4 กรอบคำสั่ง AI สำหรับการดีบักปัญหาเลย์เอาต์ CSS (Prompt for CSS Debugging)</h3>
+<p><em>&quot;Role: Senior CSS Architect. / Task: Analyze the CSS rules causing horizontal overflow (horizontal scrollbar appearing on mobile screens &lt; 576px). / Constraints: Identify elements exceeding 100vw, provide fix using box-sizing: border-box, and enforce modern CSS clamp() for responsive typography.&quot;</em></p>
+<h3 id="s31">4.14.5 ตัวอย่างโค้ด Responsive Card Grid ด้วย CSS Grid และตัวแปร CSS</h3>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>:root {
+  --font-base: &#x27;TH Sarabun New&#x27;, sans-serif;
+  --bg-color: #f8fafc;
+  --card-bg: #ffffff;
+  --text-primary: #1e293b;
+  --primary-accent: #2563eb;
+  --border-color: #e2e8f0;
+}
+
+[data-theme=&quot;dark&quot;] {
+  --bg-color: #0f172a;
+  --card-bg: #1e293b;
+  --text-primary: #f8fafc;
+  --primary-accent: #38bdf8;
+  --border-color: #334155;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-base); font-size: 16px; background-color: var(--bg-color); color: var(--text-primary); }
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}</code></pre></div>
+<h2 id="s32">สรุป</h2>
+<p>ภาษา CSS เป็นเครื่องมือหลักในการตกแต่งและจัดการแสดงผลของหน้าเว็บเพจ โดยสามารถประยุกต์ใช้งานได้ 3 รูปแบบ ได้แก่ Inline Styles, Internal Style Sheet และ External Style Sheet การเข้าใจตัวเลือก (Selectors) และโมเดลกล่อง (Box Model: Content, Padding, Border, Margin) เป็นพื้นฐานสำคัญที่สุดในการควบคุมพื้นที่ การจัดวางโครงสร้างเว็บไซต์ยุคใหม่ได้ก้าวหน้าจากระบบ Float สู่มาตรฐาน CSS Flexbox สำหรับการจัดวาง 1 มิติ และ CSS Grid Module สำหรับการจัดวาง 2 มิติที่มีความซับซ้อนสูง นอกจากนี้ การประยุกต์ใช้ตัวแปรใน CSS (CSS Variables) หน่วยวัดสัมพัทธ์ (rem, vh, vw) และมีเดียคิวรี (Media Queries) ช่วยให้เว็บไซต์สามารถตอบสนองต่อทุกอุปกรณ์ (Responsive Web Design) ได้อย่างสมบูรณ์แบบ การผสานการทำงานร่วมกับผู้ช่วย AI จะช่วยให้นักพัฒนาเขียนสไตล์ชีตได้อย่างรวดเร็ว แก้ปัญหาการจัดวางได้อย่างแม่นยำ และคงไว้ซึ่งโค้ดที่มีประสิทธิภาพสูงตามมาตรฐานสากล</p>
+<h2 id="s33">แบบฝึกหัด</h2>
+<p><strong>คำชี้แจง: จงทำแบบฝึกหัดต่อไปนี้เพื่อทบทวนความรู้ความเข้าใจ</strong></p>
+<p><strong>ตอนที่ 1: แบบฝึกหัดเชิงทฤษฎีและการวิเคราะห์ (Theoretical &amp; Analytical Exercises)</strong></p>
+<p>1. จงเปรียบเทียบข้อดี ข้อจำกัด และความเหมาะสมในการใช้งานระหว่าง Inline Styles, Internal Style Sheet และ External Style Sheet</p>
+<p>2. จงอธิบายโครงสร้างและลำดับชั้นของ CSS Box Model (ประกอบด้วย Margin, Border, Padding, Content) และอธิบายว่าคุณสมบัติ box-sizing: border-box ช่วยแก้ปัญหาการคำนวณขนาดกล่องอย่างไร</p>
+<p>3. จงเปรียบเทียบความแตกต่างระหว่าง CSS Flexbox และ CSS Grid Layout ว่ามีจุดเด่นในการจัดเลย์เอาต์แตกต่างกันอย่างไร และควรเลือกใช้ในสถานการณ์ใด</p>
+<p>4. การประกาศและใช้งานตัวแปรใน CSS (CSS Custom Properties เช่น :root { --primary-color: #...; }) มีประโยชน์อย่างไรต่อการพัฒนาเว็บไซต์ขนาดใหญ่และการทำ Dark Mode</p>
+<p>5. จงอธิบายหลักการทำงานของ Media Queries ในการออกแบบเว็บไซต์ที่ตอบสนองต่อทุกอุปกรณ์ (Responsive Web Design) พร้อมเขียนตัวอย่างโค้ดที่แสดงการเปลี่ยนการจัดวางเมื่อขนาดหน้าจอเปลี่ยนแปลง</p>
+<p>6. ปัญญาประดิษฐ์ (AI Coding Assistants) สามารถช่วยเหลือนักพัฒนาในการเขียนและแก้ไขปัญหา (Debug) ทางด้าน CSS ได้อย่างไรบ้าง พร้อมยกตัวอย่างข้อควรระวังในการนำโค้ด CSS จาก AI มาใช้งาน</p>
+<p><strong>ตอนที่ 2: แบบฝึกหัดประยุกต์และการเขียนโปรแกรม (Applied &amp; Programming Exercises)</strong></p>
+<p>1.ให้นักศึกษาเขียนโปรแกรมสร้าง CSS แบบ Inline Styles ให้ได้ผลลัพธ์ดังภาพ</p>
+<p>2.ให้นักศึกษาเขียนโปรแกรมสร้าง CSS แบบ  Internal Styles ให้ได้ผลลัพธ์ดังภาพ</p>
+<p>3.ให้นักศึกษาเขียนโปรแกรมสร้าง CSS แบบ  External Styles ให้ได้ผลลัพธ์ดังภาพ    </p>
+<p>4.ให้นักศึกษาเขียนโปรแกรมสร้าง CSS Layout ให้ได้ผลลัพธ์ดังภาพ</p>
+<p>5.ให้นักศึกษาเขียนโปรแกรมสร้าง My Web Site ของตัวเองโดยมีข้อกำหนดดังนี้</p>
+<ul><li>มีหน้า Layout ที่สวยงาม และเป็น Web Responsive</li><li>มีอย่างน้อย 3 Links</li><li>มีข้อมูลที่เป็นทั้งข้อความ ภาพ และสื่อมัลติมีเดีย</li></ul>
+<h2 id="s34">เอกสารอ้างอิง</h2>
+<p>จีราวุธ วารินทร์. (2564). พัฒนาเว็บไซต์สมัยใหม่ด้วย HTML5 JavaScript + CSS3 ฉบับสมบูรณ์. กรุงเทพฯ: รีไวว่า.</p>
+<p>Coyier, C. (2022). The Complete Guide to CSS Flexbox &amp; CSS Grid. CSS-Tricks &amp; DigitalOcean. Retrieved from <a href="https://css-tricks.com/" target="_blank" rel="noopener noreferrer">https://css-tricks.com/</a></p>
+<p>Keith, J. (2021). Resilient Web Design: Responsive and Modern CSS Architectures. A Book Apart.</p>
+<p>Mozilla Developer Network [MDN]. (2024). CSS Cascading and Inheritance Level 5 and Grid Layout. Retrieved from <a href="https://developer.mozilla.org/en-US/docs/Web/CSS" target="_blank" rel="noopener noreferrer">https://developer.mozilla.org/en-US/docs/Web/CSS</a></p>
+<p>Verou, L. (2023). CSS Secrets: Better Solutions to Everyday Web Design Problems (2nd ed.). Sebastopol, CA: O&#x27;Reilly Media.</p>
+<label class="donebox"><input type="checkbox" id="done"><span>ทำเครื่องหมายว่าอ่านบทนี้แล้ว</span></label>
+<div class="pager"><a class="pn" href="ch3.html"><small>บทก่อนหน้า</small><b>บทที่ 3 พื้นฐานภาษา HTML</b></a><a class="pn next" href="ch5.html"><small>บทถัดไป</small><b>บทที่ 5 พื้นฐาน Bootstrap</b></a></div>
+</article></div>
+</main>
+<footer class="foot"><div class="wrap fgrid">
+<div><a class="brand" href="../index.html"><span class="logo" aria-hidden="true">&lt;/&gt;</span><span class="bt"><b>การโปรแกรมบนเว็บ</b><small>Web Programming</small></span></a>
+<p class="small">สื่อเสริมการเรียนรู้ ใช้ประกอบเอกสารประกอบการสอน ไม่มีระบบสมาชิกและไม่เก็บข้อมูลส่วนบุคคล ส่งงานผ่าน Google Classroom</p></div>
+<div><p class="fh">เรียนรู้</p><a href="../chapters.html">บทเรียน 10 บท</a><a href="../worksheets.html">ใบงานประจำบท</a><a href="../start.html">เริ่มต้นใช้งาน</a></div>
+<div><p class="fh">รายวิชา</p><a href="../about.html">เกี่ยวกับรายวิชา</a><span>ผู้สอน: ดร.สุรเชษฐ์ สังขพันธ์</span><span>พ.ศ. 2569</span></div>
+</div></footer>
+<script src="../assets/app.js"></script>
+</body>
+</html>

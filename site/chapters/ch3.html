@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="โครงสร้างหน้าเว็บ แท็ก ตาราง ฟอร์ม และ Semantic HTML">
+<meta name="theme-color" content="#4338ca">
+<title>บทที่ 3 พื้นฐานภาษา HTML · การโปรแกรมบนเว็บ</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%234338ca'/%3E%3Cpath d='M26 20 14 32l12 12M38 20l12 12-12 12' fill='none' stroke='%23fff' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preload" href="../assets/fonts/Sarabun-400-thai.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css">
+<script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+
+</head>
+<body class="ch-page">
+<a class="skip" href="#main">ข้ามไปยังเนื้อหา</a>
+<header class="top"><div class="wrap nav">
+<a class="brand" href="../index.html" aria-label="หน้าแรก การโปรแกรมบนเว็บ"><span class="logo" aria-hidden="true">&lt;/&gt;</span><span class="bt"><b>การโปรแกรมบนเว็บ</b><small>07-034-210</small></span></a>
+<button id="menuBtn" class="iconbtn menu-btn" type="button" aria-expanded="false" aria-controls="menu" aria-label="เปิดเมนู"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v2H3V6Zm0 5h18v2H3v-2Zm0 5h18v2H3v-2Z"/></svg></button>
+<nav id="menu" aria-label="เมนูหลัก">
+<a href="../chapters.html" aria-current="page">บทเรียน</a><a href="../worksheets.html">ใบงาน</a><a href="../start.html">เริ่มต้นใช้งาน</a><a href="../about.html">เกี่ยวกับรายวิชา</a>
+</nav>
+<button id="theme" class="iconbtn" type="button" aria-label="สลับโหมดมืดและสว่าง"><span class="i-moon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5Z"/></svg></span><span class="i-sun"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg></span></button>
+</div><div id="bar" class="bar" aria-hidden="true"></div></header>
+<main id="main">
+<div class="chead s2"><div class="wrap">
+<nav class="crumb" aria-label="เส้นทาง"><a href="../index.html">หน้าแรก</a><span>/</span><a href="../chapters.html">บทเรียน</a><span>/</span><span aria-current="page">บทที่ 3</span></nav>
+<div class="chrow"><span class="badge b-s2 big" aria-hidden="true">HTML</span><div><p class="kicker">บทที่ 3 · สร้างหน้าเว็บ</p><h1>พื้นฐานภาษา HTML</h1><p class="cdesc">โครงสร้างหน้าเว็บ แท็ก ตาราง ฟอร์ม และ Semantic HTML</p></div></div>
+<ul class="meta"><li><b>31</b> นาที อ่าน</li><li><b>18</b> หัวข้อหลัก</li><li><b>9</b> ตัวอย่างลองรันได้</li></ul>
+</div></div>
+<div class="wrap layout">
+<aside class="side" aria-label="สารบัญบทนี้"><details class="tocbox" open><summary>สารบัญบทนี้</summary><ol><li><a href="#s1">บทนำ</a></li><li><a href="#s2">เนื้อหา</a></li><li><a href="#s3">3.1 การจัดเตรียมโปรแกรมแก้ไขโค้ด (Visual Studio Code) และส่วนขยายอำนวยความสะดวก</a></li><li><a href="#s4">3.2 เอลิเมนต์(Element) และแท็ก(Tag)</a></li><li><a href="#s5">3.3 รูปแบบมาตรฐานของ HTML</a></li><li><a href="#s6">3.4 รูปแบบมาตรฐานของ HTML5</a></li><li><a href="#s7">3.5 เริ่มต้นการเขียนโปรแกรมด้วยภาษา HTML ด้วย Tag &lt;h1&gt;</a></li><li><a href="#s8">3.6 แท็กเดี่ยว</a></li><li><a href="#s9">3.7 แท็กคู่</a></li><li><a href="#s10">3.8 แท็กตาราง (Table Tags)</a></li><li><a href="#s11">3.9 แท็กแบบฟอร์ม</a></li><li><a href="#s12">3.10 แท็กมัลติมีเดียและแท็กใหม่ใน HTML5 (Multimedia &amp; Graphic Elements)</a></li><li><a href="#s13">3.11 แท็กโครงสร้างเชิงความหมายใน HTML5 (Semantic Elements)</a></li><li><a href="#s14">3.12 การตรวจสอบความถูกต้องของฟอร์มด้วย HTML5 (Native Form Validation)</a></li><li><a href="#s15">3.13 เทคนิคการใช้ AI ช่วยสร้างและตรวจสอบโครงสร้าง HTML (AI-Assisted HTML Development)</a></li><li><a href="#s21">สรุป</a></li><li><a href="#s22">แบบฝึกหัด</a></li><li><a href="#s23">เอกสารอ้างอิง</a></li></ol></details></aside>
+<article class="chapter prose" data-ch="3">
+<p class="note"><b>หมายเหตุ</b> หน้านี้ไม่แสดงภาพประกอบ (ดูภาพได้ในเอกสารประกอบการสอนฉบับเต็ม) ตัวอย่าง HTML ครบหน้ามีปุ่ม "ลองรัน" กดเพื่อดูผลได้ทันที</p>
+<h2 id="s1">บทนำ</h2>
+<p>ภาษา HTML (HyperText Markup Language) เป็นรากฐานสำคัญสูงสุดของการสร้างและพัฒนาเว็บเพจบนระบบอินเทอร์เน็ต โดยทำหน้าที่เป็นโครงสร้างหลัก (Structure &amp; Skeleton) ในการจัดวางเนื้อหา ข้อความ รูปภาพ ตาราง แบบฟอร์มรับข้อมูล และสื่อประสมต่าง ๆ ปัจจุบันมาตรฐานได้พัฒนาสู่เวอร์ชัน HTML5 ซึ่งได้เพิ่มคุณสมบัติแท็กเชิงความหมาย (Semantic Tags) การรองรับสื่อมัลติมีเดียโดยไม่ต้องพึ่งพาปลั๊กอินภายนอก ตลอดจนการสนับสนุนการเข้าถึงข้อมูล (Web Accessibility) และการเพิ่มประสิทธิภาพสำหรับการค้นหา (SEO) ในบทนี้นักศึกษาจะได้เรียนรู้โครงสร้างมาตรฐาน ไวยากรณ์แท็กเดี่ยวและแท็กคู่ การจัดการแบบฟอร์ม ตลอดจนการประยุกต์ใช้เครื่องมือและผู้ช่วยอัจฉริยะ (AI) ในการเขียนโค้ด HTML5 อย่างมีประสิทธิภาพ</p>
+<h2 id="s2">เนื้อหา</h2>
+<h2 id="s3">3.1 การจัดเตรียมโปรแกรมแก้ไขโค้ด (Visual Studio Code) และส่วนขยายอำนวยความสะดวก</h2>
+<p>Visual Studio Code (VS Code) เป็นโปรแกรมแก้ไขโค้ดฟรีของ Microsoft ใช้ได้ทั้ง Windows, macOS และ Linux มีส่วนขยายให้เลือกมาก จึงใช้เป็นเครื่องมือหลักในรายวิชานี้</p>
+<p>ขั้นตอนการติดตั้งและตั้งค่า</p>
+<p>1. ดาวน์โหลดตัวติดตั้งจากเว็บไซต์ <a href="https://code.visualstudio.com/" target="_blank" rel="noopener noreferrer">https://code.visualstudio.com/</a> แล้วติดตั้งตามค่าเริ่มต้น (Windows ให้เลือก Add to PATH ส่วน macOS ให้ลากโปรแกรมไปไว้ในโฟลเดอร์ Applications)</p>
+<p>2. เปิดหน้าต่าง Extensions ด้วย Ctrl+Shift+X (macOS ใช้ Cmd+Shift+X) แล้วติดตั้ง Live Server, Prettier - Code formatter และ Auto Rename Tag</p>
+<p>3. Emmet มีมาในตัว VS Code อยู่แล้ว เมื่อสร้างไฟล์ .html ให้พิมพ์เครื่องหมาย ! แล้วกด Tab จะได้โครงหน้า HTML5 ทันที</p>
+<p>4. ดูผลลัพธ์โดยคลิกขวาที่ไฟล์ .html แล้วเลือก Open with Live Server หน้าเว็บจะรีเฟรชเองทุกครั้งที่บันทึกไฟล์</p>
+<p>การจัดรูปแบบโค้ดอัตโนมัติ (Auto Format)</p>
+<p>กด Shift+Alt+F (macOS ใช้ Shift+Option+F) เพื่อจัดย่อหน้าของไฟล์ที่เปิดอยู่ หากต้องการให้จัดรูปแบบทุกครั้งที่บันทึก ให้เปิดไฟล์ settings.json (Ctrl+Shift+P แล้วพิมพ์ Open User Settings JSON) และเพิ่มค่าต่อไปนี้</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>{</code></pre></div>
+<p>  &quot;editor.formatOnSave&quot;: true,</p>
+<p>  &quot;editor.defaultFormatter&quot;: &quot;esbenp.prettier-vscode&quot;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>}</code></pre></div>
+<p>นักศึกษาที่คุ้นเคยกับโปรแกรมอื่น เช่น Sublime Text หรือ Notepad++ สามารถใช้แทนได้ แต่ตัวอย่างและใบงานในรายวิชานี้อธิบายด้วย VS Code (ดูเพิ่มเติมในหัวข้อ 2.20.1)</p>
+<h2 id="s4">3.2 เอลิเมนต์(Element) และแท็ก(Tag) (Duckett, 2021; บัญชา ปะสีละเตสัง, 2565)</h2>
+<p>การเขียนโค้ดในลักษณะของภาษาแบบ Markup อย่าง HTML, XML เราจะพบคำศัพท์อยู่ 2 คำที่มักจะได้ยินสลับไปสลับมากันอยู่เสมอ นั่นก็คือ คำว่า Elements (เอลิเมนต์) และ Tags (แท็ก) ซึ่งทั้ง 2 คำนี้ โดยความหมายแล้วคล้ายกัน และอาจใช้แทนกันได้ในบางกรณี แต่ความหมายที่แท้จริงของทั้ง 2 คำนี้ มีความแตกต่างกัน จะเป็นอย่างไร ลองอ่านบทความเพื่อความเข้าใจกัน ดังนี้ <br>element คือ ส่วนประกอบที่เป็นหน่วยย่อยของโครงสร้าง HTML ในแต่ละ element จะใช้ Tag เพื่อบอกให้ทราบว่าแต่ละ element มีหน้าที่และโครงสร้างเป็นอย่างไร</p>
+<p><strong>ประเภทของ</strong><strong> Element</strong></p>
+<p>1.Void Elements เป็นเอลิเมนต์ที่มีเพียงแท็กเปิด ได้แก่ &lt;br&gt; &lt;hr&gt; เป็นต้น</p>
+<p>2.Row Text Elements เป็นเอลิเมนต์ที่ประกอบด้วย 3 ส่วน ได้แก่ แท็กเปิด ข้อความ และ แท็กปิด ได้แก่ &lt;script&gt; และ &lt;style&gt; เป็นต้น มีรูปแบบการเขียน เช่น </p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;style&gt;
+//เขียน css 
+&lt;/style&gt;</code></pre></div>
+<p>3.Nested Element เป็น เอลิเมนต์ที่ประกอบด้วย 3 ส่วน ดังนี้</p>
+<p>แท็กเปิด ข้อความหรือเอลิเมนต์อื่นๆ และแท็กปิด เช่น แท็ก &lt;ul&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;ul&gt;
+   &lt;li&gt;ข้อความแรก&lt;/li&gt;
+   &lt;li&gt;ข้อความที่สอง&lt;/li&gt;
+&lt;/ul&gt;</code></pre></div>
+<h2 id="s5">3.3 รูปแบบมาตรฐานของ HTML</h2>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;html&gt;
+&lt;head&gt;
+//ข้อความส่วนหัวของเว็บเพจ
+&lt;/head&gt;
+&lt;body&gt;
+//ข้อความส่วนเนื้อหาในเว็บเพจ
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>ส่วนที่1 แท็ก &lt;html&gt; ใช้เพื่อประกาศว่า เนื้อหาทั้งหมดที่อยู่ในแท็กนี้คือโค้ดที่จะให้เบราว์เซอร์แปลความหมายและแสดงผลลัพธ์บนเว็บเบราว์เซอร์บนจอภาพ</p>
+<p>ส่วนที่2 แท็ก &lt;head&gt; ใช้เก็บคุณสมบัติของเว็บเพจ เช่น ชื่อของเว็บเพจ หรือกำหนดเป็นสไตล์ชีต ให้กับเว็บเพจ</p>
+<p>ส่วนที่3 แท็ก &lt;body&gt; ใช้เก็บเนื้อหาทั้งหมดของเว็บเพจ</p>
+<h2 id="s6">3.4 รูปแบบมาตรฐานของ HTML5</h2>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+//ข้อความส่วนหัวของเว็บเพจ
+&lt;/head&gt;
+&lt;body&gt;
+//ข้อความส่วนเนื้อหาในเว็บเพจ
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>ส่วนที่1 แท็ก &lt;!DOCTYPE html&gt; ใช้ประกาศชนิดของเอกสารรวมเพื่อให้เว็บเบราว์เซอร์รับทราบและจัดเตรียมวิธีการประมวลผลสำหรับเอกสารนั้นได้อย่างถูกต้อง</p>
+<p>ส่วนที่2 แท็ก &lt;html&gt; ใช้กำหนดจุดเริ่มต้นของเอกสาร HTML ในขณะที่แท็กปิดคือ &lt;/html&gt; เป็นการกำหนดจุดสิ้นสุดของเอกสาร โดยองค์ประกอบทั้งหมดของเอกสารจะถูกกำหนดไว้อยู่ระหว่างกลางของแท็ก &lt;html&gt; นี้เสมอ และจะวางอยู่ใต้แท็ก &lt;!DOCTYPE html&gt; เสมอ</p>
+<p>ส่วนที่3 แท็ก &lt;head&gt; ใช้เก็บคุณสมบัติของเว็บเพจ เช่น ชื่อของเว็บเพจ หรือกำหนดเป็นสไตล์ชีต ให้กับเว็บเพจ</p>
+<p>และยังมีแท็ก &lt;title&gt; &lt;/title&gt; อยู่ภายในได้อีกด้วย ทำหน้าที่แสดงข้อความปรากฏให้เห็นบนไตเติลบาร์หรือแทบเพจของเว็บเบราว์เซอร์ นอกจากนี้ยังมีแท็ก &lt;meta&gt; ใช้ในการกำหนดข้อมูลบางอย่างเกี่ยวกับเว็บเพจนั้นๆ เช่น รหัสอักขระที่ใช้ คีย์เวิร์ดสำหรับ Search Engine หรือ Refresh  เบราว์เซอร์ตามเวลาที่กำหนด เป็นต้น</p>
+<p>และยังมีแท็ก &lt;base&gt; ใช้ในการกำหนด URL อ้างอิงเพื่อหลีกเลี่ยงการที่จะต้องกำหนด URL แบบเต็ม ตัวอย่างเช่น</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;head&gt;
+&lt;base href=”https://www.google.com/img/”&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;img src=”logo.jpg”&gt;
+&lt;img src=”nature/books.jpg”&gt;
+&lt;/body&gt;</code></pre></div>
+<p>นอกจากมี href สำหรับกำหนดตำแหน่งของ URL อ้างอิงแล้วยังมีอีกหนึ่งแอตทริบิวคือ target ใช้สำหรับตั้งค่า base สำหรับลิงก์ไปเปิดเพจปลายทางด้วยเบราว์เซอร์ (แท็บ) ใหม่ เช่น “_blank”เป็นต้น ตัวอย่างเช่น</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;base href=”https://www.google.co.th” target=”_blank”&gt;</code></pre></div>
+<p>และยังมี แท็ก &lt;style&gt; ใช้ในการกำหนดรูปแบบด้วย CSS ตัวอย่างเช่น</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;head&gt;
+&lt;style&gt;
+Body {color: blue; }
+&lt;/style&gt;
+&lt;/head&gt;</code></pre></div>
+<p>และยังมี แท็ก &lt;link&gt; จะใช้อ้างอิงไฟล์ CSS จากภายนอก ตัวอย่างเช่น</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;head&gt;
+&lt;link href=”mystyle.css” rel= “stylesheet”&gt;
+&lt;/head&gt;</code></pre></div>
+<p>และยังมีแท็ก &lt;script&gt; ใช้สำหรับเขียนโปรแกรมด้วยภาษา JavaScript ตัวอย่างเช่น</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;head&gt;
+&lt;script&gt;
+aleart(“hello world”);
+&lt;/script&gt;
+&lt;/head&gt;</code></pre></div>
+<p>ส่วนที่4 แท็ก &lt;body&gt; ใช้เก็บเนื้อหาทั้งหมดของเว็บเพจ</p>
+<h2 id="s7">3.5 เริ่มต้นการเขียนโปรแกรมด้วยภาษา HTML ด้วย Tag &lt;h1&gt;</h2>
+<p>1.เปิดโปรแกรมประเภท Text Editor เช่น Notepad++, Sublime Text เป็นต้น</p>
+<p>หรือ เขียนโปรแกรมบนเว็บไซต์ออนไลน์ได้ที่ </p>
+<p>2.พิมพ์โค้ดตัวอย่างต่อไปนี้</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+    &lt;html lang=&quot;en&quot;&gt;
+      &lt;head&gt;
+            &lt;meta charset=&quot;UTF-8&quot;&gt;
+           &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+            &lt;title&gt;Hello World! Site Title&lt;/title&gt;
+      &lt;/head&gt;
+      &lt;body&gt;
+            &lt;h1&gt;Hello World!&lt;/h1&gt;
+      &lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>3.เลือกคำสั่ง File&gt;Save</p>
+<p>4.เลือกโฟลเดอร์ที่ต้องการ Save</p>
+<p>5.ตั้งชื่อไฟล์เป็น work1.html</p>
+<p>6.คลิกปุ่ม save</p>
+<p>7.ไปยังโฟลเดอร์ที่เราได้ save ไฟล์ไว้ใน Drive แล้วให้ดับเบิ้ลคลิกที่ไฟล์ </p>
+<p>8.ผลลัพธ์จะปรากฏในเบราว์เซอร์บนจอภาพ</p>
+<h2 id="s8">3.6 แท็กเดี่ยว</h2>
+<p>แท็กเดี่ยว คือแท็กที่เป็นแท็กเปิดอย่างเดียวไม่มีแท็กปิด ได้แก่ &lt;p&gt; &lt;hr&gt; &lt;br&gt; เป็นต้น ตัวอย่างแท็กเดี่ยวได้แก่</p>
+<p>แท็ก &lt;p&gt; ใช้เมื่อต้องการขึ้นย่อหน้าใหม่</p>
+<p>แท็ก &lt;hr&gt; ใช้เมื่อต้องการขีดเส้นตรงแนวนอน</p>
+<p>แท็ก &lt;br&gt; ใช้เมื่อต้องการขึ้นบรรทัดใหม่</p>
+<p>แท็ก &lt;img src=”ชื่อไฟล์รูปภาพ”&gt; ใช้เมื่อต้องการใส่รูปภาพบนเว็บไซต์</p>
+<p>ตัวอย่างการใช้งานแท็ก &lt;p&gt; &lt;hr&gt; &lt;br&gt; และ &lt;img&gt; เช่น</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+  &lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Hello World! Site Title&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+      &lt;hr&gt;
+    &lt;p&gt;Hello World! My Name is Surachet Sungkhapan.
+    &lt;p&gt;This is my website and the first time to develop it.&lt;br&gt;</code></pre></div>
+<p>My web is a friendly little web.&lt;br&gt;</p>
+<p>Did you have a website? </p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>    &lt;hr&gt;
+    &lt;IMG SRC=&quot;busy-as-a-bee-1641955.jpg&quot; WIDTH=&quot;150&quot; HEIGHT=&quot;150&quot; ALT=&quot;Busy as a bee&quot; BORDER=&quot;n&quot;&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<h2 id="s9">3.7 แท็กคู่</h2>
+<p>แท็กคู่ คือแท็กที่มีลักษณะเป็นแท็กเปิดและปิดคู่กัน เช่น &lt;a&gt;... &lt;/a&gt;    , &lt;div&gt;… &lt;/div&gt; ,<strong> </strong>&lt;h1&gt;… &lt;/h1&gt;<strong> </strong>เป็นต้น ตัวอย่างแท็กคู่ ได้แก่</p>
+<p>แท็ก &lt;b&gt; &lt;/b&gt; ใช้สำหรับสร้างข้อความให้เป็นตัวหนา</p>
+<p>แท็ก &lt;u&gt; &lt;/u&gt; ใช้สำหรับสร้างข้อความให้เป็นตัวขีดเส้นใต้</p>
+<p>แท็ก &lt;i&gt; &lt;/i&gt; ใช้สำหรับสร้างข้อความให้เป็นตัวเอียง</p>
+<p>แท็ก &lt;sub&gt; &lt;/sub&gt; ใช้สำหรับสร้างข้อความให้เป็นตัวห้อย</p>
+<p>แท็ก &lt;strike&gt; &lt;/strike&gt; ใช้สำหรับสร้างข้อความให้เป็นตัวขีดเส้นทับ</p>
+<p>แท็ก &lt;li&gt; &lt;/li&gt; ใช้สำหรับแสดงรายการย่อย</p>
+<p>แท็ก &lt;ol&gt; &lt;/ol&gt; ใช้สำหรับแสดงรายการแบบเรียงลำดับ</p>
+<p>แท็ก &lt;ul&gt; &lt;/ul&gt; ใช้สำหรับแสดงรายการแบบไม่เรียงลำดับ</p>
+<p>แท็ก &lt;div&gt; &lt;/div&gt; ใช้สำหรับแบ่งรูปแบบการแสดงผล</p>
+<p>แท็ก &lt;a&gt; &lt;/a&gt; ใช้สำหรับสร้างลิงก์</p>
+<p>แท็ก &lt;span&gt; &lt;/span&gt; ใช้สำหรับแบ่งรูปแบบการแสดงผล โดยใช้กับข้อความสั้น </p>
+<p>แท็ก &lt;front&gt; &lt;/front&gt; ใช้สำหรับกำหนดรูปแบบตัวอักษรอยู่ใน html version 4 ปัจจุบันถูกยกเลิกไปแล้ว</p>
+<p>แท็ก &lt;h1&gt; &lt;/h1&gt; ใช้สำหรับกำหนดให้ข้อความมีขนาดใหญ่ ระดับที่1 ซึ่งมีทั้งหมด 6 ระดับ คือ h1 h2 h3 h4 h5 และ h6</p>
+<p><strong>ตัวอย่างการเขียนโปรแกรม</strong></p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt; 
+&lt;html lang=&quot;en&quot;&gt; 
+  &lt;head&gt; 
+    &lt;meta charset=&quot;UTF-8&quot;&gt; 
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt; 
+    &lt;title&gt;Hello World! Site Title&lt;/title&gt; 
+  &lt;/head&gt; 
+  &lt;body&gt; 
+    &lt;h1&gt;แท็กคู่คือ &lt;/h1&gt;&lt;br&gt;</code></pre></div>
+<p>แท็กที่มีลักษณะเป็นแท็กเปิดและปิดคู่กัน &lt;br&gt;</p>
+<p>แท็ก b &lt;b&gt; ใช้สำหรับสร้างข้อความให้เป็นตัวหนา &lt;/b&gt; &lt;br&gt;</p>
+<p>แท็ก u &lt;u&gt; ใช้สำหรับสร้างข้อความให้เป็นตัวขีดเส้นใต้  &lt;/u&gt; &lt;br&gt;</p>
+<p>แท็ก i &lt;i&gt;ใช้สำหรับสร้างข้อความให้เป็นตัวเอียง  &lt;/i&gt; &lt;br&gt;</p>
+<p>แท็ก sub &lt;sub&gt; ใช้สำหรับสร้างข้อความให้เป็นตัวห้อย &lt;/sub&gt; &lt;br&gt;</p>
+<p>แท็ก strike &lt;strike&gt; ใช้สำหรับสร้างข้อความให้เป็นตัวขีดเส้นทับ &lt;/strike&gt; &lt;br&gt;</p>
+<p>แท็ก ul ร่วมกับ li &lt;ul&gt;ใช้สำหรับแสดงรายการแบบไม่เรียงลำดับ  </p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;li&gt;ใช้สำหรับแสดงรายการย่อย  &lt;/li&gt; 
+&lt;li&gt;ใช้สำหรับแสดงรายการย่อย  &lt;/li&gt;
+&lt;li&gt;ใช้สำหรับแสดงรายการย่อย  &lt;/li&gt;
+&lt;/ul&gt;</code></pre></div>
+<p>แท็ก ol ร่วมกับ li &lt;ol&gt;ใช้สำหรับแสดงรายการแบบเรียงลำดับ  </p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;li&gt;ใช้สำหรับแสดงรายการย่อย  &lt;/li&gt; 
+&lt;li&gt;ใช้สำหรับแสดงรายการย่อย  &lt;/li&gt;
+&lt;li&gt;ใช้สำหรับแสดงรายการย่อย  &lt;/li&gt;
+&lt;/ol&gt; </code></pre></div>
+<p>แท็ก div &lt;div&gt;ใช้สำหรับแบ่งรูปแบบการแสดงผล  &lt;/div&gt; &lt;br&gt;</p>
+<p>แท็ก a href &lt;a href=&quot;<a href="https://www.w3schools.com&quot;&gt;Visit" target="_blank" rel="noopener noreferrer">https://www.w3schools.com&quot;&gt;Visit</a> W3Schools.com!&gt;ใช้สำหรับสร้างลิงก์  &lt;/a&gt; &lt;br&gt;</p>
+<p>แท็ก &lt;span&gt;  ใช้สำหรับแบ่งรูปแบบการแสดงผล โดยใช้กับข้อความสั้น  &lt;/span&gt; &lt;br&gt;</p>
+<p>แท็ก &lt;front&gt; ใช้สำหรับกำหนดรูปแบบตัวอักษรอยู่ใน html version 4 &lt;/front&gt; &lt;br&gt; กำหนดรูปแบบตัวอักษรในปัจจุบัน html5 มีรูปแบบดังนี้ &lt;br&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;p style=&quot;color:red&quot;&gt;This is a paragraph.&lt;/p&gt;
+&lt;p style=&quot;color:blue&quot;&gt;This is another paragraph.&lt;/p&gt;
+&lt;p style=&quot;font-family:verdana&quot;&gt;This is a paragraph.&lt;/p&gt;
+&lt;p style=&quot;font-family:&#x27;Courier New&#x27;&quot;&gt;This is another paragraph.&lt;/p&gt;</code></pre></div>
+<p>แท็ก h1 &lt;h1&gt; h1  &lt;/h1&gt; </p>
+<p>แท็ก h2 &lt;h2&gt; h2  &lt;/h2&gt; </p>
+<p>แท็ก h3 &lt;h3&gt; h3  &lt;/h3&gt; </p>
+<p>แท็ก h4 &lt;h4&gt; h4  &lt;/h4&gt; </p>
+<p>แท็ก h5 &lt;h5&gt; h5  &lt;/h5&gt; </p>
+<p>แท็ก h6 &lt;h6&gt; h6  &lt;/h6&gt; </p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>  &lt;/body&gt; 
+&lt;/html&gt;</code></pre></div>
+<p><strong>แสดงผลลัพธ์</strong></p>
+<p><strong>เราสามารถเพิ่มคุณสมบัติ</strong><strong> Attributes </strong><strong>ให้กับ</strong><strong> </strong><strong>แท็กได้เช่น</strong></p>
+<p><strong>ตัวอย่างการเขียนโปแกรม</strong></p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt; 
+&lt;html lang=&quot;en&quot;&gt; 
+  &lt;head&gt; 
+    &lt;meta charset=&quot;UTF-8&quot;&gt; 
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;  
+    &lt;title&gt;Hello World! Site Title&lt;/title&gt; 
+  &lt;/head&gt; 
+  &lt;body&gt; 
+    &lt;h1&gt;แท็กคู่คือ &lt;/h1&gt;&lt;br&gt;</code></pre></div>
+<p><strong>เราสามารถใช้แท็ก</strong><strong> </strong><strong>โดยเพิ่มคุณสมบัติ</strong><strong> Attributes </strong><strong>ได้ดังนี้</strong><strong>&lt;</strong><strong>br</strong><strong>&gt;</strong></p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;h2&gt;type=&quot;1|a|A|i|I&quot;&lt;/h2&gt;
+&lt;ol type=&quot;1&quot;&gt; 
+  &lt;li&gt; รายการย่อย&lt;/li&gt;
+  &lt;li&gt; รายการย่อย&lt;/li&gt;
+  &lt;li&gt; รายการย่อย&lt;/li&gt;
+&lt;/ol&gt;
+  &lt;h1&gt;ตัวอย่าง แท็ก details&lt;/h1&gt;
+  &lt;details&gt;
+  &lt;summary&gt;Epcot Center&lt;/summary&gt;
+  &lt;p&gt;Epcot is a theme park at Walt Disney World Resort featuring exciting attractions, international pavilions, award-winning fireworks and seasonal special events.&lt;/p&gt;
+&lt;/details&gt;
+  &lt;/body&gt; 
+&lt;/html&gt;</code></pre></div>
+<p><strong>แสดงผลลัพธ์</strong></p>
+<h2 id="s10">3.8 แท็กตาราง (Table Tags)</h2>
+<p class="cap">ตารางที่ 3-1 แท็กที่ใช้สร้างตารางใน HTML</p>
+<div class="tw"><table><tr><th>&lt;table&gt;</th><th>กำหนดตาราง</th></tr><tr><td>&lt;th&gt;</td><td>กำหนดหัวตาราง</td></tr><tr><td>&lt;tr&gt;</td><td>กำหนดแถวของตาราง</td></tr><tr><td>&lt;td&gt;</td><td>กำหนดเซลล์ของตาราง</td></tr><tr><td>&lt;caption&gt;</td><td>กำหนดชื่อตาราง</td></tr><tr><td>&lt;colgroup&gt;</td><td>กำหนดกลุ่มของคอลั่มในตาราง (สำหรับการจัดรูปแบบ)</td></tr><tr><td>&lt;col /&gt;</td><td>กำหนดแอตทริบิวต์ values สำหรับคอลั่มในตาราง(อาจจะเป็นคอลั่มเดียวหรือมากกว่า)</td></tr><tr><td>&lt;thead&gt;</td><td>กลุ่มของเนื้อหาหัวตารางในตาราง</td></tr><tr><td>&lt;tbody&gt;</td><td>กลุ่มของเนื้อหาส่วนตัวของตาราง</td></tr><tr><td>&lt;tfoot&gt;</td><td>กลุ่มของเนื้อหาท้ายตาราง</td></tr></table></div>
+<p><strong>ตัวอย่างการเขียนโปรแกรม</strong></p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt; 
+&lt;html lang=&quot;en&quot;&gt; 
+  &lt;head&gt; 
+    &lt;meta charset=&quot;UTF-8&quot;&gt; 
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt; 
+    &lt;title&gt;Hello World! Site Title&lt;/title&gt; 
+  &lt;/head&gt; 
+  &lt;body&gt; 
+&lt;body&gt;
+&lt;caption&gt; ตารางการทำงาน&lt;/caption&gt;
+&lt;table border=&quot;1&quot;&gt;
+  &lt;tr&gt;
+    &lt;th&gt;วัน&lt;/th&gt;
+    &lt;th&gt;สิ่งที่ทำ&lt;/th&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;จันทร์&lt;/td&gt;
+    &lt;td&gt;ทำงาน1&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;อังคาร&lt;/td&gt;
+    &lt;td&gt;ทำงาน2&lt;/td&gt;
+  &lt;/tr&gt;
+   &lt;tr&gt;
+    &lt;td&gt;พุธ&lt;/td&gt;
+    &lt;td&gt;ทำงาน3&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt; 
+&lt;/body&gt;
+&lt;/html&gt;
+  &lt;/body&gt; 
+&lt;/html&gt;</code></pre></div>
+<p><strong>แสดงผลลัพธ์</strong></p>
+<h2 id="s11">3.9 แท็กแบบฟอร์ม</h2>
+<p class="cap">ตารางที่ 3-2 แท็กที่ใช้สร้างฟอร์มใน HTML</p>
+<div class="tw"><table><tr><th>&lt;form&gt;</th><th>กำหนดฟอร์มเพื่อส่งข้อมูลไปยังเซิร์ฟเวอร์</th></tr><tr><td>&lt;input/&gt;</td><td>กำหนดการป้อนข้อมูล</td></tr><tr><td>&lt;textarea&gt;</td><td>กำหนดการป้อนข้อความแบบหลายบรรทัด</td></tr><tr><td>&lt;label&gt;</td><td>กำหนดป้ายชื่อแท็ก input</td></tr><tr><td>&lt;fieldset&gt;</td><td>กำหนดขอบเขตของการป้อนข้อมูล</td></tr><tr><td>&lt;legend&gt;</td><td>กำหนดป้ายชื่อสำหรับขอบเขตของการป้อนข้อมูล(fieldset)</td></tr><tr><td>&lt;select&gt;</td><td>กำหนดรายการที่ให้เลือก(แบบ Drop-down)</td></tr><tr><td>&lt;optgroup&gt;</td><td>กำหนดกลุ่มของตัวเลือก(options) ที่เกี่ยวข้องในรายการที่ให้เลือก</td></tr><tr><td>&lt;option&gt;</td><td>กำหนดตัวเลือกสำหรับรายการที่ให้เลือก</td></tr><tr><td>&lt;button&gt;</td><td>กำหนดปุ่มกด</td></tr></table></div>
+<p><strong>ตัวอย่างการเขียนโปรแกรม</strong></p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt; 
+&lt;html lang=&quot;en&quot;&gt; 
+  &lt;head&gt; 
+    &lt;meta charset=&quot;UTF-8&quot;&gt; 
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt; 
+    &lt;title&gt;Hello World! Site Title&lt;/title&gt; 
+  &lt;/head&gt; 
+  &lt;body&gt; 
+  &lt;html&gt;
+&lt;body&gt;
+&lt;form name=&quot;login&quot; action=&quot;login.php&quot; method=&quot;post&quot;&gt;</code></pre></div>
+<p><strong>ชื่อ</strong><strong>: &lt;input type=&quot;text&quot; name=&quot;</strong><strong>firstname</strong><strong>&quot;&gt;&lt;</strong><strong>br</strong><strong>&gt;</strong></p>
+<p><strong>นามสกุล</strong><strong>: &lt;input type=&quot;text&quot; name=&quot;</strong><strong>lastname</strong><strong>&quot;&gt;&lt;</strong><strong>br</strong><strong>&gt;</strong></p>
+<p><strong>รหัสผ่าน</strong><strong>: &lt;input type=&quot;password&quot; name=&quot;</strong><strong>pwd</strong><strong>&quot;&gt;&lt;</strong><strong>br</strong><strong>&gt;</strong></p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;input type=&quot;radio&quot; name=&quot;like&quot; value=&quot;like&quot;&gt;ชอบ&lt;br&gt;
+&lt;input type=&quot;radio&quot; name=&quot;like&quot; value=&quot;don&#x27;tlike&quot;&gt;ไม่ชอบ&lt;br&gt;
+&lt;input type=&quot;checkbox&quot; name=&quot;language&quot; value=&quot;japanese&quot;&gt;พูดภาษาญี่ปุ่นได้&lt;br&gt;
+&lt;input type=&quot;checkbox&quot; name=&quot;language&quot; value=&quot;english&quot;&gt;พูดภาษาอังกฤษได้&lt;br&gt;
+&lt;input type=&quot;submit&quot; value=&quot;เข้าระบบ&quot;/&gt;
+&lt;/form&gt; 
+&lt;/body&gt;
+&lt;/html&gt;
+  &lt;/body&gt; 
+&lt;/html&gt;</code></pre></div>
+<p><strong>แสดงผลลัพธ์</strong></p>
+<h2 id="s12">3.10 แท็กมัลติมีเดียและแท็กใหม่ใน HTML5 (Multimedia &amp; Graphic Elements)</h2>
+<p>ใน HTML5 ได้มีการเพิ่มแท็กใหม่เข้ามาเพื่อขยายขีดความสามารถในการสร้างเว็บไซต์ ได้แก่</p>
+<p class="cap">ตารางที่ 3-3 แท็กโครงสร้างและแท็กใหม่ใน HTML5</p>
+<div class="tw"><table><tr><th>&lt;article&gt;</th><th>Tag ที่อ้างถึงบทความ</th></tr><tr><td>&lt;aside&gt;</td><td>Tag ที่อ้างถึงข้อความที่ถูกเขียนขึ้นและจัดวางไว้ด้านใดด้านหนึ่งของเว็บ สามารถศึกษาวิธี สร้าง Sideder ด้วย เอเลเม็นท์ aside ได้ที่นี่</td></tr><tr><td>&lt;bdi&gt;</td><td>เป็นการแยกส่วนของข้อความ เพราะบางครั้งการใช้ภาษาที่ต่างกัน ทำให้คอมพิวเตอร์สับสนในการจัดลำดับ</td></tr><tr><td>&lt;command&gt;</td><td>จัดการกับปุ่มคำสั่งต่างๆ</td></tr><tr><td>&lt;details&gt;</td><td>ข้อมูลที่สามารถ ซ่อนหรือเรียกดูได้</td></tr><tr><td>&lt;summary&gt;</td><td>ใช้ร่วมกับ &lt;details&gt; element เป็นส่วนหัวที่จะโชว์ข้อความเสมอ</td></tr><tr><td>&lt;figure&gt;</td><td>จัดกลุ่มของข้อมูลในส่วนของ ภาพ ไดอะแกรม สื่อต่างๆ เพื่อให้สื่อเหล่านั้นและข้อความถูกจัดวางไว้ร่วมกัน</td></tr><tr><td>&lt;figcaption&gt;</td><td>คำอธิบาย ของ&lt;figure&gt; element ที่ถูกจัดกลุ่มไว้ด้วยกัน</td></tr><tr><td>&lt;footer&gt;</td><td>Tag ที่อ้างถึงส่วนท้ายหรือล่างสุดของเอกสาร</td></tr><tr><td>&lt;header&gt;</td><td>Tag ที่อ้างถึงส่วนหัวหรือบนสุดของเอกสาร</td></tr><tr><td>&lt;hgroup&gt;</td><td>กลุ่มที่มี &lt;h1&gt; ถึง &lt;h6&gt; ที่สามารถนำมาใช้ได้ในนี้ ถ้าหากว่า ใน heading มีการวางหัวข้อไว้หลายหัวข้อ</td></tr><tr><td>&lt;mark&gt;</td><td>เป็นการไฮไลต์ข้อความ</td></tr><tr><td>&lt;meter&gt;</td><td>ใช้ในการวัด และโชว์ผลลัพธ์แบบแท่ง เช่นความจุต่างๆ ผลการค้นหา แต่ไม่ความใช้ในส่วนของการทำงานประมวลผล</td></tr><tr><td>&lt;nav&gt;</td><td>Tag ที่อ้างส่วนของเมนู</td></tr><tr><td>&lt;progress&gt;</td><td>โชว์การประมวลผลแบบแท่ง</td></tr><tr><td>&lt;ruby&gt;</td><td>ใช้เพิ่มคำอธิบายประกอบ สำหรับตัวอักษรของเอเชียฝั่งตะวันออก</td></tr><tr><td>&lt;rt&gt;</td><td>เพิ่มคำอธิบาย หรือการออกเสียงสำหรับตัวอักษรของเอเชียฝั่งตะวันออก</td></tr><tr><td>&lt;rp&gt;</td><td>ใช้เพื่อ โชว์ในเบราว์เซอร์ที่ไม่ซัพพอร์ท ruby Tag</td></tr><tr><td>&lt;section&gt;</td><td>Tag ที่อ้างส่วนต่างๆของเอกสาร</td></tr><tr><td>&lt;time&gt;</td><td>อ้างถึง การเขียนวันที่หรือเวลา</td></tr><tr><td>&lt;wbr&gt;</td><td>เป็นการจัดการกับตัวอักษรในส่วนของการขึ้นบรรทัดใหม่</td></tr></table></div>
+<p>Media Elements ใหม่ใน HTML5</p>
+<p>สร้างมาเพื่อการใช้สื่อมัลติมีเดียต่างๆในเว็บ</p>
+<p class="cap">ตารางที่ 3-4 แท็กมีเดียใหม่ใน HTML5</p>
+<div class="tw"><table><tr><th>&lt;audio&gt;</th><th>เพิ่มเสียงเข้ามาในเว็บของคุณ</th></tr><tr><td>&lt;video&gt;</td><td>เพิ่มวีดีโอเข้ามาในเว็บของคุณ</td></tr><tr><td>&lt;source&gt;</td><td>เพิ่มสื่อได้หลายตัวเข้ามาในเว็บของคุณโดยใช้ได้กัย &lt;video&gt; และ &lt;audio&gt;</td></tr><tr><td>&lt;embed&gt;</td><td>สำหรับจัดวาง สื่อที่นำมากจากภายนอก หรือ Plug-in ด้วย</td></tr><tr><td>&lt;track&gt;</td><td>ใช้สำหรับการลำดับ ของ &lt;video&gt; และ &lt;audio&gt;</td></tr></table></div>
+<p><strong>แท็ก</strong><strong> &lt;canvas&gt;</strong></p>
+<p class="cap">ตารางที่ 3-5 แท็ก &lt;canvas&gt; ใน HTML5</p>
+<div class="tw"><table><tr><th>&lt;canvas&gt;</th><th>สำหรับ การเขียนภาพกราฟฟิค โดยใช้ สคริปเข้ามาจัดการและส่วนใหญ่จะใช้ JavaScript</th></tr></table></div>
+<p>Form Elements ใหม่ใน HTML5</p>
+<p>เพื่อเพิ่มประสิทธิภารและความสามารถในการทำงานที่หลากหลายขึ้น</p>
+<p class="cap">ตารางที่ 3-6 แท็กฟอร์มใหม่ใน HTML5</p>
+<div class="tw"><table><tr><th>&lt;datalist&gt;</th><th>โชว์รายการที่เราได้กำหนดไว้ เวลาที่ผู้ใช้งานกรอกข้อมูลลงมา</th></tr><tr><td>&lt;keygen&gt;</td><td>เป็นการสร้างความปลอดภัย โดยทำการส่าง private key เก็บไว้ และ ส่ง public key ไปที่ เซอร์เวอร์</td></tr><tr><td>&lt;output&gt;</td><td>โชว์ผลการคำนวนทางคณิตศาสตร์</td></tr></table></div>
+<p><strong>ตัวอย่างการเขียนโปรแกรม</strong></p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt; 
+&lt;html lang=&quot;en&quot;&gt; 
+  &lt;head&gt; 
+    &lt;meta charset=&quot;UTF-8&quot;&gt; 
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt; 
+    &lt;title&gt;Hello World! Site Title&lt;/title&gt; 
+  &lt;/head&gt; 
+&lt;body&gt;
+&lt;video width=&quot;320&quot; height=&quot;240&quot; controls=&quot;controls&quot;&gt;
+  &lt;source src=&quot;https://youtu.be/7MeQxBqchNU&quot; type=&quot;video/mp4&quot;&gt;
+  &lt;source src=&quot;/movie.ogg&quot; type=&quot;video/ogg&quot;&gt;</code></pre></div>
+<p><strong>      Your browser does not support the video tag.</strong></p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;/video&gt;
+&lt;iframe width=&quot;420&quot; height=&quot;315&quot;</code></pre></div>
+<p><strong>src</strong><strong>=&quot;<a href="https://www.youtube.com/embed/tgbNymZ7vqY&quot;&gt;" target="_blank" rel="noopener noreferrer">https://www.youtube.com/embed/tgbNymZ7vqY&quot;&gt;</a></strong></p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;/iframe&gt; 
+  &lt;/body&gt; 
+&lt;/html&gt;</code></pre></div>
+<p><strong>การแสดงผลลัพธ์</strong></p>
+<h2 id="s13">3.11 แท็กโครงสร้างเชิงความหมายใน HTML5 (Semantic Elements) (จีราวุธ วารินทร์, 2564; Mozilla Developer Network [MDN], 2024)</h2>
+<p>จุดเด่นสำคัญของ HTML5 คือการนำเสนอแท็กเชิงความหมาย (Semantic Tags) ซึ่งเป็นแท็กที่บ่งบอกบทบาทหน้าที่ของเนื้อหาภายในตัวมันเอง ช่วยให้โค้ดมีความเป็นระเบียบ อ่านเข้าใจง่าย เพิ่มคะแนนการจัดอันดับการค้นหา (SEO: Search Engine Optimization) และช่วยให้โปรแกรมอ่านหน้าจอสำหรับผู้พิการ (Screen Readers) สามารถเข้าใจโครงสร้างได้อย่างสมบูรณ์ โดยแท็กสำคัญประกอบด้วย:<br>• &lt;header&gt;: กำหนดส่วนหัวของหน้าเว็บเพจหรือส่วนหัวของบทความ มักบรรจุโลโก้ ชื่อเรื่อง หรือแถบค้นหา<br>• &lt;nav&gt;: กำหนดบล็อกสำหรับลิงก์ระบบนำทางหลักของเว็บไซต์ (Navigation Links)<br>• &lt;main&gt;: กำหนดขอบเขตเนื้อหาหลักที่มีความโดดเด่นของหน้าเว็บเพจนั้น (ในแต่ละหน้าควรมี &lt;main&gt; เพียงอันเดียว)<br>• &lt;article&gt;: กำหนดเนื้อหาสาระที่เป็นเอกเทศในตัวเอง เช่น บทความข่าว โพสต์บล็อก หรือการ์ดรีวิวสินค้า<br>• &lt;section&gt;: กำหนดส่วนของเนื้อหาที่จัดกลุ่มตามหัวข้อที่สัมพันธ์กัน<br>• &lt;aside&gt;: กำหนดเนื้อหาเสริมด้านข้าง (Sidebar) เช่น เมนูลัด แบนเนอร์ หรือลิงก์ที่เกี่ยวข้อง<br>• &lt;footer&gt;: กำหนดส่วนท้ายของหน้าเว็บหรือส่วนท้ายของเอกสาร แสดงข้อมูลลิขสิทธิ์และช่องทางการติดต่อ</p>
+<p><em>(</em><em>ที่มา</em><em>: World Wide Web Consortium [W3C], 2024)</em></p>
+<h2 id="s14">3.12 การตรวจสอบความถูกต้องของฟอร์มด้วย HTML5 (Native Form Validation)</h2>
+<p>HTML5 มีกลไกตรวจสอบความถูกต้องของข้อมูลในแบบฟอร์มโดยตรงผ่านเบราว์เซอร์ ช่วยลดภาระการเขียน JavaScript ตรวจสอบเบื้องต้น (บัญชา ปะสีละเตสัง, 2565) เช่น การใช้ required เพื่อบังคับกรอก, pattern=&quot;[0-9]{10}&quot; สำหรับหมายเลขโทรศัพท์ 10 หลัก, type=&quot;email&quot; ตรวจสอบรูปแบบอีเมล, และ type=&quot;date&quot; ให้เลือกวันที่ตามปฏิทินสากล</p>
+<h2 id="s15">3.13 เทคนิคการใช้ AI ช่วยสร้างและตรวจสอบโครงสร้าง HTML (AI-Assisted HTML Development) (World Wide Web Consortium [W3C], 2024; Open Web Application Security Project [OWASP], 2023)</h2>
+<p>ในการพัฒนาเว็บยุคปัจจุบัน นักพัฒนาสามารถนำเครื่องมือปัญญาประดิษฐ์ (AI Assistants เช่น GitHub Copilot, ChatGPT, Gemini) มาช่วยเพิ่มความสะดวกรวดเร็วในการเขียนโค้ด HTML5 ตลอดจนตรวจสอบโครงสร้างแท็กและความถูกต้องตามมาตรฐานสากลได้อย่างมีประสิทธิภาพ</p>
+<h3 id="s16">3.13.1 การใช้ AI สร้างโครงสร้าง Semantic HTML และแบบฟอร์ม</h3>
+<p>1. การแปลงเค้าโครงเป็นโค้ด HTML: นักพัฒนาสามารถบรรยายองค์ประกอบของหน้าเว็บที่ต้องการ เพื่อให้ AI ร่างโค้ดโครงสร้างตามมาตรฐาน HTML5 โดยอัตโนมัติ เช่น:<br>   Prompt: &quot;ช่วยสร้างโครงสร้าง HTML5 Semantic Structure สำหรับหน้าบล็อกบทความ ประกอบด้วย header, nav, main, article 2 ชิ้น, aside สำหรับบทความยอดนิยม และ footer โดยใช้แท็กที่ถูกต้องตามหลัก W3C (World Wide Web Consortium [W3C], 2024)&quot;<br>2. การสร้างแบบฟอร์มพร้อมระบบตรวจสอบ (Form Validation): AI สามารถช่วยสร้างแท็ก &lt;input&gt; พร้อมกำหนด Attribute เช่น required, type=&#x27;email&#x27;, minlength, maxlength และ pattern (Regex) ช่วยลดข้อผิดพลาดในการเขียนโค้ดได้อย่างมาก</p>
+<h3 id="s17">3.13.2 การให้ AI ตรวจสอบการเข้าถึงและความเข้ากันได้ (Accessibility &amp; Semantic Audit)</h3>
+<p>• การตรวจสอบ Alt text ของรูปภาพ: นำโค้ด HTML ส่งให้ AI วิเคราะห์ว่ารูปภาพใดขาด Attribute alt หรือ alt มีข้อความที่สื่อความหมายไม่ชัดเจน<br>• การตรวจสอบโครงสร้างส่วนหัว (Heading Hierarchy): ให้ AI ตรวจสอบลำดับการใช้แท็ก &lt;h1&gt; ถึง &lt;h6&gt; ให้ถูกต้องเป็นลำดับชั้น โดยไม่มีการข้ามระดับ ซึ่งเป็นหัวใจสำคัญของ SEO และ Accessibility<br>• การผูกความสัมพันธ์ของฟอร์ม: ตรวจสอบว่าแท็ก &lt;label for=&#x27;...&#x27;&gt; ได้เชื่อมโยงตรงกับ id ของแท็ก &lt;input&gt; อย่างครบถ้วนหรือไม่</p>
+<h3 id="s18">3.13.3 ข้อควรระวังในการใช้ AI พัฒนา HTML</h3>
+<p>• หลีกเลี่ยงแท็กที่เลิกใช้งานแล้ว (Deprecated Tags): AI บางครั้งอาจแนะนำแท็กยุคเก่า เช่น &lt;center&gt;, &lt;font&gt;, &lt;marquee&gt; หรือการจัด Layout ด้วย &lt;table&gt; ซึ่งไม่สอดคล้องกับมาตรฐาน HTML5 ยุคปัจจุบัน นักพัฒนาต้องตรวจสอบและปรับใช้ CSS ร่วมกับ Semantic Tags เสมอ<br>• ตรวจสอบการปิดแท็กอย่างสมบูรณ์: แม้ว่าเบราว์เซอร์จะอนุญาตให้ละเลยการปิดแท็กบางประเภทได้ แต่การปิดแท็กอย่างครบถ้วนจะช่วยป้องกันปัญหาการเรนเดอร์ผิดพลาดในอุปกรณ์ต่าง ๆ ได้อย่างดีเยี่ยม</p>
+<h3 id="s19">3.13.4 กรอบคำสั่ง AI สำหรับการตรวจสอบความเข้ากันได้และการเข้าถึง (Prompt for Accessibility Audit)</h3>
+<p><em>&quot;Role: Accessibility Specialist (WCAG 2.2). / Task: Audit the following HTML code. Identify missing alt attributes, non-semantic div containers, and form inputs missing associated &lt;label&gt; elements. / Constraints: Rewrite the code into fully compliant Semantic HTML5 with zero validation errors on W3C Nu HTML Checker.&quot;</em></p>
+<h3 id="s20">3.13.5 ตัวอย่างโค้ดโครงสร้าง Semantic HTML5 มาตรฐานสมบูรณ์พร้อมแบบฟอร์ม</h3>
+<p>&lt;!DOCTYPE html&gt;<br>&lt;html lang=&quot;th&quot;&gt;<br>&lt;head&gt;<br>  &lt;meta charset=&quot;UTF-8&quot;&gt;<br>  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;<br>  &lt;title&gt;ระบบลงทะเบียนนักศึกษา - สาขาวิชาเทคโนโลยีดิจิทัลเพื่อธุรกิจ&lt;/title&gt;<br>&lt;/head&gt;<br>&lt;body&gt;<br>  &lt;header&gt;<br>    &lt;nav aria-label=&quot;เมนูหลัก&quot;&gt;<br>      &lt;h2&gt;มหาวิทยาลัยนราธิวาสราชนครินทร์&lt;/h2&gt;<br>      &lt;ul&gt;<br>        &lt;li&gt;&lt;a href=&quot;#home&quot;&gt;หน้าแรก&lt;/a&gt;&lt;/li&gt;<br>        &lt;li&gt;&lt;a href=&quot;#register&quot;&gt;ลงทะเบียน&lt;/a&gt;&lt;/li&gt;<br>      &lt;/ul&gt;<br>    &lt;/nav&gt;<br>  &lt;/header&gt;<br>  &lt;main&gt;<br>    &lt;article&gt;<br>      &lt;h1&gt;แบบฟอร์มรับสมัครนักศึกษาใหม่&lt;/h1&gt;<br>      &lt;form action=&quot;process.php&quot; method=&quot;POST&quot;&gt;<br>        &lt;div&gt;<br>          &lt;label for=&quot;fullname&quot;&gt;ชื่อ-นามสกุล:*&lt;/label&gt;<br>          &lt;input type=&quot;text&quot; id=&quot;fullname&quot; name=&quot;fullname&quot; required minlength=&quot;3&quot; placeholder=&quot;กรอกชื่อ-นามสกุล&quot;&gt;<br>        &lt;/div&gt;<br>        &lt;div&gt;<br>          &lt;label for=&quot;email&quot;&gt;อีเมล:*&lt;/label&gt;<br>          &lt;input type=&quot;email&quot; id=&quot;email&quot; name=&quot;email&quot; required placeholder=&quot;example@domain.com&quot;&gt;<br>        &lt;/div&gt;<br>        &lt;div&gt;<br>          &lt;label for=&quot;phone&quot;&gt;เบอร์โทรศัพท์ (10 หลัก):*&lt;/label&gt;<br>          &lt;input type=&quot;tel&quot; id=&quot;phone&quot; name=&quot;phone&quot; required pattern=&quot;[0-9]{10}&quot; placeholder=&quot;0812345678&quot;&gt;<br>        &lt;/div&gt;<br>        &lt;div&gt;<br>          &lt;button type=&quot;submit&quot;&gt;ส่งข้อมูลใบสมัคร&lt;/button&gt;<br>        &lt;/div&gt;<br>      &lt;/form&gt;<br>    &lt;/article&gt;<br>  &lt;/main&gt;<br>  &lt;footer&gt;<br>    &lt;p&gt;&amp;copy; 2026 หลักสูตรบริหารธุรกิจบัณฑิต สาขาวิชาเทคโนโลยีดิจิทัลเพื่อธุรกิจ&lt;/p&gt;<br>  &lt;/footer&gt;<br>&lt;/body&gt;<br>&lt;/html&gt;</p>
+<h2 id="s21">สรุป</h2>
+<p>ภาษา HTML เป็นภาษาโครงสร้างมาร์กอัปที่เป็นรากฐานของทุกเว็บไซต์ โดยประกอบด้วย Element, Tag เดี่ยว และ Tag คู่ ซึ่งสามารถกำหนดคุณลักษณะเพิ่มเติมผ่าน Attribute ได้ การพัฒนามาตรฐานสู่ HTML5 ได้นำเสนอแท็กเชิงความหมาย (Semantic Elements) เช่น &lt;header&gt;, &lt;nav&gt;, &lt;main&gt;, &lt;article&gt;, &lt;section&gt;, &lt;footer&gt; ซึ่งช่วยยกระดับทั้งการจัดอันดับการค้นหา (SEO) และการเข้าถึงข้อมูลตามมาตรฐานสากล นอกจากนี้ยังมีแท็กจัดการสื่อมัลติมีเดีย (&lt;video&gt;, &lt;audio&gt;, &lt;canvas&gt;) และการพัฒนาแบบฟอร์มที่มีระบบตรวจสอบข้อมูลในตัว การเขียน HTML5 ในยุคปัจจุบันได้รับการสนับสนุนจากเครื่องมือแก้ไขโค้ดที่ทรงพลังอย่าง VS Code ร่วมกับ Emmet และการนำผู้ช่วย AI มาประยุกต์ใช้เพื่อตรวจสอบความถูกต้อง เพิ่มความรวดเร็ว และทำให้โค้ดมีความเป็นมาตรฐานสากลสูงสุด</p>
+<h2 id="s22">แบบฝึกหัด</h2>
+<p><strong>คำชี้แจง</strong><strong>: </strong><strong>จงทำแบบฝึกหัดต่อไปนี้เพื่อทบทวนความรู้ความเข้าใจ</strong></p>
+<p><strong>ตอนที่</strong><strong> 1: </strong><strong>แบบฝึกหัดเชิงทฤษฎีและการวิเคราะห์</strong><strong> (Theoretical &amp; Analytical Exercises)</strong></p>
+<p>1. จงอธิบายความแตกต่างระหว่าง Tag, Element และ Attribute ในภาษา HTML พร้อมยกตัวอย่างประกอบให้ชัดเจน</p>
+<p>2. จงอธิบายความแตกต่างระหว่างแท็กคู่ (Paired Tags) และแท็กเดี่ยวหรือแท็กว่าง (Empty/Void Tags) พร้อมระบุตัวอย่างแท็กอย่างละ 3 ตัวอย่าง</p>
+<p>3. แท็กโครงสร้างเชิงความหมาย (Semantic Elements เช่น &lt;header&gt;, &lt;nav&gt;, &lt;main&gt;, &lt;article&gt;, &lt;footer&gt;) ใน HTML5 มีข้อได้เปรียบเหนือการใช้แท็ก &lt;div&gt; เพียงอย่างเดียวอย่างไร ทั้งในแง่ของ SEO และการเข้าถึงเว็บไซต์ (Web Accessibility)</p>
+<p>4. ในการสร้างแบบฟอร์ม (Form) บนเว็บ จงอธิบายบทบาทหน้าที่ของ Attribute name, action, และ method (GET vs POST) ว่ามีความแตกต่างกันอย่างไรในการส่งผ่านข้อมูล</p>
+<p>5. จงอธิบายว่าปัญญาประดิษฐ์ (AI Coding Assistants) สามารถช่วยนักพัฒนาในการเขียนและตรวจสอบโค้ด HTML5 ได้อย่างไรบ้าง พร้อมยกตัวอย่าง Prompt ที่มีประสิทธิภาพในการสร้างแบบฟอร์มรับข้อมูล 1 ตัวอย่าง</p>
+<p><strong>ตอนที่</strong><strong> 2: </strong><strong>แบบฝึกหัดประยุกต์และการเขียนโปรแกรม</strong><strong> (Applied &amp; Programming Exercises)</strong></p>
+<p> 1.ให้นักศึกษาเขียนโปรแกรมเพื่อสร้างตาราง 7 คอลัมน์ 5 แถวดังนี้</p>
+<p>2.ให้นักศึกษาเขียนโปรแกรมเพื่อสร้างแบบฟอร์มสมัครงานดังนี้</p>
+<p>3.ให้นักศึกษาเขียนโปรแกรมสร้างลิงก์ไปยังหน้าต่าง ๆ ดังนี้</p>
+<h2 id="s23">เอกสารอ้างอิง</h2>
+<p>จีราวุธ วารินทร์. (2564). พัฒนาเว็บไซต์สมัยใหม่ด้วย HTML5 JavaScript + CSS3 ฉบับสมบูรณ์. กรุงเทพฯ: รีไวว่า.</p>
+<p>บัญชา ปะสีละเตสัง. (2565). พัฒนา Web Application ยุคใหม่ด้วย HTML5 และ CSS3. กรุงเทพฯ: ซีเอ็ดยูเคชั่น.</p>
+<p>Duckett, J. (2021). HTML and CSS: Design and Build Websites (Updated ed.). Indianapolis, IN: John Wiley &amp; Sons.</p>
+<p>Mozilla Developer Network [MDN]. (2024). HTML5 Reference and Living Standard: Semantic Elements and Forms. Retrieved from <a href="https://developer.mozilla.org/en-US/docs/Web/HTML" target="_blank" rel="noopener noreferrer">https://developer.mozilla.org/en-US/docs/Web/HTML</a></p>
+<p>Open Web Application Security Project [OWASP]. (2023). HTML5 Security Cheat Sheet. Retrieved from <a href="https://cheatsheetseries.owasp.org/" target="_blank" rel="noopener noreferrer">https://cheatsheetseries.owasp.org/</a></p>
+<p>World Wide Web Consortium [W3C]. (2024). HTML Living Standard &amp; Nu HTML Checker (v.Nu). Retrieved from <a href="https://validator.w3.org/nu/" target="_blank" rel="noopener noreferrer">https://validator.w3.org/nu/</a></p>
+<label class="donebox"><input type="checkbox" id="done"><span>ทำเครื่องหมายว่าอ่านบทนี้แล้ว</span></label>
+<div class="pager"><a class="pn" href="ch2.html"><small>บทก่อนหน้า</small><b>บทที่ 2 พื้นฐานสำหรับการเขียนโปรแกรมบนเว็บ</b></a><a class="pn next" href="ch4.html"><small>บทถัดไป</small><b>บทที่ 4 พื้นฐาน CSS</b></a></div>
+</article></div>
+</main>
+<footer class="foot"><div class="wrap fgrid">
+<div><a class="brand" href="../index.html"><span class="logo" aria-hidden="true">&lt;/&gt;</span><span class="bt"><b>การโปรแกรมบนเว็บ</b><small>Web Programming</small></span></a>
+<p class="small">สื่อเสริมการเรียนรู้ ใช้ประกอบเอกสารประกอบการสอน ไม่มีระบบสมาชิกและไม่เก็บข้อมูลส่วนบุคคล ส่งงานผ่าน Google Classroom</p></div>
+<div><p class="fh">เรียนรู้</p><a href="../chapters.html">บทเรียน 10 บท</a><a href="../worksheets.html">ใบงานประจำบท</a><a href="../start.html">เริ่มต้นใช้งาน</a></div>
+<div><p class="fh">รายวิชา</p><a href="../about.html">เกี่ยวกับรายวิชา</a><span>ผู้สอน: ดร.สุรเชษฐ์ สังขพันธ์</span><span>พ.ศ. 2569</span></div>
+</div></footer>
+<script src="../assets/app.js"></script>
+</body>
+</html>

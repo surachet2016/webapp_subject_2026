@@ -28,3 +28,10 @@
 ## ลิขสิทธิ์
 
 ยังไม่ได้กำหนดใบอนุญาตของที่เก็บนี้ (ผู้จัดทำจะระบุภายหลัง) ตามค่าเริ่มต้นเจ้าของงานสงวนสิทธิ์ทั้งหมด ตัวอย่างที่เกี่ยวข้องกับ Bootstrap ใช้ผ่าน CDN ภายใต้ MIT License ของ The Bootstrap Authors
+
+## การ deploy เว็บรายวิชา
+
+ซอร์สเว็บอยู่ในโฟลเดอร์ `site/` เมื่อ merge เข้า `main` และมีการเปลี่ยนแปลงในโฟลเดอร์นี้ GitHub Actions
+(`.github/workflows/deploy.yml`) จะอัปโหลดขึ้น https://fms.pnu.ac.th/lessons/ โดยอัตโนมัติ
+ต้องตั้ง Secrets `SFTP_USERNAME` และ `SFTP_PASSWORD` ใน Settings > Secrets and variables > Actions ก่อน
+(ระบบอัปโหลดไฟล์ทับของเดิม แต่ไม่ลบไฟล์ที่ถูกลบออกจาก repo)

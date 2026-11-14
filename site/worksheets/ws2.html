@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="เว็บไซต์ประกอบการเรียนรายวิชาการโปรแกรมบนเว็บ 07-034-210 บทเรียน 10 บท ใบงาน และตัวอย่างโค้ดที่ลองรันได้">
+<meta name="theme-color" content="#4338ca">
+<title>ใบงานที่ 2 · การโปรแกรมบนเว็บ</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%234338ca'/%3E%3Cpath d='M26 20 14 32l12 12M38 20l12 12-12 12' fill='none' stroke='%23fff' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preload" href="../assets/fonts/Sarabun-400-thai.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css">
+<script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+
+</head>
+<body class="ch-page">
+<a class="skip" href="#main">ข้ามไปยังเนื้อหา</a>
+<header class="top"><div class="wrap nav">
+<a class="brand" href="../index.html" aria-label="หน้าแรก การโปรแกรมบนเว็บ"><span class="logo" aria-hidden="true">&lt;/&gt;</span><span class="bt"><b>การโปรแกรมบนเว็บ</b><small>07-034-210</small></span></a>
+<button id="menuBtn" class="iconbtn menu-btn" type="button" aria-expanded="false" aria-controls="menu" aria-label="เปิดเมนู"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v2H3V6Zm0 5h18v2H3v-2Zm0 5h18v2H3v-2Z"/></svg></button>
+<nav id="menu" aria-label="เมนูหลัก">
+<a href="../chapters.html">บทเรียน</a><a href="../worksheets.html" aria-current="page">ใบงาน</a><a href="../start.html">เริ่มต้นใช้งาน</a><a href="../about.html">เกี่ยวกับรายวิชา</a>
+</nav>
+<button id="theme" class="iconbtn" type="button" aria-label="สลับโหมดมืดและสว่าง"><span class="i-moon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5Z"/></svg></span><span class="i-sun"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg></span></button>
+</div><div id="bar" class="bar" aria-hidden="true"></div></header>
+<main id="main">
+<div class="chead s1"><div class="wrap">
+<nav class="crumb" aria-label="เส้นทาง"><a href="../index.html">หน้าแรก</a><span>/</span><a href="../worksheets.html">ใบงาน</a><span>/</span><span aria-current="page">ใบงานที่ 2</span></nav>
+<div class="chrow"><span class="badge b-s1 big" aria-hidden="true">WEB</span><div><p class="kicker">ใบงานที่ 2</p><h1>การติดตั้งและจัดเตรียมสภาพแวดล้อมการพัฒนาเว็บ และการประยุกต์ใช้ AI Coding Assistants</h1></div></div></div></div>
+<div class="wrap narrow"><article class="prose">
+<p><strong>ผลการเรียนรู้ที่คาดหวัง (CLO):</strong> CLO 1 (อธิบายโครงสร้างและหลักการทำงานของเว็บ), CLO 3 (ใช้เครื่องมือพัฒนาและเผยแพร่เว็บไซต์ได้) และ CLO 6 (อ้างอิงแหล่งที่มาและเคารพสิทธิการใช้งาน)</p>
+<p><strong>เครื่องมือและซอฟต์แวร์ที่ใช้:</strong> Visual Studio Code, Git, เว็บเบราว์เซอร์ Google Chrome, ส่วนขยาย VS Code (Live Server, Prettier, GitHub Copilot)</p>
+<h2>คำสั่งและขั้นตอนการปฏิบัติงาน</h2>
+<ul>
+<li><strong>2.1 การติดตั้งและปรับแต่ง VS Code</strong>: ติดตั้งโปรแกรม Visual Studio Code พร้อมติดตั้งส่วนขยายที่จำเป็นสำหรับการพัฒนาเว็บ ได้แก่ Live Server, Prettier - Code Formatter และ Auto Rename Tag (ดูหัวข้อ 2.20.1 ในบทที่ 2)</li>
+<li><strong>2.2 การติดตั้งสภาพแวดล้อมจำลอง (XAMPP)</strong>: ติดตั้ง XAMPP (Windows) หรือทางเลือกบน macOS ตามภาคผนวก ค และทดสอบเปิดใช้งานบริการ Apache และ MySQL พร้อมตรวจสอบหน้า Dashboard บน http://localhost</li>
+<li><strong>2.3 การสร้างโครงสร้างโฟลเดอร์โครงงาน (Project Directory)</strong>: สร้างโฟลเดอร์สำหรับพัฒนาเว็บไซต์ แบ่งหมวดหมู่ไฟล์อย่างเป็นระเบียบ ได้แก่ /css, /js, /images และ /includes (ดูหัวข้อ 2.20.1 ในบทที่ 2 โฟลเดอร์ /includes ใช้กับไฟล์ PHP ในบทที่ 7) แล้วฝึกสร้าง Repository ด้วย git init และบันทึกด้วย git commit ตามหัวข้อ 2.20.2</li>
+<li><strong>2.4 AI Pair Programming Setup</strong>: ทดลองติดตั้งและเปิดใช้งานผู้ช่วย AI เช่น GitHub Copilot หรือทดลองใช้ Cursor เขียนคำสั่งทักทาย 'Hello World' และบันทึกผลการทำงาน</li>
+</ul>
+<p><strong>เกณฑ์การส่งมอบงานและการประเมินผล:</strong> บันทึกภาพหน้าจอผลลัพธ์การทำงานพร้อมแนบซอร์สโค้ด และส่งผ่านระบบบริหารการเรียนรู้ (LMS) ภายในระยะเวลาที่กำหนด โดยจะประเมินผลตามเกณฑ์รูบริกการประเมินใบงาน</p>
+<div class="callout"><b>การส่งงาน</b> ส่งผ่าน Google Classroom ตามกำหนดของอาจารย์ ตั้งชื่อไฟล์ตามรูปแบบ <code>รหัสนักศึกษา_ใบงานที่2</code></div>
+<p><a class="btn alt" href="../chapters/ch2.html">อ่านบทที่ 2 ที่เกี่ยวข้อง</a></p></article>
+<div class="pager"><a class="pn" href="ws1.html"><small>ก่อนหน้า</small><b>ใบงานที่ 1</b></a><a class="pn next" href="ws3.html"><small>ถัดไป</small><b>ใบงานที่ 3</b></a></div></div>
+</main>
+<footer class="foot"><div class="wrap fgrid">
+<div><a class="brand" href="../index.html"><span class="logo" aria-hidden="true">&lt;/&gt;</span><span class="bt"><b>การโปรแกรมบนเว็บ</b><small>Web Programming</small></span></a>
+<p class="small">สื่อเสริมการเรียนรู้ ใช้ประกอบเอกสารประกอบการสอน ไม่มีระบบสมาชิกและไม่เก็บข้อมูลส่วนบุคคล ส่งงานผ่าน Google Classroom</p></div>
+<div><p class="fh">เรียนรู้</p><a href="../chapters.html">บทเรียน 10 บท</a><a href="../worksheets.html">ใบงานประจำบท</a><a href="../start.html">เริ่มต้นใช้งาน</a></div>
+<div><p class="fh">รายวิชา</p><a href="../about.html">เกี่ยวกับรายวิชา</a><span>ผู้สอน: ดร.สุรเชษฐ์ สังขพันธ์</span><span>พ.ศ. 2569</span></div>
+</div></footer>
+<script src="../assets/app.js"></script>
+</body>
+</html>
