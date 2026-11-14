@@ -541,7 +541,7 @@ mysqli_close($conn);</code></pre></div>
 <p>เมื่อกดปุ่ม ตกลง</p>
 <p>ตรวจสอบข้อมูลการลบใน list.php</p>
 <h2 id="s10">8.7 การค้นหาข้อมูลใน MySQLi</h2>
-<p><strong>PHP MySQL Search Data Record (mysqli)</strong> เป็นตัวอย่างของ <strong>mysqli </strong>และการค้นหา (<strong>Search</strong>) ข้อมูล การเขียน <strong>PHP </strong>เพื่อค้นหาข้อมูลจาก <strong>Database ของ MySQL </strong>มาแสดงผลทางหน้าจอด้วย function ต่างๆ ของ <strong>mysqli </strong>ทำงานร่วมกับการ fetch ข้อมูลในรูปแบบของ array</p>
+<p><strong>PHP MySQL Search Data Record (mysqli)</strong> เป็นตัวอย่างของ <strong>mysqli </strong>และการค้นหา (<strong>Search</strong>) ข้อมูล การเขียน <strong>PHP </strong>เพื่อค้นหาข้อมูลจาก <strong>Database ของ MySQL </strong>มาแสดงผลทางหน้าจอด้วย function ต่าง ๆ ของ <strong>mysqli </strong>ทำงานร่วมกับการ fetch ข้อมูลในรูปแบบของ array</p>
 <p><strong>Syntax รูปแบบการใช้งาน</strong></p>
 <div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>$keyword = &quot;%&quot; . $strKeyword . &quot;%&quot;;
 $stmt = mysqli_prepare($conn, &quot;SELECT * FROM customer WHERE Name LIKE ?&quot;);
