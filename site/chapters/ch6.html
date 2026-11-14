@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="ทำให้หน้าเว็บโต้ตอบได้ด้วย DOM, Event และการดึงข้อมูล">
+<meta name="theme-color" content="#4338ca">
+<title>บทที่ 6 พื้นฐานภาษา JavaScript · การเขียนโปรแกรมบนเว็บ</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%234338ca'/%3E%3Cpath d='M26 20 14 32l12 12M38 20l12 12-12 12' fill='none' stroke='%23fff' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preload" href="../assets/fonts/Sarabun-400-thai.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css">
+<script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+
+</head>
+<body class="ch-page">
+<a class="skip" href="#main">ข้ามไปยังเนื้อหา</a>
+<header class="top"><div class="wrap nav">
+<a class="brand" href="../index.html" aria-label="หน้าแรก การเขียนโปรแกรมบนเว็บ"><span class="logo" aria-hidden="true">&lt;/&gt;</span><span class="bt"><b>การเขียนโปรแกรมบนเว็บ</b><small>07-034-210</small></span></a>
+<button id="menuBtn" class="iconbtn menu-btn" type="button" aria-expanded="false" aria-controls="menu" aria-label="เปิดเมนู"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v2H3V6Zm0 5h18v2H3v-2Zm0 5h18v2H3v-2Z"/></svg></button>
+<nav id="menu" aria-label="เมนูหลัก">
+<a href="../chapters.html" aria-current="page">บทเรียน</a><a href="../worksheets.html">ใบงาน</a><a href="../start.html">เริ่มต้นใช้งาน</a><a href="../about.html">เกี่ยวกับรายวิชา</a>
+</nav>
+<button id="theme" class="iconbtn" type="button" aria-label="สลับโหมดมืดและสว่าง"><span class="i-moon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5Z"/></svg></span><span class="i-sun"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg></span></button>
+</div><div id="bar" class="bar" aria-hidden="true"></div></header>
+<main id="main">
+<div class="chead s3"><div class="wrap">
+<nav class="crumb" aria-label="เส้นทาง"><a href="../index.html">หน้าแรก</a><span>/</span><a href="../chapters.html">บทเรียน</a><span>/</span><span aria-current="page">บทที่ 6</span></nav>
+<div class="chrow"><span class="badge b-s3 big" aria-hidden="true">JS</span><div><p class="kicker">บทที่ 6 · เขียนโปรแกรม</p><h1>พื้นฐานภาษา JavaScript</h1><p class="cdesc">ทำให้หน้าเว็บโต้ตอบได้ด้วย DOM, Event และการดึงข้อมูล</p></div></div>
+<ul class="meta"><li><b>29</b> นาที อ่าน</li><li><b>15</b> หัวข้อหลัก</li><li><b>14</b> ตัวอย่างลองรันได้</li></ul>
+</div></div>
+<div class="wrap layout">
+<aside class="side" aria-label="สารบัญบทนี้"><details class="tocbox" open><summary>สารบัญบทนี้</summary><ol><li><a href="#s1">บทนำ</a></li><li><a href="#s2">เนื้อหา</a></li><li><a href="#s3">6.1 ประโยชน์และบทบาทของภาษา JavaScript ในการพัฒนาเว็บ</a></li><li><a href="#s4">6.2 เริ่มต้นเขียน JavaScript</a></li><li><a href="#s5">6.3 Tag noscript</a></li><li><a href="#s6">6.4 ปุ่มสำหรับลิงก์ไปหน้าอื่น</a></li><li><a href="#s7">6.5 เพิ่มเติมสไตล์</a></li><li><a href="#s8">6.6 กล่องข้อความ (Message Box)</a></li><li><a href="#s9">6.7 การใช้งาน DOM Tree</a></li><li><a href="#s10">6.8 ไวยากรณ์ JavaScript สมัยใหม่ (Modern JavaScript: ECMAScript 6+)</a></li><li><a href="#s15">6.9 การเขียนโปรแกรมแบบอะซิงโครนัสและการรับส่งข้อมูล (Async/Await &amp; Fetch API)</a></li><li><a href="#s18">6.10 เทคนิคการใช้ AI ช่วยเขียนโค้ดและดีบัก JavaScript (AI-Assisted JS Development)</a></li><li><a href="#s24">สรุป</a></li><li><a href="#s25">แบบฝึกหัด</a></li><li><a href="#s26">เอกสารอ้างอิง</a></li></ol></details></aside>
+<article class="chapter prose" data-ch="6">
+<p class="note"><b>หมายเหตุ</b> หน้านี้ไม่แสดงภาพประกอบ (ดูภาพได้ในเอกสารประกอบการสอนฉบับเต็ม) ตัวอย่าง HTML ครบหน้ามีปุ่ม "ลองรัน" กดเพื่อดูผลได้ทันที</p>
+<h2 id="s1">บทนำ</h2>
+<p>ภาษาจาวาสคริปต์ (JavaScript) เป็นภาษาโปรแกรมระดับสูงเชิงวัตถุที่ทำงานทางฝั่งไคลเอนต์ (Client-Side Scripting) ซึ่งเป็นหัวใจสำคัญในการทำให้หน้าเว็บเพจมีความมีชีวิตชีวาและสามารถโต้ตอบกับผู้ใช้งาน (Interactivity) ได้อย่างราบรื่น โดยไม่จำเป็นต้องโหลดหน้าเว็บเพจใหม่ทั้งหมด จากจุดเริ่มต้นที่เป็นเพียงภาษาสคริปต์เสริมลูกเล่น ปัจจุบัน JavaScript ได้พัฒนา สู่มาตรฐาน ECMAScript (ES6+) ที่มีความทรงพลัง รองรับการจัดการโครงสร้างเอกสาร (DOM: Document Object Model), การตรวจจับเหตุการณ์ (Event Handling), การประมวลผลแบบอะซิงโครนัส (Asynchronous Programming) ร่วมกับ Fetch API และเป็นรากฐานสู่เฟรมเวิร์กสมัยใหม่ ในบทนี้นักศึกษาจะได้เรียนรู้ตั้งแต่ไวยากรณ์พื้นฐาน การควบคุม DOM ไปจนถึงการนำเครื่องมือปัญญาประดิษฐ์ (AI) มาช่วยเขียนชุดคำสั่งและแก้ไขข้อผิดพลาด (Debug) อย่างมีแบบแผน</p>
+<h2 id="s2">เนื้อหา</h2>
+<p>JavaScript เป็นภาษาที่เป็น Script ที่อยู่ในเว็บไซต์ (ใช้ร่วมกับ HTML) เพื่อให้เว็บไซต์ของเราดูมีการเคลื่อนไหว สามารถตอบสนองผู้ใช้งานได้มากขึ้น โดยการใส่ JavaScript ลงในโค้ด HTML นั้นทำได้โดยใช้ แท็ก &lt;script&gt;  โดยจะแทรกอยู่ในแท็ก &lt;head&gt; และ แท็ก &lt;body&gt;</p>
+<h2 id="s3">6.1 ประโยชน์และบทบาทของภาษา JavaScript ในการพัฒนาเว็บ (จีราวุธ วารินทร์, 2566; Haverbeke, 2024)</h2>
+<p>JavaScript ใช้เมื่อต้องการให้เว็บเพจแสดงผลแบบเคลื่อนไหว ตอบสนองต่อผู้ใช้ หรือสั่งให้เบราว์เซอร์ทำงานตามที่ต้องการ ซึ่งเป็นงานที่เกินความสามารถของ HTML แต่ไม่จำเป็นต้องติดต่อกับเซิร์ฟเวอร์ เนื่องจาก JavaScript เป็นภาษาที่ทำงานฝั่งไคลเอนต์ โดยมีเบราว์เซอร์เป็นตัวแปลภาษา ตัวอย่างของงานที่ใช้ JavaScript เช่น</p>
+<ul><li>สร้างเมนูที่สามารถตอบสนองต่อการเอา mouse ไปชี้ได้</li><li>สร้างเครื่องคิดเลข ปฏิทิน เกม ในเว็บเพจ</li><li>เปิด, ปิด, เคลื่อนย้ายตำแหน่งของ window</li><li>ทำตัวอักษรวิ่งแบบต่าง ๆ</li><li>ตรวจสอบความถูกต้องของแบบฟอร์มที่ผู้ใช้กรอก ก่อนส่งข้อมูลไปยัง Server</li><li>และอื่นๆ อีกมากมายที่ไม่ต้องติดต่อกับ Server</li></ul>
+<h2 id="s4">6.2 เริ่มต้นเขียน JavaScript</h2>
+<p>การเขียน JavaScript บนไฟล์ HTML จะเริ่มจากการเปิดแท็ก &lt;script&gt; ก่อน ดังนี้</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;script&gt;&lt;/script&gt;</code></pre></div>
+<p>ตัวอย่างวิธีการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;p id=&quot;demo&quot;&gt;&lt;/p&gt;
+&lt;script&gt;
+document.getElementById(&quot;demo&quot;).textContent = &quot;ทดสอบ JavaScript&quot;;
+&lt;/script&gt;</code></pre></div>
+<p>นำโค้ดที่พิมพ์ไว้ไปวางในแท็ก &lt;body&gt; บนไฟล์ HTML (วางสคริปต์ไว้หลังแท็ก &lt;p&gt; เพื่อให้เบราว์เซอร์สร้างองค์ประกอบ demo ก่อนที่สคริปต์จะทำงาน)</p>
+<p>myfirstjs.html</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+    &lt;head&gt;
+        &lt;title&gt;ทดลองเขียน JavaScript&lt;/title&gt;
+        &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;p id=&quot;demo&quot;&gt;&lt;/p&gt;
+        &lt;script&gt;
+            document.getElementById(&quot;demo&quot;).textContent = &quot;ทดสอบ JavaScript&quot;;
+        &lt;/script&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>เมื่อพิมพ์เสร็จแล้วให้เปิดเบราว์เซอร์โดยจะแสดงข้อความ “ทดสอบ JavaScript” ในหน้าเว็บไซต์</p>
+<p>หมายเหตุ: คำสั่ง document.write() ที่พบในตำราเก่าไม่แนะนำให้ใช้ในปัจจุบัน เพราะหากเรียกหลังโหลดหน้าเว็บเสร็จจะลบเนื้อหาทั้งหน้า และเบราว์เซอร์บางตัวจำกัดการทำงาน ควรใช้การเข้าถึงองค์ประกอบผ่าน DOM แล้วกำหนด textContent แทน</p>
+<p>แสดงผลลัพธ์</p>
+<h2 id="s5">6.3 Tag noscript</h2>
+<p>       แท็ก noscript ใช้ในการรองรับกรณีที่ผู้ใช้งานไม่อนุญาตให้รันสคริปต์ หรือ เว็บเบราว์เซอร์ไม่รองรับสคริปต์ เราสามารถใส่เนื้อหาในแท็ก noscript ได้เหมือนกับแท็ก body ซึ่งจะสามารถแสดงได้เหมือนไฟล์เอกสาร html ปกติ โดยเนื้อหาภายในแท็ก noscript จะแสดงก็ต่อเมื่อเว็บเบราว์เซอร์ไม่รองรับสคริปต์หรือไม่อนุญาตให้รันสคริปต์เท่านั้น</p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;html&gt;
+&lt;body&gt;
+&lt;p id=&quot;demo&quot;&gt;&lt;/p&gt;
+&lt;script&gt;
+document.getElementById(&quot;demo&quot;).textContent = &quot;สวัสดีนักศึกษาทุกคน&quot;;
+&lt;/script&gt;
+&lt;noscript&gt;เว็บเบราว์เซอร์ของคุณไม่รองรับ JavaScript!&lt;/noscript&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p> แสดงผลลัพธ์</p>
+<h2 id="s6">6.4 ปุ่มสำหรับลิงก์ไปหน้าอื่น</h2>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;p id=&quot;demo&quot;&gt;ภาษา HTML&lt;/p&gt;
+&lt;button type=&quot;button&quot; id=&quot;btnDetail&quot;&gt;รายละเอียดเพิ่มเติม&lt;/button&gt;
+&lt;script&gt;
+function myFunction()
+{
+    document.getElementById(&quot;demo&quot;).textContent = &quot;ภาษา HTML คือภาษาที่ใช้ในการเขียนเว็บ&quot;;
+}
+document.getElementById(&quot;btnDetail&quot;).addEventListener(&quot;click&quot;, myFunction);
+window.confirm(&quot;Are you sure you want to quit?&quot;);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p> แสดงผลลัพธ์</p>
+<p>เมื่อเรากดปุ่ม ตกลง</p>
+<p>เมื่อเรากดปุ่มรายละเอียดเพิ่มเติม</p>
+<h2 id="s7">6.5 เพิ่มเติมสไตล์</h2>
+<p>การเพิ่มสไตล์ เช่น การสร้างปุ่ม สำหรับคลิกเลือกสีตัวอักษรที่ผู้ใช้งานต้องการให้แสดง</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;p id=&quot;demo&quot;&gt;ไม่ชอบสีดำอยากเปลี่ยนเป็นแดง&lt;/p&gt;
+&lt;button type=&quot;button&quot; id=&quot;btnColor&quot;&gt;คลิกตรงนี้&lt;/button&gt;
+&lt;script&gt;
+function myFunction()
+{
+    document.getElementById(&quot;demo&quot;).style.color = &quot;#ff0000&quot;;
+}
+document.getElementById(&quot;btnColor&quot;).addEventListener(&quot;click&quot;, myFunction);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p> แสดงผลลัพธ์</p>
+<p>เมื่อคลิกที่ปุ่ม คลิกตรงนี้</p>
+<h2 id="s8">6.6 กล่องข้อความ (Message Box)</h2>
+<p>กล่องข้อความเป็นส่วนที่ไว้สำหรับโต้ตอบกับผู้ใช้ แบ่งเป็น 3 แบบ คือ</p>
+<ul><li>กล่องการเตือน (Alert Box) </li></ul>
+<p>ใช้สำหรับการขึ้นข้อความเตือน ให้ผู้ใช้ระมัดระวัง หรือบอกกล่าวไปยังผู้ใช้ให้ทราบ  พิจารณาคำสั่งต่อไปนี้</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;html&gt;
+&lt;body&gt;
+&lt;script &gt;
+window.alert(&quot;You can&#x27;t access to server!&quot;)
+&lt;/script&gt;  
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p> แสดงผลลัพธ์</p>
+<p>***ข้อความที่เขียนส่งให้เมธอด alert() เมื่อนำไปแสดงออกยัง ไดอะล็อกบ็อกซ์ จะปรากฏเป็นบรรทัดเดียว   ถ้าข้อความยาวมาก ไดอะล็อกบ็อกซ์ ที่ปรากฏ จะยาว ตามด้วย   หากผู้อ่านต้องการข้อความแยกกันหลายบรรทัด ให้ใช้ \n  แทรกระหว่างข้อความ</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;html&gt;
+&lt;body&gt;
+&lt;script&gt;
+alert(&quot;\n Hello   JavaScript  World \n Enjoy  with  JavaScript  now \n\n Click OK  to continue&quot;);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p> แสดงผลลัพธ์</p>
+<ul><li>กล่องการยืนยัน (Confirm Box)  เพื่อให้ผู้ใช้ยืนยันในกรณีที่ผู้ใช้อาจเผอเรอคลิกปุ่มโดยไม่ได้ตั้งใจ เช่น ผู้ใช้กดปุ่มเพื่อลบข้อมูล หรือการออกจากโปรแกรม</li></ul>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;html&gt;
+&lt;body&gt;
+&lt;script &gt;
+window.confirm(&quot;Are you sure you want to quit?&quot;)
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p> แสดงผลลัพธ์</p>
+<ul><li>กล่องตรวจสอบข้อมูล (Prompt Box) เพื่อให้ผู้ใช้ป้อนข้อมูลก่อนเข้าไปยังระบบหรือเข้าหน้าเว็บ</li></ul>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;html&gt;
+&lt;body&gt;
+&lt;script &gt;
+window.prompt(&quot;please enter user name&quot;)
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>นอกจากนี้ยังมีตัวแปรที่เกิดจากการใช้ prompt ตัวอย่างเช่น</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;html&gt;
+&lt;body&gt;
+&lt;script&gt;
+const y = window.prompt(&quot;please enter your name&quot;);
+window.alert(&quot;Hello !   &quot; + y);
+&lt;/script&gt; 
+&lt;/body&gt;
+&lt;/html&gt; 
+***ตัวแปร y จะเก็บค่าที่ได้จากการป้อนของผู้ใช้  แล้วมาแสดงใน Message Box การเตือน ซึ่งมีข้อความ Hello !</code></pre></div>
+<p> แสดงผลลัพธ์</p>
+<p>เมื่อผู้ใช้ป้อนชื่อแล้วกดปุ่ม OK จะเกิด Message Box ตามรูป</p>
+<h2 id="s9">6.7 การใช้งาน DOM Tree (Mozilla Developer Network [MDN], 2024c)</h2>
+<p>DOM หรือ Document Object Model เป็นมาตรฐานที่ช่วยให้โปรแกรมและสคริปต์ (script) สามารถเข้าถึงและแก้ไขตัวเนื้อหา โครงสร้าง และ style ของเว็บไซต์ ปัจจุบันมาตรฐาน DOM ดูแลโดย WHATWG ในรูปแบบ DOM Living Standard</p>
+<p>เมื่อเว็บไซต์มีการแสดงผล เบราว์เซอร์จะทำการสร้าง DOM ให้กับแต่ละหน้า</p>
+<p>The HTML DOM Tree of Objects (จาก w3schools.com)</p>
+<p>ในภาษา HTML จะมี HTML DOM เพื่อให้เราสามารถเขียนโค้ดในการควบคุม Element ต่าง ๆ ของ HTML ด้วย JavaScript</p>
+<p>ตัวอย่างการใช้งาน DOM ต่อไปนี้ เป็นการเปลี่ยนเนื้อหา (ด้วย textContent) ของแท็ก &lt;p&gt; ที่มี id=“demo”</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+    &lt;head&gt;
+        &lt;title&gt;ทดลองเขียน JavaScript&lt;/title&gt;
+        &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;p id=&quot;demo&quot;&gt;&lt;/p&gt;        
+&lt;script&gt;
+            document.getElementById(&quot;demo&quot;).textContent = &quot;ทดสอบ JavaScript&quot;;
+            &lt;/script&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<p>ตัวอย่างการเปลี่ยนเนื้อหาด้วย textContent</p>
+<p>คำอธิบาย:</p>
+<p>* ตั้งชื่อ id ให้กับแท็ก &lt;p&gt; เพื่อให้ DOM รู้ว่าจะต้องควบคุม Element ตัวใด</p>
+<p>* โครงสร้างการใช้งาน DOM ใน JavaScript คือ “document.วิธีการ.คุณสมบัติ”</p>
+<p>* getElementById คือ (1 ใน) วิธีการที่ใช้ควบคุม Element ของ HTML จาก id ที่ได้ตั้งเอาไว้ โดยจะต้องระบุชื่อ id ในวงเล็บด้วย มีโครงสร้างดังนี้</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>document.getElementById(&quot;id ของ Element&quot;);
+* textContent คือ (1 ใน) คุณสมบัติในการเข้าถึงข้อความของ Element โดยจะแทนที่ข้อความภายใน Element นั้น ๆ และแสดงเป็นข้อความธรรมดาเสมอ (ไม่ตีความแท็ก HTML) จึงปลอดภัยต่อช่องโหว่ XSS มีโครงสร้างดังนี้
+document.getElementById(&quot;id ของ Element&quot;).textContent = &quot;ข้อความ&quot;;</code></pre></div>
+<p>หมายเหตุ: หากต้องการแทรกแท็ก HTML ลงใน Element ให้ใช้คุณสมบัติ innerHTML แต่ห้ามนำข้อความที่ผู้ใช้พิมพ์เข้ามาใส่โดยตรง เพราะเสี่ยงต่อช่องโหว่ XSS (ดูหัวข้อ 6.10.3)</p>
+<p>ในการเพิ่มลูกเล่นให้กับเว็บไซต์เราจะใช้วิธีการวิธีหนึ่งที่มีชื่อว่า “addEventListener” ซึ่ง addEventListener จะใช้สำหรับควบคุมการใช้ Element ต่าง ๆ ของ HTML ไม่ว่าเราจะคลิกด้วยเมาส์ คีย์ข้อมูลบนคีย์บอร์ด หรือเลื่อนเมาส์ ก็จะทำให้ Element อื่น ๆ มีความเคลื่อนไหวทันที</p>
+<p>โครงสร้างของการใช้งาน addEventListener มีดังนี้</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>document.getElementById(&quot;id ของ Element&quot;).addEventListener(&quot;วิธีการ เช่น คลิกด้วยเมาส์ คีย์ด้วยคีย์บอร์ด&quot;, ชื่อฟังก์ชัน);</code></pre></div>
+<p>ตัวอย่างเช่น</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>document.getElementById(&quot;myButton&quot;).addEventListener(&quot;click&quot;, displayMessage);</code></pre></div>
+<p>หมายถึง ถ้าคลิกปุ่ม Button จะเป็นการเรียกฟังก์ชัน displayMessage</p>
+<p>สำหรับตัวอย่างต่อไปนี้เป็นวิธีการเพิ่มลูกเล่นให้กับปุ่ม Button โดยเมื่อคลิกปุ่ม Button จะแสดงข้อความที่แท็ก &lt;p&gt;</p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+    &lt;head&gt;
+        &lt;title&gt;ทดลองเขียน JavaScript&lt;/title&gt;
+        &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;button id=&quot;myButton&quot;&gt;แสดงข้อความ&lt;/button&gt;
+        &lt;p id=&quot;myMessage&quot;&gt;&lt;/p&gt;
+        &lt;script&gt;
+            function displayMessage() { // สร้างฟังก์ชัน
+                document.getElementById(&quot;myMessage&quot;).textContent = &quot;ทดสอบการแสดงข้อความ&quot;;
+        }
+        document.getElementById(&quot;myButton&quot;).addEventListener(&quot;click&quot;, displayMessage); // คลิกปุ่มเพื่อแสดงข้อความ
+        &lt;/script&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<p>เมื่อคลิกปุ่ม Button เว็บไซต์จะแสดงข้อความว่า “ทดสอบการแสดงข้อความ”</p>
+<p>ตัวอย่างต่อไปเป็นการคลิกปุ่ม Button และทำให้ข้อความที่แท็ก &lt;p&gt; จะถูกลบทิ้ง</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+    &lt;head&gt;
+        &lt;title&gt;ทดลองเขียน JavaScript&lt;/title&gt;
+        &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;button id=&quot;myButton&quot;&gt;ลบข้อความ&lt;/button&gt;
+        &lt;p id=&quot;myMessage&quot;&gt;ทดสอบการลบข้อความ&lt;/p&gt;
+        &lt;script&gt;
+            function deleteMessage() { // สร้างฟังก์ชัน
+                document.getElementById(&quot;myMessage&quot;).style.display = &quot;none&quot;;
+        }
+        document.getElementById(&quot;myButton&quot;).addEventListener(&quot;click&quot;, deleteMessage); // คลิกปุ่มเพื่อให้ลบข้อความ
+        &lt;/script&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<p>เมื่อคลิกปุ่ม Button เว็บไซต์จะทำการลบข้อความ</p>
+<p>ตัวอย่างต่อไปเป็นการคลิกปุ่ม Button และทำให้ Textbox ไม่สามารถใช้งานได้</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+    &lt;head&gt;
+        &lt;title&gt;ทดลองเขียน JavaScript&lt;/title&gt;
+        &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;button id=&quot;myButton&quot;&gt;ปิด Textbox&lt;/button&gt;
+        &lt;p&gt;&lt;input type=&quot;text&quot; id=&quot;myTextbox&quot;&gt;&lt;/p&gt;
+        &lt;script&gt;
+            function disableTextbox() { // สร้างฟังก์ชัน
+                document.getElementById(&quot;myTextbox&quot;).disabled = true;
+        }
+        document.getElementById(&quot;myButton&quot;).addEventListener(&quot;click&quot;, disableTextbox); // คลิกปุ่มเพื่อปิดการใช้งาน Textbox
+        &lt;/script&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<p>เมื่อคลิกปุ่ม Button จะทำให้ Textbox ไม่สามารถใช้งานได้</p>
+<h2 id="s10">6.8 ไวยากรณ์ JavaScript สมัยใหม่ (Modern JavaScript: ECMAScript 6+) (ECMA International, 2023; Haverbeke, 2024)</h2>
+<p>มาตรฐาน ECMAScript 2015 (ES6) ถือเป็นการปฏิวัติรูปแบบการเขียนภาษา JavaScript ให้มีความปลอดภัย กระชับ และมีโครงสร้างที่เป็นระเบียบเทียบเท่าภาษาโปรแกรมเชิงวัตถุชั้นนำ โดยมีคุณสมบัติสำคัญที่นักพัฒนาเว็บต้องเข้าใจดังนี้:</p>
+<h3 id="s11">6.8.1 การประกาศตัวแปรด้วย let และ const</h3>
+<p>ในอดีต JavaScript ใช้คำสั่ง var ในการประกาศตัวแปร ซึ่งมีขอบเขตการทำงานแบบ Function Scope และเกิดปัญหา Hoisting ได้ง่าย ในมาตรฐาน ES6+ จึงได้แนะนำคำสั่งประกาศตัวแปรใหม่ที่มีขอบเขตระดับบล็อก (Block Scope {}):<br>• const (Constant): ใช้ประกาศตัวแปรที่ค่าคงที่ ไม่สามารถกำหนดค่าใหม่ได้ เหมาะสำหรับตัวเลขอ้างอิง อาร์เรย์ หรือออบเจกต์<br>• let: ใช้ประกาศตัวแปรที่สามารถเปลี่ยนแปลงค่าได้ เช่น ตัวแปรนับรอบลูป หรือค่าผลลัพธ์จากการคำนวณ<br><br>ตัวอย่าง:<br>const TAX_RATE = 0.07;<br>let totalPrice = 100 * (1 + TAX_RATE);</p>
+<h3 id="s12">6.8.2 ฟังก์ชันลูกศร (Arrow Functions) และ Template Literals</h3>
+<p>1. ฟังก์ชันลูกศร (Arrow Function): ช่วยลดทอนไวยากรณ์การเขียนฟังก์ชันให้สั้นกระชับ โดยใช้สัญลักษณ์ =&gt; เช่น:<br>   // รูปแบบเดิม<br>   function greet(name) { return &#x27;Hello &#x27; + name; }<br>   // รูปแบบ Arrow Function<br>   const greetArrow = (name) =&gt; `Hello ${name}`;<br><br>2. Template Literals: การใช้เครื่องหมาย Backtick (``) เพื่อเชื่อมต่อข้อความและแทรกค่าตัวแปรได้โดยตรงผ่าน ${ตัวแปร} ช่วยให้อ่านโค้ดได้ง่ายและรองรับการขึ้นบรรทัดใหม่อย่างสะดวก</p>
+<h3 id="s13">6.8.3 การดักฟังเหตุการณ์สมัยใหม่ (Modern Event Listeners)</h3>
+<p>การเขียนคำสั่งโต้ตอบในปัจจุบันไม่นิยมใส่ onclick ใน HTML แต่จะใช้เมธอด addEventListener() เพื่อแยกโค้ด JavaScript ออกจาก HTML โดยสิ้นเชิง:<br>const btn = document.querySelector(&#x27;#submitBtn&#x27;);<br>btn.addEventListener(&#x27;click&#x27;, (event) =&gt; {<br>  event.preventDefault(); // ป้องกันการ reload หน้าเว็บ<br>  console.log(&#x27;ปุ่มถูกคลิกเรียบร้อย&#x27;);<br>});</p>
+<h3 id="s14">6.8.4 ตัวอย่าง: สลับโหมดสว่าง/มืดด้วย classList.toggle และคำนวณราคาพร้อมภาษีแบบเรียลไทม์</h3>
+<p>คุณสมบัติ classList ใช้เพิ่ม ลบ หรือสลับคลาสของเอลิเมนต์ได้โดยไม่ต้องแก้สไตล์ทีละค่า ได้แก่ add(), remove(), toggle() (มีคลาสอยู่แล้วให้ลบ ไม่มีให้เพิ่ม) และ contains() (ตรวจว่ามีคลาสหรือไม่) ตัวอย่างต่อไปนี้สลับโหมดสว่าง/มืดของหน้าเว็บด้วยการสลับคลาส dark ที่แท็ก &lt;body&gt; โดยกำหนดสีของโหมดมืดไว้ใน CSS</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;style&gt;
+  body { background: #ffffff; color: #212529; }
+  body.dark { background: #121212; color: #e9ecef; }
+&lt;/style&gt;
+&lt;button id=&quot;themeBtn&quot;&gt;โหมดมืด&lt;/button&gt;
+&lt;script&gt;
+  const btn = document.getElementById(&#x27;themeBtn&#x27;);
+  btn.addEventListener(&#x27;click&#x27;, () =&gt; {
+    document.body.classList.toggle(&#x27;dark&#x27;);</code></pre></div>
+<p>    btn.textContent = document.body.classList.contains(&#x27;dark&#x27;) ? &#x27;โหมดสว่าง&#x27; : &#x27;โหมดมืด&#x27;;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>  });
+&lt;/script&gt;</code></pre></div>
+<p>ตัวอย่างการคำนวณราคาพร้อมภาษีมูลค่าเพิ่มแบบเรียลไทม์ ใช้เหตุการณ์ input ซึ่งเกิดทุกครั้งที่ผู้ใช้พิมพ์หรือเปลี่ยนค่า (ส่วนเหตุการณ์ change จะเกิดเมื่อผู้ใช้ออกจากช่องกรอกหลังเปลี่ยนค่า)</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;input type=&quot;number&quot; id=&quot;price&quot; min=&quot;0&quot; value=&quot;100&quot;&gt; บาท
+&lt;p&gt;ภาษีมูลค่าเพิ่ม 7%: &lt;span id=&quot;vat&quot;&gt;7.00&lt;/span&gt; บาท รวม: &lt;span id=&quot;total&quot;&gt;107.00&lt;/span&gt; บาท&lt;/p&gt;
+&lt;script&gt;
+  const price = document.getElementById(&#x27;price&#x27;);
+  function calc() {
+    const p = parseFloat(price.value) || 0;
+    const vat = p * 0.07;
+    document.getElementById(&#x27;vat&#x27;).textContent = vat.toFixed(2);
+    document.getElementById(&#x27;total&#x27;).textContent = (p + vat).toFixed(2);
+  }</code></pre></div>
+<p>  price.addEventListener(&#x27;input&#x27;, calc);   // คำนวณใหม่ทุกครั้งที่พิมพ์</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;/script&gt;</code></pre></div>
+<h2 id="s15">6.9 การเขียนโปรแกรมแบบอะซิงโครนัสและการรับส่งข้อมูล (Async/Await &amp; Fetch API)</h2>
+<p>ในการติดต่อกับฐานข้อมูลหรือเซิร์ฟเวอร์ภายนอกผ่าน Web API การทำงานจะใช้เวลาประมวลผลเครือข่าย JavaScript จึงใช้รูปแบบ Asynchronous เพื่อไม่ให้หน้าเว็บหยุดชะงัก (Non-blocking) โดยมีมาตรฐานการใช้งานผ่านคำสั่ง async / await ร่วมกับ fetch():<br><br>async function fetchUserData() {<br>  try {<br>    const response = await fetch(&#x27;<a href="https://api.example.com/users&#x27;" target="_blank" rel="noopener noreferrer">https://api.example.com/users&#x27;</a>);<br>    const data = await response.json();<br>    console.log(&#x27;ข้อมูลผู้ใช้:&#x27;, data);<br>  } catch (error) {<br>    console.error(&#x27;เกิดข้อผิดพลาดในการดึงข้อมูล:&#x27;, error);<br>  }<br>}</p>
+<p>การจัดเก็บข้อมูลบนเบราว์เซอร์: การใช้ localStorage ในการบันทึกสถานะของผู้ใช้ (State Persistence) ในรูปแบบ Key-Value ผ่านฟังก์ชัน JSON.stringify() และ JSON.parse() (ดูตัวอย่างในหัวข้อ 6.10.5)</p>
+<h3 id="s16">6.9.1 ตัวอย่าง: ดึงข้อมูลจาก JSONPlaceholder API มาแสดงในตาราง</h3>
+<p>JSONPlaceholder (jsonplaceholder.typicode.com) เป็น API ทดลองที่ให้ข้อมูลจำลองในรูปแบบ JSON ใช้ฝึก fetch() โดยไม่ต้องมีเซิร์ฟเวอร์ของตนเอง ต้องเชื่อมต่ออินเทอร์เน็ตขณะทดลอง ตัวอย่างต่อไปนี้ดึงรายชื่อผู้ใช้มาสร้างแถวของตารางด้วย DOM</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;table id=&quot;tbl&quot; border=&quot;1&quot;&gt;
+  &lt;thead&gt;&lt;tr&gt;&lt;th&gt;ID&lt;/th&gt;&lt;th&gt;ชื่อ&lt;/th&gt;&lt;th&gt;อีเมล&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+  &lt;tbody&gt;&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;script&gt;
+  async function loadUsers() {
+    try {
+      const res = await fetch(&#x27;https://jsonplaceholder.typicode.com/users&#x27;);
+      if (!res.ok) throw new Error(&#x27;HTTP &#x27; + res.status);
+      const users = await res.json();
+      const tbody = document.querySelector(&#x27;#tbl tbody&#x27;);
+      users.forEach((u) =&gt; {
+        const tr = document.createElement(&#x27;tr&#x27;);
+        [u.id, u.name, u.email].forEach((v) =&gt; {
+          const td = document.createElement(&#x27;td&#x27;);</code></pre></div>
+<p>          td.textContent = v;            // ใช้ textContent เพื่อป้องกัน XSS</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+    } catch (err) {
+      console.error(&#x27;โหลดข้อมูลไม่สำเร็จ:&#x27;, err.message);
+    }
+  }
+  loadUsers();
+&lt;/script&gt;</code></pre></div>
+<h3 id="s17">6.9.2 แนวคิด Promise และความสัมพันธ์กับ async/await</h3>
+<p>Promise คือออบเจ็กต์ที่แทนผลลัพธ์ของการทำงานแบบอะซิงโครนัสซึ่งจะเสร็จในอนาคต ไม่ว่าจะสำเร็จหรือล้มเหลว (Haverbeke, 2024; Mozilla Developer Network [MDN], 2024c) Promise มี 3 สถานะ คือ pending (รอผล) fulfilled (สำเร็จ พร้อมค่าผลลัพธ์) และ rejected (ล้มเหลว พร้อมข้อผิดพลาด) และเมื่อเปลี่ยนจาก pending เป็นสถานะใดแล้วจะไม่เปลี่ยนอีก ผู้พัฒนาสร้าง Promise ด้วย new Promise((resolve, reject) =&gt; { ... }) โดยเรียก resolve(ค่า) เมื่อสำเร็จ หรือ reject(ข้อผิดพลาด) เมื่อล้มเหลว จากนั้นรับผลด้วย .then() สำหรับกรณีสำเร็จ .catch() สำหรับกรณีล้มเหลว และ .finally() สำหรับโค้ดที่ต้องทำงานทุกกรณี</p>
+<p><strong>ตัวอย่างการเขียนโปรแกรม</strong></p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>function wait(ms, ok = true) {
+  return new Promise((resolve, reject) =&gt; {
+    setTimeout(() =&gt; {
+      if (ok) resolve(&#x27;สำเร็จหลัง &#x27; + ms + &#x27; ms&#x27;);</code></pre></div>
+<p>      else reject(new Error(&#x27;ล้มเหลว&#x27;));</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>    }, ms);
+  });
+}</code></pre></div>
+<p>wait(500)</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>  .then((msg) =&gt; { console.log(msg); return wait(300); })
+  .then((msg) =&gt; console.log(msg))
+  .catch((err) =&gt; console.error(err.message))
+  .finally(() =&gt; console.log(&#x27;จบการทำงาน&#x27;));</code></pre></div>
+<p><strong>แสดงผลลัพธ์</strong></p>
+<p>เมื่อรันใน Console จะแสดงข้อความ &quot;สำเร็จหลัง 500 ms&quot; หลังผ่านไปครึ่งวินาที ตามด้วย &quot;สำเร็จหลัง 300 ms&quot; อีก 0.3 วินาทีต่อมา และ &quot;จบการทำงาน&quot; เป็นลำดับสุดท้าย การต่อ .then() หลายชั้นเรียกว่า Promise Chaining ซึ่งทำให้เรียงลำดับงานอะซิงโครนัสได้โดยไม่ต้องซ้อนฟังก์ชันหลายระดับ และถ้าขั้นใดเกิดข้อผิดพลาด การทำงานจะข้ามไปที่ .catch() ทันที</p>
+<p>เมื่อต้องการให้หลายงานทำงานพร้อมกัน ใช้ Promise.all() ซึ่งรอให้ทุก Promise สำเร็จแล้วส่งผลลัพธ์กลับเป็นอาร์เรย์ตามลำดับเดิม แต่ถ้ามี Promise ใดล้มเหลว ทั้งชุดจะถือว่าล้มเหลวทันที หากต้องการทราบผลของทุกงานไม่ว่าสำเร็จหรือไม่ ให้ใช้ Promise.allSettled() แทน ตัวอย่างต่อไปนี้ดึงข้อมูลผู้ใช้และโพสต์จาก JSONPlaceholder พร้อมกัน</p>
+<p>Promise.all([</p>
+<p>  fetch(&#x27;<a href="https://jsonplaceholder.typicode.com/users/1&#x27;" target="_blank" rel="noopener noreferrer">https://jsonplaceholder.typicode.com/users/1&#x27;</a>).then((r) =&gt; r.json()),</p>
+<p>  fetch(&#x27;<a href="https://jsonplaceholder.typicode.com/posts/1&#x27;" target="_blank" rel="noopener noreferrer">https://jsonplaceholder.typicode.com/posts/1&#x27;</a>).then((r) =&gt; r.json())</p>
+<p>])</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>  .then(([user, post]) =&gt; console.log(user.name, &#x27;-&#x27;, post.title))
+  .catch((err) =&gt; console.error(&#x27;โหลดข้อมูลไม่สำเร็จ:&#x27;, err.message));</code></pre></div>
+<p>คำสั่ง async/await ที่ใช้ในหัวข้อ 6.9.1 เป็นรูปแบบการเขียนที่ทำงานบน Promise ฟังก์ชันที่ประกาศด้วย async จะคืนค่าเป็น Promise เสมอ ส่วน await ใช้หยุดรอผลของ Promise ภายในฟังก์ชัน async ทำให้โค้ดอ่านง่ายเหมือนลำดับคำสั่งปกติ และใช้ try/catch จัดการข้อผิดพลาดแทน .catch() นอกจากนี้ fetch() ก็คืนค่าเป็น Promise และจะถือว่าสำเร็จแม้เซิร์ฟเวอร์ตอบรหัสผิดพลาด เช่น 404 จึงต้องตรวจ response.ok ก่อนอ่านข้อมูลเสมอ เหมือนที่ทำในตัวอย่างหัวข้อ 6.9.1</p>
+<h2 id="s18">6.10 เทคนิคการใช้ AI ช่วยเขียนโค้ดและดีบัก JavaScript (Haverbeke, 2024; OWASP, 2023a) (AI-Assisted JS Development)</h2>
+<p>JavaScript เป็นภาษาที่มีความยืดหยุ่นสูงและมักพบข้อผิดพลาดขณะทำงาน (Runtime Errors) ได้บ่อยครั้ง การใช้เครื่องมือผู้ช่วย AI (เช่น GitHub Copilot, Cursor, ChatGPT) จึงมีประโยชน์อย่างยิ่งในการช่วยอธิบายตรรกะ การแนะนำแนวทางการเขียนโค้ด และการดีบักค้นหาจุดบกพร่อง</p>
+<h3 id="s19">6.10.1 ตัวอย่างการใช้ AI ช่วยสร้างตรรกะและการตรวจฟอร์ม (Validation)</h3>
+<p>นักพัฒนาสามารถใช้ Prompt เพื่อให้ AI ร่างฟังก์ชันการตรวจสอบข้อมูลอย่างครอบคลุม เช่น:<br>Prompt: &quot;ช่วยเขียนฟังก์ชัน JavaScript (ES6) สำหรับตรวจสอบแบบฟอร์มลงทะเบียน โดยต้องตรวจว่า: 1) รหัสผ่านมีความยาวอย่างน้อย 8 ตัวอักษรและมีตัวเลขผสม 2) อีเมลถูกต้องตามรูปแบบ และ 3) แสดงข้อความเตือนใต้ช่องกรอกข้อมูลทันทีเมื่อพิมพ์ผิด (Real-time)&quot;<br>AI จะสร้างฟังก์ชันพร้อม Regular Expression (Regex) และการจัดการ Event input ได้อย่างรวดเร็ว</p>
+<h3 id="s20">6.10.2 การใช้ AI สำหรับการดีบักและการค้นหาข้อผิดพลาด (Console Debugging)</h3>
+<p>• การวิเคราะห์ข้อความแจ้งเตือน Error: เมื่อพบข้อผิดพลาด เช่น TypeError: Cannot read properties of undefined หรือ Uncaught SyntaxError สามารถคัดลอกข้อความใน Console ร่วมกับโค้ดส่งให้ AI ช่วยอธิบายสาเหตุและแนวทางแก้ไข<br>• การปรับปรุงประสิทธิภาพ (Refactoring): ให้ AI ช่วยแปลงโค้ดที่มีลูปซ้อนลูป (Nested Loops) ให้ใช้เมธอดอาร์เรย์สมัยใหม่ เช่น .map(), .filter(), .reduce() เพื่อความกระชับและรวดเร็ว</p>
+<h3 id="s21">6.10.3 ข้อควรระวังด้านความมั่นคงปลอดภัยในการใช้ AI พัฒนา JavaScript</h3>
+<p>• ปัญหาช่องโหว่ Cross-Site Scripting (XSS) (Open Web Application Security Project [OWASP], 2023a): AI บางครั้งอาจแนะนำการใช้ element.innerHTML ซึ่งอาจเปิดช่องโหว่ให้ผู้ไม่ประสงค์ดีแทรกโค้ดอันตราย นักพัฒนาควรเปลี่ยนไปใช้ element.textContent หรือสร้าง Element ผ่าน document.createElement() แทนเมื่อต้องแสดงผลข้อมูลจากผู้ใช้งาน<br>• ห้ามบันทึกความลับไว้ในโค้ดฝั่ง Client: ต้องไม่ให้ AI ฝังรหัสผ่าน API Key หรือ Secret Keys ไว้ในไฟล์ JavaScript บนเบราว์เซอร์เด็ดขาด</p>
+<h3 id="s22">6.10.4 กรอบคำสั่ง AI สำหรับการดีบัก Asynchronous และการตรวจหาช่องโหว่ XSS (Prompt for Security Review)</h3>
+<p><em>&quot;Role: Web Security Analyst. / Task: Review the following JavaScript DOM manipulation code. Identify potential DOM-based XSS vulnerabilities caused by unsanitized input and recommend fixes using textContent and DOMPurify. / Constraints: Refactor the code to use modern async/await with robust try...catch error handling.&quot;</em></p>
+<h3 id="s23">6.10.5 ตัวอย่างโค้ด Modern JavaScript: การดึงข้อมูล API, LocalStorage และ DOM ปลอดภัย</h3>
+<p>สร้างไฟล์ index.html</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;title&gt;Task Manager&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;form id=&quot;task-form&quot;&gt;
+    &lt;input type=&quot;text&quot; id=&quot;task-input&quot; placeholder=&quot;ชื่องาน&quot;&gt;
+    &lt;button type=&quot;submit&quot;&gt;เพิ่ม&lt;/button&gt;
+  &lt;/form&gt;
+  &lt;ul id=&quot;task-list&quot;&gt;&lt;/ul&gt;
+  &lt;script src=&quot;app.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>สร้างไฟล์ app.js</p>
+<p>// Task Manager Application - Modern ES6+ Safe Implementation<br>const taskInput = document.querySelector(&#x27;#task-input&#x27;);<br>const taskForm = document.querySelector(&#x27;#task-form&#x27;);<br>const taskList = document.querySelector(&#x27;#task-list&#x27;);<br><br>// โหลดรายการจาก LocalStorage เมื่อเปิดหน้าเว็บ<br>const loadTasks = () =&gt; {<br>  const saved = localStorage.getItem(&#x27;course_tasks&#x27;);<br>  return saved ? JSON.parse(saved) : [];<br>};<br><br>// บันทึกรายการลง LocalStorage<br>const saveTasks = (tasks) =&gt; {<br>  localStorage.setItem(&#x27;course_tasks&#x27;, JSON.stringify(tasks));<br>};<br><br>// เรนเดอร์รายการสู่ DOM ด้วย textContent (ป้องกัน XSS จากข้อมูลที่ผู้ใช้พิมพ์)<br>const renderTasks = () =&gt; {<br>  const tasks = loadTasks();<br>  taskList.replaceChildren(); // ล้างรายการเก่า<br>  <br>  tasks.forEach((task, index) =&gt; {<br>    const li = document.createElement(&#x27;li&#x27;);<br>    li.textContent = task.title; // ปลอดภัย: ไม่ตีความสตริงเป็น HTML<br>    <br>    const deleteBtn = document.createElement(&#x27;button&#x27;);<br>    deleteBtn.textContent = &#x27;ลบ&#x27;;<br>    deleteBtn.addEventListener(&#x27;click&#x27;, () =&gt; {<br>      tasks.splice(index, 1);<br>      saveTasks(tasks);<br>      renderTasks();<br>    });<br>    <br>    li.appendChild(deleteBtn);<br>    taskList.appendChild(li);<br>  });<br>};<br><br>// ดักจับการส่งฟอร์ม (Unobtrusive Event Handling)<br>taskForm.addEventListener(&#x27;submit&#x27;, (e) =&gt; {<br>  e.preventDefault();<br>  const title = taskInput.value.trim();<br>  if (!title) return alert(&#x27;กรุณากรอกชื่องาน&#x27;);<br>  <br>  const tasks = loadTasks();<br>  tasks.push({ id: Date.now(), title: title });<br>  saveTasks(tasks);<br>  taskInput.value = &#x27;&#x27;;<br>  renderTasks();<br>});<br><br>// เริ่มต้นโหลดข้อมูล<br>document.addEventListener(&#x27;DOMContentLoaded&#x27;, renderTasks);</p>
+<h2 id="s24">สรุป</h2>
+<p>ภาษา JavaScript เป็นเสาหลักสำคัญของการพัฒนาเว็บฝั่งผู้ใช้งาน (Client-Side) ที่ช่วยเปลี่ยนหน้าเว็บเอกสารนิ่ง ให้กลายเป็นเว็บแอปพลิเคชันที่มีการโต้ตอบอย่างชาญฉลาด ผ่านการควบคุมโครงสร้างเอกสาร DOM (Document Object Model) และการดักฟังเหตุการณ์ (Event Handling) ไวยากรณ์ในยุคปัจจุบันได้ก้าวสู่มาตรฐาน ES6+ ด้วยการประกาศตัวแปรที่มีขอบเขตชัดเจน (let / const), ฟังก์ชันลูกศร (Arrow Functions), และ Template Literals ควบคู่ไปกับการสื่อสารข้อมูลเครือข่ายแบบ Asynchronous ผ่าน Fetch API และการใช้คำสั่ง async/await ในการรับส่งข้อมูล JSON นอกจากนี้ การประยุกต์ใช้เครื่องมือผู้ช่วย AI เข้ามาช่วยวิเคราะห์ตรรกะ และแก้ไขข้อผิดพลาด (Debugging) ช่วยเพิ่มประสิทธิภาพการพัฒนาอย่างก้าวกระโดด โดยนักพัฒนาต้องตระหนักถึงการป้องกันช่องโหว่ความปลอดภัย เช่น XSS และการตรวจสอบความถูกต้องของโค้ดอยู่เสมอ</p>
+<h2 id="s25">แบบฝึกหัด</h2>
+<p><strong>คำชี้แจง: จงทำแบบฝึกหัดต่อไปนี้เพื่อทบทวนความรู้ความเข้าใจ</strong></p>
+<p><strong>ตอนที่ 1: แบบฝึกหัดเชิงทฤษฎีและการวิเคราะห์ (Theoretical &amp; Analytical Exercises)</strong></p>
+<p>1. จงอธิบายความแตกต่างระหว่างการประกาศตัวแปรด้วย var, let และ const ในภาษา JavaScript โดยเน้นเรื่องขอบเขตของตัวแปร (Scope) และการกำหนดค่าใหม่</p>
+<p>2. จงอธิบายโครงสร้างและความสัมพันธ์ของ DOM (Document Object Model) และอธิบายว่าคำสั่ง document.getElementById() กับ document.querySelector() มีข้อแตกต่างกันอย่างไร</p>
+<p>3. เหตุใดการใช้ addEventListener() จึงเป็นแนวทางปฏิบัติที่ดี (Best Practice) มากกว่าการเขียนฟังก์ชันดักจับเหตุการณ์แบบอินไลน์ (เช่น onclick=&quot;...&quot;) ในแท็ก HTML</p>
+<p>4. จงอธิบายแนวคิดของการเขียนโปรแกรมแบบ Synchronous และ Asynchronous ใน JavaScript ว่ามีความแตกต่างกันอย่างไร และคำสั่ง async/await ช่วยให้การเขียนโค้ดจัดการข้อมูลผ่าน fetch() มีความสะดวกขึ้นอย่างไร</p>
+<p>5. ช่องโหว่ความปลอดภัยแบบ Cross-Site Scripting (XSS) ใน JavaScript เกิดขึ้นได้อย่างไร และเหตุใดการใช้ textContent จึงปลอดภัยกว่าการใช้ innerHTML ในการแสดงผลข้อมูลที่รับมาจากผู้ใช้งาน</p>
+<p>6. ปัญญาประดิษฐ์ (AI Coding Assistants) สามารถช่วยเหลือนักพัฒนาในการเขียนและดีบักโค้ด JavaScript ได้อย่างไรบ้าง พร้อมยกตัวอย่างสถานการณ์ที่ AI ช่วยค้นหาข้อผิดพลาด Runtime Error</p>
+<p><strong>ตอนที่ 2: แบบฝึกหัดประยุกต์และการเขียนโปรแกรม (Applied &amp; Programming Exercises)</strong></p>
+<p>1.ให้นักศึกษาเขียนโปรแกรมด้วย JavaScript สร้าง form login และมีปุ่มกด Submit</p>
+<p>ให้แจ้งเตือนข้อความ &quot;Name must be filled out&quot; หากมีค่าว่าง</p>
+<p>2.ให้นักศึกษาเขียนโปรแกรมด้วย JavaScript สร้าง form และตรวจสอบความถูกต้อง Validation ต่าง ๆ ดังนี้</p>
+<p>3.ให้นักศึกษาเขียนโปรแกรมด้วย JavaScript กับเทคนิค Mouseover และ Mouseout ให้ทำการเปลี่ยนสีตัวอักษรเป็นสีแดงเมื่อ Mouseover    </p>
+<p>4.ให้นักศึกษาเขียนโปรแกรมด้วย JavaScript การสลับสีแถวในตารางดังนี้</p>
+<h2 id="s26">เอกสารอ้างอิง</h2>
+<p>จีราวุธ วารินทร์. (2566). โมเดิร์น JavaScript เก่งได้ใน 30 วัน ฉบับ Node.js + MongoDB. นนทบุรี: ธิงค์ บียอนด์ บุ๊คส์.</p>
+<p>ECMA International. (2023). ECMAScript 2023 Language Specification (Standard ECMA-262, 14th ed.). Retrieved from <a href="https://www.ecma-international.org/" target="_blank" rel="noopener noreferrer">https://www.ecma-international.org/</a></p>
+<p>Haverbeke, M. (2024). Eloquent JavaScript: A Modern Introduction to Programming (4th ed.). San Francisco, CA: No Starch Press.</p>
+<p>Mozilla Developer Network [MDN]. (2024c). JavaScript. Retrieved from <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noopener noreferrer">https://developer.mozilla.org/en-US/docs/Web/JavaScript</a></p>
+<p>Open Web Application Security Project [OWASP]. (2023a). Cross site scripting prevention. OWASP Cheat Sheet Series. Retrieved from <a href="https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html" target="_blank" rel="noopener noreferrer">https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html</a></p>
+<label class="donebox"><input type="checkbox" id="done"><span>ทำเครื่องหมายว่าอ่านบทนี้แล้ว</span></label>
+<div class="pager"><a class="pn" href="ch5.html"><small>บทก่อนหน้า</small><b>บทที่ 5 พื้นฐาน Bootstrap</b></a><a class="pn next" href="ch7.html"><small>บทถัดไป</small><b>บทที่ 7 พื้นฐานภาษา PHP</b></a></div>
+</article></div>
+</main>
+<footer class="foot"><div class="wrap fgrid">
+<div><a class="brand" href="../index.html"><span class="logo" aria-hidden="true">&lt;/&gt;</span><span class="bt"><b>การเขียนโปรแกรมบนเว็บ</b><small>Web Programming</small></span></a>
+<p class="small">สื่อเสริมการเรียนรู้ ใช้ประกอบเอกสารประกอบการสอน ไม่มีระบบสมาชิกและไม่เก็บข้อมูลส่วนบุคคล ส่งงานผ่าน Google Classroom</p></div>
+<div><p class="fh">เรียนรู้</p><a href="../chapters.html">บทเรียน 10 บท</a><a href="../worksheets.html">ใบงานประจำบท</a><a href="../start.html">เริ่มต้นใช้งาน</a></div>
+<div><p class="fh">รายวิชา</p><a href="../about.html">เกี่ยวกับรายวิชา</a><span>ผู้สอน: ดร.สุรเชษฐ์ สังขพันธ์</span><span>พ.ศ. 2569</span></div>
+</div></footer>
+<script src="../assets/app.js"></script>
+</body>
+</html>

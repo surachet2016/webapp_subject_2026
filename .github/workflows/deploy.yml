@@ -1,0 +1,36 @@
+name: Deploy website to fms.pnu.ac.th
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "site/**"
+      - ".github/deploy/**"
+      - ".github/workflows/deploy.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-fms
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install paramiko
+      - name: Upload site/ via SFTP
+        env:
+          SFTP_HOST: fms.pnu.ac.th
+          SFTP_PORT: "22"
+          SFTP_REMOTE_DIR: htdocs
+          SFTP_HOST_KEY_SHA256: "SHA256:ajxwiFApUvQ+8KmiNzu9XGtD2YchQatQAFzWLZaWz+0,SHA256:jqUkiSr445GgCPxght2FERnOldx5/63JjUqDxCEnIrQ,SHA256:9z2LmFptOkvPyUYazgmi15NLoqmVAYoYECHx/5Y3bDs"
+          SFTP_USERNAME: ${{ secrets.SFTP_USERNAME }}
+          SFTP_PASSWORD: ${{ secrets.SFTP_PASSWORD }}
+        run: python .github/deploy/upload.py site

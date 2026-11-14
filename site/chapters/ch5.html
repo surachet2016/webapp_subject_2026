@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="สร้างหน้าที่รองรับทุกอุปกรณ์ด้วยกริดและคอมโพเนนต์สำเร็จรูป">
+<meta name="theme-color" content="#4338ca">
+<title>บทที่ 5 พื้นฐาน Bootstrap · การเขียนโปรแกรมบนเว็บ</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%234338ca'/%3E%3Cpath d='M26 20 14 32l12 12M38 20l12 12-12 12' fill='none' stroke='%23fff' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preload" href="../assets/fonts/Sarabun-400-thai.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css">
+<script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+
+</head>
+<body class="ch-page">
+<a class="skip" href="#main">ข้ามไปยังเนื้อหา</a>
+<header class="top"><div class="wrap nav">
+<a class="brand" href="../index.html" aria-label="หน้าแรก การเขียนโปรแกรมบนเว็บ"><span class="logo" aria-hidden="true">&lt;/&gt;</span><span class="bt"><b>การเขียนโปรแกรมบนเว็บ</b><small>07-034-210</small></span></a>
+<button id="menuBtn" class="iconbtn menu-btn" type="button" aria-expanded="false" aria-controls="menu" aria-label="เปิดเมนู"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v2H3V6Zm0 5h18v2H3v-2Zm0 5h18v2H3v-2Z"/></svg></button>
+<nav id="menu" aria-label="เมนูหลัก">
+<a href="../chapters.html" aria-current="page">บทเรียน</a><a href="../worksheets.html">ใบงาน</a><a href="../start.html">เริ่มต้นใช้งาน</a><a href="../about.html">เกี่ยวกับรายวิชา</a>
+</nav>
+<button id="theme" class="iconbtn" type="button" aria-label="สลับโหมดมืดและสว่าง"><span class="i-moon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5Z"/></svg></span><span class="i-sun"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg></span></button>
+</div><div id="bar" class="bar" aria-hidden="true"></div></header>
+<main id="main">
+<div class="chead s2"><div class="wrap">
+<nav class="crumb" aria-label="เส้นทาง"><a href="../index.html">หน้าแรก</a><span>/</span><a href="../chapters.html">บทเรียน</a><span>/</span><span aria-current="page">บทที่ 5</span></nav>
+<div class="chrow"><span class="badge b-s2 big" aria-hidden="true">BS5</span><div><p class="kicker">บทที่ 5 · สร้างหน้าเว็บ</p><h1>พื้นฐาน Bootstrap</h1><p class="cdesc">สร้างหน้าที่รองรับทุกอุปกรณ์ด้วยกริดและคอมโพเนนต์สำเร็จรูป</p></div></div>
+<ul class="meta"><li><b>30</b> นาที อ่าน</li><li><b>13</b> หัวข้อหลัก</li><li><b>7</b> ตัวอย่างลองรันได้</li></ul>
+</div></div>
+<div class="wrap layout">
+<aside class="side" aria-label="สารบัญบทนี้"><details class="tocbox" open><summary>สารบัญบทนี้</summary><ol><li><a href="#s1">บทนำ</a></li><li><a href="#s2">เนื้อหา</a></li><li><a href="#s3">5.1 การติดตั้ง Bootstrap</a></li><li><a href="#s4">5.2 การเรียนรู้ Bootstrap5 Containers</a></li><li><a href="#s6">5.3 การเรียนรู้ Bootstrap5 Grid System</a></li><li><a href="#s7">5.4 การเรียนรู้ Bootstrap5 Forms</a></li><li><a href="#s8">5.5 การเรียนรู้ Bootstrap5 Form Validation</a></li><li><a href="#s9">5.6 การเรียนรู้ Bootstrap5 Template</a></li><li><a href="#s10">5.7 คอมโพเนนต์ยอดนิยมและคลาสอรรถประโยชน์ใน Bootstrap 5 (Components &amp; Utilities)</a></li><li><a href="#s13">5.8 เทคนิคการใช้ AI ช่วยสร้างและปรับแต่ง UI ด้วย Bootstrap 5 (AI-Assisted Bootstrap UI)</a></li><li><a href="#s19">สรุป</a></li><li><a href="#s20">แบบฝึกหัด</a></li><li><a href="#s21">เอกสารอ้างอิง</a></li></ol></details></aside>
+<article class="chapter prose" data-ch="5">
+<p class="note"><b>หมายเหตุ</b> หน้านี้ไม่แสดงภาพประกอบ (ดูภาพได้ในเอกสารประกอบการสอนฉบับเต็ม) ตัวอย่าง HTML ครบหน้ามีปุ่ม "ลองรัน" กดเพื่อดูผลได้ทันที</p>
+<h2 id="s1">บทนำ</h2>
+<p>Bootstrap เป็นชุดเครื่องมือและเฟรมเวิร์กสำหรับพัฒนาส่วนหน้าของเว็บไซต์ (Front-End CSS Framework) ที่ได้รับความนิยมสูงสุดในโลก ช่วยให้นักพัฒนาสามารถสร้างหน้าเว็บเพจที่มีความสวยงาม เป็นระเบียบ และตอบสนองต่อทุกขนาดหน้าจอ (Responsive Web Design) ได้อย่างรวดเร็ว ในเวอร์ชัน Bootstrap 5 ได้มีการยกเครื่องสถาปัตยกรรมครั้งสำคัญ โดยการตัดการพึ่งพาไลบรารี jQuery ออกอย่างสิ้นเชิง และหันมาใช้ JavaScript แบบดั้งเดิม (Vanilla JavaScript) ส่งผลให้เว็บไซต์มีขนาดเล็กลงและโหลดได้รวดเร็วขึ้นอย่างมาก ในบทนี้นักศึกษาจะได้ศึกษาตั้งแต่การติดตั้งใช้งาน ระบบคอนเทนเนอร์ (Containers), ระบบกริด 12 คอลัมน์ (Grid System), การสร้างและตรวจสอบความถูกต้องของแบบฟอร์ม (Form Validation), คอมโพเนนต์และคลาสอรรถประโยชน์ (Components &amp; Utility Classes) ตลอดจนการประยุกต์ใช้ปัญญาประดิษฐ์ (AI) ในการช่วยประกอบโครงร่างหน้าเว็บและแดชบอร์ดอย่างมืออาชีพ</p>
+<h2 id="s2">เนื้อหา</h2>
+<h2 id="s3">5.1 การติดตั้ง Bootstrap (Bootstrap Core Team, 2024b; บัญชา ปะสีละเตสัง, 2565ก)</h2>
+<ul><li><strong>ให้ผู้เรียนไปที่ </strong><strong> เพื่อทำการเรียนรู้วิธีการติดตั้ง Bootstrap</strong></li></ul>
+<p><strong>การติดตั้ง Bootstrap มี 2 วิธีหลัก ได้แก่</strong></p>
+<p><strong>ดาวน์โหลดไฟล์ CSS และ JS ที่คอมไพล์แล้ว (Compiled CSS and JS) มาติดตั้งบนเว็บเซิร์ฟเวอร์ จะได้ไฟล์และโฟลเดอร์ของ CSS และ JS สำหรับนำไปใช้งาน</strong></p>
+<p>หรือดาวน์โหลดซอร์สโค้ด (Source Files) มาติดตั้ง ซึ่งมีไฟล์และโฟลเดอร์ต้นฉบับสำหรับปรับแต่งเพิ่มเติม</p>
+<ul><li><strong>ใช้ลิงก์ CDN ซึ่งทำได้ดังนี้ (หากต้องการความปลอดภัยเพิ่มเติม ให้ใส่แอตทริบิวต์ integrity และ crossorigin ตามที่แสดงในเอกสารของ Bootstrap)</strong></li><li><strong>คัดลอกลิงก์ CSS ไปวางในแท็ก &lt;head&gt;</strong></li></ul>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;</code></pre></div>
+<ul><li><strong>คัดลอกลิงก์ JavaScript ไปวางก่อนปิดแท็ก &lt;/body&gt;</strong></li></ul>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;</code></pre></div>
+<p><strong>ตัวอย่างการเขียนโปรแกรม</strong></p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;title&gt;ทดสอบการติดตั้ง Bootstrap&lt;/title&gt;
+&lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;container-fluid p-5 bg-success text-white text-center&quot;&gt;
+  &lt;h1&gt;ชมรมถ่ายภาพสร้างสรรค์&lt;/h1&gt;
+  &lt;p&gt;ปรับขนาดหน้าต่างเพื่อดูการเปลี่ยนแปลงของเลย์เอาต์&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;container mt-5&quot;&gt;
+  &lt;div class=&quot;row&quot;&gt;
+    &lt;div class=&quot;col-sm-4&quot;&gt;
+      &lt;h3&gt;กิจกรรม&lt;/h3&gt;
+      &lt;p&gt;ออกภาคสนามถ่ายภาพทุกเดือน&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;col-sm-4&quot;&gt;
+      &lt;h3&gt;อบรม&lt;/h3&gt;
+      &lt;p&gt;เวิร์กชอปพื้นฐานการจัดองค์ประกอบภาพ&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;col-sm-4&quot;&gt;
+      &lt;h3&gt;ประกวด&lt;/h3&gt;
+      &lt;p&gt;แข่งขันภาพถ่ายประจำปีของชมรม&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p><strong>แสดงผลลัพธ์</strong></p>
+<h2 id="s4">5.2 การเรียนรู้ Bootstrap5 Containers</h2>
+<p>Bootstrap มี Container 2 แบบ คือ</p>
+<h3 id="s5">Fixed Container</h3>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;title&gt;Fixed Container&lt;/title&gt;
+&lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+  .container { background-color: #e3f2fd; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;container&quot;&gt;
+  &lt;h1&gt;ตัวอย่างคลาส .container&lt;/h1&gt;
+  &lt;p&gt;เนื้อหาส่วนนี้อยู่ภายในคลาส .container&lt;/p&gt;
+  &lt;p&gt;คลาส .container กำหนดความกว้างคงที่ตามขนาดหน้าจอ และจัดให้อยู่กึ่งกลาง&lt;/p&gt;
+  &lt;p&gt;ลองย่อหรือขยายหน้าต่างเบราว์เซอร์ จะเห็นความกว้างเปลี่ยนเป็นขั้นตามจุดตัดหน้าจอ&lt;/p&gt;
+&lt;/div&gt;
+&lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<ul><li>Fluid Container</li></ul>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;title&gt;Fluid Container&lt;/title&gt;
+&lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+  .container-fluid { background-color: #fce4ec; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;container-fluid&quot;&gt;
+  &lt;h1&gt;ตัวอย่างคลาส .container-fluid&lt;/h1&gt;
+  &lt;p&gt;เนื้อหาส่วนนี้อยู่ภายในคลาส .container-fluid&lt;/p&gt;
+  &lt;p&gt;คลาส .container-fluid กว้างเต็มความกว้างของหน้าต่างเบราว์เซอร์เสมอ&lt;/p&gt;
+&lt;/div&gt;
+&lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<p>แสดงความแตกต่างระหว่างการใช้งาน Container ทั้งสองแบบ</p>
+<h2 id="s6">5.3 การเรียนรู้ Bootstrap5 Grid System (Bootstrap Core Team, 2024a; ศุภชัย สมพานิช, 2566ข)</h2>
+<p>Grid System คือระบบจัดวางเนื้อหาเป็นแถว (row) และคอลัมน์ (column) ที่สร้างบน Flexbox ทำให้ปรับขนาดได้ยืดหยุ่นโดยอัตโนมัติ ประกอบด้วยคลาสหลัก 3 กลุ่ม คือ container, row และ col</p>
+<p>Bootstrap แบ่งแต่ละแถวเป็น 12 ส่วน ผู้พัฒนาสามารถรวมหลายส่วนเป็นคอลัมน์ที่กว้างขึ้นได้ และคอลัมน์จะปรับการเรียงตามขนาดหน้าจอโดยอัตโนมัติ จุดตัดหน้าจอ (Breakpoint) ที่ใช้กำหนดคลาสมีดังนี้</p>
+<ul><li><strong>xs - หน้าจอกว้างน้อยกว่า 576px (โทรศัพท์ในแนวตั้ง) ไม่ต้องระบุตัวย่อในชื่อคลาส เช่น col-6</strong></li><li><strong>sm - ตั้งแต่ 576px ขึ้นไป (โทรศัพท์ในแนวนอน)</strong></li><li><strong>md - ตั้งแต่ 768px ขึ้นไป (แท็บเล็ต)</strong></li><li><strong>lg - ตั้งแต่ 992px ขึ้นไป (แล็ปท็อป)</strong></li><li>xl - ตั้งแต่ 1200px ขึ้นไป (เดสก์ท็อป)</li><li>xxl - ตั้งแต่ 1400px ขึ้นไป (จอขนาดใหญ่)</li></ul>
+<p>แนวคิด Mobile-First: Bootstrap 5 ออกแบบตามแนวคิด Mobile-First ซึ่งเชื่อมโยงกับหัวข้อ 1.6.1 และเทคนิคมีเดียคิวรีแบบ min-width ในหัวข้อ 4.13 กล่าวคือ คลาสที่ไม่ระบุตัวย่อ Breakpoint เช่น col-12 มีผลตั้งแต่หน้าจอเล็กที่สุดขึ้นไป ส่วนคลาสที่ระบุ Breakpoint เช่น col-md-6 มีผลตั้งแต่ขนาดนั้นขึ้นไป (Bootstrap Core Team, 2024a) ดังนั้นควรออกแบบเลย์เอาต์สำหรับมือถือก่อน แล้วค่อยเพิ่มคลาสของ Breakpoint ที่ใหญ่ขึ้นเพื่อปรับการจัดวางบนแท็บเล็ตและคอมพิวเตอร์ นอกจากนี้ต้องมีแท็ก &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt; ในส่วน &lt;head&gt; เพื่อให้เบราว์เซอร์บนมือถือแสดงหน้าเว็บตามความกว้างจริงของหน้าจอ</p>
+<p><strong>ตัวอย่างการเขียนโปรแกรม</strong></p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;div class=&quot;row&quot;&gt;
+  &lt;div class=&quot;col-12 col-md-6 col-lg-4&quot;&gt;การ์ดที่ 1&lt;/div&gt;
+  &lt;div class=&quot;col-12 col-md-6 col-lg-4&quot;&gt;การ์ดที่ 2&lt;/div&gt;
+  &lt;div class=&quot;col-12 col-md-6 col-lg-4&quot;&gt;การ์ดที่ 3&lt;/div&gt;
+&lt;/div&gt;</code></pre></div>
+<p>จากตัวอย่าง หน้าจอที่กว้างน้อยกว่า 768px แสดงการ์ด 1 ใบต่อแถว (col-12) หน้าจอตั้งแต่ 768px ขึ้นไปแสดง 2 ใบต่อแถว (col-md-6) และหน้าจอตั้งแต่ 992px ขึ้นไปแสดง 3 ใบต่อแถว (col-lg-4)</p>
+<p>โครงสร้างพื้นฐานของ Bootstrap Grid</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;div class=&quot;container&quot;&gt;
+  &lt;div class=&quot;row&quot;&gt;
+    &lt;div class=&quot;col-*-*&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;col-*-*&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;row&quot;&gt;
+    &lt;div class=&quot;col-*-*&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;col-*-*&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;col-*-*&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;row&quot;&gt;
+    ...
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre></div>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;title&gt;โครงสร้างกริดเบื้องต้น&lt;/title&gt;
+&lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;container-fluid mt-3&quot;&gt;
+  &lt;h1&gt;โครงสร้างกริดเบื้องต้น&lt;/h1&gt;
+  &lt;p&gt;ย่อหน้าต่างให้เล็กกว่า 576px แถวต่าง ๆ จะเรียงซ้อนกันในแนวตั้ง&lt;/p&gt;
+  &lt;!-- กำหนดความกว้างคอลัมน์ให้เปลี่ยนตามขนาดหน้าจอ --&gt;
+  &lt;div class=&quot;row&quot;&gt;
+    &lt;div class=&quot;col-sm-6 bg-primary text-white&quot;&gt;50%&lt;/div&gt;
+    &lt;div class=&quot;col-sm-6 bg-dark text-white&quot;&gt;50%&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;br&gt;
+  &lt;div class=&quot;row&quot;&gt;
+    &lt;div class=&quot;col-sm-4 bg-primary text-white&quot;&gt;33.33%&lt;/div&gt;
+    &lt;div class=&quot;col-sm-4 bg-dark text-white&quot;&gt;33.33%&lt;/div&gt;
+    &lt;div class=&quot;col-sm-4 bg-primary text-white&quot;&gt;33.33%&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;br&gt;
+  &lt;!-- หรือให้ Bootstrap แบ่งความกว้างให้เท่ากันโดยอัตโนมัติ --&gt;
+  &lt;div class=&quot;row&quot;&gt;
+    &lt;div class=&quot;col-sm bg-primary text-white&quot;&gt;25%&lt;/div&gt;
+    &lt;div class=&quot;col-sm bg-dark text-white&quot;&gt;25%&lt;/div&gt;
+    &lt;div class=&quot;col-sm bg-primary text-white&quot;&gt;25%&lt;/div&gt;
+    &lt;div class=&quot;col-sm bg-dark text-white&quot;&gt;25%&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;br&gt;
+  &lt;div class=&quot;row&quot;&gt;
+    &lt;div class=&quot;col-8 bg-success text-white&quot;&gt;8 ส่วน&lt;/div&gt;
+    &lt;div class=&quot;col-4 bg-secondary text-white&quot;&gt;4 ส่วน&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<h2 id="s7">5.4 การเรียนรู้ Bootstrap5 Forms</h2>
+<p><strong>ตัวอย่างการเขียนโปรแกรม</strong></p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;title&gt;ฟอร์มเข้าสู่ระบบ&lt;/title&gt;
+&lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;container mt-3&quot;&gt;
+  &lt;h2&gt;ฟอร์มเข้าสู่ระบบ&lt;/h2&gt;
+  &lt;form action=&quot;login.php&quot; method=&quot;post&quot;&gt;
+    &lt;div class=&quot;mb-3 mt-3&quot;&gt;
+      &lt;label for=&quot;email&quot; class=&quot;form-label&quot;&gt;อีเมล&lt;/label&gt;
+      &lt;input type=&quot;email&quot; class=&quot;form-control&quot; id=&quot;email&quot; name=&quot;email&quot; placeholder=&quot;กรอกอีเมล&quot;&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;mb-3&quot;&gt;
+      &lt;label for=&quot;pwd&quot; class=&quot;form-label&quot;&gt;รหัสผ่าน&lt;/label&gt;
+      &lt;input type=&quot;password&quot; class=&quot;form-control&quot; id=&quot;pwd&quot; name=&quot;pwd&quot; placeholder=&quot;กรอกรหัสผ่าน&quot;&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;form-check mb-3&quot;&gt;
+      &lt;input class=&quot;form-check-input&quot; type=&quot;checkbox&quot; id=&quot;remember&quot; name=&quot;remember&quot;&gt;
+      &lt;label class=&quot;form-check-label&quot; for=&quot;remember&quot;&gt;จดจำฉันไว้ในระบบ&lt;/label&gt;
+    &lt;/div&gt;
+    &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary&quot;&gt;เข้าสู่ระบบ&lt;/button&gt;
+  &lt;/form&gt;
+&lt;/div&gt;
+&lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p><strong>แสดงผลลัพธ์</strong></p>
+<h2 id="s8">5.5 การเรียนรู้ Bootstrap5 Form Validation</h2>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;title&gt;การตรวจสอบความถูกต้องของฟอร์ม&lt;/title&gt;
+&lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;container mt-3&quot;&gt;
+  &lt;h3&gt;ฟอร์มสมัครใช้งาน&lt;/h3&gt;
+  &lt;p&gt;ลองกดปุ่มส่งข้อมูลโดยไม่กรอกข้อมูล&lt;/p&gt;
+  &lt;form action=&quot;register.php&quot; class=&quot;was-validated&quot;&gt;
+    &lt;div class=&quot;mb-3 mt-3&quot;&gt;
+      &lt;label for=&quot;uname&quot; class=&quot;form-label&quot;&gt;ชื่อผู้ใช้&lt;/label&gt;
+      &lt;input type=&quot;text&quot; class=&quot;form-control&quot; id=&quot;uname&quot; name=&quot;uname&quot; placeholder=&quot;กรอกชื่อผู้ใช้&quot; required&gt;
+      &lt;div class=&quot;valid-feedback&quot;&gt;ถูกต้อง&lt;/div&gt;
+      &lt;div class=&quot;invalid-feedback&quot;&gt;กรุณากรอกชื่อผู้ใช้&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;mb-3&quot;&gt;
+      &lt;label for=&quot;pwd&quot; class=&quot;form-label&quot;&gt;รหัสผ่าน&lt;/label&gt;
+      &lt;input type=&quot;password&quot; class=&quot;form-control&quot; id=&quot;pwd&quot; name=&quot;pwd&quot; placeholder=&quot;กรอกรหัสผ่าน&quot; required&gt;
+      &lt;div class=&quot;valid-feedback&quot;&gt;ถูกต้อง&lt;/div&gt;
+      &lt;div class=&quot;invalid-feedback&quot;&gt;กรุณากรอกรหัสผ่าน&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;form-check mb-3&quot;&gt;
+      &lt;input class=&quot;form-check-input&quot; type=&quot;checkbox&quot; id=&quot;agree&quot; name=&quot;agree&quot; required&gt;
+      &lt;label class=&quot;form-check-label&quot; for=&quot;agree&quot;&gt;ยอมรับเงื่อนไขการใช้งาน&lt;/label&gt;
+      &lt;div class=&quot;invalid-feedback&quot;&gt;กรุณายอมรับเงื่อนไขก่อนดำเนินการต่อ&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary&quot;&gt;ส่งข้อมูล&lt;/button&gt;
+  &lt;/form&gt;
+&lt;/div&gt;
+&lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<h2 id="s9">5.6 การเรียนรู้ Bootstrap5 Template</h2>
+<p><strong>ตัวอย่างการเขียนโปรแกรม</strong></p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;title&gt;เว็บไซต์ชมรมถ่ายภาพ&lt;/title&gt;
+&lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+  .placeholder-img {
+    height: 160px;
+    background: #bdbdbd;
+    color: #424242;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;p-5 bg-success text-white text-center&quot;&gt;
+  &lt;h1&gt;ชมรมถ่ายภาพสร้างสรรค์&lt;/h1&gt;
+  &lt;p&gt;ปรับขนาดหน้าต่างเพื่อดูการเปลี่ยนแปลงของเลย์เอาต์&lt;/p&gt;
+&lt;/div&gt;
+&lt;nav class=&quot;navbar navbar-expand-sm bg-dark navbar-dark&quot;&gt;
+  &lt;div class=&quot;container-fluid&quot;&gt;
+    &lt;ul class=&quot;navbar-nav&quot;&gt;
+      &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link active&quot; href=&quot;#&quot;&gt;หน้าแรก&lt;/a&gt;&lt;/li&gt;
+      &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link&quot; href=&quot;#&quot;&gt;ข่าวสาร&lt;/a&gt;&lt;/li&gt;
+      &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link&quot; href=&quot;#&quot;&gt;กิจกรรม&lt;/a&gt;&lt;/li&gt;
+      &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link disabled&quot; href=&quot;#&quot;&gt;สมาชิก&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+&lt;/nav&gt;
+&lt;div class=&quot;container mt-5&quot;&gt;
+  &lt;div class=&quot;row&quot;&gt;
+    &lt;div class=&quot;col-sm-4&quot;&gt;
+      &lt;h2&gt;เกี่ยวกับชมรม&lt;/h2&gt;
+      &lt;h5&gt;ภาพบรรยากาศ:&lt;/h5&gt;
+      &lt;div class=&quot;placeholder-img&quot;&gt;พื้นที่รูปภาพ&lt;/div&gt;
+      &lt;p&gt;ชมรมก่อตั้งเพื่อแลกเปลี่ยนความรู้ด้านการถ่ายภาพระหว่างนักศึกษา&lt;/p&gt;
+      &lt;h3 class=&quot;mt-4&quot;&gt;เมนูลัด&lt;/h3&gt;
+      &lt;ul class=&quot;nav nav-pills flex-column&quot;&gt;
+        &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link active&quot; href=&quot;#&quot;&gt;สมัครสมาชิก&lt;/a&gt;&lt;/li&gt;
+        &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link&quot; href=&quot;#&quot;&gt;ตารางกิจกรรม&lt;/a&gt;&lt;/li&gt;
+        &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link&quot; href=&quot;#&quot;&gt;ติดต่อชมรม&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+      &lt;hr class=&quot;d-sm-none&quot;&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;col-sm-8&quot;&gt;
+      &lt;h2&gt;ข่าวกิจกรรมล่าสุด&lt;/h2&gt;
+      &lt;h5&gt;เผยแพร่เมื่อ 7 ธันวาคม 2568&lt;/h5&gt;
+      &lt;div class=&quot;placeholder-img&quot;&gt;พื้นที่รูปภาพ&lt;/div&gt;
+      &lt;p&gt;ออกภาคสนามถ่ายภาพวิถีชีวิตชุมชนริมน้ำ&lt;/p&gt;
+      &lt;p&gt;สมาชิกทุกคนร่วมกันคัดเลือกผลงานเพื่อจัดนิทรรศการประจำภาคเรียน&lt;/p&gt;
+      &lt;h2 class=&quot;mt-5&quot;&gt;เวิร์กชอปแสงและเงา&lt;/h2&gt;
+      &lt;h5&gt;เผยแพร่เมื่อ 2 กันยายน 2568&lt;/h5&gt;
+      &lt;div class=&quot;placeholder-img&quot;&gt;พื้นที่รูปภาพ&lt;/div&gt;
+      &lt;p&gt;เรียนรู้การควบคุมแสงธรรมชาติเพื่อสร้างมิติให้ภาพถ่าย&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;mt-5 p-4 bg-dark text-white text-center&quot;&gt;
+  &lt;p&gt;ชมรมถ่ายภาพสร้างสรรค์ มหาวิทยาลัยนราธิวาสราชนครินทร์&lt;/p&gt;
+&lt;/div&gt;
+&lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p><strong>แสดงผลลัพธ์</strong></p>
+<h2 id="s10">5.7 คอมโพเนนต์ยอดนิยมและคลาสอรรถประโยชน์ใน Bootstrap 5 (Components &amp; Utilities) (Bootstrap Core Team, 2024b)</h2>
+<p>นอกเหนือจากระบบตารางกริดและแบบฟอร์มแล้ว Bootstrap 5 ยังเตรียมคอมโพเนนต์สำเร็จรูปและคลาสอรรถประโยชน์ (Utility Classes) ที่ช่วยลดระยะเวลาในการเขียน CSS ตั้งแต่ต้นได้อย่างมหาศาล</p>
+<h3 id="s11">5.7.1 คอมโพเนนต์ส่วนต่อประสานผู้ใช้ที่สำคัญ</h3>
+<p>• แถบนำทาง (Navbar): คอมโพเนนต์ .navbar รองรับการย่อขยายเมนูเป็นปุ่ม Hamburger อัตโนมัติเมื่อดูบนหน้าจอมือถือ<br>• การ์ดแสดงผล (Cards): คอมโพเนนต์ .card ใช้สำหรับจัดกลุ่มรูปภาพ หัวข้อ และเนื้อหา เช่น รายการสินค้า หรือโปรไฟล์ผู้ใช้<br>• หน้าต่างป็อปอัป (Modal): คอมโพเนนต์ .modal ใช้สำหรับแสดงกล่องข้อความยืนยันหรือแบบฟอร์มป็อปอัปโดยไม่ต้องเปลี่ยนหน้าเว็บ<br>• การแจ้งเตือนและปุ่ม (Alerts &amp; Buttons): คลาสตกแต่งปุ่ม .btn .btn-primary .btn-outline-secondary และกล่องแจ้งเตือน .alert .alert-success</p>
+<h3 id="s12">5.7.2 คลาสอรรถประโยชน์ (Utility Classes) สำหรับการจัดแต่งอย่างรวดเร็ว</h3>
+<p>• Spacing Utilities: กำหนดระยะ Margin (m, mt, mb, ms, me, mx, my) และ Padding (p, pt, pb, ps, pe, px, py) เช่น m-3, py-4<br>• Flexbox Utilities: จัดตำแหน่งด้วย d-flex, justify-content-between, align-items-center<br>• Color &amp; Background: กำหนดสีพื้นหลังและตัวอักษร เช่น text-primary, bg-light, text-muted<br>• Shadow &amp; Rounded: เพิ่มมิติด้วย shadow, shadow-sm และความโค้งมนด้วย rounded-3</p>
+<h2 id="s13">5.8 เทคนิคการใช้ AI ช่วยสร้างและปรับแต่ง UI ด้วย Bootstrap 5 (AI-Assisted Bootstrap UI) (ศุภชัย สมพานิช, 2566ข)</h2>
+<p>เนื่องจาก Bootstrap 5 มีรูปแบบชื่อคลาสและโครงสร้างที่เป็นมาตรฐานสากล โมเดลปัญญาประดิษฐ์ (AI Assistants เช่น GitHub Copilot, ChatGPT, Gemini) จึงมีความแม่นยำสูงมากในการสร้างโค้ดหน้าเว็บด้วย Bootstrap 5 จากข้อความคำสั่งภาษาธรรมชาติ</p>
+<h3 id="s14">5.8.1 ตัวอย่างการใช้ AI สร้างหน้า Landing Page และ Dashboard</h3>
+<p>นักพัฒนาสามารถใช้ Prompt สั่งให้ AI ร่างหน้าเว็บที่สมบูรณ์ได้ทันที เช่น:<br>Prompt: &quot;ช่วยเขียนโค้ด HTML5 โดยใช้ Bootstrap 5 สร้างหน้า Dashboard ประกอบด้วย Navbar ด้านบนพร้อมแถบค้นหา, Sidebar เมนูด้านซ้าย, และพื้นที่หลักแสดง Stat Cards 4 ใบ (แสดงยอดขาย, จำนวนผู้ใช้, คำสั่งซื้อใหม่, รายได้) พร้อมตารางสรุปรายการล่าสุดที่ตกแต่งด้วย table-striped table-hover โดยรองรับการแสดงผลบนมือถือ&quot;<br>AI จะสร้างโครงสร้าง Grid (.container-fluid, .row, .col-md-3), การ์ด, ตาราง และคลาสตกแต่งให้ครบถ้วนในคำสั่งเดียว</p>
+<h3 id="s15">5.8.2 ข้อควรระวังและแนวปฏิบัติที่ดีในการใช้ AI พัฒนา Bootstrap</h3>
+<p>• ปัญหาการผสมเวอร์ชัน (Version Mixing): AI อาจสร้างโค้ดที่อ้างอิงคลาสของ Bootstrap 4 (เช่น ใช้ ml-*, mr-* แทน ms-*, me-* หรือใส่การเรียกใช้ jQuery) นักพัฒนาต้องตรวจสอบให้มั่นใจว่าเป็นคลาสมาตรฐานของ Bootstrap 5 เสมอ<br>• การหลีกเลี่ยง Class Overload: ตรวจทานไม่ให้ AI ใส่คลาสที่ไม่จำเป็นซ้ำซ้อนจนทำให้อ่านโค้ดยาก<br>• การผสาน Custom CSS: ในกรณีที่ต้องการให้อัตลักษณ์เว็บไซต์ตรงตามแบรนด์เฉพาะ ให้สร้างไฟล์ style.css เพื่อปรับแต่งทับ Bootstrap แทนที่จะแก้ไขในไฟล์หลักของเฟรมเวิร์ก</p>
+<h3 id="s16">5.8.3 กรอบคำสั่ง AI สำหรับการร่างหน้าเว็บแอดมินแดชบอร์ด (Prompt for Bootstrap UI)</h3>
+<p><em>&quot;Role: Front-End Engineer. / Task: Create an Admin Dashboard Header and 3-Card KPI Summary row using Bootstrap 5.3 CDN. / Constraints: Use purely Bootstrap utility classes </em><em>(d-flex, p-3, shadow-sm, rounded-3), no custom CSS, mobile-responsive grid (col-12 col-md-4), and ensure semantic structure.&quot;</em></p>
+<h3 id="s17">5.8.4 ตัวอย่างโค้ด Bootstrap 5 Responsive Navbar และ Card Grid สมบูรณ์</h3>
+<p>&lt;!DOCTYPE html&gt;<br>&lt;html lang=&quot;th&quot;&gt;<br>&lt;head&gt;<br>  &lt;meta charset=&quot;UTF-8&quot;&gt;<br>  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;<br>  &lt;title&gt;ระบบบริหารข้อมูล - Bootstrap 5&lt;/title&gt;<br>  &lt;link href=&quot;<a href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css&quot;" target="_blank" rel="noopener noreferrer">https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css&quot;</a> rel=&quot;stylesheet&quot;&gt;<br>&lt;/head&gt;<br>&lt;body class=&quot;bg-light&quot;&gt;<br>  &lt;!-- Responsive Navbar --&gt;<br>  &lt;nav class=&quot;navbar navbar-expand-lg navbar-dark bg-primary shadow-sm&quot;&gt;<br>    &lt;div class=&quot;container&quot;&gt;<br>      &lt;a class=&quot;navbar-brand fw-bold&quot; href=&quot;#&quot;&gt;มนร. ดิจิทัลธุรกิจ&lt;/a&gt;<br>      &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#mainNav&quot;&gt;<br>        &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;<br>      &lt;/button&gt;<br>      &lt;div class=&quot;collapse navbar-collapse&quot; id=&quot;mainNav&quot;&gt;<br>        &lt;ul class=&quot;navbar-nav me-auto mb-2 mb-lg-0&quot;&gt;<br>          &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link active&quot; href=&quot;#&quot;&gt;แดชบอร์ด&lt;/a&gt;&lt;/li&gt;<br>          &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link&quot; href=&quot;#&quot;&gt;รายชื่อนักศึกษา&lt;/a&gt;&lt;/li&gt;<br>          &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link&quot; href=&quot;#&quot;&gt;รายงานสถิติ&lt;/a&gt;&lt;/li&gt;<br>        &lt;/ul&gt;<br>        &lt;span class=&quot;navbar-text text-white&quot;&gt;ผู้ใช้งาน: อาจารย์ ดร.สุรเชษฐ์&lt;/span&gt;<br>      &lt;/div&gt;<br>    &lt;/div&gt;<br>  &lt;/nav&gt;<br><br>  &lt;!-- 3-Column Responsive KPI Cards --&gt;<br>  &lt;main class=&quot;container my-5&quot;&gt;<br>    &lt;div class=&quot;row g-4&quot;&gt;<br>      &lt;div class=&quot;col-12 col-md-4&quot;&gt;<br>        &lt;div class=&quot;card shadow-sm border-0 h-100 p-3&quot;&gt;<br>          &lt;div class=&quot;card-body&quot;&gt;<br>            &lt;h6 class=&quot;text-muted&quot;&gt;นักศึกษาที่ลงทะเบียน&lt;/h6&gt;<br>            &lt;h2 class=&quot;fw-bold text-primary&quot;&gt;120 คน&lt;/h2&gt;<br>            &lt;span class=&quot;badge bg-success&quot;&gt;เพิ่มขึ้น 12%&lt;/span&gt;<br>          &lt;/div&gt;<br>        &lt;/div&gt;<br>      &lt;/div&gt;<br>      &lt;div class=&quot;col-12 col-md-4&quot;&gt;<br>        &lt;div class=&quot;card shadow-sm border-0 h-100 p-3&quot;&gt;<br>          &lt;div class=&quot;card-body&quot;&gt;<br>            &lt;h6 class=&quot;text-muted&quot;&gt;บทเรียนที่เปิดสอน&lt;/h6&gt;<br>            &lt;h2 class=&quot;fw-bold text-dark&quot;&gt;10 บท&lt;/h2&gt;<br>            &lt;span class=&quot;badge bg-info text-dark&quot;&gt;ครบตามหลักสูตร&lt;/span&gt;<br>          &lt;/div&gt;<br>        &lt;/div&gt;<br>      &lt;/div&gt;<br>      &lt;div class=&quot;col-12 col-md-4&quot;&gt;<br>        &lt;div class=&quot;card shadow-sm border-0 h-100 p-3&quot;&gt;<br>          &lt;div class=&quot;card-body&quot;&gt;<br>            &lt;h6 class=&quot;text-muted&quot;&gt;แบบฝึกหัดที่ส่งแล้ว&lt;/h6&gt;<br>            &lt;h2 class=&quot;fw-bold text-success&quot;&gt;98.5%&lt;/h2&gt;<br>            &lt;span class=&quot;badge bg-warning text-dark&quot;&gt;ตรงเวลา&lt;/span&gt;<br>          &lt;/div&gt;<br>        &lt;/div&gt;<br>      &lt;/div&gt;<br>    &lt;/div&gt;<br>  &lt;/main&gt;<br>  &lt;script src=&quot;<a href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;" target="_blank" rel="noopener noreferrer">https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;</a><br>&lt;/body&gt;<br>&lt;/html&gt;</p>
+<h3 id="s18">5.8.5 ตัวอย่างส่วนหัวเด่น (Hero) และแถวการ์ดสินค้าด้วย .row และ .col-*</h3>
+<p>Bootstrap 5 ไม่มีคลาส .card-deck ที่เคยมีใน Bootstrap 4 ให้จัดการ์ดเป็นแถวด้วยระบบกริดแทน ตัวอย่างต่อไปนี้ประกอบส่วนหัวเด่น (Hero) จาก Utility Classes แล้วแสดงการ์ดสินค้า 1 คอลัมน์บนสมาร์ตโฟน 2 คอลัมน์บนแท็บเล็ต และ 3 คอลัมน์บนเดสก์ท็อป (ต้องเชื่อม Bootstrap CSS ตามหัวข้อ 5.1 ก่อน)</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;header class=&quot;bg-light py-5 text-center&quot;&gt;
+  &lt;div class=&quot;container&quot;&gt;
+    &lt;h1 class=&quot;display-5 fw-bold&quot;&gt;ร้านค้าออนไลน์&lt;/h1&gt;
+    &lt;p class=&quot;lead&quot;&gt;สินค้าคุณภาพ จัดส่งทั่วประเทศ&lt;/p&gt;
+    &lt;a href=&quot;#products&quot; class=&quot;btn btn-primary btn-lg&quot;&gt;ดูสินค้า&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/header&gt;
+&lt;main id=&quot;products&quot; class=&quot;container my-4&quot;&gt;
+  &lt;div class=&quot;row g-4&quot;&gt;
+    &lt;div class=&quot;col-12 col-md-6 col-lg-4&quot;&gt;
+      &lt;div class=&quot;card h-100&quot;&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+          &lt;h5 class=&quot;card-title&quot;&gt;สินค้า 1&lt;/h5&gt;
+          &lt;p class=&quot;card-text&quot;&gt;รายละเอียดสินค้า&lt;/p&gt;
+          &lt;a href=&quot;#&quot; class=&quot;btn btn-outline-primary&quot;&gt;สั่งซื้อ&lt;/a&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;!-- ทำซ้ำ div.col-12.col-md-6.col-lg-4 สำหรับสินค้าชิ้นอื่น --&gt;
+  &lt;/div&gt;
+&lt;/main&gt;</code></pre></div>
+<h2 id="s19">สรุป</h2>
+<p>Bootstrap 5 เป็นเครื่องมือ Front-End Framework ระดับมาตรฐานสากลที่ช่วยให้การพัฒนาเว็บไซต์ทำได้อย่างรวดเร็วและมีประสิทธิภาพ ด้วยจุดเด่นของการเป็น Pure Vanilla JavaScript ที่ไม่พึ่งพา jQuery อีกต่อไป โครงสร้างหลักประกอบด้วยระบบ Containers (.container และ .container-fluid) และระบบ Grid 12 คอลัมน์ที่ขับเคลื่อนด้วย Flexbox ซึ่งรองรับ Breakpoints ทุกระดับหน้าจอ การพัฒนาแบบฟอร์มและการตรวจสอบความถูกต้อง (Form Validation) ทำได้อย่างเป็นระบบผ่านคลาสสำเร็จรูป นอกจากนี้ยังมีคอมโพเนนต์ UI ระดับสูงและคลาสอรรถประโยชน์ (Utility Classes) ที่ช่วยลดการเขียนโค้ด CSS ซ้ำซ้อน การนำปัญญาประดิษฐ์ (AI-Assisted UI Development) เข้ามาช่วยประกอบโครงสร้างหน้าเว็บ จะช่วยเพิ่มความเร็วในการขึ้นต้นแบบ (Prototyping) และพัฒนาเว็บแอปพลิเคชันที่มีคุณภาพสูงได้ในเวลาอันสั้น</p>
+<h2 id="s20">แบบฝึกหัด</h2>
+<p><strong>คำชี้แจง: จงทำแบบฝึกหัดต่อไปนี้เพื่อทบทวนความรู้ความเข้าใจ</strong></p>
+<p><strong>ตอนที่ 1: แบบฝึกหัดเชิงทฤษฎีและการวิเคราะห์ (Theoretical &amp; Analytical Exercises)</strong></p>
+<p>1. จงอธิบายข้อดีและข้อจำกัดของการพัฒนาเว็บไซต์ด้วย Bootstrap Framework เมื่อเปรียบเทียบกับการเขียน CSS ด้วยตนเองตั้งแต่ต้น (Pure CSS)</p>
+<p>2. จงอธิบายการเปลี่ยนแปลงและจุดเด่นสำคัญของ Bootstrap 5 ที่ได้รับการปรับปรุงให้เหนือกว่าเวอร์ชันก่อนหน้า (โดยเฉพาะประเด็นเรื่อง jQuery และประสิทธิภาพการโหลด)</p>
+<p>3. จงอธิบายความแตกต่างระหว่าง .container และ .container-fluid พร้อมอธิบายการทำงานของระบบกริด 12 คอลัมน์ (Grid System) ใน Bootstrap 5</p>
+<p>4. การระบุคลาสจุดตัดหน้าจอ เช่น .col-12 .col-md-6 .col-lg-4 ส่งผลต่อการจัดวางองค์ประกอบบนหน้าจอสมาร์ตโฟน แท็บเล็ต และเดสก์ท็อปอย่างไร จงอธิบายการทำงาน</p>
+<p>5. ในการตรวจสอบความถูกต้องของแบบฟอร์ม (Form Validation) คลาส .was-validated, .valid-feedback, และ .invalid-feedback ใน Bootstrap 5 มีบทบาทอย่างไรในการสื่อสารกับผู้ใช้งาน</p>
+<p>6. จงอธิบายว่าเครื่องมือผู้ช่วย AI (AI Coding Assistants) สามารถช่วยเร่งความเร็วในการประกอบหน้าเว็บด้วย Bootstrap 5 ได้อย่างไร และมีข้อควรระวังในเรื่องเวอร์ชันของคลาสอย่างไรบ้าง</p>
+<p><strong>ตอนที่ 2: แบบฝึกหัดประยุกต์และการเขียนโปรแกรม (Applied &amp; Programming Exercises)</strong></p>
+<p>1.ให้นักศึกษาติดตั้ง Bootstrap และสร้าง ตาราง ดังนี้</p>
+<p>2.ให้นักศึกษาเขียนโปรแกรมโดยใช้ Bootstrap สร้าง Form ดังนี้</p>
+<p>2.1 </p>
+<p>2.2</p>
+<p>3.ให้นักศึกษาสร้างเว็บไซต์ของตนเองโดยมีข้อกำหนดดังนี้</p>
+<ul><li>สร้างหน้า Layout ให้มี ส่วนหัว ส่วนเมนู ส่วนข้อความ ส่วนท้าย</li><li>สร้างหน้า เมนูให้มีอย่างน้อย 3 Links</li><li>ใส่ข้อมูล ข้อความ ภาพ และสื่อมัลติมีเดีย</li></ul>
+<h2 id="s21">เอกสารอ้างอิง</h2>
+<p>บัญชา ปะสีละเตสัง. (2565ก). พัฒนา Web App แบบ Responsive ด้วย Bootstrap 5 ร่วมกับ Node.js. กรุงเทพฯ: ซีเอ็ดยูเคชั่น.</p>
+<p>ศุภชัย สมพานิช. (2566ข). สร้างและออกแบบ UI หน้าเว็บระดับมือโปรด้วย Bootstrap 5 และ Tailwind CSS. นนทบุรี: ไอดีซี พรีเมียร์.</p>
+<p>Bootstrap Core Team. (2024b). Get started with Bootstrap. Bootstrap v5.3. Retrieved from <a href="https://getbootstrap.com/docs/5.3/getting-started/introduction/" target="_blank" rel="noopener noreferrer">https://getbootstrap.com/docs/5.3/getting-started/introduction/</a></p>
+<label class="donebox"><input type="checkbox" id="done"><span>ทำเครื่องหมายว่าอ่านบทนี้แล้ว</span></label>
+<div class="pager"><a class="pn" href="ch4.html"><small>บทก่อนหน้า</small><b>บทที่ 4 พื้นฐาน CSS</b></a><a class="pn next" href="ch6.html"><small>บทถัดไป</small><b>บทที่ 6 พื้นฐานภาษา JavaScript</b></a></div>
+</article></div>
+</main>
+<footer class="foot"><div class="wrap fgrid">
+<div><a class="brand" href="../index.html"><span class="logo" aria-hidden="true">&lt;/&gt;</span><span class="bt"><b>การเขียนโปรแกรมบนเว็บ</b><small>Web Programming</small></span></a>
+<p class="small">สื่อเสริมการเรียนรู้ ใช้ประกอบเอกสารประกอบการสอน ไม่มีระบบสมาชิกและไม่เก็บข้อมูลส่วนบุคคล ส่งงานผ่าน Google Classroom</p></div>
+<div><p class="fh">เรียนรู้</p><a href="../chapters.html">บทเรียน 10 บท</a><a href="../worksheets.html">ใบงานประจำบท</a><a href="../start.html">เริ่มต้นใช้งาน</a></div>
+<div><p class="fh">รายวิชา</p><a href="../about.html">เกี่ยวกับรายวิชา</a><span>ผู้สอน: ดร.สุรเชษฐ์ สังขพันธ์</span><span>พ.ศ. 2569</span></div>
+</div></footer>
+<script src="../assets/app.js"></script>
+</body>
+</html>

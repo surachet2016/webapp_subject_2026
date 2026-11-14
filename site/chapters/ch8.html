@@ -1,0 +1,1477 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="จัดการฐานข้อมูลด้วย mysqli และ Prepared Statements">
+<meta name="theme-color" content="#4338ca">
+<title>บทที่ 8 พื้นฐานภาษา MySQLi · การเขียนโปรแกรมบนเว็บ</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%234338ca'/%3E%3Cpath d='M26 20 14 32l12 12M38 20l12 12-12 12' fill='none' stroke='%23fff' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preload" href="../assets/fonts/Sarabun-400-thai.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css">
+<script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+
+</head>
+<body class="ch-page">
+<a class="skip" href="#main">ข้ามไปยังเนื้อหา</a>
+<header class="top"><div class="wrap nav">
+<a class="brand" href="../index.html" aria-label="หน้าแรก การเขียนโปรแกรมบนเว็บ"><span class="logo" aria-hidden="true">&lt;/&gt;</span><span class="bt"><b>การเขียนโปรแกรมบนเว็บ</b><small>07-034-210</small></span></a>
+<button id="menuBtn" class="iconbtn menu-btn" type="button" aria-expanded="false" aria-controls="menu" aria-label="เปิดเมนู"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v2H3V6Zm0 5h18v2H3v-2Zm0 5h18v2H3v-2Z"/></svg></button>
+<nav id="menu" aria-label="เมนูหลัก">
+<a href="../chapters.html" aria-current="page">บทเรียน</a><a href="../worksheets.html">ใบงาน</a><a href="../start.html">เริ่มต้นใช้งาน</a><a href="../about.html">เกี่ยวกับรายวิชา</a>
+</nav>
+<button id="theme" class="iconbtn" type="button" aria-label="สลับโหมดมืดและสว่าง"><span class="i-moon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5Z"/></svg></span><span class="i-sun"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg></span></button>
+</div><div id="bar" class="bar" aria-hidden="true"></div></header>
+<main id="main">
+<div class="chead s3"><div class="wrap">
+<nav class="crumb" aria-label="เส้นทาง"><a href="../index.html">หน้าแรก</a><span>/</span><a href="../chapters.html">บทเรียน</a><span>/</span><span aria-current="page">บทที่ 8</span></nav>
+<div class="chrow"><span class="badge b-s3 big" aria-hidden="true">SQL</span><div><p class="kicker">บทที่ 8 · เขียนโปรแกรม</p><h1>พื้นฐานภาษา MySQLi</h1><p class="cdesc">จัดการฐานข้อมูลด้วย mysqli และ Prepared Statements</p></div></div>
+<ul class="meta"><li><b>84</b> นาที อ่าน</li><li><b>20</b> หัวข้อหลัก</li><li><b>5</b> ตัวอย่างลองรันได้</li></ul>
+</div></div>
+<div class="wrap layout">
+<aside class="side" aria-label="สารบัญบทนี้"><details class="tocbox" open><summary>สารบัญบทนี้</summary><ol><li><a href="#s1">บทนำ</a></li><li><a href="#s2">เนื้อหา</a></li><li><a href="#s3">8.1 การสร้างฐานข้อมูล MySQLi ด้วยโปรแกรม PhpMyAdmin</a></li><li><a href="#s5">8.2 การเชื่อมต่อฐานข้อมูล mysqli ด้วยคำสั่ง mysqli_connect</a></li><li><a href="#s6">8.3 การแสดงรายการข้อมูลแบบ Master-Detail ด้วย function ของ mysqli</a></li><li><a href="#s7">8.4 การเพิ่มข้อมูลลงในฐานข้อมูล MySQLi</a></li><li><a href="#s8">8.5 การแก้ไขข้อมูลใน MySQLi</a></li><li><a href="#s9">8.6 การลบข้อมูลใน MySQLi</a></li><li><a href="#s10">8.7 การค้นหาข้อมูลใน MySQLi</a></li><li><a href="#s11">8.8 การแบ่งหน้าแสดงผลตาราง</a></li><li><a href="#s12">8.9 การรวมแสดง เพิ่ม ลบ แก้ไข ในหน้าเดียวกัน</a></li><li><a href="#s13">8.10 การ Upload image to Server</a></li><li><a href="#s14">8.11 การทำ Form Login</a></li><li><a href="#s15">8.12 การป้องกันช่องโหว่ SQL Injection ด้วย Prepared Statements</a></li><li><a href="#s17">8.13 การจัดการทรานแซกชันเพื่อความสมบูรณ์ของข้อมูล (Database Transactions &amp; Rollback)</a></li><li><a href="#s18">8.14 การเขียน MySQLi เชิงวัตถุ (OOP) และตัวอย่างโค้ดมาตรฐาน</a></li><li><a href="#s20">8.15 เทคนิคการใช้ AI ช่วยงานฐานข้อมูลและตรวจจับช่องโหว่ความปลอดภัย (AI-Assisted Database &amp; Security Audit)</a></li><li><a href="#s24">สรุป</a></li><li><a href="#s25">แบบฝึกหัด</a></li><li><a href="#s26">เอกสารอ้างอิง</a></li></ol></details></aside>
+<article class="chapter prose" data-ch="8">
+<p class="note"><b>หมายเหตุ</b> หน้านี้ไม่แสดงภาพประกอบ (ดูภาพได้ในเอกสารประกอบการสอนฉบับเต็ม) ตัวอย่าง HTML ครบหน้ามีปุ่ม "ลองรัน" กดเพื่อดูผลได้ทันที</p>
+<h2 id="s1">บทนำ</h2>
+<p>ระบบจัดการฐานข้อมูล (Database Management System: DBMS) เป็นหัวใจสำคัญของเว็บแอปพลิเคชันเชิงพาณิชย์และระบบสารสนเทศ ที่ต้องการจัดเก็บและประมวลผลข้อมูลปริมาณมากอย่างมีเสถียรภาพ การเชื่อมต่อระหว่างภาษา PHP และฐานข้อมูลเชิงสัมพันธ์ MySQL ในปัจจุบันใช้ส่วนขยาย MySQLi (MySQL Improved) ซึ่งได้รับการพัฒนาเพื่อเพิ่มประสิทธิภาพ รองรับการเขียนโปรแกรมเชิงวัตถุ (OOP) และสนับสนุนการป้องกันช่องโหว่ความปลอดภัยระดับสูงสุดผ่านกลไก Prepared Statements ในบทนี้นักศึกษาจะได้ศึกษาตั้งแต่การออกแบบ และจัดการฐานข้อมูลผ่าน phpMyAdmin, การเชื่อมต่อฐานข้อมูล, การพัฒนาระบบจัดการข้อมูลครบวงจร (CRUD: Create, Read, Update, Delete), การค้นหาและแบ่งหน้าแสดงผล (Pagination), การอัปโหลดไฟล์, ระบบยืนยันตัวตน, การป้องกันภัยคุกคาม SQL Injection, การควบคุมทรานแซกชัน (Transactions) ตลอดจนการประยุกต์ใช้ปัญญาประดิษฐ์ (AI) ในการช่วยออกแบบและตรวจสอบคิวรีฐานข้อมูลอย่างถูกต้องตามหลักวิศวกรรมซอฟต์แวร์</p>
+<h2 id="s2">เนื้อหา</h2>
+<h2 id="s3">8.1 การสร้างฐานข้อมูล MySQLi ด้วยโปรแกรม PhpMyAdmin (ชาญชัย ศุภอรรถกร, 2564; ชวลิต มนต์เทวัญ, 2565)</h2>
+<p>PHP MySQL Configuration &amp; Connect to Database (mysqli) สำหรับ mysqli ไม่ใช่ function ใหม่ เริ่มมีมาตั้งแต่รุ่น PHP 5.0 เป็นต้นไป เป็น function ที่ถูกออกแบบไว้ติดต่อกับ Database ของ MySQL โดยเฉพาะ ซึ่งจะมาทำหน้าที่ทดแทน function เดิมอย่าง mysql เหตุผลหลักก็คือ function ของ mysql ธรรมดาถูกประกาศเลิกใช้ (deprecated) ใน PHP 5.5 และถูกถอดออกถาวรตั้งแต่ PHP 7.0 มันค่อนข้างจะโบราณ และมีช่องโหว์เยอะ (หมายถึง เมื่อเขียนแล้วผู้ใช้มักจะทำช่องโหว์ไว้) ฉะนั้น mysqli ซึ่งเป็น function ปัจจุบันที่กำลังถูกแทนที่ mysql มันได้ถูกออกแบบให้ทำงานได้ดีกว่าเดิม ทำงานได้เร็ว และที่สำคัญ มันปลอดภัยกกว่าการใช้ในรูปแบบเดิม ๆ มาก เช่น รองรับแนวคิด OOP ขึ้น การเขียนในรูปแบบของ Parameters Query และ Prepared Statement ที่จะผิดช่องโหว์ของการเกิดข้อผิดพลาดในการ Query ที่เกิดจากการรับค่าในรูปแบบต่าง ๆ รวมทั้งป้องกันการ Hack ผ่านพวก SQL Injection ได้เป็นอย่างดี<br>    สำหรับ mysqli สามารถใช้ได้ตั้งแต่ PHP 5.0เป็นต้นไป ซึ่งในมาตรฐาน PHP 7 และ PHP 8.x ในปัจจุบัน ส่วนขยาย mysql เดิมได้ถูกยกเลิก (Removed) ไปอย่างถาวรแล้ว และกำหนดให้ใช้ส่วนขยาย mysqli หรือ PDO เป็นมาตรฐานหลัก และ PHP Version ใหม่ ๆ ก็เปิด mysqli ให้ทันที หรือในการติดตั้งเองจำเป็นจะต้องเปิดใช้งาน php_mysqli.dll ซึ่งเป็น extension จะต้องหาไฟล์ php_mysqli.dll ที่ตรงกับ Version ของ PHP ที่เรียกใช้ด้วย</p>
+<p>ที่มาของตัวอย่าง: ลำดับหัวข้อ 8.1–8.11 และโครงสร้างของตัวอย่างในหัวข้อเหล่านี้ปรับจากชุดบทเรียน PHP &amp; MySQL (mysqli) ของ ThaiCreate.Com (ThaiCreate.Com, n.d.) ส่วนข้อมูลในตัวอย่างเป็นข้อมูลสมมติที่ผู้จัดทำกำหนดเอง</p>
+<p><strong>สร้างฐานข้อมูลชื่อ db_test </strong></p>
+<p><strong>สร้างตารางชื่อ customer และป้อนข้อมูลตัวอย่างดังต่อไปนี้</strong></p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>CREATE TABLE `customer` (
+  `CustomerID` varchar(4) NOT NULL,
+  `Name` varchar(50) NOT NULL,
+  `Email` varchar(50) NOT NULL,
+  `CountryCode` varchar(2) NOT NULL,
+  `Budget` double NOT NULL,
+  `Used` double NOT NULL,
+  PRIMARY KEY  (`CustomerID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO `customer` VALUES (&#x27;C001&#x27;, &#x27;Somchai Jaidee&#x27;, &#x27;somchai.jaidee@example.com&#x27;, &#x27;TH&#x27;, 1000000, 600000);
+INSERT INTO `customer` VALUES (&#x27;C002&#x27;, &#x27;Anna Taylor&#x27;, &#x27;anna.taylor@example.com&#x27;, &#x27;UK&#x27;, 2000000, 800000);
+INSERT INTO `customer` VALUES (&#x27;C003&#x27;, &#x27;Kenji Sato&#x27;, &#x27;kenji.sato@example.com&#x27;, &#x27;US&#x27;, 3000000, 600000);
+INSERT INTO `customer` VALUES (&#x27;C004&#x27;, &#x27;Maria Lopez&#x27;, &#x27;maria.lopez@example.com&#x27;, &#x27;US&#x27;, 4000000, 100000);</code></pre></div>
+<p>กดปุ่ม Go เพื่อทำการป้อนข้อมูล</p>
+<h3 id="s4">8.1.1 การกำหนดความสัมพันธ์ระหว่างตารางด้วย Foreign Key</h3>
+<p>Foreign Key (คีย์นอก) คือคอลัมน์ในตารางหนึ่งที่อ้างอิงคีย์หลัก (Primary Key) ของอีกตารางหนึ่ง เพื่อรักษาความถูกต้องของความสัมพันธ์ เช่น คำสั่งซื้อต้องอ้างถึงลูกค้าที่มีอยู่จริง ข้อกำหนดคือคอลัมน์ทั้งสองต้องมีชนิดข้อมูลตรงกัน และตารางต้องใช้เอนจิน InnoDB (ตัวอย่างต่อไปนี้ใช้ตาราง customer ที่สร้างไว้ในหัวข้อ 8.1)</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>CREATE TABLE `orders` (</code></pre></div>
+<p>  `OrderID` int NOT NULL AUTO_INCREMENT,</p>
+<p>  `CustomerID` varchar(4) NOT NULL,</p>
+<p>  `Total` double NOT NULL,</p>
+<p>  PRIMARY KEY (`OrderID`),</p>
+<p>  KEY `fk_orders_customer` (`CustomerID`),</p>
+<p>  CONSTRAINT `fk_orders_customer` FOREIGN KEY (`CustomerID`)</p>
+<p>    REFERENCES `customer` (`CustomerID`)</p>
+<p>    ON DELETE RESTRICT ON UPDATE CASCADE</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;</code></pre></div>
+<p>ทดสอบความสัมพันธ์ด้วยคำสั่งต่อไปนี้ MySQL จะปฏิเสธคำสั่งที่ทำให้ข้อมูลไม่สัมพันธ์กัน (รหัสข้อผิดพลาด 1452 เมื่อเพิ่มข้อมูลที่อ้างถึงลูกค้าที่ไม่มี และ 1451 เมื่อลบลูกค้าที่ยังมีคำสั่งซื้ออ้างอิง) เพราะกำหนด ON DELETE RESTRICT ไว้</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>INSERT INTO orders (CustomerID, Total) VALUES (&#x27;C001&#x27;, 1500);   -- สำเร็จ
+INSERT INTO orders (CustomerID, Total) VALUES (&#x27;C999&#x27;, 700);    -- ผิดพลาด: ไม่มีลูกค้ารหัสนี้
+DELETE FROM customer WHERE CustomerID = &#x27;C001&#x27;;                  -- ผิดพลาด: ยังมีคำสั่งซื้ออ้างอิงอยู่</code></pre></div>
+<p>ใน phpMyAdmin สร้างได้ 2 วิธี วิธีแรกคือวางคำสั่ง SQL ข้างต้นในแท็บ SQL วิธีที่สองคือกำหนดผ่านหน้าจอ โดยเปิดตารางที่เป็นฝ่ายอ้างอิง (เช่น orders) เข้าแท็บ Structure แล้วกด Relation view จะพบส่วน Foreign key constraints ให้ตั้งชื่อข้อกำหนด (Constraint name) เลือกคอลัมน์ (Column) แล้วเลือกฐานข้อมูล ตาราง และคอลัมน์ที่ถูกอ้างอิง (เช่น customer และ CustomerID) กำหนด ON DELETE และ ON UPDATE จากนั้นกด Preview SQL เพื่อดูคำสั่งก่อน แล้วกด Save ขั้นตอนนี้ผู้เขียนตรวจกับ phpMyAdmin 5.2.3 ที่มากับ MAMP ชื่อเมนูอาจต่างกันตามรุ่น</p>
+<h2 id="s5">8.2 การเชื่อมต่อฐานข้อมูล mysqli ด้วยคำสั่ง mysqli_connect</h2>
+<p>การเขียนภาษา PHP เชื่อมต่อฐานข้อมูล mysqli ด้วยคำสั่ง mysqli_connect โดยตัวอย่างจะทำการเชื่อมต่อกับฐานข้อมูลชื่อ db_test ของ MySQL และใช้คำสั่ง mysqli_connect_errno เช็คสถานะการเชื่อมต่อ สามารถเขียนโปรแกรมได้ดังนี้</p>
+<p>ข้อควรระวังเรื่องรหัสผ่านของฐานข้อมูล: ตัวอย่างในบทนี้เชื่อมต่อด้วยผู้ใช้ root และรหัสผ่านว่าง (&quot;&quot;) ซึ่งเป็นค่าเริ่มต้นของ XAMPP บน Windows ถ้าใช้ MAMP บน macOS รหัสผ่านของ root คือ root ให้แก้ค่าที่ 3 ของ mysqli_connect() (หรือตัวแปร $userPassword) เป็น &quot;root&quot; ในทุกตัวอย่างของบทนี้ และถ้าระบุ host เป็น 127.0.0.1 ต้องใส่พอร์ต 8889 ด้วย (localhost ไม่ต้องระบุพอร์ต) รายละเอียดดูภาคผนวก ค ข้อ ค.3 เมื่อนำขึ้นเซิร์ฟเวอร์ของรายวิชา ต้องใช้ผู้ใช้ รหัสผ่าน และชื่อฐานข้อมูลที่ผู้สอนแจ้งแทน root (ภาคผนวก จ) ในงานจริงไม่ควรใช้ root และไม่ควรเก็บรหัสผ่านไว้ในโค้ดตรง ๆ ให้สร้างผู้ใช้เฉพาะโครงการและเก็บค่าตั้งไว้ในไฟล์แยก</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;?php
+    $c = mysqli_connect(&quot;localhost&quot;, &quot;root&quot;, &quot;&quot;, &quot;db_test&quot;);
+    if (mysqli_connect_errno()) {
+        echo &quot;ไม่สามารถเชื่อมต่อฐานข้อมูลได้ เพราะ &quot; . mysqli_connect_error();
+        exit();
+    } else {
+        echo &quot;เชื่อมต่อฐานข้อมูลเรียบร้อย&quot;;
+        mysqli_close($c);
+    }</code></pre></div>
+<p>?&gt;</p>
+<p>แสดงผลลัพธ์</p>
+<p><strong>คำอธิบาย</strong></p>
+<p>PHP เชื่อมต่อฐานข้อมูล mysqli ด้วยคำสั่ง mysqli_connect ตัวอย่างส่งค่า arguments 4 ค่า คือ host, username, password และ ชื่อฐานข้อมูล ลงในคำสั่ง mysqli_connect เพื่อเชื่อมต่อฐานข้อมูล และใช้คำสั่ง mysqli_connect_errno เพื่อตรวจสอบการเชื่อมต่อฐานข้อมูล</p>
+<h2 id="s6">8.3 การแสดงรายการข้อมูลแบบ Master-Detail ด้วย function ของ mysqli</h2>
+<p><strong>สร้างไฟล์ list.php</strong></p>
+<p>หมายเหตุ: ตัวอย่างโค้ดในบทนี้ใช้ Prepared Statements ผูกค่าตัวแปรด้วย mysqli_stmt_bind_param() และใช้ htmlspecialchars() เมื่อแสดงข้อมูลบนหน้าเว็บ เพื่อป้องกันช่องโหว่ SQL Injection และ XSS (อธิบายหลักการเพิ่มเติมในหัวข้อ 8.12) รหัสผ่านฐานข้อมูลของ root ใน XAMPP เริ่มต้นเป็นค่าว่าง หากตั้งรหัสผ่านไว้ให้แก้ในบรรทัด mysqli_connect() ให้ตรงกัน</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;ตัวอย่าง PHP และ MySQLi&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;?php
+    ini_set(&#x27;display_errors&#x27;, 1);
+    error_reporting(~0);
+
+   $serverName = &quot;localhost&quot;;
+   $userName = &quot;root&quot;;
+   $userPassword = &quot;&quot;;
+   $dbName = &quot;db_test&quot;;
+
+   $conn = mysqli_connect($serverName,$userName,$userPassword,$dbName);
+
+   $sql = &quot;SELECT * FROM customer&quot;;
+
+   $query = mysqli_query($conn,$sql);</code></pre></div>
+<p>?&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;table width=&quot;600&quot; border=&quot;1&quot;&gt;
+  &lt;tr&gt;
+    &lt;th width=&quot;91&quot;&gt; &lt;div align=&quot;center&quot;&gt;CustomerID &lt;/div&gt;&lt;/th&gt;
+    &lt;th width=&quot;98&quot;&gt; &lt;div align=&quot;center&quot;&gt;Name &lt;/div&gt;&lt;/th&gt;
+    &lt;th width=&quot;198&quot;&gt; &lt;div align=&quot;center&quot;&gt;Email &lt;/div&gt;&lt;/th&gt;
+    &lt;th width=&quot;97&quot;&gt; &lt;div align=&quot;center&quot;&gt;CountryCode &lt;/div&gt;&lt;/th&gt;
+    &lt;th width=&quot;59&quot;&gt; &lt;div align=&quot;center&quot;&gt;Budget &lt;/div&gt;&lt;/th&gt;
+    &lt;th width=&quot;71&quot;&gt; &lt;div align=&quot;center&quot;&gt;Used &lt;/div&gt;&lt;/th&gt;
+    &lt;th width=&quot;71&quot;&gt; &lt;div align=&quot;center&quot;&gt;Detail &lt;/div&gt;&lt;/th&gt;
+  &lt;/tr&gt;
+&lt;?php
+while($result=mysqli_fetch_array($query,MYSQLI_ASSOC))
+{</code></pre></div>
+<p>?&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>  &lt;tr&gt;
+    &lt;td&gt;&lt;div align=&quot;center&quot;&gt;&lt;?php echo htmlspecialchars($result[&quot;CustomerID&quot;]);?&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td&gt;&lt;?php echo htmlspecialchars($result[&quot;Name&quot;]);?&gt;&lt;/td&gt;
+    &lt;td&gt;&lt;?php echo htmlspecialchars($result[&quot;Email&quot;]);?&gt;&lt;/td&gt;
+    &lt;td&gt;&lt;div align=&quot;center&quot;&gt;&lt;?php echo htmlspecialchars($result[&quot;CountryCode&quot;]);?&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td align=&quot;right&quot;&gt;&lt;?php echo htmlspecialchars($result[&quot;Budget&quot;]);?&gt;&lt;/td&gt;
+    &lt;td align=&quot;right&quot;&gt;&lt;?php echo htmlspecialchars($result[&quot;Used&quot;]);?&gt;&lt;/td&gt;
+    &lt;td align=&quot;right&quot;&gt;&lt;a href=&quot;detail.php?CustomerID=&lt;?php echo htmlspecialchars($result[&quot;CustomerID&quot;]);?&gt;&quot;&gt;Detail&lt;/a&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;?php
+}</code></pre></div>
+<p>?&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;/table&gt;
+&lt;?php
+mysqli_close($conn);</code></pre></div>
+<p>?&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<p>สร้างไฟล์ details.php</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;PHP &amp; MySQL (mysqli)&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;?php
+    ini_set(&#x27;display_errors&#x27;, 1);
+    error_reporting(~0);
+
+    $conn = mysqli_connect(&quot;localhost&quot;, &quot;root&quot;, &quot;&quot;, &quot;db_test&quot;);
+    mysqli_set_charset($conn, &quot;utf8mb4&quot;);
+
+    $strCustomerID = isset($_GET[&quot;CustomerID&quot;]) ? $_GET[&quot;CustomerID&quot;] : &quot;&quot;;
+
+    // Prepared Statement: แยกโครงสร้างคำสั่ง SQL ออกจากข้อมูลที่ผู้ใช้ส่งมา
+    $stmt = mysqli_prepare($conn, &quot;SELECT * FROM customer WHERE CustomerID = ?&quot;);
+    mysqli_stmt_bind_param($stmt, &quot;s&quot;, $strCustomerID);
+    mysqli_stmt_execute($stmt);
+    $query = mysqli_stmt_get_result($stmt);
+    $result = mysqli_fetch_array($query, MYSQLI_ASSOC);
+
+    if (!$result) {
+        echo &quot;ไม่พบข้อมูลลูกค้า&quot;;
+        exit();
+    }</code></pre></div>
+<p>?&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;table width=&quot;284&quot; border=&quot;1&quot;&gt;
+  &lt;tr&gt;
+    &lt;th width=&quot;120&quot;&gt;CustomerID&lt;/th&gt;
+    &lt;td width=&quot;238&quot;&gt;&lt;?php echo htmlspecialchars($result[&quot;CustomerID&quot;]);?&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;th width=&quot;120&quot;&gt;Name&lt;/th&gt;
+    &lt;td&gt;&lt;?php echo htmlspecialchars($result[&quot;Name&quot;]);?&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;th width=&quot;120&quot;&gt;Email&lt;/th&gt;
+    &lt;td&gt;&lt;?php echo htmlspecialchars($result[&quot;Email&quot;]);?&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;th width=&quot;120&quot;&gt;CountryCode&lt;/th&gt;
+    &lt;td&gt;&lt;?php echo htmlspecialchars($result[&quot;CountryCode&quot;]);?&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;th width=&quot;120&quot;&gt;Budget&lt;/th&gt;
+    &lt;td&gt;&lt;?php echo htmlspecialchars($result[&quot;Budget&quot;]);?&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;th width=&quot;120&quot;&gt;Used&lt;/th&gt;
+    &lt;td&gt;&lt;?php echo htmlspecialchars($result[&quot;Used&quot;]);?&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+&lt;?php
+    mysqli_stmt_close($stmt);
+    mysqli_close($conn);</code></pre></div>
+<p>?&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<h2 id="s7">8.4 การเพิ่มข้อมูลลงในฐานข้อมูล MySQLi</h2>
+<p><strong>PHP MySQL Add/Insert Data Record (mysqli)</strong> เป็นตัวอย่างของ <strong>mysqli </strong>การเขียน <strong>PHP </strong>เพื่อ <strong>Insert </strong>หรือ<strong>เพิ่ม Add </strong>ข้อมูลลงใน <strong>Database ของ MySQL </strong>โดยใช้ function ต่าง ๆ ของ <strong>mysqli </strong>ผ่านการ <strong>query </strong>ด้วยคำสั่ง <strong>insert</strong></p>
+<p>รูปแบบการใช้งาน</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>$stmt = mysqli_prepare($conn,
+    &quot;INSERT INTO table_name (Col1, Col2, Col3) VALUES (?, ?, ?)&quot;);
+
+// s = string, i = integer, d = double
+mysqli_stmt_bind_param($stmt, &quot;sss&quot;, $value1, $value2, $value3);
+mysqli_stmt_execute($stmt);</code></pre></div>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<p>สร้างไฟล์ add.php</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;ตัวอย่าง PHP และ MySQLi&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;form action=&quot;save.php&quot; name=&quot;frmAdd&quot; method=&quot;post&quot;&gt;
+&lt;table width=&quot;284&quot; border=&quot;1&quot;&gt;
+  &lt;tr&gt;
+    &lt;th width=&quot;120&quot;&gt;CustomerID&lt;/th&gt;
+    &lt;td width=&quot;238&quot;&gt;&lt;input type=&quot;text&quot; name=&quot;txtCustomerID&quot; size=&quot;5&quot;&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;th width=&quot;120&quot;&gt;Name&lt;/th&gt;
+    &lt;td&gt;&lt;input type=&quot;text&quot; name=&quot;txtName&quot; size=&quot;20&quot;&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;th width=&quot;120&quot;&gt;Email&lt;/th&gt;
+    &lt;td&gt;&lt;input type=&quot;text&quot; name=&quot;txtEmail&quot; size=&quot;20&quot;&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;th width=&quot;120&quot;&gt;CountryCode&lt;/th&gt;
+    &lt;td&gt;&lt;input type=&quot;text&quot; name=&quot;txtCountryCode&quot; size=&quot;2&quot;&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;th width=&quot;120&quot;&gt;Budget&lt;/th&gt;
+    &lt;td&gt;&lt;input type=&quot;text&quot; name=&quot;txtBudget&quot; size=&quot;5&quot;&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;th width=&quot;120&quot;&gt;Used&lt;/th&gt;
+    &lt;td&gt;&lt;input type=&quot;text&quot; name=&quot;txtUsed&quot; size=&quot;5&quot;&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/table&gt;
+  &lt;input type=&quot;submit&quot; name=&quot;submit&quot; value=&quot;submit&quot;&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<p>สร้างไฟล์ save.php</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;PHP &amp; MySQL (mysqli)&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;?php
+    ini_set(&#x27;display_errors&#x27;, 1);
+    error_reporting(~0);
+
+    $conn = mysqli_connect(&quot;localhost&quot;, &quot;root&quot;, &quot;&quot;, &quot;db_test&quot;);
+    mysqli_set_charset($conn, &quot;utf8mb4&quot;);
+
+    try {
+        $stmt = mysqli_prepare($conn,</code></pre></div>
+<p>            &quot;INSERT INTO customer (CustomerID, Name, Email, CountryCode, Budget, Used)</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>             VALUES (?, ?, ?, ?, ?, ?)&quot;);
+        mysqli_stmt_bind_param($stmt, &quot;ssssdd&quot;,
+            $_POST[&quot;txtCustomerID&quot;], $_POST[&quot;txtName&quot;], $_POST[&quot;txtEmail&quot;],
+            $_POST[&quot;txtCountryCode&quot;], $_POST[&quot;txtBudget&quot;], $_POST[&quot;txtUsed&quot;]);
+        mysqli_stmt_execute($stmt);
+        echo &quot;Record add successfully&quot;;
+        mysqli_stmt_close($stmt);
+    } catch (mysqli_sql_exception $e) {
+        echo &quot;Error: &quot; . htmlspecialchars($e-&gt;getMessage());
+    }
+
+    mysqli_close($conn);</code></pre></div>
+<p>?&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>ทดลองป้อนข้อมูลดังนี้</p>
+<p>กดปุ่ม submit</p>
+<p>แสดงผลข้อมูล</p>
+<p>ให้นักศึกษาตรวจสอบข้อมูลใน list.php</p>
+<p>แสดงผลข้อมูล</p>
+<h2 id="s8">8.5 การแก้ไขข้อมูลใน MySQLi</h2>
+<p>     <strong>PHP MySQL Edit/Update Data Record(mysqli)</strong> เป็นตัวอย่างของ <strong>mysqli </strong>การเขียน <strong>PHP </strong>เพื่อ <strong>Edit/Update</strong> หรือ<strong>แก้ไข</strong>ข้อมูลใน <strong>Database ของ MySQL </strong>โดยใช้ function ต่าง ๆ ของ <strong>mysqli </strong>ผ่านการเขียน <strong>query </strong>ด้วยคำสั่ง <strong>SQL Update </strong>ผ่าน <strong>MySQL Database</strong></p>
+<p><strong>Syntax รูปแบบการใช้งาน</strong></p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>$stmt = mysqli_prepare($conn,
+    &quot;UPDATE table_name SET Col1 = ?, Col2 = ? WHERE Col3 = ?&quot;);
+mysqli_stmt_bind_param($stmt, &quot;sss&quot;, $value1, $value2, $value3);
+mysqli_stmt_execute($stmt);</code></pre></div>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<p>แก้ไขไฟล์ list.php ใหม่ดังนี้</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;ตัวอย่าง PHP และ MySQLi&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;?php
+    ini_set(&#x27;display_errors&#x27;, 1);
+    error_reporting(~0);
+
+    $serverName = &quot;localhost&quot;;
+    $userName = &quot;root&quot;;
+    $userPassword = &quot;&quot;;
+    $dbName = &quot;db_test&quot;;
+
+    $conn = mysqli_connect($serverName,$userName,$userPassword,$dbName);
+
+    $sql = &quot;SELECT * FROM customer&quot;;
+
+    $query = mysqli_query($conn,$sql);</code></pre></div>
+<p>?&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;table width=&quot;650&quot; border=&quot;1&quot;&gt;
+  &lt;tr&gt;
+    &lt;th width=&quot;91&quot;&gt; &lt;div align=&quot;center&quot;&gt;CustomerID &lt;/div&gt;&lt;/th&gt;
+    &lt;th width=&quot;98&quot;&gt; &lt;div align=&quot;center&quot;&gt;Name &lt;/div&gt;&lt;/th&gt;
+    &lt;th width=&quot;198&quot;&gt; &lt;div align=&quot;center&quot;&gt;Email &lt;/div&gt;&lt;/th&gt;
+    &lt;th width=&quot;97&quot;&gt; &lt;div align=&quot;center&quot;&gt;CountryCode &lt;/div&gt;&lt;/th&gt;
+    &lt;th width=&quot;59&quot;&gt; &lt;div align=&quot;center&quot;&gt;Budget &lt;/div&gt;&lt;/th&gt;
+    &lt;th width=&quot;71&quot;&gt; &lt;div align=&quot;center&quot;&gt;Used &lt;/div&gt;&lt;/th&gt;
+    &lt;th width=&quot;50&quot;&gt; &lt;div align=&quot;center&quot;&gt;Edit &lt;/div&gt;&lt;/th&gt;
+  &lt;/tr&gt;
+&lt;?php
+while($result=mysqli_fetch_array($query,MYSQLI_ASSOC))
+{</code></pre></div>
+<p>?&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>  &lt;tr&gt;
+    &lt;td&gt;&lt;div align=&quot;center&quot;&gt;&lt;?php echo htmlspecialchars($result[&quot;CustomerID&quot;]);?&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td&gt;&lt;?php echo htmlspecialchars($result[&quot;Name&quot;]);?&gt;&lt;/td&gt;
+    &lt;td&gt;&lt;?php echo htmlspecialchars($result[&quot;Email&quot;]);?&gt;&lt;/td&gt;
+    &lt;td&gt;&lt;div align=&quot;center&quot;&gt;&lt;?php echo htmlspecialchars($result[&quot;CountryCode&quot;]);?&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td align=&quot;right&quot;&gt;&lt;?php echo htmlspecialchars($result[&quot;Budget&quot;]);?&gt;&lt;/td&gt;
+    &lt;td align=&quot;right&quot;&gt;&lt;?php echo htmlspecialchars($result[&quot;Used&quot;]);?&gt;&lt;/td&gt;
+    &lt;td align=&quot;center&quot;&gt;&lt;a href=&quot;edit.php?CustomerID=&lt;?php echo htmlspecialchars($result[&quot;CustomerID&quot;]);?&gt;&quot;&gt;Edit&lt;/a&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;?php
+}</code></pre></div>
+<p>?&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;/table&gt;
+&lt;?php
+mysqli_close($conn);</code></pre></div>
+<p>?&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<p>สร้างไฟล์ edit.php</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;PHP &amp; MySQL (mysqli)&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;?php
+    ini_set(&#x27;display_errors&#x27;, 1);
+    error_reporting(~0);
+
+    $conn = mysqli_connect(&quot;localhost&quot;, &quot;root&quot;, &quot;&quot;, &quot;db_test&quot;);
+    mysqli_set_charset($conn, &quot;utf8mb4&quot;);
+
+    $strCustomerID = isset($_GET[&quot;CustomerID&quot;]) ? $_GET[&quot;CustomerID&quot;] : &quot;&quot;;
+
+    $stmt = mysqli_prepare($conn, &quot;SELECT * FROM customer WHERE CustomerID = ?&quot;);
+    mysqli_stmt_bind_param($stmt, &quot;s&quot;, $strCustomerID);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_fetch_array(mysqli_stmt_get_result($stmt), MYSQLI_ASSOC);
+
+    if (!$result) {
+        echo &quot;ไม่พบข้อมูลลูกค้า&quot;;
+        exit();
+    }</code></pre></div>
+<p>?&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;form action=&quot;update.php&quot; name=&quot;frmAdd&quot; method=&quot;post&quot;&gt;
+&lt;table width=&quot;284&quot; border=&quot;1&quot;&gt;
+  &lt;tr&gt;
+    &lt;th width=&quot;120&quot;&gt;CustomerID&lt;/th&gt;
+    &lt;td width=&quot;238&quot;&gt;&lt;input type=&quot;hidden&quot; name=&quot;txtCustomerID&quot; value=&quot;&lt;?php echo htmlspecialchars($result[&quot;CustomerID&quot;]);?&gt;&quot;&gt;&lt;?php echo htmlspecialchars($result[&quot;CustomerID&quot;]);?&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;th width=&quot;120&quot;&gt;Name&lt;/th&gt;
+    &lt;td&gt;&lt;input type=&quot;text&quot; name=&quot;txtName&quot; size=&quot;20&quot; value=&quot;&lt;?php echo htmlspecialchars($result[&quot;Name&quot;]);?&gt;&quot;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;th width=&quot;120&quot;&gt;Email&lt;/th&gt;
+    &lt;td&gt;&lt;input type=&quot;text&quot; name=&quot;txtEmail&quot; size=&quot;20&quot; value=&quot;&lt;?php echo htmlspecialchars($result[&quot;Email&quot;]);?&gt;&quot;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;th width=&quot;120&quot;&gt;CountryCode&lt;/th&gt;
+    &lt;td&gt;&lt;input type=&quot;text&quot; name=&quot;txtCountryCode&quot; size=&quot;2&quot; value=&quot;&lt;?php echo htmlspecialchars($result[&quot;CountryCode&quot;]);?&gt;&quot;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;th width=&quot;120&quot;&gt;Budget&lt;/th&gt;
+    &lt;td&gt;&lt;input type=&quot;text&quot; name=&quot;txtBudget&quot; size=&quot;5&quot; value=&quot;&lt;?php echo htmlspecialchars($result[&quot;Budget&quot;]);?&gt;&quot;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;th width=&quot;120&quot;&gt;Used&lt;/th&gt;
+    &lt;td&gt;&lt;input type=&quot;text&quot; name=&quot;txtUsed&quot; size=&quot;5&quot; value=&quot;&lt;?php echo htmlspecialchars($result[&quot;Used&quot;]);?&gt;&quot;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+&lt;input type=&quot;submit&quot; name=&quot;submit&quot; value=&quot;submit&quot;&gt;
+&lt;/form&gt;
+&lt;?php
+    mysqli_stmt_close($stmt);
+    mysqli_close($conn);</code></pre></div>
+<p>?&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>สร้างไฟล์ update.php (สำหรับบันทึกการแก้ไข แยกจาก save.php ที่ใช้เพิ่มข้อมูลในหัวข้อ 8.4)</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;PHP &amp; MySQL (mysqli)&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;?php
+    ini_set(&#x27;display_errors&#x27;, 1);
+    error_reporting(~0);
+
+    $conn = mysqli_connect(&quot;localhost&quot;, &quot;root&quot;, &quot;&quot;, &quot;db_test&quot;);
+    mysqli_set_charset($conn, &quot;utf8mb4&quot;);
+
+    try {
+        $stmt = mysqli_prepare($conn,</code></pre></div>
+<p>            &quot;UPDATE customer SET Name = ?, Email = ?, CountryCode = ?, Budget = ?, Used = ?</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>             WHERE CustomerID = ?&quot;);
+        mysqli_stmt_bind_param($stmt, &quot;sssdds&quot;,
+            $_POST[&quot;txtName&quot;], $_POST[&quot;txtEmail&quot;], $_POST[&quot;txtCountryCode&quot;],
+            $_POST[&quot;txtBudget&quot;], $_POST[&quot;txtUsed&quot;], $_POST[&quot;txtCustomerID&quot;]);
+        mysqli_stmt_execute($stmt);
+        echo &quot;Record update successfully&quot;;
+        mysqli_stmt_close($stmt);
+    } catch (mysqli_sql_exception $e) {
+        echo &quot;Error: &quot; . htmlspecialchars($e-&gt;getMessage());
+    }
+
+    mysqli_close($conn);</code></pre></div>
+<p>?&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<p>ทดลองแก้ไข Used เป็น 500</p>
+<p>เมื่อกดปุ่ม submit</p>
+<p>ตรวจสอบข้อมูลใน list.php</p>
+<h2 id="s9">8.6 การลบข้อมูลใน MySQLi</h2>
+<p><strong>PHP MySQL Delete Data Record/Confirm Delete</strong><strong> (mysqli)</strong> บทความนี้จะเป็นตัวอย่างของ <strong>mysqli </strong>การเขียน <strong>PHP </strong>เพื่อ <strong>Delete</strong> หรือ<strong>ลบ</strong> ข้อมูลใน <strong>Database ของ MySQL </strong>โดยใช้ function ต่าง ๆ ของ <strong>mysqli </strong>ผ่านการเขียน Query ด้วย <strong>SQL Delete บน MySQL Database</strong></p>
+<p><strong>Syntax รูปแบบการใช้งาน</strong></p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>$stmt = mysqli_prepare($conn, &quot;DELETE FROM customer WHERE CustomerID = ?&quot;);
+mysqli_stmt_bind_param($stmt, &quot;s&quot;, $customerID);
+mysqli_stmt_execute($stmt);</code></pre></div>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<p>แก้ไขไฟล์ list.php ดังนี้</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;ตัวอย่าง PHP และ MySQLi&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;?php
+    ini_set(&#x27;display_errors&#x27;, 1);
+    error_reporting(~0);
+
+    $serverName = &quot;localhost&quot;;
+    $userName = &quot;root&quot;;
+    $userPassword = &quot;&quot;;
+    $dbName = &quot;db_test&quot;;
+
+    $conn = mysqli_connect($serverName,$userName,$userPassword,$dbName);
+
+    $sql = &quot;SELECT * FROM customer&quot;;
+
+    $query = mysqli_query($conn,$sql);</code></pre></div>
+<p>?&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;table width=&quot;650&quot; border=&quot;1&quot;&gt;
+  &lt;tr&gt;
+    &lt;th width=&quot;91&quot;&gt; &lt;div align=&quot;center&quot;&gt;CustomerID &lt;/div&gt;&lt;/th&gt;
+    &lt;th width=&quot;98&quot;&gt; &lt;div align=&quot;center&quot;&gt;Name &lt;/div&gt;&lt;/th&gt;
+    &lt;th width=&quot;198&quot;&gt; &lt;div align=&quot;center&quot;&gt;Email &lt;/div&gt;&lt;/th&gt;
+    &lt;th width=&quot;97&quot;&gt; &lt;div align=&quot;center&quot;&gt;CountryCode &lt;/div&gt;&lt;/th&gt;
+    &lt;th width=&quot;59&quot;&gt; &lt;div align=&quot;center&quot;&gt;Budget &lt;/div&gt;&lt;/th&gt;
+    &lt;th width=&quot;71&quot;&gt; &lt;div align=&quot;center&quot;&gt;Used &lt;/div&gt;&lt;/th&gt;
+    &lt;th width=&quot;50&quot;&gt; &lt;div align=&quot;center&quot;&gt;Edit &lt;/div&gt;&lt;/th&gt;
+  &lt;/tr&gt;
+&lt;?php
+while($result=mysqli_fetch_array($query,MYSQLI_ASSOC))
+{</code></pre></div>
+<p>?&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>  &lt;tr&gt;
+    &lt;td&gt;&lt;div align=&quot;center&quot;&gt;&lt;?php echo htmlspecialchars($result[&quot;CustomerID&quot;]);?&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td&gt;&lt;?php echo htmlspecialchars($result[&quot;Name&quot;]);?&gt;&lt;/td&gt;
+    &lt;td&gt;&lt;?php echo htmlspecialchars($result[&quot;Email&quot;]);?&gt;&lt;/td&gt;
+    &lt;td&gt;&lt;div align=&quot;center&quot;&gt;&lt;?php echo htmlspecialchars($result[&quot;CountryCode&quot;]);?&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td align=&quot;right&quot;&gt;&lt;?php echo htmlspecialchars($result[&quot;Budget&quot;]);?&gt;&lt;/td&gt;
+    &lt;td align=&quot;right&quot;&gt;&lt;?php echo htmlspecialchars($result[&quot;Used&quot;]);?&gt;&lt;/td&gt;
+    &lt;td align=&quot;center&quot;&gt;&lt;a href=&quot;JavaScript:if(confirm(&#x27;Confirm Delete?&#x27;)==true){window.location=&#x27;delete.php?CustomerID=&lt;?php echo htmlspecialchars($result[&quot;CustomerID&quot;]);?&gt;&#x27;;}&quot;&gt;Delete&lt;/a&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;?php
+}</code></pre></div>
+<p>?&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;/table&gt;
+&lt;?php
+mysqli_close($conn);</code></pre></div>
+<p>?&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<p>สร้างไฟล์ delete.php</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;PHP &amp; MySQL (mysqli)&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;?php
+    ini_set(&#x27;display_errors&#x27;, 1);
+    error_reporting(~0);
+
+    $conn = mysqli_connect(&quot;localhost&quot;, &quot;root&quot;, &quot;&quot;, &quot;db_test&quot;);
+    mysqli_set_charset($conn, &quot;utf8mb4&quot;);
+
+    $strCustomerID = isset($_GET[&quot;CustomerID&quot;]) ? $_GET[&quot;CustomerID&quot;] : &quot;&quot;;
+
+    $stmt = mysqli_prepare($conn, &quot;DELETE FROM customer WHERE CustomerID = ?&quot;);
+    mysqli_stmt_bind_param($stmt, &quot;s&quot;, $strCustomerID);
+    mysqli_stmt_execute($stmt);
+
+    if (mysqli_stmt_affected_rows($stmt) &gt; 0) {
+        echo &quot;Record delete successfully&quot;;
+    } else {
+        echo &quot;ไม่พบข้อมูลที่ต้องการลบ&quot;;
+    }
+
+    mysqli_stmt_close($stmt);
+    mysqli_close($conn);</code></pre></div>
+<p>?&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>หมายเหตุ: การลบข้อมูลผ่านลิงก์แบบ GET ในตัวอย่างนี้ใช้เพื่อการเรียนรู้ ในระบบจริงควรลบด้วยวิธี POST ร่วมกับ CSRF Token และตรวจสิทธิ์ผู้ใช้ก่อนทุกครั้ง</p>
+<p>เมื่อเลือกลบที่ C001</p>
+<p>เมื่อกดปุ่ม ตกลง</p>
+<p>ตรวจสอบข้อมูลการลบใน list.php</p>
+<h2 id="s10">8.7 การค้นหาข้อมูลใน MySQLi</h2>
+<p><strong>PHP MySQL Search Data Record (mysqli)</strong> เป็นตัวอย่างของ <strong>mysqli </strong>และการค้นหา (<strong>Search</strong>) ข้อมูล การเขียน <strong>PHP </strong>เพื่อค้นหาข้อมูลจาก <strong>Database ของ MySQL </strong>มาแสดงผลทางหน้าจอด้วย function ต่างๆ ของ <strong>mysqli </strong>ทำงานร่วมกับการ fetch ข้อมูลในรูปแบบของ array</p>
+<p><strong>Syntax รูปแบบการใช้งาน</strong></p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>$keyword = &quot;%&quot; . $strKeyword . &quot;%&quot;;
+$stmt = mysqli_prepare($conn, &quot;SELECT * FROM customer WHERE Name LIKE ?&quot;);
+mysqli_stmt_bind_param($stmt, &quot;s&quot;, $keyword);
+mysqli_stmt_execute($stmt);
+$query = mysqli_stmt_get_result($stmt);
+
+while ($result = mysqli_fetch_array($query, MYSQLI_ASSOC))
+{
+    echo $result[&quot;CustomerID&quot;];
+}</code></pre></div>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<p>สร้างไฟล์ search.php</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;PHP &amp; MySQL (mysqli)&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;?php
+    ini_set(&#x27;display_errors&#x27;, 1);
+    error_reporting(~0);
+
+    $strKeyword = &quot;&quot;;
+    if (isset($_POST[&quot;txtKeyword&quot;])) {
+        $strKeyword = $_POST[&quot;txtKeyword&quot;];
+    }</code></pre></div>
+<p>?&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;form name=&quot;frmSearch&quot; method=&quot;post&quot; action=&quot;&lt;?php echo htmlspecialchars($_SERVER[&#x27;SCRIPT_NAME&#x27;]);?&gt;&quot;&gt;
+  &lt;table width=&quot;599&quot; border=&quot;1&quot;&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Keyword
+      &lt;input name=&quot;txtKeyword&quot; type=&quot;text&quot; id=&quot;txtKeyword&quot; value=&quot;&lt;?php echo htmlspecialchars($strKeyword);?&gt;&quot;&gt;
+      &lt;input type=&quot;submit&quot; value=&quot;Search&quot;&gt;&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/table&gt;
+&lt;/form&gt;
+&lt;?php
+    $conn = mysqli_connect(&quot;localhost&quot;, &quot;root&quot;, &quot;&quot;, &quot;db_test&quot;);
+    mysqli_set_charset($conn, &quot;utf8mb4&quot;);
+
+    $keyword = &quot;%&quot; . $strKeyword . &quot;%&quot;;
+    $stmt = mysqli_prepare($conn, &quot;SELECT * FROM customer WHERE Name LIKE ?&quot;);
+    mysqli_stmt_bind_param($stmt, &quot;s&quot;, $keyword);
+    mysqli_stmt_execute($stmt);
+    $query = mysqli_stmt_get_result($stmt);</code></pre></div>
+<p>?&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;table width=&quot;600&quot; border=&quot;1&quot;&gt;
+  &lt;tr&gt;
+    &lt;th width=&quot;91&quot;&gt; &lt;div align=&quot;center&quot;&gt;CustomerID &lt;/div&gt;&lt;/th&gt;
+    &lt;th width=&quot;98&quot;&gt; &lt;div align=&quot;center&quot;&gt;Name &lt;/div&gt;&lt;/th&gt;
+    &lt;th width=&quot;198&quot;&gt; &lt;div align=&quot;center&quot;&gt;Email &lt;/div&gt;&lt;/th&gt;
+    &lt;th width=&quot;97&quot;&gt; &lt;div align=&quot;center&quot;&gt;CountryCode &lt;/div&gt;&lt;/th&gt;
+    &lt;th width=&quot;59&quot;&gt; &lt;div align=&quot;center&quot;&gt;Budget &lt;/div&gt;&lt;/th&gt;
+    &lt;th width=&quot;71&quot;&gt; &lt;div align=&quot;center&quot;&gt;Used &lt;/div&gt;&lt;/th&gt;
+  &lt;/tr&gt;
+&lt;?php
+while ($result = mysqli_fetch_array($query, MYSQLI_ASSOC))
+{</code></pre></div>
+<p>?&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>  &lt;tr&gt;
+    &lt;td&gt;&lt;div align=&quot;center&quot;&gt;&lt;?php echo htmlspecialchars($result[&quot;CustomerID&quot;]);?&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td&gt;&lt;?php echo htmlspecialchars($result[&quot;Name&quot;]);?&gt;&lt;/td&gt;
+    &lt;td&gt;&lt;?php echo htmlspecialchars($result[&quot;Email&quot;]);?&gt;&lt;/td&gt;
+    &lt;td&gt;&lt;div align=&quot;center&quot;&gt;&lt;?php echo htmlspecialchars($result[&quot;CountryCode&quot;]);?&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td align=&quot;right&quot;&gt;&lt;?php echo htmlspecialchars($result[&quot;Budget&quot;]);?&gt;&lt;/td&gt;
+    &lt;td align=&quot;right&quot;&gt;&lt;?php echo htmlspecialchars($result[&quot;Used&quot;]);?&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;?php
+}</code></pre></div>
+<p>?&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;/table&gt;
+&lt;?php
+    mysqli_stmt_close($stmt);
+    mysqli_close($conn);</code></pre></div>
+<p>?&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>ทดลองค้นหาข้อมูล ชื่อ sura</p>
+<p>กดปุ่ม search จะได้</p>
+<h2 id="s11">8.8 การแบ่งหน้าแสดงผลตาราง</h2>
+<p><strong>PHP MySQL List Data Record Paging/Pagination (mysqli) เป็นตัวอย่างของ mysqli และการแบ่งหน้า (Paging) การเขียน PHP เพื่ออ่านข้อมูลจาก Database ของ MySQL มาแสดงผลทางหน้าจอในรูปแบบของแต่ละหน้าด้วย function ต่าง ๆ ของ mysqli ทำงานร่วมกับการ fetch ข้อมูลในรูปแบบของ array ซึ่งเหมาะกับข้อมูลที่มีประมาณมาก ๆ</strong></p>
+<p><strong>Syntax รูปแบบการใช้งาน</strong></p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>$sql = &quot;SELECT * FROM customer ORDER BY CustomerID ASC LIMIT ?, ?&quot;;
+$stmt = mysqli_prepare($conn, $sql);
+mysqli_stmt_bind_param($stmt, &quot;ii&quot;, $row_start, $per_page);
+mysqli_stmt_execute($stmt);
+$query = mysqli_stmt_get_result($stmt);
+// $row_start  คือ ลำดับของแถวเริ่มต้น (offset เริ่มที่ 0)
+// $per_page   คือ จำนวนแถวที่แสดงต่อหน้า</code></pre></div>
+<p><strong>Syntax การหา Row Start และ Row End</strong></p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>$per_page = 2;   // จำนวนแถวต่อหน้า
+$page = 1;
+
+if (isset($_GET[&quot;Page&quot;])) {
+    $page = max(1, (int)$_GET[&quot;Page&quot;]);   // แปลงเป็นจำนวนเต็มเสมอ
+}
+
+$num_pages = max(1, (int)ceil($num_rows / $per_page));   // จำนวนหน้าทั้งหมด
+if ($page &gt; $num_pages) {
+    $page = $num_pages;
+}
+
+$prev_page = $page - 1;
+$next_page = $page + 1;
+$row_start = ($page - 1) * $per_page;</code></pre></div>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<p>แก้ไขไฟล์ list.php ดังนี้</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;PHP &amp; MySQL (mysqli)&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;?php
+    ini_set(&#x27;display_errors&#x27;, 1);
+    error_reporting(~0);
+
+    $conn = mysqli_connect(&quot;localhost&quot;, &quot;root&quot;, &quot;&quot;, &quot;db_test&quot;);
+    mysqli_set_charset($conn, &quot;utf8mb4&quot;);
+
+    // นับจำนวนระเบียนทั้งหมด
+    $resultAll = mysqli_query($conn, &quot;SELECT COUNT(*) AS total FROM customer&quot;);
+    $num_rows = (int)mysqli_fetch_assoc($resultAll)[&quot;total&quot;];
+
+    $per_page = 2;   // จำนวนแถวต่อหน้า
+    $page = 1;
+
+    if (isset($_GET[&quot;Page&quot;])) {
+        $page = max(1, (int)$_GET[&quot;Page&quot;]);   // แปลงเป็นจำนวนเต็มเสมอ
+    }
+
+    $num_pages = max(1, (int)ceil($num_rows / $per_page));   // จำนวนหน้าทั้งหมด
+    if ($page &gt; $num_pages) {
+        $page = $num_pages;
+    }
+
+    $prev_page = $page - 1;
+    $next_page = $page + 1;
+    $row_start = ($page - 1) * $per_page;
+
+    $stmt = mysqli_prepare($conn,
+        &quot;SELECT * FROM customer ORDER BY CustomerID ASC LIMIT ?, ?&quot;);
+    mysqli_stmt_bind_param($stmt, &quot;ii&quot;, $row_start, $per_page);
+    mysqli_stmt_execute($stmt);
+    $query = mysqli_stmt_get_result($stmt);</code></pre></div>
+<p>?&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;table width=&quot;600&quot; border=&quot;1&quot;&gt;
+  &lt;tr&gt;
+    &lt;th width=&quot;91&quot;&gt; &lt;div align=&quot;center&quot;&gt;CustomerID &lt;/div&gt;&lt;/th&gt;
+    &lt;th width=&quot;98&quot;&gt; &lt;div align=&quot;center&quot;&gt;Name &lt;/div&gt;&lt;/th&gt;
+    &lt;th width=&quot;198&quot;&gt; &lt;div align=&quot;center&quot;&gt;Email &lt;/div&gt;&lt;/th&gt;
+    &lt;th width=&quot;97&quot;&gt; &lt;div align=&quot;center&quot;&gt;CountryCode &lt;/div&gt;&lt;/th&gt;
+    &lt;th width=&quot;59&quot;&gt; &lt;div align=&quot;center&quot;&gt;Budget &lt;/div&gt;&lt;/th&gt;
+    &lt;th width=&quot;71&quot;&gt; &lt;div align=&quot;center&quot;&gt;Used &lt;/div&gt;&lt;/th&gt;
+  &lt;/tr&gt;
+&lt;?php
+while ($result = mysqli_fetch_array($query, MYSQLI_ASSOC))
+{</code></pre></div>
+<p>?&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>  &lt;tr&gt;
+    &lt;td&gt;&lt;div align=&quot;center&quot;&gt;&lt;?php echo htmlspecialchars($result[&quot;CustomerID&quot;]);?&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td&gt;&lt;?php echo htmlspecialchars($result[&quot;Name&quot;]);?&gt;&lt;/td&gt;
+    &lt;td&gt;&lt;?php echo htmlspecialchars($result[&quot;Email&quot;]);?&gt;&lt;/td&gt;
+    &lt;td&gt;&lt;div align=&quot;center&quot;&gt;&lt;?php echo htmlspecialchars($result[&quot;CountryCode&quot;]);?&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td align=&quot;right&quot;&gt;&lt;?php echo htmlspecialchars($result[&quot;Budget&quot;]);?&gt;&lt;/td&gt;
+    &lt;td align=&quot;right&quot;&gt;&lt;?php echo htmlspecialchars($result[&quot;Used&quot;]);?&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;?php
+}</code></pre></div>
+<p>?&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;/table&gt;
+&lt;br&gt;
+Total &lt;?php echo $num_rows;?&gt; Record : &lt;?php echo $num_pages;?&gt; Page :
+&lt;?php
+$self = htmlspecialchars($_SERVER[&quot;SCRIPT_NAME&quot;]);
+
+if ($prev_page &gt;= 1)
+{
+    echo &quot; &lt;a href=&#x27;$self?Page=$prev_page&#x27;&gt;&amp;lt;&amp;lt; Back&lt;/a&gt; &quot;;
+}
+
+for ($i = 1; $i &lt;= $num_pages; $i++) {
+    if ($i != $page)
+    {
+        echo &quot;[ &lt;a href=&#x27;$self?Page=$i&#x27;&gt;$i&lt;/a&gt; ]&quot;;
+    }</code></pre></div>
+<p>    else</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>    {
+        echo &quot;&lt;b&gt; $i &lt;/b&gt;&quot;;
+    }
+}
+
+if ($page != $num_pages)
+{
+    echo &quot; &lt;a href=&#x27;$self?Page=$next_page&#x27;&gt;Next &amp;gt;&amp;gt;&lt;/a&gt; &quot;;
+}
+
+mysqli_stmt_close($stmt);
+mysqli_close($conn);</code></pre></div>
+<p>?&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<p>หน้าที่1</p>
+<p>หน้าที่2</p>
+<h2 id="s12">8.9 การรวมแสดง เพิ่ม ลบ แก้ไข ในหน้าเดียวกัน</h2>
+<p><strong>การ Select Insert Update และ Delete หรือเรียกรวมๆว่า CRUD(Create Read Update Delete)</strong></p>
+<p><strong>PHP MySQL Add/Insert/Edit/Delete to MySQL On Same Form</strong> เป็นตัวอย่างการเขียน <strong>PHP &amp; MySQL</strong> ให้สามารถ <strong>เพิ่ม/แก้ไข/ลบ</strong> ข้อมูลใน <strong>Form เดียวกัน</strong> คล้าย ๆ กับ <strong>DataGrid</strong> หรือ <strong>GridView</strong></p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;PHP &amp; MySQL (mysqli)&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;?php
+ini_set(&#x27;display_errors&#x27;, 1);
+error_reporting(~0);
+
+function h($s) {
+    return htmlspecialchars((string)$s, ENT_QUOTES, &#x27;UTF-8&#x27;);
+}
+
+$conn = mysqli_connect(&quot;localhost&quot;, &quot;root&quot;, &quot;&quot;, &quot;db_test&quot;);
+mysqli_set_charset($conn, &quot;utf8mb4&quot;);
+
+$cmd    = isset($_POST[&quot;hdnCmd&quot;]) ? $_POST[&quot;hdnCmd&quot;] : &quot;&quot;;
+$action = isset($_GET[&quot;Action&quot;])  ? $_GET[&quot;Action&quot;]  : &quot;&quot;;
+$cusID  = isset($_GET[&quot;CusID&quot;])   ? $_GET[&quot;CusID&quot;]   : &quot;&quot;;
+
+try {
+    //*** Add Condition ***//
+    if ($cmd == &quot;Add&quot;) {
+        $stmt = mysqli_prepare($conn,</code></pre></div>
+<p>            &quot;INSERT INTO customer (CustomerID, Name, Email, CountryCode, Budget, Used)</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>             VALUES (?, ?, ?, ?, ?, ?)&quot;);
+        mysqli_stmt_bind_param($stmt, &quot;ssssdd&quot;,
+            $_POST[&quot;txtAddCustomerID&quot;], $_POST[&quot;txtAddName&quot;], $_POST[&quot;txtAddEmail&quot;],
+            $_POST[&quot;txtAddCountryCode&quot;], $_POST[&quot;txtAddBudget&quot;], $_POST[&quot;txtAddUsed&quot;]);
+        mysqli_stmt_execute($stmt);
+    }
+
+    //*** Update Condition ***//
+    if ($cmd == &quot;Update&quot;) {
+        $stmt = mysqli_prepare($conn,</code></pre></div>
+<p>            &quot;UPDATE customer SET CustomerID = ?, Name = ?, Email = ?, CountryCode = ?, Budget = ?, Used = ?</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>             WHERE CustomerID = ?&quot;);
+        mysqli_stmt_bind_param($stmt, &quot;ssssdds&quot;,
+            $_POST[&quot;txtEditCustomerID&quot;], $_POST[&quot;txtEditName&quot;], $_POST[&quot;txtEditEmail&quot;],
+            $_POST[&quot;txtEditCountryCode&quot;], $_POST[&quot;txtEditBudget&quot;], $_POST[&quot;txtEditUsed&quot;],
+            $_POST[&quot;hdnEditCustomerID&quot;]);
+        mysqli_stmt_execute($stmt);
+    }
+
+    //*** Delete Condition ***//
+    if ($action == &quot;Del&quot;) {
+        $stmt = mysqli_prepare($conn, &quot;DELETE FROM customer WHERE CustomerID = ?&quot;);
+        mysqli_stmt_bind_param($stmt, &quot;s&quot;, $cusID);
+        mysqli_stmt_execute($stmt);
+    }
+} catch (mysqli_sql_exception $e) {
+    echo &quot;Error [&quot; . h($e-&gt;getMessage()) . &quot;]&quot;;
+}
+
+$objQuery = mysqli_query($conn, &quot;SELECT * FROM customer&quot;);</code></pre></div>
+<p>?&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;form name=&quot;frmMain&quot; method=&quot;post&quot; action=&quot;&lt;?php echo h($_SERVER[&quot;PHP_SELF&quot;]);?&gt;&quot;&gt;
+&lt;input type=&quot;hidden&quot; name=&quot;hdnCmd&quot; value=&quot;&quot;&gt;
+&lt;table width=&quot;600&quot; border=&quot;1&quot;&gt;
+  &lt;tr&gt;
+    &lt;th width=&quot;91&quot;&gt; &lt;div align=&quot;center&quot;&gt;CustomerID &lt;/div&gt;&lt;/th&gt;
+    &lt;th width=&quot;98&quot;&gt; &lt;div align=&quot;center&quot;&gt;Name &lt;/div&gt;&lt;/th&gt;
+    &lt;th width=&quot;198&quot;&gt; &lt;div align=&quot;center&quot;&gt;Email &lt;/div&gt;&lt;/th&gt;
+    &lt;th width=&quot;97&quot;&gt; &lt;div align=&quot;center&quot;&gt;CountryCode &lt;/div&gt;&lt;/th&gt;
+    &lt;th width=&quot;59&quot;&gt; &lt;div align=&quot;center&quot;&gt;Budget &lt;/div&gt;&lt;/th&gt;
+    &lt;th width=&quot;71&quot;&gt; &lt;div align=&quot;center&quot;&gt;Used &lt;/div&gt;&lt;/th&gt;
+    &lt;th width=&quot;30&quot;&gt; &lt;div align=&quot;center&quot;&gt;Edit &lt;/div&gt;&lt;/th&gt;
+    &lt;th width=&quot;30&quot;&gt; &lt;div align=&quot;center&quot;&gt;Delete &lt;/div&gt;&lt;/th&gt;
+  &lt;/tr&gt;
+&lt;?php
+while ($objResult = mysqli_fetch_array($objQuery, MYSQLI_ASSOC))
+{
+    if ($objResult[&quot;CustomerID&quot;] == $cusID &amp;&amp; $action == &quot;Edit&quot;)
+    {</code></pre></div>
+<p>?&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>  &lt;tr&gt;
+    &lt;td&gt;&lt;div align=&quot;center&quot;&gt;
+      &lt;input type=&quot;text&quot; name=&quot;txtEditCustomerID&quot; size=&quot;5&quot; value=&quot;&lt;?php echo h($objResult[&quot;CustomerID&quot;]);?&gt;&quot;&gt;
+      &lt;input type=&quot;hidden&quot; name=&quot;hdnEditCustomerID&quot; value=&quot;&lt;?php echo h($objResult[&quot;CustomerID&quot;]);?&gt;&quot;&gt;
+    &lt;/div&gt;&lt;/td&gt;
+    &lt;td&gt;&lt;input type=&quot;text&quot; name=&quot;txtEditName&quot; size=&quot;20&quot; value=&quot;&lt;?php echo h($objResult[&quot;Name&quot;]);?&gt;&quot;&gt;&lt;/td&gt;
+    &lt;td&gt;&lt;input type=&quot;text&quot; name=&quot;txtEditEmail&quot; size=&quot;20&quot; value=&quot;&lt;?php echo h($objResult[&quot;Email&quot;]);?&gt;&quot;&gt;&lt;/td&gt;
+    &lt;td&gt;&lt;div align=&quot;center&quot;&gt;&lt;input type=&quot;text&quot; name=&quot;txtEditCountryCode&quot; size=&quot;2&quot; value=&quot;&lt;?php echo h($objResult[&quot;CountryCode&quot;]);?&gt;&quot;&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td align=&quot;right&quot;&gt;&lt;input type=&quot;text&quot; name=&quot;txtEditBudget&quot; size=&quot;5&quot; value=&quot;&lt;?php echo h($objResult[&quot;Budget&quot;]);?&gt;&quot;&gt;&lt;/td&gt;
+    &lt;td align=&quot;right&quot;&gt;&lt;input type=&quot;text&quot; name=&quot;txtEditUsed&quot; size=&quot;5&quot; value=&quot;&lt;?php echo h($objResult[&quot;Used&quot;]);?&gt;&quot;&gt;&lt;/td&gt;
+    &lt;td colspan=&quot;2&quot; align=&quot;right&quot;&gt;&lt;div align=&quot;center&quot;&gt;
+      &lt;input name=&quot;btnUpdate&quot; type=&quot;button&quot; id=&quot;btnUpdate&quot; value=&quot;Update&quot; OnClick=&quot;frmMain.hdnCmd.value=&#x27;Update&#x27;;frmMain.submit();&quot;&gt;
+      &lt;input name=&quot;btnCancel&quot; type=&quot;button&quot; id=&quot;btnCancel&quot; value=&quot;Cancel&quot; OnClick=&quot;window.location=&#x27;&lt;?php echo h($_SERVER[&quot;PHP_SELF&quot;]);?&gt;&#x27;;&quot;&gt;
+    &lt;/div&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;?php
+    }</code></pre></div>
+<p>    else</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>    {</code></pre></div>
+<p>?&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>  &lt;tr&gt;
+    &lt;td&gt;&lt;div align=&quot;center&quot;&gt;&lt;?php echo h($objResult[&quot;CustomerID&quot;]);?&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td&gt;&lt;?php echo h($objResult[&quot;Name&quot;]);?&gt;&lt;/td&gt;
+    &lt;td&gt;&lt;?php echo h($objResult[&quot;Email&quot;]);?&gt;&lt;/td&gt;
+    &lt;td&gt;&lt;div align=&quot;center&quot;&gt;&lt;?php echo h($objResult[&quot;CountryCode&quot;]);?&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td align=&quot;right&quot;&gt;&lt;?php echo h($objResult[&quot;Budget&quot;]);?&gt;&lt;/td&gt;
+    &lt;td align=&quot;right&quot;&gt;&lt;?php echo h($objResult[&quot;Used&quot;]);?&gt;&lt;/td&gt;
+    &lt;td align=&quot;center&quot;&gt;&lt;a href=&quot;&lt;?php echo h($_SERVER[&quot;PHP_SELF&quot;]);?&gt;?Action=Edit&amp;amp;CusID=&lt;?php echo urlencode($objResult[&quot;CustomerID&quot;]);?&gt;&quot;&gt;Edit&lt;/a&gt;&lt;/td&gt;
+    &lt;td align=&quot;center&quot;&gt;&lt;a href=&quot;JavaScript:if(confirm(&#x27;Confirm Delete?&#x27;)==true){window.location=&#x27;&lt;?php echo h($_SERVER[&quot;PHP_SELF&quot;]);?&gt;?Action=Del&amp;amp;CusID=&lt;?php echo urlencode($objResult[&quot;CustomerID&quot;]);?&gt;&#x27;;}&quot;&gt;Delete&lt;/a&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;?php
+    }
+}</code></pre></div>
+<p>?&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>  &lt;tr&gt;
+    &lt;td&gt;&lt;div align=&quot;center&quot;&gt;&lt;input type=&quot;text&quot; name=&quot;txtAddCustomerID&quot; size=&quot;5&quot;&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td&gt;&lt;input type=&quot;text&quot; name=&quot;txtAddName&quot; size=&quot;20&quot;&gt;&lt;/td&gt;
+    &lt;td&gt;&lt;input type=&quot;text&quot; name=&quot;txtAddEmail&quot; size=&quot;20&quot;&gt;&lt;/td&gt;
+    &lt;td&gt;&lt;div align=&quot;center&quot;&gt;&lt;input type=&quot;text&quot; name=&quot;txtAddCountryCode&quot; size=&quot;2&quot;&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td align=&quot;right&quot;&gt;&lt;input type=&quot;text&quot; name=&quot;txtAddBudget&quot; size=&quot;5&quot;&gt;&lt;/td&gt;
+    &lt;td align=&quot;right&quot;&gt;&lt;input type=&quot;text&quot; name=&quot;txtAddUsed&quot; size=&quot;5&quot;&gt;&lt;/td&gt;
+    &lt;td colspan=&quot;2&quot; align=&quot;right&quot;&gt;&lt;div align=&quot;center&quot;&gt;
+      &lt;input name=&quot;btnAdd&quot; type=&quot;button&quot; id=&quot;btnAdd&quot; value=&quot;Add&quot; OnClick=&quot;frmMain.hdnCmd.value=&#x27;Add&#x27;;frmMain.submit();&quot;&gt;
+    &lt;/div&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+&lt;/form&gt;
+&lt;?php
+mysqli_close($conn);</code></pre></div>
+<p>?&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<h2 id="s13">8.10 การ Upload image to Server</h2>
+<p><strong>PHP Form Upload file to MySQL</strong> เป็นตัวอย่างการใช้ <strong>php สร้าง form</strong> สำหรับ<strong>อัปโหลดรูปภาพ</strong>ลงในฐานข้อมูล <strong>MySQL</strong> , การดึงแสดงข้อมูล , และการ <strong>Edit </strong>แก้ไขรูปภาพในฐานข้อมูล</p>
+<p><strong>คุณสมบัติของ Script</strong><br><strong> - เก็บฟิวด์ชื่อและรูปภาพ</strong><br><strong> - Form สำหรับ Upload ข้อมูลลงใน MySQL</strong><br><strong> - Form สำหรับแสดงข้อมูล</strong><br><strong> - Form สำหรับการแก้ไขข้อมูล</strong><br><strong> - การแก้ไขข้อมูลจะแก้ไขเฉพาะกรณีที่มีการเลือกรูปภาพใหม่เท่านั้น และจะลบรูปภาพเก่าทิ้งกรณีที่มีการเปลี่ยนแปลงรูปภาพใหม่</strong></p>
+<p><strong>สร้างตารางเพิ่มดังนี้</strong></p>
+<p><strong>วาง code ด้านล่างนี้ใน SQL</strong></p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>CREATE TABLE `files` (
+ `FilesID` int(4) NOT NULL auto_increment,
+ `Name` varchar(100) NOT NULL,
+ `FilesName` varchar(100) NOT NULL,
+ PRIMARY KEY (`FilesID`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 ;</code></pre></div>
+<p>กดปุ่ม Go เพื่อสร้างตารางตามคำสั่ง SQL</p>
+<p>สร้างโฟลเดอร์ ชื่อ /myfile บน Server</p>
+<p>สร้างไฟล์ upload1.php</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;ตัวอย่าง PHP และ MySQLi&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;form name=&quot;form1&quot; method=&quot;post&quot; action=&quot;upload2.php&quot; enctype=&quot;multipart/form-data&quot;&gt;
+    Name : &lt;input type=&quot;text&quot; name=&quot;txtName&quot;&gt;&lt;br&gt;
+    Picture : &lt;input type=&quot;file&quot; name=&quot;filUpload&quot;&gt;&lt;br&gt;
+    &lt;input name=&quot;btnSubmit&quot; type=&quot;submit&quot; value=&quot;Submit&quot;&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+สร้างไฟล์ upload2.php
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Upload File&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;?php
+    ini_set(&#x27;display_errors&#x27;, 1);
+    error_reporting(~0);
+
+    // อนุญาตเฉพาะไฟล์รูปภาพ: ตรวจทั้งนามสกุลและชนิดไฟล์จริงจากเนื้อไฟล์
+    $allowed = [&quot;jpg&quot;, &quot;jpeg&quot;, &quot;png&quot;, &quot;gif&quot;];
+    $ext  = strtolower(pathinfo($_FILES[&quot;filUpload&quot;][&quot;name&quot;], PATHINFO_EXTENSION));
+    $mime = mime_content_type($_FILES[&quot;filUpload&quot;][&quot;tmp_name&quot;]);
+    if (!in_array($ext, $allowed) || strpos($mime, &quot;image/&quot;) !== 0) {
+        echo &quot;อนุญาตเฉพาะไฟล์รูปภาพ (jpg, png, gif) เท่านั้น&quot;;
+        exit();
+    }
+
+    // ตั้งชื่อไฟล์ใหม่ ป้องกันชื่อซ้ำและชื่อไฟล์อันตราย
+    $newName = uniqid(&quot;img_&quot;, true) . &quot;.&quot; . $ext;
+
+    if (move_uploaded_file($_FILES[&quot;filUpload&quot;][&quot;tmp_name&quot;], &quot;myfile/&quot; . $newName))
+    {
+        echo &quot;Copy/Upload Complete&lt;br&gt;&quot;;
+
+        //*** Insert Record ***//
+        $conn = mysqli_connect(&quot;localhost&quot;, &quot;root&quot;, &quot;&quot;, &quot;db_test&quot;);
+        mysqli_set_charset($conn, &quot;utf8mb4&quot;);
+        $stmt = mysqli_prepare($conn, &quot;INSERT INTO files (Name, FilesName) VALUES (?, ?)&quot;);
+        mysqli_stmt_bind_param($stmt, &quot;ss&quot;, $_POST[&quot;txtName&quot;], $newName);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_close($stmt);
+        mysqli_close($conn);
+    }</code></pre></div>
+<p>?&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;a href=&quot;upload3.php&quot;&gt;View files&lt;/a&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>สร้างไฟล์ upload3.php</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Upload File&lt;/title&gt;
+&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;?php
+    $conn = mysqli_connect(&quot;localhost&quot;, &quot;root&quot;, &quot;&quot;, &quot;db_test&quot;);
+    mysqli_set_charset($conn, &quot;utf8mb4&quot;);
+    $objQuery = mysqli_query($conn, &quot;SELECT * FROM files&quot;);</code></pre></div>
+<p>?&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;table width=&quot;340&quot; border=&quot;1&quot;&gt;
+&lt;tr&gt;
+  &lt;th width=&quot;50&quot;&gt; &lt;div align=&quot;center&quot;&gt;Files ID &lt;/div&gt;&lt;/th&gt;
+  &lt;th width=&quot;150&quot;&gt; &lt;div align=&quot;center&quot;&gt;Picture&lt;/div&gt;&lt;/th&gt;
+  &lt;th width=&quot;150&quot;&gt; &lt;div align=&quot;center&quot;&gt;Name&lt;/div&gt;&lt;/th&gt;
+  &lt;th width=&quot;150&quot;&gt; &lt;div align=&quot;center&quot;&gt;Edit&lt;/div&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;?php
+    while ($objResult = mysqli_fetch_array($objQuery, MYSQLI_ASSOC))
+    {</code></pre></div>
+<p>?&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;tr&gt;
+  &lt;td&gt;&lt;div align=&quot;center&quot;&gt;&lt;?php echo (int)$objResult[&quot;FilesID&quot;];?&gt;&lt;/div&gt;&lt;/td&gt;
+  &lt;td&gt;&lt;div align=&quot;center&quot;&gt;&lt;img src=&quot;myfile/&lt;?php echo htmlspecialchars($objResult[&quot;FilesName&quot;]);?&gt;&quot;&gt;&lt;/div&gt;&lt;/td&gt;
+  &lt;td&gt;&lt;div align=&quot;center&quot;&gt;&lt;?php echo htmlspecialchars($objResult[&quot;Name&quot;]);?&gt;&lt;/div&gt;&lt;/td&gt;
+  &lt;td&gt;&lt;div align=&quot;center&quot;&gt;&lt;a href=&quot;upload4.php?FilesID=&lt;?php echo (int)$objResult[&quot;FilesID&quot;];?&gt;&quot;&gt;Edit&lt;/a&gt;&lt;/div&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;?php
+    }</code></pre></div>
+<p>?&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;/table&gt;
+&lt;?php
+    mysqli_close($conn);</code></pre></div>
+<p>?&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>สร้างไฟล์ upload4.php</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Upload File&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;?php
+    $conn = mysqli_connect(&quot;localhost&quot;, &quot;root&quot;, &quot;&quot;, &quot;db_test&quot;);
+    mysqli_set_charset($conn, &quot;utf8mb4&quot;);
+    $filesID = isset($_GET[&quot;FilesID&quot;]) ? (int)$_GET[&quot;FilesID&quot;] : 0;
+
+    $stmt = mysqli_prepare($conn, &quot;SELECT * FROM files WHERE FilesID = ?&quot;);
+    mysqli_stmt_bind_param($stmt, &quot;i&quot;, $filesID);
+    mysqli_stmt_execute($stmt);
+    $objResult = mysqli_fetch_array(mysqli_stmt_get_result($stmt), MYSQLI_ASSOC);
+
+    if (!$objResult) {
+        echo &quot;ไม่พบข้อมูล&quot;;
+        exit();
+    }</code></pre></div>
+<p>?&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;form name=&quot;form1&quot; method=&quot;post&quot; action=&quot;upload5.php?FilesID=&lt;?php echo $filesID;?&gt;&quot; enctype=&quot;multipart/form-data&quot;&gt;</code></pre></div>
+<p>  Edit Picture :&lt;br&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>  Name : &lt;input type=&quot;text&quot; name=&quot;txtName&quot; value=&quot;&lt;?php echo htmlspecialchars($objResult[&quot;Name&quot;]);?&gt;&quot;&gt;&lt;br&gt;
+  &lt;img src=&quot;myfile/&lt;?php echo htmlspecialchars($objResult[&quot;FilesName&quot;]);?&gt;&quot;&gt;&lt;br&gt;
+  Picture : &lt;input type=&quot;file&quot; name=&quot;filUpload&quot;&gt;&lt;br&gt;
+  &lt;input name=&quot;btnSubmit&quot; type=&quot;submit&quot; value=&quot;Submit&quot;&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>สร้างไฟล์ upload5.php</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Upload File&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;?php
+    ini_set(&#x27;display_errors&#x27;, 1);
+    error_reporting(~0);
+
+    $conn = mysqli_connect(&quot;localhost&quot;, &quot;root&quot;, &quot;&quot;, &quot;db_test&quot;);
+    mysqli_set_charset($conn, &quot;utf8mb4&quot;);
+    $filesID = isset($_GET[&quot;FilesID&quot;]) ? (int)$_GET[&quot;FilesID&quot;] : 0;
+
+    //*** Update Record ***//
+    $stmt = mysqli_prepare($conn, &quot;UPDATE files SET Name = ? WHERE FilesID = ?&quot;);
+    mysqli_stmt_bind_param($stmt, &quot;si&quot;, $_POST[&quot;txtName&quot;], $filesID);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+
+    if ($_FILES[&quot;filUpload&quot;][&quot;name&quot;] != &quot;&quot;)
+    {
+        // อนุญาตเฉพาะไฟล์รูปภาพ: ตรวจทั้งนามสกุลและชนิดไฟล์จริงจากเนื้อไฟล์
+        $allowed = [&quot;jpg&quot;, &quot;jpeg&quot;, &quot;png&quot;, &quot;gif&quot;];
+        $ext  = strtolower(pathinfo($_FILES[&quot;filUpload&quot;][&quot;name&quot;], PATHINFO_EXTENSION));
+        $mime = mime_content_type($_FILES[&quot;filUpload&quot;][&quot;tmp_name&quot;]);
+        if (!in_array($ext, $allowed) || strpos($mime, &quot;image/&quot;) !== 0) {
+            echo &quot;อนุญาตเฉพาะไฟล์รูปภาพ (jpg, png, gif) เท่านั้น&quot;;
+            exit();
+        }
+
+        $newName = uniqid(&quot;img_&quot;, true) . &quot;.&quot; . $ext;
+
+        if (move_uploaded_file($_FILES[&quot;filUpload&quot;][&quot;tmp_name&quot;], &quot;myfile/&quot; . $newName))
+        {
+            //*** อ่านชื่อไฟล์เดิมจากฐานข้อมูล (ไม่เชื่อค่าจากฟอร์ม) ***//
+            $stmt = mysqli_prepare($conn, &quot;SELECT FilesName FROM files WHERE FilesID = ?&quot;);
+            mysqli_stmt_bind_param($stmt, &quot;i&quot;, $filesID);
+            mysqli_stmt_execute($stmt);
+            $old = mysqli_fetch_array(mysqli_stmt_get_result($stmt), MYSQLI_ASSOC);
+            mysqli_stmt_close($stmt);
+
+            //*** Delete Old File ***//
+            if ($old &amp;&amp; $old[&quot;FilesName&quot;] != &quot;&quot;) {
+                @unlink(&quot;myfile/&quot; . basename($old[&quot;FilesName&quot;]));
+            }
+
+            //*** Update New File ***//
+            $stmt = mysqli_prepare($conn, &quot;UPDATE files SET FilesName = ? WHERE FilesID = ?&quot;);
+            mysqli_stmt_bind_param($stmt, &quot;si&quot;, $newName, $filesID);
+            mysqli_stmt_execute($stmt);
+            mysqli_stmt_close($stmt);
+
+            echo &quot;Copy/Upload Complete&lt;br&gt;&quot;;
+        }
+    }
+    mysqli_close($conn);</code></pre></div>
+<p>?&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;a href=&quot;upload3.php&quot;&gt;View files&lt;/a&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p><br>แสดงผลลัพธ์</p>
+<p>กดปุ่ม Submit</p>
+<p>กดปุ่ม View files</p>
+<p>เมื่อกดปุ่มแก้ไขไฟล์ Edit</p>
+<p>เมื่อตรวจสอบไฟล์บน PhpMyAdmin Database</p>
+<p>เมื่อตรวจสอบไฟล์บนโฟลเดอร์ myfile</p>
+<h2 id="s14">8.11 การทำ Form Login</h2>
+<p><strong>PHP MySQL กับ Login Form เป็นตัวอย่างการรทำ Form Login แบบง่าย ๆ ด้วยฐานข้อมูล MySQL โดยมีการตวจสอบ Username และ Password รวมทั้งสถานะว่าเป็น User หรือว่า Admin มีการแบ่งระดับการเข้าใช้งานของแต่ละ Page และมีการนำ Session เพื่อเก็บค่าต่าง ๆ ที่ได้จากการ Login เช่น UserID หรือว่า Status ของสมาชิก</strong></p>
+<p>สร้างตารางชื่อ member</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>CREATE TABLE `member` (</code></pre></div>
+<p> `UserID` int(3) unsigned zerofill NOT NULL auto_increment,</p>
+<p> `Username` varchar(20) NOT NULL,</p>
+<p> `Password` varchar(255) NOT NULL,</p>
+<p> `Name` varchar(100) NOT NULL,</p>
+<p> `Status` enum(&#x27;ADMIN&#x27;,&#x27;USER&#x27;) NOT NULL default &#x27;USER&#x27;,</p>
+<p> PRIMARY KEY (`UserID`),</p>
+<p> UNIQUE KEY `Username` (`Username`)</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;</code></pre></div>
+<p>สร้างไฟล์ seed_member.php (รันครั้งเดียวผ่านเบราว์เซอร์เพื่อเพิ่มผู้ใช้ตัวอย่าง)</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;?php
+    // รันไฟล์นี้ครั้งเดียวเพื่อเพิ่มผู้ใช้ตัวอย่าง โดยเก็บรหัสผ่านเป็นค่าแฮช (ไม่เก็บข้อความธรรมดา)
+    $conn = mysqli_connect(&quot;localhost&quot;, &quot;root&quot;, &quot;&quot;, &quot;db_test&quot;);
+    mysqli_set_charset($conn, &quot;utf8mb4&quot;);
+
+    $users = [</code></pre></div>
+<p>        [&quot;win&quot;,  &quot;win123&quot;,  &quot;Napat Srisuk&quot;, &quot;USER&quot;],</p>
+<p>        [&quot;chai&quot;, &quot;chai123&quot;, &quot;Kanya Thongdee&quot;,  &quot;ADMIN&quot;],</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>    ];
+
+    $stmt = mysqli_prepare($conn,
+        &quot;INSERT INTO member (Username, Password, Name, Status) VALUES (?, ?, ?, ?)&quot;);
+    foreach ($users as $u) {
+        $hash = password_hash($u[1], PASSWORD_DEFAULT);
+        mysqli_stmt_bind_param($stmt, &quot;ssss&quot;, $u[0], $hash, $u[2], $u[3]);
+        mysqli_stmt_execute($stmt);
+    }
+    echo &quot;เพิ่มผู้ใช้ตัวอย่างเรียบร้อย&quot;;
+    mysqli_stmt_close($stmt);
+    mysqli_close($conn);</code></pre></div>
+<p>?&gt;</p>
+<p>กดปุ่ม Go เพื่อสร้างตาราง member</p>
+<p>จะพบข้อมูลตัวอย่าง ผู้เรียนสามารถเปลี่ยนแปลงได้</p>
+<p>หมายเหตุ: ภาพประกอบข้างต้นเป็นตารางเวอร์ชันเดิมที่เก็บรหัสผ่านเป็นข้อความธรรมดา ในเวอร์ชันนี้คอลัมน์ Password เป็น varchar(255) และเก็บค่าแฮชจาก password_hash() เท่านั้น ให้เพิ่มผู้ใช้ตัวอย่างด้วยไฟล์ seed_member.php ที่แสดงถัดไป</p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<p>สร้างไฟล์ชื่อ login.php</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;ตัวอย่าง PHP และ MySQLi&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;form name=&quot;form1&quot; method=&quot;post&quot; action=&quot;check_login.php&quot;&gt;
+ Login&lt;br&gt;
+ &lt;table border=&quot;1&quot; style=&quot;width: 300px&quot;&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt; &amp;nbsp;Username&lt;/td&gt;
+ &lt;td&gt;
+ &lt;input name=&quot;txtUsername&quot; type=&quot;text&quot; id=&quot;txtUsername&quot;&gt;
+ &lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt; &amp;nbsp;Password&lt;/td&gt;
+ &lt;td&gt;&lt;input name=&quot;txtPassword&quot; type=&quot;password&quot; id=&quot;txtPassword&quot;&gt;
+ &lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+ &lt;/table&gt;
+ &lt;br&gt;
+ &lt;input type=&quot;submit&quot; name=&quot;Submit&quot; value=&quot;Login&quot;&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>สร้างไฟล์ check_login.php</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;?php
+session_start();
+
+$conn = mysqli_connect(&quot;localhost&quot;, &quot;root&quot;, &quot;&quot;, &quot;db_test&quot;);
+mysqli_set_charset($conn, &quot;utf8mb4&quot;);
+
+$username = isset($_POST[&quot;txtUsername&quot;]) ? $_POST[&quot;txtUsername&quot;] : &quot;&quot;;
+$password = isset($_POST[&quot;txtPassword&quot;]) ? $_POST[&quot;txtPassword&quot;] : &quot;&quot;;
+
+// ค้นหาด้วย Username เท่านั้น แล้วตรวจรหัสผ่านด้วย password_verify()
+$stmt = mysqli_prepare($conn, &quot;SELECT UserID, Password, Status FROM member WHERE Username = ?&quot;);
+mysqli_stmt_bind_param($stmt, &quot;s&quot;, $username);
+mysqli_stmt_execute($stmt);
+$objResult = mysqli_fetch_array(mysqli_stmt_get_result($stmt), MYSQLI_ASSOC);
+
+if (!$objResult || !password_verify($password, $objResult[&quot;Password&quot;]))
+{
+    echo &quot;Username and Password Incorrect!&quot;;
+}</code></pre></div>
+<p>else</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>{</code></pre></div>
+<p>    session_regenerate_id(true);   // ป้องกัน Session Fixation</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>    $_SESSION[&quot;UserID&quot;] = $objResult[&quot;UserID&quot;];
+    $_SESSION[&quot;Status&quot;] = $objResult[&quot;Status&quot;];
+    session_write_close();
+
+    if ($objResult[&quot;Status&quot;] == &quot;ADMIN&quot;)
+    {
+        header(&quot;location:admin_page.php&quot;);
+    }</code></pre></div>
+<p>    else</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>    {
+        header(&quot;location:user_page.php&quot;);
+    }
+    exit();
+}
+mysqli_stmt_close($stmt);
+mysqli_close($conn);</code></pre></div>
+<p>?&gt;</p>
+<p>สร้างไฟล์ admin_page.php</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;?php
+session_start();
+if (empty($_SESSION[&#x27;UserID&#x27;]))
+{
+    echo &quot;Please Login!&quot;;
+    exit();
+}
+if ($_SESSION[&#x27;Status&#x27;] != &quot;ADMIN&quot;)
+{
+    echo &quot;This page for Admin only!&quot;;
+    exit();
+}
+$conn = mysqli_connect(&quot;localhost&quot;, &quot;root&quot;, &quot;&quot;, &quot;db_test&quot;);
+mysqli_set_charset($conn, &quot;utf8mb4&quot;);
+$stmt = mysqli_prepare($conn, &quot;SELECT * FROM member WHERE UserID = ?&quot;);
+mysqli_stmt_bind_param($stmt, &quot;i&quot;, $_SESSION[&#x27;UserID&#x27;]);
+mysqli_stmt_execute($stmt);
+$objResult = mysqli_fetch_array(mysqli_stmt_get_result($stmt), MYSQLI_ASSOC);</code></pre></div>
+<p>?&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;ตัวอย่าง PHP และ MySQLi&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;</code></pre></div>
+<p>  Welcome to Admin Page! &lt;br&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>  &lt;table border=&quot;1&quot; style=&quot;width: 300px&quot;&gt;
+    &lt;tbody&gt;
+      &lt;tr&gt;
+        &lt;td width=&quot;87&quot;&gt; &amp;nbsp;Username&lt;/td&gt;
+        &lt;td width=&quot;197&quot;&gt;&lt;?php echo htmlspecialchars($objResult[&quot;Username&quot;]);?&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt; &amp;nbsp;Name&lt;/td&gt;
+        &lt;td&gt;&lt;?php echo htmlspecialchars($objResult[&quot;Name&quot;]);?&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+  &lt;br&gt;
+  &lt;a href=&quot;edit_profile.php&quot;&gt;Edit&lt;/a&gt;&lt;br&gt;
+  &lt;br&gt;
+  &lt;a href=&quot;logout.php&quot;&gt;Logout&lt;/a&gt;
+&lt;/body&gt;
+&lt;/html&gt; </code></pre></div>
+<p>สร้างไฟล์ user_page.php</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;?php
+session_start();
+if (empty($_SESSION[&#x27;UserID&#x27;]))
+{
+    echo &quot;Please Login!&quot;;
+    exit();
+}
+if ($_SESSION[&#x27;Status&#x27;] != &quot;USER&quot;)
+{
+    echo &quot;This page for User only!&quot;;
+    exit();
+}
+$conn = mysqli_connect(&quot;localhost&quot;, &quot;root&quot;, &quot;&quot;, &quot;db_test&quot;);
+mysqli_set_charset($conn, &quot;utf8mb4&quot;);
+$stmt = mysqli_prepare($conn, &quot;SELECT * FROM member WHERE UserID = ?&quot;);
+mysqli_stmt_bind_param($stmt, &quot;i&quot;, $_SESSION[&#x27;UserID&#x27;]);
+mysqli_stmt_execute($stmt);
+$objResult = mysqli_fetch_array(mysqli_stmt_get_result($stmt), MYSQLI_ASSOC);</code></pre></div>
+<p>?&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;ตัวอย่าง PHP และ MySQLi&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;</code></pre></div>
+<p>  Welcome to User Page! &lt;br&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>  &lt;table border=&quot;1&quot; style=&quot;width: 300px&quot;&gt;
+    &lt;tbody&gt;
+      &lt;tr&gt;
+        &lt;td width=&quot;87&quot;&gt; &amp;nbsp;Username&lt;/td&gt;
+        &lt;td width=&quot;197&quot;&gt;&lt;?php echo htmlspecialchars($objResult[&quot;Username&quot;]);?&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt; &amp;nbsp;Name&lt;/td&gt;
+        &lt;td&gt;&lt;?php echo htmlspecialchars($objResult[&quot;Name&quot;]);?&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+  &lt;br&gt;
+  &lt;a href=&quot;edit_profile.php&quot;&gt;Edit&lt;/a&gt;&lt;br&gt;
+  &lt;br&gt;
+  &lt;a href=&quot;logout.php&quot;&gt;Logout&lt;/a&gt;
+&lt;/body&gt;
+&lt;/html&gt; </code></pre></div>
+<p>สร้างไฟล์ edit_profile.php</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;?php
+session_start();
+if (empty($_SESSION[&#x27;UserID&#x27;]))
+{
+    echo &quot;Please Login!&quot;;
+    exit();
+}
+$conn = mysqli_connect(&quot;localhost&quot;, &quot;root&quot;, &quot;&quot;, &quot;db_test&quot;);
+mysqli_set_charset($conn, &quot;utf8mb4&quot;);
+$stmt = mysqli_prepare($conn, &quot;SELECT * FROM member WHERE UserID = ?&quot;);
+mysqli_stmt_bind_param($stmt, &quot;i&quot;, $_SESSION[&#x27;UserID&#x27;]);
+mysqli_stmt_execute($stmt);
+$objResult = mysqli_fetch_array(mysqli_stmt_get_result($stmt), MYSQLI_ASSOC);</code></pre></div>
+<p>?&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;ตัวอย่าง PHP และ MySQLi&lt;/title&gt;
+&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot;&gt;&lt;/head&gt;
+&lt;body&gt;
+&lt;form name=&quot;form1&quot; method=&quot;post&quot; action=&quot;save_profile.php&quot;&gt;</code></pre></div>
+<p>  Edit Profile! &lt;br&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>  &lt;table width=&quot;400&quot; border=&quot;1&quot; style=&quot;width: 400px&quot;&gt;
+    &lt;tbody&gt;
+      &lt;tr&gt;
+        &lt;td width=&quot;125&quot;&gt; &amp;nbsp;UserID&lt;/td&gt;
+        &lt;td width=&quot;180&quot;&gt;
+          &lt;?php echo htmlspecialchars($objResult[&quot;UserID&quot;]);?&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt; &amp;nbsp;Username&lt;/td&gt;
+        &lt;td&gt;
+          &lt;?php echo htmlspecialchars($objResult[&quot;Username&quot;]);?&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt; &amp;nbsp;Password&lt;/td&gt;
+        &lt;td&gt;&lt;input name=&quot;txtPassword&quot; type=&quot;password&quot; id=&quot;txtPassword&quot; placeholder=&quot;เว้นว่างหากไม่ต้องการเปลี่ยน&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt; &amp;nbsp;Confirm Password&lt;/td&gt;
+        &lt;td&gt;&lt;input name=&quot;txtConPassword&quot; type=&quot;password&quot; id=&quot;txtConPassword&quot; placeholder=&quot;พิมพ์รหัสผ่านใหม่อีกครั้ง&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;&amp;nbsp;Name&lt;/td&gt;
+        &lt;td&gt;&lt;input name=&quot;txtName&quot; type=&quot;text&quot; id=&quot;txtName&quot; value=&quot;&lt;?php echo htmlspecialchars($objResult[&quot;Name&quot;]);?&gt;&quot;&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt; &amp;nbsp;Status&lt;/td&gt;
+        &lt;td&gt;
+          &lt;?php echo htmlspecialchars($objResult[&quot;Status&quot;]);?&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+  &lt;br&gt;
+  &lt;input type=&quot;submit&quot; name=&quot;Submit&quot; value=&quot;Save&quot;&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt; </code></pre></div>
+<p>สร้างไฟล์ save_profile.php</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;?php
+session_start();
+if (empty($_SESSION[&#x27;UserID&#x27;]))
+{
+    echo &quot;Please Login!&quot;;
+    exit();
+}
+
+$conn = mysqli_connect(&quot;localhost&quot;, &quot;root&quot;, &quot;&quot;, &quot;db_test&quot;);
+mysqli_set_charset($conn, &quot;utf8mb4&quot;);
+
+$password = trim($_POST[&quot;txtPassword&quot;]);
+$confirm  = trim($_POST[&quot;txtConPassword&quot;]);
+$name     = trim($_POST[&quot;txtName&quot;]);
+
+if ($password != $confirm)
+{
+    echo &quot;Password not Match!&quot;;
+    exit();
+}
+
+if ($password != &quot;&quot;)
+{
+    // เปลี่ยนรหัสผ่านใหม่: เก็บเป็นค่าแฮชเสมอ
+    $hash = password_hash($password, PASSWORD_DEFAULT);
+    $stmt = mysqli_prepare($conn, &quot;UPDATE member SET Password = ?, Name = ? WHERE UserID = ?&quot;);
+    mysqli_stmt_bind_param($stmt, &quot;ssi&quot;, $hash, $name, $_SESSION[&quot;UserID&quot;]);
+}</code></pre></div>
+<p>else</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>{
+    // เว้นรหัสผ่านว่าง = ไม่เปลี่ยนรหัสผ่าน
+    $stmt = mysqli_prepare($conn, &quot;UPDATE member SET Name = ? WHERE UserID = ?&quot;);
+    mysqli_stmt_bind_param($stmt, &quot;si&quot;, $name, $_SESSION[&quot;UserID&quot;]);
+}
+mysqli_stmt_execute($stmt);
+
+echo &quot;Save Completed!&lt;br&gt;&quot;;
+if ($_SESSION[&quot;Status&quot;] == &quot;ADMIN&quot;)
+{
+    echo &quot;&lt;br&gt; Go to &lt;a href=&#x27;admin_page.php&#x27;&gt;Admin page&lt;/a&gt;&quot;;
+}</code></pre></div>
+<p>else</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>{
+    echo &quot;&lt;br&gt; Go to &lt;a href=&#x27;user_page.php&#x27;&gt;User page&lt;/a&gt;&quot;;
+}
+mysqli_stmt_close($stmt);
+mysqli_close($conn);</code></pre></div>
+<p>?&gt;</p>
+<p>สร้างไฟล์ logout.php</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;?php
+    session_start();
+    session_destroy();
+    header(&quot;location:login.php&quot;);
+?&gt;
+แสดงผลลัพธ์</code></pre></div>
+<p>กดปุ่ม login จะเข้าสู่หน้า User page</p>
+<p>เมื่อกดปุ่ม Edit จะสามารถแก้ไข Password และ Name ได้</p>
+<p>เมื่อ Login เป็น Admin</p>
+<p>กดปุ่ม Login จะเข้าสู่หน้า Admin Page</p>
+<h2 id="s15">8.12 การป้องกันช่องโหว่ SQL Injection ด้วย Prepared Statements (Open Web Application Security Project [OWASP], 2023e; The PHP Group, 2024a)</h2>
+<p>SQL Injection เป็นหนึ่งในภัยคุกคามความปลอดภัยทางเว็บที่อันตรายที่สุด (OWASP Top 10) เกิดจากการที่นักพัฒนานำค่าตัวแปรจากผู้ใช้ (เช่น $_POST หรือ $_GET) ไปเชื่อมต่อกับสตริงคำสั่ง SQL โดยตรง ทำให้ผู้ไม่ประสงค์ดีสามารถแทรกคำสั่งอันตราย เช่น &#x27; OR &#x27;1&#x27;=&#x27;1 เพื่อเข้าสู่ระบบโดยไม่ต้องทราบรหัสผ่าน หรือขโมยข้อมูลทั้งฐานข้อมูลได้</p>
+<h3 id="s16">8.12.1 การทำงานและไวยากรณ์ของ Prepared Statements ใน MySQLi</h3>
+<p>Prepared Statements แก้ปัญหานี้โดยการแยก &quot;โครงสร้างคำสั่ง SQL&quot; ออกจาก &quot;ข้อมูลนำเข้า (Data Parameters)&quot; โดยส่งคำสั่งไปคอมไพล์บนเซิร์ฟเวอร์ฐานข้อมูลก่อน แล้วจึงส่งค่าข้อมูลไปผูก (Bind) ในภายหลัง ข้อมูลจึงไม่มีทางถูกตีความเป็นคำสั่ง SQL ได้:<br><br>// ตัวอย่างการเขียน Prepared Statement สำหรับตรวจสอบการล็อกอินอย่างปลอดภัย<br>$stmt = $conn-&gt;prepare(&quot;SELECT id, username, password_hash FROM users WHERE email = ? AND status = ?&quot;);<br>$status = &#x27;active&#x27;;<br>$stmt-&gt;bind_param(&quot;ss&quot;, $email, $status); // &quot;ss&quot; หมายถึงสตริง 2 ตัว (s=string, i=integer, d=double, b=blob)<br>$stmt-&gt;execute();<br>$result = $stmt-&gt;get_result();<br>if ($row = $result-&gt;fetch_assoc()) {<br>    if (password_verify($password, $row[&#x27;password_hash&#x27;])) {<br>        // ล็อกอินสำเร็จ<br>    }<br>}<br>$stmt-&gt;close();</p>
+<h2 id="s17">8.13 การจัดการทรานแซกชันเพื่อความสมบูรณ์ของข้อมูล (Silberschatz, Korth, &amp; Sudarshan, 2019; MySQL AB &amp; Oracle, 2024) (Database Transactions &amp; Rollback)</h2>
+<p>ในระบบงานธุรกิจที่มีการปรับปรุงข้อมูลหลายตารางพร้อมกัน เช่น ระบบสั่งซื้อสินค้า (ต้องบันทึกใบสั่งซื้อ, บันทึกรายการสินค้า, และตัดสต็อกสินค้า) หากเกิดข้อผิดพลาดระหว่างขั้นตอน ข้อมูลจะเกิดความไม่สอดคล้องกัน (Inconsistency) MySQLi จึงรองรับคุณสมบัติ Transactions ตามหลักการ ACID โดยทำงานร่วมกับเอนจิน InnoDB ดังนี้:<br><br>$conn-&gt;begin_transaction(); // เริ่มต้นทรานแซกชัน<br>try {<br>    $conn-&gt;query(&quot;INSERT INTO orders (user_id, total) VALUES (1, 500)&quot;);<br>    $orderId = $conn-&gt;insert_id;<br>    $conn-&gt;query(&quot;INSERT INTO order_items (order_id, product_id, qty) VALUES ($orderId, 10, 2)&quot;);<br>    $conn-&gt;query(&quot;UPDATE products SET stock = stock - 2 WHERE id = 10&quot;);<br><br>    $conn-&gt;commit(); // ยืนยันการบันทึกทั้งหมดเมื่อทุกคำสั่งทำงานถูกต้อง<br>    echo &quot;การสั่งซื้อเสร็จสมบูรณ์&quot;;<br>} catch (Exception $e) {<br>    $conn-&gt;rollback(); // ยกเลิกการเปลี่ยนแปลงทั้งหมด ย้อนกลับสู่สถานะเดิม<br>    echo &quot;เกิดข้อผิดพลาด ยกเลิกรายการ: &quot; . $e-&gt;getMessage();<br>}</p>
+<h2 id="s18">8.14 การเขียน MySQLi เชิงวัตถุ (OOP) และตัวอย่างโค้ดมาตรฐาน (ชาญชัย ศุภอรรถกร, 2564; ชวลิต มนต์เทวัญ, 2565)</h2>
+<p>การเขียนโปรแกรมจัดการฐานข้อมูลในระดับวิชาชีพ ต้องละทิ้งรูปแบบ Procedural ดั้งเดิมและเปลี่ยนมาใช้รูปแบบเชิงวัตถุ (Object-Oriented Programming: OOP) ควบคู่กับมาตรฐานความมั่นคงปลอดภัย (ชาญชัย ศุภอรรถกร, 2564; ชวลิต มนต์เทวัญ, 2565):</p>
+<p>• การตั้งค่ารหัสอักขระ utf8mb4: ต้องเรียกใช้ $mysqli-&gt;set_charset(&quot;utf8mb4&quot;) ทุกครั้ง เพื่อรองรับภาษาไทยครบถ้วนและอีโมจิโดยไม่เกิดปัญหาเครื่องหมายคำถาม (?)</p>
+<h3 id="s19">8.14.1 ตัวอย่างโค้ด MySQLi OOP: Prepared Statements และ Database Transactions</h3>
+<p>&lt;?php<br>// เชื่อมต่อฐานข้อมูลแบบ Object-Oriented<br>$mysqli = new mysqli(&quot;localhost&quot;, &quot;db_user&quot;, &quot;db_pass&quot;, &quot;course_db&quot;);<br>if ($mysqli-&gt;connect_errno) {<br>    die(&quot;การเชื่อมต่อฐานข้อมูลล้มเหลว: &quot; . $mysqli-&gt;connect_error);<br>}<br>$mysqli-&gt;set_charset(&quot;utf8mb4&quot;); // รองรับภาษาไทย 100%<br><br>// เริ่มต้นระบบธุรกรรม (Database Transaction)<br>$mysqli-&gt;begin_transaction();<br><br>try {<br>    // 1. เพิ่มข้อมูลการลงทะเบียน (Prepared Statements)<br>    $stmt1 = $mysqli-&gt;prepare(&quot;INSERT INTO enrollments (student_id, course_code, registered_at) VALUES (?, ?, NOW())&quot;);<br>    $studentId = 101;<br>    $courseCode = &#x27;07-034-210&#x27;;<br>    $stmt1-&gt;bind_param(&quot;is&quot;, $studentId, $courseCode);<br>    $stmt1-&gt;execute();<br>    $stmt1-&gt;close();<br><br>    // 2. ปรับลดที่นั่งว่างในรายวิชา<br>    $stmt2 = $mysqli-&gt;prepare(&quot;UPDATE courses SET available_seats = available_seats - 1 WHERE course_code = ? AND available_seats &gt; 0&quot;);<br>    $stmt2-&gt;bind_param(&quot;s&quot;, $courseCode);<br>    $stmt2-&gt;execute();<br>    <br>    if ($stmt2-&gt;affected_rows === 0) {<br>        throw new Exception(&quot;ที่นั่งในรายวิชาเต็มแล้ว ไม่สามารถลงทะเบียนได้&quot;);<br>    }<br>    $stmt2-&gt;close();<br><br>    // ยืนยันการทำงานของทั้งสองคำสั่ง (Commit)<br>    $mysqli-&gt;commit();<br>    echo &quot;ลงทะเบียนเรียนสำเร็จ&quot;;<br>} catch (Exception $e) {<br>    // ยกเลิกการทำงานทั้งหมดหากมีข้อผิดพลาด (Rollback)<br>    $mysqli-&gt;rollback();<br>    echo &quot;เกิดข้อผิดพลาดในการลงทะเบียน: &quot; . $e-&gt;getMessage();<br>}<br>$mysqli-&gt;close();<br>?&gt;</p>
+<h2 id="s20">8.15 เทคนิคการใช้ AI ช่วยงานฐานข้อมูลและตรวจจับช่องโหว่ความปลอดภัย (Silberschatz et al., 2019; ชวลิต มนต์เทวัญ, 2565) (AI-Assisted Database &amp; Security Audit)</h2>
+<p>การออกแบบฐานข้อมูลและการเขียนคิวรีที่มีประสิทธิภาพและปลอดภัย เป็นทักษะที่ต้องอาศัยประสบการณ์สูง ผู้ช่วย AI (เช่น GitHub Copilot, Cursor, ChatGPT) สามารถทำหน้าที่เป็นผู้ช่วยสถาปนิกฐานข้อมูลและผู้ตรวจสอบความปลอดภัยได้ดังนี้</p>
+<h3 id="s21">8.15.1 การใช้ AI ช่วยออกแบบ Schema และเขียนคำสั่ง SQL เชิงซ้อน</h3>
+<p>• การสร้างโครงสร้างตารางตามหลัก Normalization (3NF): นักพัฒนาสามารถอธิบายความต้องการของระบบให้ AI ออกแบบตารางพร้อมกำหนด Foreign Keys และ Data Types ที่เหมาะสม<br>• การเขียน SQL Query ขั้นสูง: สั่งให้ AI ร่างคำสั่ง JOIN หลายตาราง, คำนวณสรุปยอดด้วย GROUP BY และ HAVING, หรือสร้าง View ได้อย่างแม่นยำ เช่น:<br>  Prompt: &quot;ช่วยเขียน SQL Query ค้นหายอดขายรวมของลูกค้าแต่ละรายในเดือนปัจจุบัน พร้อมเรียงลำดับจากมากไปน้อย และดึงเฉพาะลูกค้าที่มียอดสั่งซื้อเกิน 10,000 บาท&quot;</p>
+<h3 id="s22">8.15.2 การให้ AI ตรวจจับช่องโหว่ SQL Injection และปรับปรุงประสิทธิภาพ</h3>
+<p>• Security Audit: ส่งโค้ด PHP+MySQLi ให้ AI ตรวจสอบว่ามีจุดใดที่มีการใช้ query() ร่วมกับตัวแปรสตริงโดยตรง และสั่งให้ AI แปลงโค้ดจุดนั้นให้เป็น Prepared Statements<br>• Query Optimization: ให้ AI แนะนำการสร้าง Index บนคอลัมน์ที่ถูกค้นหาบ่อย เพื่อลดระยะเวลาการประมวลผลคิวรีในตารางที่มีข้อมูลหลายแสนเรคคอร์ด</p>
+<h3 id="s23">8.15.3 กรอบคำสั่ง AI สำหรับการออกแบบ Schema 3NF และปรับแต่งประสิทธิภาพ Query (Prompt for Database Tuning)</h3>
+<p><em>&quot;Role: Database Administrator (DBA). / Task: Optimize this MySQL SELECT query that joins 3 tables. Analyze execution plan via EXPLAIN and propose suitable composite indexes. / Constraints: Enforce 3rd Normal Form (3NF), use utf8mb4_unicode_ci collation, and rewrite PHP database access to use MySQLi Prepared Statements.&quot;</em></p>
+<h2 id="s24">สรุป</h2>
+<p>ส่วนขยาย MySQLi (MySQL Improved) เป็นสะพานเชื่อมต่อหลักระหว่างภาษา PHP และฐานข้อมูลเชิงสัมพันธ์ MySQL โดยรองรับการจัดการฐานข้อมูลอย่างครบถ้วน ตั้งแต่การเพิ่มข้อมูล (INSERT), การแสดงผลและการค้นหา (SELECT), การแก้ไขข้อมูล (UPDATE), และการลบข้อมูล (DELETE) ตลอดจนการทำระบบแบ่งหน้าและการจัดการระบบสมาชิก หัวใจสำคัญสูงสุดในการพัฒนาระบบเชิงวิชาชีพคือการป้องกันช่องโหว่ความมั่นคงปลอดภัย โดยต้องเปลี่ยนการเขียนคิวรีแบบเดิม มาใช้ Prepared Statements (prepare, bind_param, execute) เพื่อขจัดปัญหา SQL Injection ได้อย่างเด็ดขาด ร่วมกับการควบคุมความสอดคล้องของข้อมูลในระบบงานธุรกรรมด้วย Transactions (commit, rollback) และการนำปัญญาประดิษฐ์ (AI-Assisted Database Development) มาประยุกต์ใช้ในการตรวจสอบความปลอดภัยและปรับแต่งประสิทธิภาพของคิวรี ช่วยยกระดับเว็บแอปพลิเคชันให้มีมาตรฐานเทียบเท่าระดับสากล</p>
+<p> 1. PHP&#x27;s MySQL Extension</p>
+<p> 2. PHP&#x27;s MySQLi Extension</p>
+<p> 3. PHP Data Objects (PDO)</p>
+<p>จุดเด่นของ MySQLi และดีกว่าการ Connect แบบอื่นคือ</p>
+<p> 1. สามารถเขียนโปรแกรมแบบ OOP ได้เป็นอย่างดี (An object-oriented interface)</p>
+<p> 2. รองรับการทำงานบนฝั่ง SERVER ได้ดียิ่งขึ้น (Supports server-side Prepared Statements)</p>
+<p> 3. รองรับคำสั่งด้านโปรแกมฐานข้อมูล (Supports Stored Procedures)</p>
+<p> 4. รองรับคำสั่งหลายๆ คำสั่งพร้อมกัน (Supports Stored Procedures)</p>
+<p> 5. สนับสนุนการทำ Transactions (Support for transactions)</p>
+<p> 6. แก้ไขจุดบกพร่องอื่นของ MySQL ก่อนหน้า (Enhanced debugging support)</p>
+<p> 7. ทำงานเข้ากันได้ดีกับฝั่ง Server มากขึ้น (Embedded server support)</p>
+<p> 8. ทำงานกับรูปแบบตัวอักษรหลากหลายขึ้น (API supports Charsets)</p>
+<p> 9. ผลลัพท์โครงสร้างของข้อมูลที่มีโครงสร้างที่ดีขึ้น (Result set contains metadata: It have information about table along with result)</p>
+<p>การพัฒนาเว็บแอปพลิเคชันบน PHP เวอร์ชันปัจจุบัน จึงจำเป็นต้องใช้ส่วนขยาย MySQLi หรือ PDO แทนส่วนขยาย MySQL เดิมที่ถูกยกเลิกไปแล้ว เพื่อความมั่นคงปลอดภัยและประสิทธิภาพสูงสุด</p>
+<h2 id="s25">แบบฝึกหัด</h2>
+<p><strong>คำชี้แจง: จงทำแบบฝึกหัดต่อไปนี้เพื่อทบทวนความรู้ความเข้าใจ</strong></p>
+<p><strong>ตอนที่ 1: แบบฝึกหัดเชิงทฤษฎีและการวิเคราะห์ (Theoretical &amp; Analytical Exercises)</strong></p>
+<p>1. จงเปรียบเทียบข้อดีและจุดเด่นของการเชื่อมต่อฐานข้อมูลด้วยส่วนขยาย MySQLi และ PDO เมื่อเปรียบเทียบกับส่วนขยาย MySQL แบบเดิม (mysql_*)</p>
+<p>2. จงอธิบายวงจรการทำงานของระบบ CRUD (Create, Read, Update, Delete) ในเว็บแอปพลิเคชัน โดยระบุคำสั่ง SQL และเมธอดของ MySQLi ที่ใช้ในแต่ละขั้นตอน</p>
+<p>3. ภัยคุกคามแบบ SQL Injection มีรูปแบบและหลักการโจมตีอย่างไร และเหตุใดการใช้ Prepared Statements (ร่วมกับ prepare() และ bind_param()) จึงสามารถป้องกันการโจมตีนี้ได้อย่างสมบูรณ์</p>
+<p>4. ในระบบการทำธุรกรรม (Transactions) บนฐานข้อมูล จงอธิบายความสำคัญของคุณสมบัติ ACID และยกตัวอย่างสถานการณ์ที่จำเป็นต้องใช้คำสั่ง rollback() เพื่อรักษาความสมบูรณ์ของข้อมูล</p>
+<p>5. จงอธิบายหลักการทำงานของการแบ่งหน้าแสดงผลข้อมูล (Pagination) ในภาษา PHP+MySQLi โดยระบุบทบาทของคำสั่ง LIMIT และ OFFSET ใน SQL</p>
+<p>6. จงอธิบายว่าเครื่องมือผู้ช่วย AI (AI Coding Assistants) สามารถช่วยเหลือนักพัฒนาในการออกแบบ Schema ฐานข้อมูลและการปรับแต่งประสิทธิภาพคำสั่ง SQL (Query Optimization) ได้อย่างไรบ้าง</p>
+<p><strong>ตอนที่ 2: แบบฝึกหัดประยุกต์และการเขียนโปรแกรม (Applied &amp; Programming Exercises)</strong></p>
+<p>1.ให้นักศึกษาสร้างฐานข้อมูล MySQLi ชื่อ MyDB และสร้างตารางชื่อ Members เพื่อจัดเก็บข้อมูลของเพื่อน ๆ ในห้องเรียนดังนี้</p>
+<ul><li>ชื่อ-สกุล</li><li>เบอร์โทร</li><li>ที่อยู่</li><li>Email</li><li>รูปภาพ</li></ul>
+<p>2.ให้นักศึกษาเขียนโปรแกรมด้วยภาษา PHP+MySQLi เชื่อมต่อ Database MyDB</p>
+<p>3.ให้นักศึกษาเขียนโปรแกรมด้วยภาษา PHP+MySQLi แสดงผลข้อมูล MyDB</p>
+<p>4.ให้นักศึกษาเขียนโปรแกรมด้วยภาษา PHP+MySQLi เพิ่มข้อมูลลงใน MyDB</p>
+<p>5.ให้นักศึกษาเขียนโปรแกรมด้วยภาษา PHP+MySQLi แก้ไขข้อมูล MyDB</p>
+<p>6.ให้นักศึกษาเขียนโปรแกรมด้วยภาษา PHP+MySQLi ลบข้อมูล MyDB</p>
+<p>7.ให้นักศึกษาเขียนโปรแกรมด้วยภาษา PHP+MySQLi ค้นหาข้อมูลใน MyDB</p>
+<p>8.ให้นักศึกษาเขียนโปรแกรมด้วยภาษา PHP+MySQLi ทำหน้า Users Login และ Admin Login</p>
+<p>9.ให้นักศึกษาเขียนโปรแกรมด้วยภาษา PHP+MySQLi ทำหน้า Register</p>
+<p>10.ให้นักศึกษาเขียนโปรแกรมด้วยภาษา PHP+MySQLi ทำหน้า Profile</p>
+<p>             11.ให้นักศึกษาเขียนโปรแกรมด้วยภาษา PHP+MySQLi ทำหน้า แก้ไข Profile</p>
+<h2 id="s26">เอกสารอ้างอิง</h2>
+<p>ชาญชัย ศุภอรรถกร. (2564). สร้างเว็บแอปพลิเคชันและเชื่อมต่อฐานข้อมูลด้วย PHP + MySQL ฉบับสมบูรณ์. กรุงเทพฯ: ซิมพลิฟาย.</p>
+<p>ชวลิต มนต์เทวัญ. (2565). ระบบจัดการฐานข้อมูลเชิงสัมพันธ์และเทคนิคการเขียนคิวรีขั้นสูง. กรุงเทพฯ: สำนักพิมพ์มหาวิทยาลัยธรรมศาสตร์.</p>
+<p>MySQL AB &amp; Oracle. (2024). MySQL 8.0 reference manual. Oracle Corporation. Retrieved from <a href="https://dev.mysql.com/doc/refman/8.0/en/" target="_blank" rel="noopener noreferrer">https://dev.mysql.com/doc/refman/8.0/en/</a></p>
+<p>Open Web Application Security Project [OWASP]. (2023e). SQL injection prevention. OWASP Cheat Sheet Series. Retrieved from <a href="https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html" target="_blank" rel="noopener noreferrer">https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html</a></p>
+<p>Silberschatz, A., Korth, H. F., &amp; Sudarshan, S. (2019). Database System Concepts (7th ed.). New York: McGraw-Hill Education.</p>
+<p>The PHP Group. (2024a). MySQLi. PHP Manual. Retrieved from <a href="https://www.php.net/manual/en/book.mysqli.php" target="_blank" rel="noopener noreferrer">https://www.php.net/manual/en/book.mysqli.php</a></p>
+<p>ThaiCreate.Com. (n.d.). PHP &amp; MySQL (mysqli) tutorials. Retrieved November 14, 2026, from <a href="https://www.thaicreate.com/" target="_blank" rel="noopener noreferrer">https://www.thaicreate.com/</a></p>
+<label class="donebox"><input type="checkbox" id="done"><span>ทำเครื่องหมายว่าอ่านบทนี้แล้ว</span></label>
+<div class="pager"><a class="pn" href="ch7.html"><small>บทก่อนหน้า</small><b>บทที่ 7 พื้นฐานภาษา PHP</b></a><a class="pn next" href="ch9.html"><small>บทถัดไป</small><b>บทที่ 9 การใช้โปรแกรมสำเร็จรูปเพื่อจัดทำเว็บไซต์</b></a></div>
+</article></div>
+</main>
+<footer class="foot"><div class="wrap fgrid">
+<div><a class="brand" href="../index.html"><span class="logo" aria-hidden="true">&lt;/&gt;</span><span class="bt"><b>การเขียนโปรแกรมบนเว็บ</b><small>Web Programming</small></span></a>
+<p class="small">สื่อเสริมการเรียนรู้ ใช้ประกอบเอกสารประกอบการสอน ไม่มีระบบสมาชิกและไม่เก็บข้อมูลส่วนบุคคล ส่งงานผ่าน Google Classroom</p></div>
+<div><p class="fh">เรียนรู้</p><a href="../chapters.html">บทเรียน 10 บท</a><a href="../worksheets.html">ใบงานประจำบท</a><a href="../start.html">เริ่มต้นใช้งาน</a></div>
+<div><p class="fh">รายวิชา</p><a href="../about.html">เกี่ยวกับรายวิชา</a><span>ผู้สอน: ดร.สุรเชษฐ์ สังขพันธ์</span><span>พ.ศ. 2569</span></div>
+</div></footer>
+<script src="../assets/app.js"></script>
+</body>
+</html>

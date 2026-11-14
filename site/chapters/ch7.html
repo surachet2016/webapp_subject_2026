@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="เขียนฝั่งเซิร์ฟเวอร์ ฟอร์ม เซสชัน และความปลอดภัย">
+<meta name="theme-color" content="#4338ca">
+<title>บทที่ 7 พื้นฐานภาษา PHP · การเขียนโปรแกรมบนเว็บ</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%234338ca'/%3E%3Cpath d='M26 20 14 32l12 12M38 20l12 12-12 12' fill='none' stroke='%23fff' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preload" href="../assets/fonts/Sarabun-400-thai.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css">
+<script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+
+</head>
+<body class="ch-page">
+<a class="skip" href="#main">ข้ามไปยังเนื้อหา</a>
+<header class="top"><div class="wrap nav">
+<a class="brand" href="../index.html" aria-label="หน้าแรก การเขียนโปรแกรมบนเว็บ"><span class="logo" aria-hidden="true">&lt;/&gt;</span><span class="bt"><b>การเขียนโปรแกรมบนเว็บ</b><small>07-034-210</small></span></a>
+<button id="menuBtn" class="iconbtn menu-btn" type="button" aria-expanded="false" aria-controls="menu" aria-label="เปิดเมนู"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v2H3V6Zm0 5h18v2H3v-2Zm0 5h18v2H3v-2Z"/></svg></button>
+<nav id="menu" aria-label="เมนูหลัก">
+<a href="../chapters.html" aria-current="page">บทเรียน</a><a href="../worksheets.html">ใบงาน</a><a href="../start.html">เริ่มต้นใช้งาน</a><a href="../about.html">เกี่ยวกับรายวิชา</a>
+</nav>
+<button id="theme" class="iconbtn" type="button" aria-label="สลับโหมดมืดและสว่าง"><span class="i-moon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5Z"/></svg></span><span class="i-sun"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg></span></button>
+</div><div id="bar" class="bar" aria-hidden="true"></div></header>
+<main id="main">
+<div class="chead s3"><div class="wrap">
+<nav class="crumb" aria-label="เส้นทาง"><a href="../index.html">หน้าแรก</a><span>/</span><a href="../chapters.html">บทเรียน</a><span>/</span><span aria-current="page">บทที่ 7</span></nav>
+<div class="chrow"><span class="badge b-s3 big" aria-hidden="true">PHP</span><div><p class="kicker">บทที่ 7 · เขียนโปรแกรม</p><h1>พื้นฐานภาษา PHP</h1><p class="cdesc">เขียนฝั่งเซิร์ฟเวอร์ ฟอร์ม เซสชัน และความปลอดภัย</p></div></div>
+<ul class="meta"><li><b>31</b> นาที อ่าน</li><li><b>18</b> หัวข้อหลัก</li><li><b>0</b> ตัวอย่างลองรันได้</li></ul>
+</div></div>
+<div class="wrap layout">
+<aside class="side" aria-label="สารบัญบทนี้"><details class="tocbox" open><summary>สารบัญบทนี้</summary><ol><li><a href="#s1">บทนำ</a></li><li><a href="#s2">เนื้อหา</a></li><li><a href="#s3">7.1 วิธีการติดตั้ง XAMPP เพื่อจำลอง WebServer</a></li><li><a href="#s4">7.2 การเขียนคำอธิบายในภาษา PHP</a></li><li><a href="#s5">7.3 คำสั่งแสดงข้อความ echo</a></li><li><a href="#s6">7.4 การสอดแทรกคำสั่งภาษา PHP ใน HTML</a></li><li><a href="#s7">7.5 การใช้ตัวแปรในภาษา PHP</a></li><li><a href="#s8">7.6 แนะนำคำสั่ง IF ในภาษา PHP</a></li><li><a href="#s9">7.7 แนะนำ คำสั่ง If Else-If</a></li><li><a href="#s10">7.8 แนะนำคำสั่ง Switch case ในภาษา PHP</a></li><li><a href="#s11">7.9 แนะนำคำสั่ง วนรอบ ในภาษา PHP</a></li><li><a href="#s12">7.10 Function ในภาษา PHP</a></li><li><a href="#s13">7.11 การจัดการข้อมูลฟอร์มและเซสชัน (Form Processing &amp; Session Management)</a></li><li><a href="#s17">7.12 มาตรฐานการพัฒนาด้วย PHP 8.x และแนวปฏิบัติด้านความปลอดภัย (Modern PHP 8.x &amp; Security)</a></li><li><a href="#s21">7.13 เทคนิคการใช้ AI ช่วยเขียนและตรวจสอบโค้ด PHP (AI-Assisted PHP Development)</a></li><li><a href="#s26">สรุป</a></li><li><a href="#s27">แบบฝึกหัด</a></li><li><a href="#s28">เอกสารอ้างอิง</a></li></ol></details></aside>
+<article class="chapter prose" data-ch="7">
+<p class="note"><b>หมายเหตุ</b> หน้านี้ไม่แสดงภาพประกอบ (ดูภาพได้ในเอกสารประกอบการสอนฉบับเต็ม) ตัวอย่าง HTML ครบหน้ามีปุ่ม "ลองรัน" กดเพื่อดูผลได้ทันที</p>
+<h2 id="s1">บทนำ</h2>
+<p>ภาษาพีเอชพี (PHP: Hypertext Preprocessor) เป็นภาษาคอมพิวเตอร์สำหรับการพัฒนาเว็บแอปพลิเคชันฝั่งเซิร์ฟเวอร์ (Server-Side Scripting) ที่ได้รับความนิยมและมีการใช้งานอย่างแพร่หลายที่สุดในโลก ทำหน้าที่ประมวลผลตรรกะทางธุรกิจ การคำนวณ การติดต่อสื่อสารกับฐานข้อมูล ตลอดจนการสร้างเนื้อหาเว็บเพจแบบไดนามิก (Dynamic Web Pages) ก่อนที่จะส่งผลลัพธ์กลับไป แสดงผลบนเว็บเบราว์เซอร์ของผู้ใช้งานในรูปแบบ HTML ในปัจจุบันภาษา PHP ได้รับการพัฒนาจนถึงเวอร์ชัน PHP 8.x ซึ่งมาพร้อมกับ การเพิ่มประสิทธิภาพความเร็วระดับสูง (JIT Compiler) การกำหนดชนิดข้อมูลอย่างเข้มงวด (Strict Typing) และความมั่นคงปลอดภัย ในบทนี้นักศึกษาจะได้ศึกษาตั้งแต่การจำลองสภาพแวดล้อมเว็บเซิร์ฟเวอร์ด้วย XAMPP, ไวยากรณ์พื้นฐาน, โครงสร้างควบคุม, การสร้างฟังก์ชัน, การรับส่งข้อมูลผ่านฟอร์มและเซสชัน, มาตรฐานความปลอดภัย ตลอดจนการประยุกต์ใช้ปัญญาประดิษฐ์ (AI) ในการช่วยเขียนและตรวจสอบโค้ดหลังบ้านอย่างมีประสิทธิภาพ</p>
+<h2 id="s2">เนื้อหา</h2>
+<p>ก่อนเริ่มเขียนโปรแกรมภาษา PHP จำเป็นต้องติดตั้งโปรแกรม XAMPP เพื่อจำลองให้เครื่องคอมพิวเตอร์ทำหน้าที่เป็นเว็บเซิร์ฟเวอร์ (Web Server) สำหรับพัฒนาเว็บไซต์ด้วย WordPress, Joomla หรือ PHP โดยแนะนำให้ใช้ XAMPP เนื่องจากเป็นโปรแกรมที่มีการปรับปรุงอย่างต่อเนื่องและเป็นที่นิยมในการพัฒนา หรืออาจติดตั้ง AppServ แทนก็ได้</p>
+<p>โดย XAMPP นั้นจะมาพร้อมกับ Apache และ MySQL (phpmyadmin)</p>
+<p>หมายเหตุสำหรับผู้ใช้ macOS: ตามหน้าดาวน์โหลดของ Apache Friends (ตรวจเมื่อ 8 พฤศจิกายน 2569) XAMPP มีรุ่นสำหรับ Windows เท่านั้น ผู้ใช้ macOS ใช้ MAMP หรือเซิร์ฟเวอร์ที่มากับ PHP เอง (php -S) แทน ดูรายละเอียดและวิธีแก้ปัญหาพอร์ตซ้ำกันในภาคผนวก ค</p>
+<h2 id="s3">7.1 วิธีการติดตั้ง XAMPP เพื่อจำลอง WebServer (Apache Friends, 2024; ชาญชัย ศุภอรรถกร, 2564)</h2>
+<p>ขั้นตอนในหัวข้อนี้ใช้กับ Windows ตามที่ XAMPP เปิดให้ดาวน์โหลด (ผู้ใช้ macOS ดูภาคผนวก ค)</p>
+<ul><li>ทำการดาวน์โหลด XAMPP สำหรับ <strong>Windows</strong>.</li><li>ทำการ<strong>ติดตั้ง</strong> คลิก Next.</li><li>ทำการเลือก Components ที่เราต้องการ ... </li><li>เลือก Path ใน<strong>การติดตั้ง XAMPP</strong>.</li><li>คลิก Next.</li><li>คลิก Next.</li><li>รอทำการ<strong>ติดตั้ง</strong></li><li>ทำการ<strong>ติดตั้ง</strong>เรียบร้อย และทำการ Restart Computer 1 ครั้ง</li></ul>
+<p>1. ทำการ สำหรับ Windows</p>
+<p>2. ทำการติดตั้ง คลิก Next</p>
+<p>3. ทำการเลือก Components ที่เราต้องการ</p>
+<p>อธิบาย จริงๆเราเลือกทั้งหมดก็ได้ แต่สำหรับผมใช้แค่ Apache / MySQL เลยเลือกแค่นี้</p>
+<p>4. เลือก Path ในการติดตั้ง XAMPP</p>
+<p>5. คลิก Next</p>
+<p>6. คลิก Next</p>
+<p>Advertisements</p>
+<p>7. รอทำการติดตั้ง</p>
+<p>8. ทำการติดตั้งเรียบร้อยในทำการกดปุ่ม Finish และทำการ Restart Computer 1 ครั้ง</p>
+<p>9.  จากนั้นเข้า Control Panel ของ XAMPP และทำการคลิก Start Apache และ MySQL ตามลำดับ</p>
+<p>10. จากนั้นลองเข้า Phpmyadmin และ localhost ดู</p>
+<p>สำหรับ Code ต่าง ๆ ของ Php ในการทำ WebSite ให้เอามาไว้ที่ C:\xampp\htdocs\ (บน Windows) หรือโฟลเดอร์เว็บของเครื่องมือที่ใช้ (ดูภาคผนวก ค)</p>
+<p>Note : หลังจากที่เราลง xampp เราสามารถ Folders และไฟล์ต่าง ๆได้ใน htdocs</p>
+<p>10. เสร็จสิ้นการติดตั้ง XAMPP </p>
+<p>ข้อแนะนำ : หลังจากที่เราทำการติดตั้ง XAMPP เป็นที่เรียบร้อย Password ของ User root ใน Phpmyadmin จะไม่มี Password โดยแนะนำว่าให้ทำการตั้ง Password ของ User root </p>
+<h2 id="s4">7.2 การเขียนคำอธิบายในภาษา PHP</h2>
+<p>ถ้าเราต้องการเขียนคำอธิบายในส่วนใดๆก็ตามของสคริปต์ เราก็จะสามารถทำได้โดยใช้ /* ... */ เหมือนในภาษาซี หรือ // เหมือนในภาษาจาวา หรือ # เหมือน shell script โปรดสังเกตว่า // ใช้เขียนนำคำอธิบายในภายบรรทัดหนึ่งๆ เท่านั้น ส่วน # ใช้เริ่มต้นของบรรทัดที่เขียนคำอธิบาย</p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;?php
+ # comment 
+$a = 41; // set $a to 41. 
+$b =10; // set $b to 10. 
+$b += $a; /* add $a to $b */ 
+echo $b,&quot; &quot;; 
+?&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<h2 id="s5">7.3 คำสั่งแสดงข้อความ echo</h2>
+<p>การพิมพ์ค่าใดๆที่เก็บอยู่ในตัวแปร ถ้าชื่อของตัวแปรอยู่ในสตริงค์ระหว่าง double quote เวลาสร้างเอาพุตแล้ว จะอ่านค่าของตัวแปรนั้นก่อนแล้วจึงแทนที่ลงในข้อความ แต่ถ้านำหน้าด้วย backslash () ก็จะไม่มีการอ่านค่าของตัวแปร เช่น &quot;$a&quot; จะให้ผลต่างจาก &quot;$a&quot;  สังเกตได้จากตัวอย่างต่อไปนี้</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;?php
+ $a=1;
+ echo &quot;$a=$a &lt;BR&gt; &quot;;
+ $test = &quot;test&quot;; 
+ echo &quot;$test$test$test&lt;BR&gt; &quot;; 
+ echo $test,$test,$test,&quot;&lt;BR&gt; &quot;;
+ $a = 1; 
+ $b = 2; 
+ echo $a,&quot;+&quot;,$b,&quot;=&quot;,&quot;$a+$b&quot;,&quot;&lt;BR&gt; &quot;; 
+ echo $a,&quot;+&quot;,$b,&quot;=&quot;,$a+$b,&quot;&lt;BR&gt; &quot;; 
+ ?&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<h2 id="s6">7.4 การสอดแทรกคำสั่งภาษา PHP ใน HTML</h2>
+<p>เพื่อเป็นการบ่งบอกให้รู้ว่า ส่วนใดเป็นคำสั่ง ที่อยู่ภายในเอกสาร จึงได้มีการกำหนดสัญลักษณ์ไว้ดังนี้ ซึ่งสามารถทำได้หลายรูปแบบ เช่น</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;? ... ?&gt; (SGML style)
+&lt;?php ... ?&gt;? (XML style)
+&lt;script language=&quot;php&quot;&gt; ... &lt;/script&gt; (JavaScript style)</code></pre></div>
+<ul><li>&lt;% ... %&gt; (ASP style)</li></ul>
+<p>ที่นิยมก็คือแบบแรก โดยเริ่มต้นด้วย &lt;? และจบด้วย ?&gt; และตรงกลางจะเป็นคำสั่งในภาษา PHP </p>
+<p>เราสามารถวางคำสั่ง ไว้ภายในเอกสาร ตามที่ต้องการได้ อาจจะสลับกับ Tag ของภาษา ก็ได้ ตัวอย่างเช่น</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;HTML&gt;
+&lt;HEAD&gt;
+&lt;TITLE&gt; My Homepage &lt;/TITLE&gt;
+&lt;/HEAD&gt;
+&lt;BODY BGCOLOR=#FFFFFF&gt;
+&lt;H1&gt;&lt;?php echo &quot;Hello World&quot;; ?&gt;&lt;/H1&gt; 
+Your web browser is 
+&lt;?php echo $_SERVER[&#x27;HTTP_USER_AGENT&#x27;]; ?&gt;.
+&lt;/BODY&gt;
+&lt;/HTML&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<h2 id="s7">7.5 การใช้ตัวแปรในภาษา PHP</h2>
+<p>สำหรับการเขียนโปรแกรมสำหรับภาษาคอมพิวเตอร์ระดับสูง สิ่งที่จะขาดเสียมิได้คือ การกำหนดและใช้ตัวแปร (variable) ตัวแปรในภาษา จะเหมือนกับในภาษา Perl คือเริ่มต้นด้วยเครื่องหมาย dollar ($) โดยเราไม่จำเป็นต้องกำหนดแบบของข้อมูล () อย่างเจาะจงเหมือนในภาษาซี เพราะว่า ตัวแปลภาษาจะจำแนกเองโดยอัตโนมัติว่า ตัวแปรดังกล่าว ใช้ข้อมูลแบบใด ในช่วงเวลานั้นๆ เช่น ข้อความ จำนวนเต็ม จำนวนที่มีเลขจุดทศนิยมตรรก เป็นต้น</p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;?php
+$mystring = &quot;Hello World!&quot;;
+$myinteger = 1031;
+$myfloat = 3.14;
+echo &quot;$mystring&quot;; 
+echo &#x27;&lt;br/&gt;&#x27;;
+echo &quot;$myinteger&quot;; 
+echo &#x27;&lt;br/&gt;&#x27;;
+echo &quot;$myfloat&quot;; </code></pre></div>
+<p>?&gt;</p>
+<p>แสดงผลลัพธ์</p>
+<p>ตัวแปรตัวหนึ่ง อาจจะมีข้อมูลหลายแบบในช่วงเวลาที่ต่างกัน แต่การจะใช้งานบ้างครั้งจะต้องดูด้วยว่า เมื่อไหร่จะใช้เป็นตัวเลขเท่านั้น และไม่ใช้กับข้อความเป็นต้น ตัวอย่างเช่น</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;?php
+$x = 10; 
+$y = $x + 15.5; 
+echo &quot;$x, $y &quot;; 
+echo &#x27;&lt;br&gt;&#x27;;
+$x = &quot;abc&quot;; 
+echo &quot;$x &quot;; 
+echo &#x27;&lt;br&gt;&#x27;;
+$z = $x + 15.5; 
+echo &quot;$x, $z &quot;; 
+echo &#x27;&lt;br&gt;&#x27;; 
+echo (&quot;100.5&quot; - 16); 
+echo &#x27;&lt;br&gt;&#x27;;
+echo (0xef + 007);</code></pre></div>
+<p>?&gt; </p>
+<p>แสดงผลลัพธ์</p>
+<h2 id="s8">7.6 แนะนำคำสั่ง IF ในภาษา PHP</h2>
+<p>คำสั่ง IF ในภาษา PHP คือคำสั่งเงื่อนไขที่ใช้ในการตรวจสอบเงื่อนไขว่าเป็นจริงหรือเท็จ โดยใช้คำสั่ง if จะช่วยให้โปรแกรมทำงานตามเงื่อนไขที่กำหนดไว้  โดยในกรณีที่เป็นจริง โปรแกรมจะทำงานตามคำสั่งที่กำหนดไว้ในบล็อกที่อยู่ในเครื่องหมายปีกกา {} ซึ่งถ้าเงื่อนไขเป็นเท็จ โปรแกรมจะไม่ทำงานในบล็อกเงื่อนไขนั้น และทำงานต่อไปนอกจากนี้ ยังสามารถเพิ่มเงื่อนไขเข้าไปเพิ่มเติมโดยใช้คำสั่ง else เพื่อกำหนดคำสั่งที่ต้องการให้ไม่เป็นจริง  แต่เราสามารถลดความยาวของคำสั่งและการทำงานลงได้ โดยการใช้ &quot;IF แบบสั้น&quot;</p>
+<p>     รูปแบบการเขียนคำสั่ง IF</p>
+<p>if (เงื่อนไข) {<br>  // คำสั่งที่จะถูกดำเนินการถ้าเงื่อนไขเป็นจริง<br>} else {<br>  // คำสั่งที่จะถูกดำเนินการถ้าเงื่อนไขไม่เป็นจริง<br>}</p>
+<p>แต่เราสามารถลดความยาวของคำสั่งและการทำงานลงได้ โดยการใช้ IF แบบสั้น</p>
+<p>If แบบสั้นหรือ &quot;Ternary operator&quot; คือ การเขียนคำสั่ง if ในรูปแบบที่สั้นกว่าโดยใช้เครื่องหมาย ? เพื่อแทนการเขียนเงื่อนไข if แบบธรรมดา โดยมักนิยมใช้งานในการกำหนดค่าตัวแปรแบบเงื่อนไขเดียว ดังนั้นคำสั่ง if แบบย่อจึงเป็นวิธีการเขียน if ที่สั้นและกระชับขึ้น</p>
+<p>รูปแบบของ if แบบย่อคือ: (เงื่อนไข) ? (คำสั่งถูกเลือกเมื่อเงื่อนไขเป็นจริง) : (คำสั่งถูกเลือกเมื่อเงื่อนไขเป็นเท็จ)</p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;?php 
+$text = 2; 
+if($text == 1){ 
+  echo &quot;True&quot;; 
+}else{ 
+echo &quot;False&quot;; 
+}  </code></pre></div>
+<p>?&gt;</p>
+<p>แสดงผลลัพธ์</p>
+<p>ถ้าต้องการเขียนแบบสั้นจะได้ดังนี้</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;?php 
+$text = 2; 
+echo ($text == 1 ? &quot;True&quot; : &quot;False&quot;);</code></pre></div>
+<p>?&gt;</p>
+<p>แสดงผลลัพธ์</p>
+<h2 id="s9">7.7 แนะนำ คำสั่ง If Else-If</h2>
+<p>คำสั่ง If-Else ใช้สร้างเงื่อนไขแบบสองทางเลือก คือจริงหรือไม่จริงเท่านั้น ในภาษา PHP สามารถสร้างเงื่อนไขแบบหลายทางเลือกได้โดยใช้คำสั่ง Else-If สำหรับเงื่อนไขเพิ่มเติมที่ต้องการ โดยยกตัวอย่างการใช้กับโปรแกรมคำนวณเกรด</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;?php
+
+$score = 79;
+
+if ($score &gt;= 80) {
+    echo &quot;Your grade is A.&quot;;    
+} else if ($score &gt;= 70) {
+    echo &quot;Your grade is B.&quot;;    
+} else if ($score &gt;= 60) {
+    echo &quot;Your grade is C.&quot;;    
+} else if ($score &gt;= 50) {
+    echo &quot;Your grade is D.&quot;;    
+} else {
+    echo &quot;Sorry, you got grade F.&quot;; 
+}
+
+?&gt;
+แสดงผลลัพธ์</code></pre></div>
+<h2 id="s10">7.8 แนะนำคำสั่ง Switch case ในภาษา PHP</h2>
+<p>คำสั่งการใช้เงื่อนไขแบบ switch case เป็นภาษาแบบทางเลือกหลายทาง โดยที่มีทางเลือกให้ทำแบบหลายทางเลือก แต่ให้ทำแค่ทางเลือกเดียวเท่านั้น ซึ่งคำสั่งเลือกเงือนไขการทำงานของคำสั่งนี้จะคล้ายกับคำสั่ง If Else-If ซึ่งเป็นการเลือกแบบหลายทางเลือก แต่ในคำสั่ง Switch จะใช้สำหรับเปรียบเทียบกับค่าคงที่โดยตรงที่ไม่ใช่ Expression</p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code> &lt;?php
+
+$abb = &quot;th&quot;;
+
+switch ($abb) {
+    case &quot;de&quot;:
+        $country = &quot;Germany&quot;;
+        break;
+    case &quot;th&quot;:
+        $country = &quot;Thailand&quot;;
+        break;
+    case &quot;hu&quot;:
+        $country = &quot;Hungary&quot;;
+        break;
+    case &quot;tr&quot;:
+        $country = &quot;Turkey&quot;;
+        break;
+    default:
+        $country = &quot;Unknown country&quot;;
+}
+echo &quot;Your country is $country.&quot;;
+?&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<h2 id="s11">7.9 แนะนำคำสั่ง วนรอบ ในภาษา PHP</h2>
+<p>php loop การทำซ้ำหรือการวนซ้ำ ( Loop )  เนื่องจากการแสดงผลของชุดข้อมูล()ต่าง ๆ ที่มีค่าข้อมูลที่เหมือนกันแต่ต่างกันที่ตัวเลขในการแสดงคนจริงนิยมใช้ loop ในการแสดงผลของข้อมูล ซึ่งจะได้ประหยัดเวลาในการเขียนและยังลดบรรทัดโค้ดที่ไม่จำเป็นอีกด้วย ทั้งนี้ จึงขอยกตัวอย่างวิธีการ loop ข้อมูลของ php มาทั้งหมด 4 แบบ ได้แก่ <strong>For Loop , Foreach Loop , While Loop , Do While Loop </strong> และยังมีคำสั่งที่เกี่ยวข้องกับ การใช้ loop อย่างเช่น <strong>break / continue  </strong>ยังมีเรื่อง Recursive Function หรือการใช้ Function  เรียกทำงาน Function ตัวเองไปเรื่อยๆจนกว่าข้อมูลจะแสดงครบทั้งหมด</p>
+<p>for loop  มีไว้สำหรับการทำซ้ำโปรแกรมในจำนวนรอบที่แน่นอน ตัวอย่างเช่น</p>
+<p>&lt;?php<br>// for ([กำหนดตัวแปรสำหรับเริ่มต้น]; [ถ้าตรงเงื่อนไขจะยังวนลูป]; [เพิ่มค่าตัวแปรไปเรื่อยๆจนกว่าจะพ้นเงื่อนไข]) {<br>    // ให้ทำอะไรซักอย่างซ้ำๆ <br>//   }<br><br>for ($i = 0; $i &lt; 4; $i++) {  <br>    echo &quot;The number is: $i &lt;br&gt;&quot;; //ส่วนแสดงผล<br>}<br><br>?&gt;</p>
+<p>แสดงผลลัพธ์</p>
+<p>while loop คือการทำงานโดยเช็คเงื่อนไขก่อนค่อย loop</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;?php
+
+$a=1;
+while ($a &lt;= 4) {
+    echo &quot;The number is: $a &lt;br&gt;&quot;;//ส่วนแสดงผล
+    $a++;   //ค่าเพิ่มขึ้นทีละ 1 
+}
+?&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<p>do while loop คือการทำงานก่อนแล้วค่อยเช็คเงื่อนไขของ loop</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;?php 
+$a = 1; 
+do {
+  echo &quot;The number is: $a &lt;br&gt;&quot;;//ส่วนแสดงผล
+  $a++;
+} while ($a &lt;= 4);
+?&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<p>foreach loop นิยมใช้ loop ข้อมูลประเภท array ในการแสดงผลข้อมูล</p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;?php
+foreach ($(ตัวแปรarray) as $(ตัวแปรที่จะเก็บค่า key )=&gt; $(ตัวแปรที่จะเก็บค่าข้อมูล)) {
+ # code...
+}
+
+$variable = array(&#x27;1&#x27;,&#x27;2&#x27;,&#x27;3&#x27;,&#x27;4&#x27;);  //ประกาศตัวแปร array
+foreach ($variable as $key =&gt; $value) {
+ echo &quot;The number is: $value &lt;br&gt;&quot;;//ส่วนแสดงผล
+}
+?&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<h2 id="s12">7.10 Function ในภาษา PHP</h2>
+<p>ในการพัฒนา จะต้องเขียนโปรแกรมขึ้นมาเองทั้งหมด และต้องอาศัยความรู้ในการประกาศฟังก์ชัน การเรียกใช้งาน แต่เพื่อความสะดวกในการใช้งานภาษา PHP ได้เทำฟังก์ชันต่าง ๆ แต่ในครั้งนี้จะมาทำความรู้จักของฟังก์ชันชนิดของตัวเลขต่าง ๆ ใน php ฟังก์ชันในกลุ่มนี้ใช้สำหรับการจัดการข้อมูลประเภทตัวเลข มีฟังก์ชันในกลุ่มนี้ด้วยกันหลายตัว ด้วยกัน</p>
+<p class="cap">ตารางที่ 7-1 ฟังก์ชันคณิตศาสตร์ใน PHP</p>
+<div class="tw"><table><tr><th> ฟังก์ชันคณิตศาสตร์</th><th>คำอธิบาย</th></tr><tr><td>abs()</td><td>หาค่าสัมบูรณ์ของตัวเลข</td></tr><tr><td>max() กับ min()</td><td>ให้หากลุ่มของตัวเลขที่กำหนดเอาไว้ ว่าค่าไหนมากที่สุด หรือค่าไหนน้อยที่สุด</td></tr><tr><td>pow()</td><td>หาค่าเลกยกกำลัง</td></tr><tr><td>rand()</td><td>เป็นสุ้มตัวเลขที่กำหนดไว้</td></tr><tr><td>round()</td><td>ปัดเลขทศนิยม</td></tr><tr><td>sqrt()</td><td>หาค่ารากที่สองของตัวเลขนั้น ๆ</td></tr></table></div>
+<p>ฟังก์ชันทางคณิตศาสตร์ เป็นฟังก์ชันที่ใช้จัดการข้อมูลประเภทตัวเลขต่าง ๆ เช่น เลขจำนวนเต็ม เลขทศนิยม เป็นต้น ฟังก์ชันในกลุ่มของจัดการคณิตศาสตร์ก็มี ดังนี้ abds(), max(), min(), pow(), rand(), round(), sqrt() เป็นต้น เราสามารถสามารถนำฟังก์ชันทางคณิตศาสตร์ไปประยุกทำพวกโปรแกรมคำนวณได้ เช่น โปรแกรมคำนวณสแควรูท โปรแกรมคำนวณหาจำนวนเงินผ่อนชำระ PMT (Payment) เป็นต้น</p>
+<p><strong>ฟังก์ชัน abs()</strong></p>
+<p>เป็นฟังก์ชันที่ใช้หาค่าสัมบูรณ์ของตัวเลขนั้น ๆ หรือทำการเปลี่ยนแปลงตัวเลขให้เป็นค่าบวก ไม่ว่าตัวเลขที่นำมาใช้ฟังก์ชันนี้ค่าของมันจะเป็นบวก และนอกจากนี้สามารถไปใช้ลขจำนวนเต็ม หรือเลขทศนิยมได้ </p>
+<p>ตัวอย่างการใช้ฟังก์ชัน abs()</p>
+<p>&lt;?php<br>//กำหนดค่าตัวแปร<br>$num1 = -4.5;<br>$num2 = 5;<br>$num3 = -5;<br>//ใช้ฟังก์ชัน abs()<br>$abs1 = abs($num1);<br>$abs2 = abs($num2);<br>$abs3 = abs($num3);<br>//ให้แสดงผลทางหน้าจอ<br>echo &quot;ค่าสัมบูรณ์ของ $num1 คือ $abs1 &lt;br&gt; &quot;;<br>echo &quot;ค่าสัมบูรณ์ของ $num2 คือ $abs2 &lt;br&gt; &quot;;<br>echo &quot;ค่าสัมบูรณ์ของ $num3 คือ $abs3 &lt;br&gt; &quot;;<br>?&gt;</p>
+<p>แสดงผลลัพธ์</p>
+<p><strong>ฟังก์ชัน max() และ min()</strong></p>
+<p>ฟังก์ชันทั้งสองอย่างนี้ใช้ในการหาค่าของตัวเลขที่กำหนดขึ้นมาตัวเลขไหนจะมีค่ามากที่สุด และตัวเลขไหนจะมีค่าน้อยที่สุด โดยสามารถนำไปประยุกต์ใช้เพื่อหาว่าราคาของสินค้าที่มีราคาแพงที่สุดเท่าไร หรือราคาสินค้าที่ถูกที่สุดคือเท่าไร </p>
+<p>รูปแบบการใช้ฟังก์ชัน max() และ min()</p>
+<p>max(เลขที่ 1 , เลขที่ 2 , ...)<br>min(เลขที่ 1 , เลขที่ 2 , ...)</p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;?php
+//กำหนดค่าตัวแปน
+$price1 = 5000;
+$price2 = 4600;
+$price3 = 7800;
+//ใช้ฟังก์ชัน max() และ min()
+echo &quot;ค่าที่มากสุด คือ &quot;.max($price1, $price2, $price3).&quot;&lt;br&gt;&quot;;
+echo &quot;ค่าที่น้อยสุด คือ &quot;.min($price1, $price2, $price3);
+
+?&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<p><strong>ฟังก์ชัน pow()</strong></p>
+<p>เป็นฟังก์ชันที่ใช้หาค่ายกกำลังของตัวเลขนั้น ๆ</p>
+<p>รูปแบบการใช้ฟังก์ชัน pow()</p>
+<p>pow(ตัวเลข , เลขยกกำลัง)</p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;?php
+    echo &quot;2 ยกกำลัง 3 มีค่าเท่ากับ &quot;.pow(2, 3).&quot;&lt;br&gt;&quot;;
+    echo &quot;-1 ยกกำลัง 20 มีค่าเท่ากับ &quot;.pow(-1, 20).&quot;&lt;br&gt;&quot;;
+    echo &quot;0 ยกกำลัง 0 มีค่าเท่ากับ &quot;.pow(0, 0).&quot;&lt;br&gt;&quot;;
+
+?&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<p><strong>ฟังก์ชัน rand()</strong></p>
+<p>เป็นฟังก์ชันใช้หาค่าของตัวเลขที่สุ่ม โดยการใช้งานฟังก์ชันนี้จะสุ่มตัวเลขแบบอัตโนมัติขึ้นมาจะให้ผลลัพธ์เลขนั้นไม่เหมือนกัน</p>
+<p>รูปแบบการใช้ฟังก์ชัน rand()</p>
+<p>rand(ค่าเลขที่ต่ำที่ต้องการให้สุ่ม , ค่าเลขที่สูงที่ต้องการให้สุ่ม)</p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;?php
+    echo &quot;สุ่มเลขครั้งแรก เท่ากับ &quot;. rand().&quot;&lt;br&gt;&quot;;
+    echo &quot;สุ่มเลขระหว่าง 1-10 เท่ากับ &quot;. rand(1, 10).&quot;&lt;br&gt;&quot;;
+    echo &quot;สุ่มเลขครั้งแรก 500-1000 เท่ากับ &quot;.rand(500, 1000).&quot;&lt;br&gt;&quot;;
+
+?&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<p><strong>ฟังก์ชัน sqrt()</strong></p>
+<p>เป็นฟังก์ชันนี้ใช้หาค่ารากที่ 2 ของตัวเลขนั้น ๆ</p>
+<p>ตัวอย่างการใช้ฟังก์ชัน sprt()</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;?php   
+    echo &quot;ค่ารากที่ 2 ของ 9 มีค่าเท่ากับ &quot;.sqrt(9).&quot;&lt;br&gt;&quot;;
+    echo &quot;ค่ารากที่ 2 ของ 144 มีค่าเท่ากับ &quot;.sqrt(144).&quot;&lt;br&gt;&quot;;
+    
+?&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<p><strong>ฟังก์ชัน date() </strong></p>
+<p>เป็น Functions ที่ใช้ในการจัดรูปแบบ วันที่ และเวลา</p>
+<p>ซึงในบทความนี้ จะแนะนำเกร็ดความเบื้องต้นเล็กๆน้อยๆ เกี่ยวกับวันที่และเวลาในภาษา  ซึ่งจะพูดถึงถึงเกี่ยวกับการแสดงวันที่ และเวลาใน</p>
+<p>โปรแกรมของการจัดรูปแบบการแสดงของเวลา และการดำเนินการอื่นๆ ที่เกี่ยวกับวันเวลา เช่น การแสดงวันที่และเวลาของปัจจุบัน </p>
+<p>Syntax date(format,timestamp)</p>
+<p>parameter format ระบุรูปแบบ</p>
+<p class="cap">ตารางที่ 7-2 รูปแบบ (format) ที่ใช้กับฟังก์ชัน date() ใน PHP</p>
+<div class="tw"><table><tr><th>d</th><th>วัน</th></tr><tr><td>m</td><td>เดือน</td></tr><tr><td>Y</td><td>ปี</td></tr><tr><td>l</td><td>ชื่อวัน</td></tr><tr><td>h</td><td>ชั่วโมง</td></tr><tr><td>i</td><td>นาที</td></tr><tr><td>s</td><td>วินาที</td></tr></table></div>
+<p>a am หรือ pm</p>
+<p>parameter timestamp ระบุวันเวลาแบบเป็นตัวเลข(เดายากไม่รู้ว่าวันที่เท่านี้เลขอะไรบ้าง) อาจไม่ระบุ ค่าเริ่มต้นเป็นวันปัจจุบัน</p>
+<p>ตั้งค่า Time Zone โดยระบุ location ผ่าน date_default_timezone_set(); function ใช้ในกรณีที่ วันเวลาปัจจุบันไม่ตรง</p>
+<p>การแสดงงวันที่ เวลา ของปัจจุบัน</p>
+<p>พื้นฐานในการทำงานที่จะเห็นกันบ่อยในโครงสร้างของการเขียนโปรแกรมเมื่อต้องทำงานกับเวลา ก็คือว่าจะแสดงผลข้อมูล</p>
+<p>วันที่และเวลาของปัจจุบันออกทางหน้าจอ ตัวอย่างแรกของโปรแกรมสำหรับการแสดงวันที่ และเวลาในปัจจุบัน</p>
+<p>ตัวอย่างการเขียนโปรแกรม</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;?php
+
+$date = new DateTime();
+echo $date-&gt;format(DateTime::RFC1123) . &quot;\n&quot;;
+
+echo &quot;Time in Bangkok\n&quot;;
+$date2 = new DateTime();
+$date2-&gt;setTimezone(new DateTimeZone(&#x27;Asia/Bangkok&#x27;));
+echo $date2-&gt;format(DateTime::RFC1123) . &quot;\n&quot;;
+?&gt;</code></pre></div>
+<p>แสดงผลลัพธ์</p>
+<h2 id="s13">7.11 การจัดการข้อมูลฟอร์มและเซสชัน (Form Processing &amp; Session Management) (ชาญชัย ศุภอรรถกร, 2564)</h2>
+<p>หัวใจสำคัญของการทำงานฝั่งเซิร์ฟเวอร์คือการรับข้อมูลจากผู้ใช้งานผ่านแบบฟอร์ม HTML และการจดจำสถานะของผู้ใช้งาน (State Management) ผ่านตัวแปรซูเปอร์โกลบอล (Superglobals) ของ PHP ดังนี้:</p>
+<h3 id="s14">7.11.1 การรับค่าข้อมูลผ่านตัวแปร $_GET และ $_POST</h3>
+<p>• $_GET: รับข้อมูลที่ส่งมาพร้อมกับ URL เหมาะสำหรับการค้นหาข้อมูล การแบ่งหน้า (Pagination) ไม่เหมาะสำหรับข้อมูลความลับเนื่องจากข้อมูลจะปรากฏบนแถบที่อยู่ของเบราว์เซอร์<br>• $_POST: รับข้อมูลที่ส่งผ่าน HTTP Request Body เหมาะสำหรับการส่งข้อมูลแบบฟอร์ม เช่น การลงทะเบียน การเข้าสู่ระบบ หรือการส่งข้อมูลที่มีความยาวมาก<br><br>ตัวอย่างการรับค่าและป้องกัน XSS ด้วย htmlspecialchars():<br>if ($_SERVER[&#x27;REQUEST_METHOD&#x27;] === &#x27;POST&#x27;) {<br>    $username = htmlspecialchars(trim($_POST[&#x27;username&#x27;]));<br>    echo &quot;ยินดีต้อนรับคุณ &quot; . $username;<br>}</p>
+<h3 id="s15">7.11.2 การจัดการเซสชัน (Session) สำหรับระบบสมาชิก</h3>
+<p>เนื่องจากโพรโทคอล HTTP มีลักษณะเป็น Stateless (ไม่จดจำสถานะการติดต่อ) PHP จึงมีระบบเซสชันเพื่อเก็บข้อมูลของผู้ใช้งานไว้บนเซิร์ฟเวอร์ตลอดการเข้าชม:<br>session_start(); // ต้องเรียกใช้เป็นคำสั่งแรกก่อนมีผลลัพธ์ HTML<br>$_SESSION[&#x27;user_id&#x27;] = 101;<br>$_SESSION[&#x27;role&#x27;] = &#x27;admin&#x27;;<br><br>เมื่อต้องการออกจากระบบ จะใช้คำสั่ง session_unset() และ session_destroy() เพื่อล้างข้อมูลเซสชันอย่างปลอดภัย</p>
+<h3 id="s16">7.11.3 ตัวอย่างระบบเข้าสู่ระบบด้วย Session (login.php, dashboard.php, logout.php)</h3>
+<p>ระบบเข้าสู่ระบบอย่างง่ายแบ่งเป็น 3 ไฟล์ในโฟลเดอร์เดียวกัน คือ login.php ตรวจชื่อผู้ใช้และรหัสผ่านแล้วเก็บสถานะใน $_SESSION, dashboard.php ตรวจว่าล็อกอินแล้วจึงแสดงเนื้อหา และ logout.php ล้างเซสชัน ตัวอย่างนี้เก็บผู้ใช้ไว้ในอาร์เรย์เพื่อการเรียนเท่านั้น (รหัสผ่านทดลองคือ Secret1234 ผู้ใช้ admin) ในงานจริงต้องเก็บผู้ใช้และค่าแฮชในฐานข้อมูล ตามบทที่ 8</p>
+<p>ไฟล์ login.php</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;?php
+session_start();
+// ตัวอย่างเพื่อการเรียน: ในงานจริงให้ดึงผู้ใช้และค่าแฮชจากฐานข้อมูล (บทที่ 8)
+$users = [&#x27;admin&#x27; =&gt; password_hash(&#x27;Secret1234&#x27;, PASSWORD_DEFAULT)];
+$error = &#x27;&#x27;;
+if ($_SERVER[&#x27;REQUEST_METHOD&#x27;] === &#x27;POST&#x27;) {
+    $user = trim($_POST[&#x27;username&#x27;] ?? &#x27;&#x27;);
+    $pass = $_POST[&#x27;password&#x27;] ?? &#x27;&#x27;;
+    if (isset($users[$user]) &amp;&amp; password_verify($pass, $users[$user])) {
+        session_regenerate_id(true);
+        $_SESSION[&#x27;user&#x27;] = $user;
+        header(&#x27;Location: dashboard.php&#x27;);
+        exit;
+    }
+    $error = &#x27;ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง&#x27;;
+}</code></pre></div>
+<p>?&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;form method=&quot;post&quot;&gt;
+  &lt;p style=&quot;color:red&quot;&gt;&lt;?= htmlspecialchars($error) ?&gt;&lt;/p&gt;</code></pre></div>
+<p>  ชื่อผู้ใช้: &lt;input name=&quot;username&quot; required&gt;&lt;br&gt;</p>
+<p>  รหัสผ่าน: &lt;input type=&quot;password&quot; name=&quot;password&quot; required&gt;&lt;br&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>  &lt;button type=&quot;submit&quot;&gt;เข้าสู่ระบบ&lt;/button&gt;
+&lt;/form&gt;</code></pre></div>
+<p>ไฟล์ dashboard.php</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;?php
+session_start();
+if (!isset($_SESSION[&#x27;user&#x27;])) {   // ยังไม่ได้ล็อกอิน ให้กลับไปหน้า login
+    header(&#x27;Location: login.php&#x27;);
+    exit;
+}</code></pre></div>
+<p>?&gt;</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;h1&gt;แดชบอร์ด&lt;/h1&gt;
+&lt;p&gt;สวัสดี &lt;?= htmlspecialchars($_SESSION[&#x27;user&#x27;]) ?&gt;&lt;/p&gt;
+&lt;a href=&quot;logout.php&quot;&gt;ออกจากระบบ&lt;/a&gt;</code></pre></div>
+<p>ไฟล์ logout.php</p>
+<div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;?php
+session_start();
+session_unset();
+session_destroy();
+header(&#x27;Location: login.php&#x27;);
+exit;</code></pre></div>
+<h2 id="s17">7.12 มาตรฐานการพัฒนาด้วย PHP 8.x และแนวปฏิบัติด้านความปลอดภัย (Modern PHP 8.x &amp; Security) (The PHP Group, 2024b; Sklar &amp; Trachtenberg, 2014)</h2>
+<p>ในเวอร์ชัน PHP 8.x ได้มีการเพิ่มฟีเจอร์ระดับสูงที่ช่วยให้โค้ดมีความปลอดภัยและกระชับขึ้นอย่างมีนัยสำคัญ ได้แก่:</p>
+<h3 id="s18">7.12.1 ฟีเจอร์สมัยใหม่ใน PHP 8.x</h3>
+<p>1. การระบุชนิดข้อมูล (Type Declarations): ช่วยบังคับชนิดข้อมูลของพารามิเตอร์และค่าที่ส่งกลับจากฟังก์ชัน เช่น:<br>   function calculateTotal(float $price, int $quantity): float {<br>       return $price * $quantity;<br>   }<br>2. นิพจน์ Match (Match Expression): รูปแบบใหม่ที่กระชับและปลอดภัยกว่า switch case เพราะมีการเปรียบเทียบแบบ Strict (===) และคืนค่าได้ทันที:<br>   $message = match($statusCode) {<br>       200 =&gt; &#x27;สำเร็จ&#x27;,<br>       404 =&gt; &#x27;ไม่พบข้อมูล&#x27;,<br>       default =&gt; &#x27;เกิดข้อผิดพลาด&#x27;<br>   };<br>3. Nullsafe Operator (?-&gt;): ช่วยเรียกใช้ออบเจกต์หรือเมธอดโดยไม่ต้องเขียน if ตรวจสอบ null ซ้ำซ้อน</p>
+<h3 id="s19">7.12.2 การเข้ารหัสรหัสผ่านที่ปลอดภัย (Secure Password Hashing)</h3>
+<p>การเก็บรหัสผ่านของผู้ใช้งาน ห้ามเก็บเป็นข้อความธรรมดา (Plain Text) หรือฟังก์ชันแฮชยุคเก่าที่ถูกเจาะได้แล้ว เช่น md5() หรือ sha1() โดยเด็ดขาด PHP แนะนำให้ใช้ฟังก์ชันมาตรฐานระดับสากล ได้แก่:<br>• การแฮชรหัสผ่าน: $hash = password_hash($password, PASSWORD_DEFAULT); // ใช้อัลกอริทึม Bcrypt ร่วมกับ Salt อัตโนมัติ<br>• การตรวจสอบรหัสผ่านเมื่อเข้าสู่ระบบ: if (password_verify($password, $hash)) { /* ผ่าน */ }</p>
+<h3 id="s20">7.12.3 การป้องกันเซสชันและการอัปโหลดไฟล์อย่างปลอดภัย (Session &amp; Upload Security)</h3>
+<p>• การป้องกัน Session Hijacking &amp; Fixation: เรียกใช้ session_regenerate_id(true) ทันทีที่มีการเปลี่ยนสถานะการล็อกอิน และตั้งค่า Cookie ให้มีแฟล็ก HttpOnly, Secure, และ SameSite=Strict</p>
+<p>• การอัปโหลดไฟล์ที่ปลอดภัย: ห้ามตรวจสอบนามสกุลไฟล์เพียงอย่างเดียว ต้องใช้ finfo_file() เพื่อตรวจสอบค่า MIME Type ที่แท้จริง และเปลี่ยนชื่อไฟล์เป็น UUID หรือรหัสแฮชสุ่ม พร้อมจัดเก็บในโฟลเดอร์ที่ปิดการทำงานของ PHP Script (OWASP, 2023d)</p>
+<h2 id="s21">7.13 เทคนิคการใช้ AI ช่วยเขียนและตรวจสอบโค้ด PHP (AI-Assisted PHP Development) (Open Web Application Security Project [OWASP], 2023d; The PHP Group, 2024b)</h2>
+<p>การพัฒนาโปรแกรมฝั่งเซิร์ฟเวอร์มีความสำคัญอย่างยิ่งต่อความมั่นคงปลอดภัยของระบบ ผู้ช่วย AI (เช่น GitHub Copilot, Cursor, ChatGPT) สามารถเข้ามาช่วยเร่งความเร็วในการสร้างฟังก์ชันตรรกะ พร้อมทั้งเป็นผู้ช่วยตรวจทานช่องโหว่ความปลอดภัย (Security Audit)</p>
+<h3 id="s22">7.13.1 การสั่งงาน AI สร้างฟังก์ชันประมวลผลหลังบ้าน</h3>
+<p>นักพัฒนาสามารถใช้ Prompt เพื่อให้ AI ร่างฟังก์ชันที่รองรับการจัดการข้อผิดพลาด (Error Handling) ได้อย่างรัดกุม เช่น:<br>Prompt: &quot;ช่วยเขียนฟังก์ชัน PHP 8 สำหรับคำนวณภาษีมูลค่าเพิ่ม 7% และส่วนลดตามระดับสมาชิก (Silver 5%, Gold 10%) โดยมีการระบุ Type Hinting ชัดเจน และมีฟังก์ชันตรวจสอบว่ายอดเงินต้องไม่ติดลบ หากติดลบให้ Throw Exception ออกมา&quot;<br>AI จะสร้างฟังก์ชันที่มีโครงสร้าง Clean Code พร้อม Try-Catch Block ได้อย่างสมบูรณ์</p>
+<h3 id="s23">7.13.2 การให้ AI ตรวจสอบช่องโหว่และความปลอดภัย (Security Code Review)</h3>
+<p>• การตรวจสอบคำสั่งล้าสมัย (Deprecated Code): ให้ AI ช่วยสแกนโค้ดและแจ้งเตือนฟังก์ชันเก่าที่ไม่รองรับใน PHP 8<br>• การตรวจสอบการทำ Sanitization: ให้ AI ค้นหาจุดที่มีการนำค่าจาก $_GET หรือ $_POST ไปแสดงผลโดยตรงโดยไม่ได้ผ่าน htmlspecialchars()<br>• ข้อควรระวัง: โค้ดตัวอย่างที่ AI แนะนำบางครั้งอาจยังคงใช้วิธีต่อสตริงในคำสั่ง SQL (SQL Concatenation) นักพัฒนาต้องเปลี่ยนมาใช้ Prepared Statements (ซึ่งจะศึกษาอย่างละเอียดในบทที่ 8) เสมอ</p>
+<h3 id="s24">7.13.3 กรอบคำสั่ง AI สำหรับการตรวจสอบความปลอดภัยของโค้ดหลังบ้าน (Prompt for PHP Security Audit)</h3>
+<p><em>&quot;Role: Senior Backend Security Auditor. / Task: Audit this PHP 8 login processing script. Check for Session Fixation, CSRF vulnerability, and improper password verification. / Constraints: Enforce declare(strict_types=1);, session_regenerate_id(true), password_verify(), and secure session cookie parameters.&quot;</em></p>
+<h3 id="s25">7.13.4 ตัวอย่างโค้ดระบบประมวลผลการเข้าสู่ระบบที่ปลอดภัยตามมาตรฐาน PHP 8.x</h3>
+<p>&lt;?php<br>declare(strict_types=1);<br><br>// ตั้งค่าความปลอดภัยของเซสชันก่อนเริ่มต้น<br>session_set_cookie_params([<br>    &#x27;lifetime&#x27; =&gt; 3600,<br>    &#x27;path&#x27; =&gt; &#x27;/&#x27;,<br>    &#x27;domain&#x27; =&gt; &#x27;&#x27;,<br>    &#x27;secure&#x27; =&gt; true,     // ส่งผ่าน HTTPS เท่านั้น<br>    &#x27;httponly&#x27; =&gt; true,   // ป้องกัน JavaScript เข้าถึง Cookie (กัน XSS ขโมย Session)<br>    &#x27;samesite&#x27; =&gt; &#x27;Strict&#x27; // ป้องกันการโจมตีแบบ CSRF<br>]);<br>session_start();<br><br>function processUserLogin(string $inputUsername, string $inputPassword, array $userFromDatabase): bool {<br>    // ตรวจสอบว่าพบบัญชีผู้ใช้ในระบบหรือไม่<br>    if (!$userFromDatabase) {<br>        return false;<br>    }<br>    <br>    // ตรวจสอบรหัสผ่านที่ส่งมา เทียบกับแฮชในฐานข้อมูล (Bcrypt/Argon2id)<br>    if (password_verify($inputPassword, $userFromDatabase[&#x27;password_hash&#x27;])) {<br>        // ป้องกัน Session Fixation ด้วยการสร้าง Session ID ใหม่ทันที<br>        session_regenerate_id(true);<br>        <br>        $_SESSION[&#x27;authenticated&#x27;] = true;<br>        $_SESSION[&#x27;user_id&#x27;] = $userFromDatabase[&#x27;id&#x27;];<br>        $_SESSION[&#x27;username&#x27;] = $userFromDatabase[&#x27;username&#x27;];<br>        $_SESSION[&#x27;login_time&#x27;] = time();<br>        return true;<br>    }<br>    return false;<br>}<br>?&gt;</p>
+<h2 id="s26">สรุป</h2>
+<p>ภาษา PHP เป็นภาษาประมวลผลฝั่งเซิร์ฟเวอร์ (Server-Side Scripting) ที่เป็นกำลังสำคัญในการขับเคลื่อนเว็บแอปพลิเคชันทั่วโลก โดยสามารถทำงานร่วมกับเว็บเซิร์ฟเวอร์ Apache ผ่านโปรแกรมจำลอง เช่น XAMPP โครงสร้างภาษาประกอบด้วยการประกาศตัวแปร ($) ชนิดข้อมูลคำสั่งควบคุมเงื่อนไข (if, else-if, switch case) และคำสั่งวนรอบ (while, for, foreach) ตลอดจนการสร้างฟังก์ชันเพื่อนำโค้ดกลับมาใช้ซ้ำ การพัฒนาในยุคปัจจุบันได้ยกระดับสู่มาตรฐาน PHP 8.x ที่รองรับการระบุชนิดข้อมูล (Type Declarations) และ Match Expression รวมถึงการจัดการข้อมูลฟอร์มอย่างปลอดภัยผ่าน $_GET / $_POST, การจดจำสถานะผู้ใช้ด้วย $_SESSION, และการรักษาความปลอดภัยของรหัสผ่านด้วย password_hash() การผสานการทำงานร่วมกับผู้ช่วย AI จะช่วยให้นักพัฒนาสามารถวิเคราะห์ตรรกะ ค้นหาข้อผิดพลาด และป้องกันช่องโหว่ความปลอดภัย เพื่อเตรียมความพร้อมสู่การเชื่อมต่อกับระบบฐานข้อมูลในระดับมืออาชีพต่อไป</p>
+<h2 id="s27">แบบฝึกหัด</h2>
+<p><strong>คำชี้แจง: จงทำแบบฝึกหัดต่อไปนี้เพื่อทบทวนความรู้ความเข้าใจ</strong></p>
+<p><strong>ตอนที่ 1: แบบฝึกหัดเชิงทฤษฎีและการวิเคราะห์ (Theoretical &amp; Analytical Exercises)</strong></p>
+<p>1. จงอธิบายวงจรการทำงาน (Lifecycle) ของภาษา PHP เมื่อผู้ใช้งานร้องขอ (Request) หน้าเว็บเพจผ่านเว็บเบราว์เซอร์จนกระทั่งได้รับผลลัพธ์ (Response) กลับมา</p>
+<p>2. จงเปรียบเทียบความแตกต่างระหว่างการส่งข้อมูลผ่านฟอร์มด้วยวิธี GET (ผ่าน $_GET) และวิธี POST (ผ่าน $_POST) ในภาษา PHP ทั้งในด้านความปลอดภัย ปริมาณข้อมูล และลักษณะการใช้งานที่เหมาะสม</p>
+<p>3. ระบบเซสชัน ($_SESSION) มีความสำคัญอย่างไรต่อการพัฒนาเว็บแอปพลิเคชันที่มีระบบเข้าสู่ระบบ (Login System) และมีความแตกต่างจากคุกกี้ ($_COOKIE) อย่างไร</p>
+<p>4. จงอธิบายข้อดีของการระบุชนิดข้อมูล (Type Declarations) และการใช้นิพจน์ Match (Match Expression) ในภาษา PHP 8.x เมื่อเปรียบเทียบกับคำสั่งแบบเดิมในเวอร์ชันก่อนหน้า</p>
+<p>5. เหตุใดการเข้ารหัสรหัสผ่านของผู้ใช้งานจึงไม่ควรใช้ฟังก์ชัน md5() หรือ sha1() และฟังก์ชัน password_hash() ร่วมกับ password_verify() ใน PHP มีกลไกการรักษาความปลอดภัยอย่างไร</p>
+<p>6. ปัญญาประดิษฐ์ (AI Coding Assistants) สามารถช่วยเหลือนักพัฒนาในการเขียนโค้ดและตรวจสอบความมั่นคงปลอดภัย (Security Audit) ของโปรแกรมภาษา PHP ได้อย่างไรบ้าง จงยกตัวอย่างข้อควรระวัง</p>
+<p><strong>ตอนที่ 2: แบบฝึกหัดประยุกต์และการเขียนโปรแกรม (Applied &amp; Programming Exercises)</strong></p>
+<p>1.ให้นักศึกษาติดตั้งเว็บเซิร์ฟเวอร์จำลอง (XAMPP บน Windows หรือทางเลือกบน macOS ตามภาคผนวก ค) และเขียนโปรแกรมด้วยภาษา PHP สร้างประวัติของตัวเอง ประกอบด้วย</p>
+<p>ชื่อ-นามสกุล, อายุ ,เพศ และอาชีพ</p>
+<p>2.ให้นักศึกษาเขียนโปรแกรมด้วยภาษา PHP สร้างแบบฟอร์ม สมัครงาน</p>
+<p>3.ให้นักศึกษาเขียนโปรแกรมด้วยภาษา PHP สร้างเครื่องคิดเลขอย่างง่าย</p>
+<p>4.ให้นักศึกษาเขียนโปรแกรมด้วยภาษา PHP สร้างโปรแกรมตัดเกรด</p>
+<p>5.ให้นักศึกษาเขียนโปรแกรมด้วยภาษา PHP สร้างโปรแกรมวนรอบตรวจสอบรหัสผ่าน</p>
+<p>6.ให้นักศึกษาเขียนโปรแกรมด้วยภาษา PHP สร้างฟังก์ชันเพิ่มในโปรแกรมเครื่องคิดเลขอีก 2 ฟังก์ชัน</p>
+<h2 id="s28">เอกสารอ้างอิง</h2>
+<p>ชาญชัย ศุภอรรถกร. (2564). สร้างเว็บแอปพลิเคชันและเชื่อมต่อฐานข้อมูลด้วย PHP + MySQL ฉบับสมบูรณ์. กรุงเทพฯ: ซิมพลิฟาย.</p>
+<p>Apache Friends. (2024). XAMPP installers and downloads. Retrieved from <a href="https://www.apachefriends.org/" target="_blank" rel="noopener noreferrer">https://www.apachefriends.org/</a></p>
+<p>Open Web Application Security Project [OWASP]. (2023d). PHP configuration. OWASP Cheat Sheet Series. Retrieved from <a href="https://cheatsheetseries.owasp.org/cheatsheets/PHP_Configuration_Cheat_Sheet.html" target="_blank" rel="noopener noreferrer">https://cheatsheetseries.owasp.org/cheatsheets/PHP_Configuration_Cheat_Sheet.html</a></p>
+<p>Sklar, D., &amp; Trachtenberg, A. (2014). PHP Cookbook (3rd ed.). Sebastopol, CA: O&#x27;Reilly Media.</p>
+<p>ThaiCreate.Com. (n.d.). PHP &amp; MySQL (mysqli) tutorials. Retrieved November 14, 2026, from <a href="https://www.thaicreate.com/" target="_blank" rel="noopener noreferrer">https://www.thaicreate.com/</a></p>
+<p>The PHP Group. (2024b). PHP manual. Retrieved from <a href="https://www.php.net/manual/en/" target="_blank" rel="noopener noreferrer">https://www.php.net/manual/en/</a></p>
+<label class="donebox"><input type="checkbox" id="done"><span>ทำเครื่องหมายว่าอ่านบทนี้แล้ว</span></label>
+<div class="pager"><a class="pn" href="ch6.html"><small>บทก่อนหน้า</small><b>บทที่ 6 พื้นฐานภาษา JavaScript</b></a><a class="pn next" href="ch8.html"><small>บทถัดไป</small><b>บทที่ 8 พื้นฐานภาษา MySQLi</b></a></div>
+</article></div>
+</main>
+<footer class="foot"><div class="wrap fgrid">
+<div><a class="brand" href="../index.html"><span class="logo" aria-hidden="true">&lt;/&gt;</span><span class="bt"><b>การเขียนโปรแกรมบนเว็บ</b><small>Web Programming</small></span></a>
+<p class="small">สื่อเสริมการเรียนรู้ ใช้ประกอบเอกสารประกอบการสอน ไม่มีระบบสมาชิกและไม่เก็บข้อมูลส่วนบุคคล ส่งงานผ่าน Google Classroom</p></div>
+<div><p class="fh">เรียนรู้</p><a href="../chapters.html">บทเรียน 10 บท</a><a href="../worksheets.html">ใบงานประจำบท</a><a href="../start.html">เริ่มต้นใช้งาน</a></div>
+<div><p class="fh">รายวิชา</p><a href="../about.html">เกี่ยวกับรายวิชา</a><span>ผู้สอน: ดร.สุรเชษฐ์ สังขพันธ์</span><span>พ.ศ. 2569</span></div>
+</div></footer>
+<script src="../assets/app.js"></script>
+</body>
+</html>
