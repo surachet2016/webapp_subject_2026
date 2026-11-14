@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="สไลด์บทที่ 10 การจัดตั้งเว็บไซต์ รายวิชา 07-034-210 พร้อมตัวอย่างจำลองที่กดลองได้">
+<meta name="theme-color" content="#1e1b4b">
+<title>สไลด์บทที่ 10 การจัดตั้งเว็บไซต์ · การเขียนโปรแกรมบนเว็บ</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%234338ca'/%3E%3Cpath d='M26 20 14 32l12 12M38 20l12 12-12 12' fill='none' stroke='%23fff' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="deck.css">
+<style>
+/* เฉพาะบทที่ 10 */
+.chip{font:inherit;font-size:16px;border:2px solid var(--line);background:#fff;border-radius:12px;padding:5px 12px;cursor:pointer}
+.chip.on{border-color:var(--accent);background:#fffbeb}
+.sim{display:inline-block;font-size:13px;background:#fef3c7;color:#92400e;border-radius:6px;padding:2px 8px;margin-left:6px;vertical-align:middle}
+.url{font-family:Mono,monospace;font-size:34px;background:#0f1226;color:#e8eaf8;border-radius:16px;padding:22px;text-align:center}
+.url span{border-radius:6px;padding:2px 4px;cursor:pointer;transition:background .2s}
+.url span.hl{background:#f59e0b;color:#111}
+.need label{display:flex;gap:10px;align-items:center;font-weight:400;font-size:19px;margin:7px 0;cursor:pointer}
+.need input{width:22px;height:22px;accent-color:var(--brand)}
+.host{border:2px solid var(--line);border-radius:14px;padding:12px 14px;background:#fff;transition:all .3s}
+.host.best{border-color:#059669;background:#ecfdf5;transform:translateY(-6px);box-shadow:0 12px 24px rgba(5,150,105,.18)}
+.host.no{opacity:.45}
+.host b{font-size:19px}.host p{font-size:15px;margin-top:4px;line-height:1.45}
+.fz{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pane{background:#fff;border:1px solid var(--line);border-radius:10px;min-height:230px;font-family:Mono,monospace;font-size:15px}
+.pane .hd{background:#f1f5f9;padding:6px 10px;border-bottom:1px solid var(--line);font-size:14px}
+.pane div.f{padding:5px 10px;cursor:pointer;display:flex;justify-content:space-between}
+.pane div.f:hover{background:#eef2ff}
+.pane div.f.new{animation:flash 1.2s}
+@keyframes flash{from{background:#bbf7d0}}
+.log{font-family:Mono,monospace;font-size:13px;background:#111827;color:#d1d5db;border-radius:10px;padding:8px 12px;height:110px;overflow:auto;white-space:pre-wrap}
+.log .ok{color:#86efac}.log .w{color:#fcd34d}.log .e{color:#fca5a5}
+.hs{display:flex;flex-direction:column;gap:8px}
+.hs div{border-radius:10px;padding:8px 12px;font-size:17px;opacity:.25;transition:all .4s}
+.hs div.on{opacity:1}
+.hs .c{background:#e0e7ff;margin-right:140px}.hs .s{background:#ede9fe;margin-left:140px;text-align:right}.hs .x{background:#dcfce7;text-align:center}
+.cert{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:16px}
+.cert dt{font-weight:700;margin-top:6px}.cert dd{font-family:Mono,monospace;font-size:15px}
+.dns{display:flex;align-items:center;gap:8px;margin-top:8px}
+.dns .st{flex:1;text-align:center;border:2px solid var(--line);border-radius:12px;padding:12px 6px;background:#fff;font-weight:600;font-size:16px;transition:all .4s;min-height:84px}
+.dns .st.lit{border-color:var(--brand);background:#eef2ff;transform:translateY(-6px)}
+.dns .ar{color:#a5b4fc;font-size:20px}
+table.r{border-collapse:collapse;width:100%;font-size:16px;background:#fff}
+table.r th,table.r td{border:1px solid var(--line);padding:6px 8px;text-align:left}
+table.r th{background:#eef2ff}
+table.r tr{cursor:pointer}table.r tr.sel td{background:#fef3c7}
+.gauges{display:flex;gap:16px;justify-content:space-around}
+.gauge{text-align:center;font-size:15px;font-weight:600}
+.gauge svg{display:block;margin:0 auto 4px}
+.fixes label{display:flex;gap:10px;align-items:flex-start;font-weight:400;font-size:18px;margin:6px 0;cursor:pointer}
+.fixes input{width:20px;height:20px;margin-top:4px;accent-color:var(--ok)}
+.lines{font-family:Mono,monospace;font-size:13px;line-height:1.65;background:#0f1226;color:#e8eaf8;border-radius:12px;padding:8px 4px;height:330px;overflow:auto}
+.lines div{padding:0 10px;border-radius:5px;white-space:pre}
+.lines div.hl{background:rgba(245,158,11,.3)}
+.lines div.dim{opacity:.35}
+.chk label{display:flex;gap:10px;align-items:flex-start;font-weight:400;font-size:18px;margin:5px 0;cursor:pointer}
+.chk input{width:20px;height:20px;margin-top:4px;accent-color:var(--ok)}
+.meter{height:16px;border-radius:999px;background:#e5e7eb;overflow:hidden}
+.meter i{display:block;height:100%;background:linear-gradient(90deg,#f59e0b,#059669);width:0;transition:width .4s}
+.vars label{display:block;font-size:17px;margin-top:8px}
+.vars input{font:inherit;font-size:17px;border:1px solid var(--line);border-radius:8px;padding:6px 10px;width:100%}
+</style>
+</head>
+<body>
+<div id="stage">
+
+<section class="slide dark" data-title="ปก">
+  <div style="position:absolute;left:72px;top:180px;width:600px">
+    <p class="kicker">รายวิชา 07-034-210 การเขียนโปรแกรมบนเว็บ · บทที่ 10</p>
+    <h1>การจัดตั้งเว็บไซต์</h1>
+    <p class="muted" style="margin-top:18px">โดเมน โฮสติ้ง อัปโหลดด้วย FileZilla ย้ายฐานข้อมูล GitHub Pages HTTPS DNS CI/CD และใช้ AI ตรวจประสิทธิภาพและความปลอดภัย</p>
+    <p class="muted" style="margin-top:24px;font-size:20px">ดร.สุรเชษฐ์ สังขพันธ์ · กด → หรือ Space ไปสไลด์ถัดไป · กด O ดูสารบัญ</p>
+  </div>
+  <svg style="position:absolute;right:70px;top:140px" width="440" height="440" viewBox="0 0 440 440" aria-hidden="true">
+    <circle cx="220" cy="220" r="150" fill="none" stroke="#a5b4fc" stroke-width="2"/>
+    <ellipse cx="220" cy="220" rx="60" ry="150" fill="none" stroke="#a5b4fc" stroke-width="2"/>
+    <path d="M70 220 H370 M90 150 H350 M90 290 H350" stroke="#a5b4fc" stroke-width="2"/>
+    <rect x="30" y="330" width="120" height="80" rx="12" fill="#4f46e5"/><text x="90" y="378" text-anchor="middle" font-family="Sarabun" font-size="18" fill="#fff">เครื่องเรา</text>
+    <rect x="290" y="30" width="120" height="80" rx="12" fill="#059669"/><text x="350" y="78" text-anchor="middle" font-family="Sarabun" font-size="18" fill="#fff">เซิร์ฟเวอร์</text>
+    <path d="M150 360 Q 330 330 340 110" fill="none" stroke="#fcd34d" stroke-width="4" stroke-dasharray="10 8"><animate attributeName="stroke-dashoffset" from="0" to="-36" dur="1s" repeatCount="indefinite"/></path>
+    <text x="300" y="250" font-family="Sarabun" font-size="30">🔒</text>
+  </svg>
+  <div class="foot"><span>ภาพประกอบสร้างด้วย SVG/CSS โดยใช้ AI ช่วยสร้าง · หน้าจอโปรแกรมในสไลด์เป็นภาพจำลอง</span><span style="white-space:nowrap">พ.ศ. 2569</span></div>
+</section>
+
+<section class="slide" data-title="เป้าหมายของบทนี้">
+  <p class="kicker">เป้าหมายของบทนี้</p>
+  <h2>เรียนจบบทนี้ นักศึกษาจะ...</h2>
+  <div class="grid2" style="align-items:start">
+    <ul class="b">
+      <li>เลือกโดเมนและโฮสติ้งให้เหมาะกับเว็บไซต์</li>
+      <li>อัปโหลดไฟล์และย้ายฐานข้อมูลขึ้นเซิร์ฟเวอร์จริง</li>
+      <li>เปิด HTTPS และตั้งค่า DNS ได้</li>
+      <li>เข้าใจการนำส่งอัตโนมัติด้วย CI/CD</li>
+      <li>ตรวจประสิทธิภาพ ความปลอดภัย และนำเสนอผลงาน</li>
+    </ul>
+    <div class="card">
+      <h3>ผลลัพธ์การเรียนรู้ (CLO) ของบทนี้</h3>
+      <p style="font-size:17px"><b>CLO2</b> วิเคราะห์ความต้องการและจัดทำขอบเขตงานเว็บไซต์ · <b>CLO3</b> ใช้เครื่องมือพัฒนา จัดตั้ง และบริหารเว็บไซต์</p>
+      <p style="font-size:17px;margin-top:4px"><b>CLO4</b> สร้างเว็บเพจที่มีปฏิสัมพันธ์ · <b>CLO5</b> ประยุกต์แก้ปัญหา ทดสอบ และปรับปรุง</p>
+      <p style="font-size:17px;margin-top:4px"><b>CLO6</b> อ้างอิงแหล่งที่มา เคารพสิทธิ และรับผิดชอบต่องาน</p>
+      <p style="font-size:17px;margin-top:4px"><b>CLO7</b> ทำงานร่วมกับผู้อื่นตามบทบาท และนำเสนอแนวคิด ขั้นตอนการพัฒนา และผลการดำเนินงานของเว็บไซต์ได้ชัดเจน</p>
+      <p class="muted" style="margin-top:8px;font-size:15px">ใบงานที่ 10: จัดตั้งเว็บไซต์บนเซิร์ฟเวอร์จริง ติดตั้ง HTTPS และตรวจสอบประสิทธิภาพ</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-title="10.1 โดเมนเนม">
+  <p class="kicker">10.1 การจดทะเบียนโดเมนเนม (ICANN, 2024)</p>
+  <h2>อ่านที่อยู่เว็บทีละส่วน</h2>
+  <div class="url" id="url"><span data-p="sch">https://</span><span data-p="sub">www.</span><span data-p="sld">mysite</span><span data-p="tld">.ac.th</span><span data-p="path">/menu/latte</span></div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px" id="urlBtns"><button class="chip" data-p="sch">โพรโทคอล</button><button class="chip" data-p="sub">ซับโดเมน</button><button class="chip" data-p="sld">ชื่อโดเมน</button><button class="chip" data-p="tld">โดเมนระดับบนสุด (TLD)</button><button class="chip" data-p="path">เส้นทาง (Path)</button></div>
+  <div class="grid2" style="margin-top:12px;align-items:start">
+    <div class="card" id="urlTxt" style="min-height:150px"><p style="font-size:19px">คลิกส่วนของที่อยู่เว็บ</p></div>
+    <div class="card"><h3>จดโดเมน</h3><ul class="b"><li style="font-size:18px">ตรวจชื่อว่างกับผู้รับจดทะเบียน (Registrar)</li><li style="font-size:18px">.th, .ac.th, .co.th จดผ่านผู้ให้บริการที่ THNIC รับรอง และต้องมีเอกสารตามประเภท</li><li style="font-size:18px">ต่ออายุทุกปี ถ้าลืมอาจเสียชื่อโดเมน</li></ul></div>
+  </div>
+</section>
+
+<section class="slide" data-title="10.2 เลือกโฮสติ้ง">
+  <p class="kicker">10.2 การติดตั้งเว็บโฮสติ้ง · วิธีเลือกโฮสต์เว็บใน 4 ขั้นตอน</p>
+  <h2>ติ๊กความต้องการ แล้วดูว่าโฮสต์แบบไหนเหมาะ</h2>
+  <div class="grid2" style="grid-template-columns:380px 1fr;align-items:start">
+    <div class="card need" id="need">
+      <label><input type="checkbox" data-n="php" checked> ใช้ PHP + MySQL (บทที่ 7–9)</label>
+      <label><input type="checkbox" data-n="traffic"> ผู้ใช้มาก หลักหมื่นต่อวันขึ้นไป</label>
+      <label><input type="checkbox" data-n="root"> ต้องติดตั้งซอฟต์แวร์เอง</label>
+      <label><input type="checkbox" data-n="cheap" checked> งบประมาณน้อย</label>
+      <label><input type="checkbox" data-n="static"> มีแค่ HTML/CSS/JS</label>
+      <p class="muted" style="font-size:15px;margin-top:6px">ขั้นตอน: วิเคราะห์ความต้องการ → ดูแพ็กเกจ → ค้นคว้ารีวิว → เปรียบเทียบปัจจัยหลัก</p>
+    </div>
+    <div>
+      <div class="grid2" style="gap:12px">
+        <div class="host" data-h="shared"><b>Shared Hosting</b><p>หลายเว็บใช้เครื่องเดียวกัน ราคาถูก มี cPanel/DirectAdmin และ PHP/MySQL พร้อม</p></div>
+        <div class="host" data-h="vps"><b>VPS</b><p>เครื่องเสมือนของเราเอง ติดตั้งได้อิสระ ต้องดูแลระบบและความปลอดภัยเอง</p></div>
+        <div class="host" data-h="cloud"><b>Cloud Platform</b><p>ขยายตามผู้ใช้ได้ คิดเงินตามการใช้งาน ต้องมีความรู้ด้านระบบมากขึ้น</p></div>
+        <div class="host" data-h="static"><b>Static Hosting</b><p>เช่น GitHub Pages ฟรี เร็ว แต่รัน PHP และฐานข้อมูลไม่ได้</p></div>
+      </div>
+      <div class="card" id="hostTxt" style="margin-top:12px"></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-title="10.3 อัปโหลดด้วย FileZilla">
+  <p class="kicker">10.3 การอัปโหลดเว็บไซต์ขึ้นสู่ Server ด้วยโปรแกรม FileZilla</p>
+  <h2>คลิกไฟล์ทางซ้าย เพื่อส่งขึ้นเซิร์ฟเวอร์</h2>
+  <div style="display:flex;gap:10px;align-items:center;margin-bottom:8px;font-size:16px">
+    <select id="fzProto" style="font:inherit;font-size:16px;padding:4px 8px;border-radius:8px;border:1px solid var(--line)"><option value="sftp">SFTP (พอร์ต 22)</option><option value="ftp">FTP (พอร์ต 21)</option></select>
+    <span>โฮสต์ <b style="font-family:Mono,monospace">mysite.ac.th</b></span><button class="btn" id="fzCon" style="font-size:16px;padding:6px 14px">Quickconnect</button><span class="sim">จำลอง</span>
+  </div>
+  <div class="log" id="fzLog"></div>
+  <div class="fz" style="margin-top:8px">
+    <div class="pane"><div class="hd">เครื่องเรา: C:\xampp\htdocs\mysite\</div><div id="fzL"></div></div>
+    <div class="pane"><div class="hd">เซิร์ฟเวอร์: /public_html/</div><div id="fzR"></div></div>
+  </div>
+</section>
+
+<section class="slide" data-title="10.3.1 ย้ายฐานข้อมูล">
+  <p class="kicker">10.3.1 การส่งออกและนำเข้าฐานข้อมูล (.sql) เพื่อย้ายขึ้นโฮสติ้ง</p>
+  <h2>ย้ายข้อมูลจาก localhost ขึ้นโฮสต์</h2>
+  <div class="grid2" style="align-items:start">
+    <div class="steps chk" id="mv">
+      <label><input type="checkbox"> <span><b>Export</b> ใน phpMyAdmin เครื่องเรา เลือกรูปแบบ SQL ได้ไฟล์ db_test.sql</span></label>
+      <label><input type="checkbox"> <span><b>สร้างฐานข้อมูลและผู้ใช้</b> ในแผงควบคุมของโฮสต์ (ชื่อมักมีคำนำหน้า เช่น user_db)</span></label>
+      <label><input type="checkbox"> <span><b>Import</b> ไฟล์ .sql ใน phpMyAdmin ของโฮสต์</span></label>
+      <label><input type="checkbox"> <span><b>แก้ไฟล์ config</b> ให้ใช้ host, user, password, database ของโฮสต์</span></label>
+      <label><input type="checkbox"> <span><b>ทดสอบ</b> หน้าแสดง เพิ่ม แก้ไข ลบ ภาษาไทยไม่เพี้ยน (utf8mb4)</span></label>
+    </div>
+    <div>
+      <div class="tabs" id="cfgTabs"><button class="on" data-k="local">config บนเครื่องเรา</button><button data-k="host">config บนโฮสต์</button></div>
+      <div class="code" id="cfgCode" style="font-size:15px;white-space:pre"></div>
+      <div class="card" style="margin-top:10px"><p style="font-size:17px">ห้ามใช้ root ที่ไม่มีรหัสผ่านบนเซิร์ฟเวอร์จริง และอย่าอัปโหลดไฟล์ .sql ที่มีข้อมูลส่วนบุคคลไว้ในโฟลเดอร์สาธารณะ</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-title="10.3.2 GitHub Pages">
+  <p class="kicker">10.3.2 การเผยแพร่เว็บไซต์แบบสถิตด้วย GitHub Pages</p>
+  <h2>เว็บ HTML/CSS/JS ขึ้นออนไลน์ฟรี</h2>
+  <div class="grid2" style="align-items:start">
+    <ol style="padding-left:28px">
+      <li style="font-size:21px;margin:6px 0">สร้าง Repository บน GitHub (บทที่ 2)</li>
+      <li style="font-size:21px;margin:6px 0">push ไฟล์ โดยมี index.html อยู่ที่ราก</li>
+      <li style="font-size:21px;margin:6px 0">Settings › Pages › เลือก branch main</li>
+      <li style="font-size:21px;margin:6px 0">รอสักครู่ เปิด <code>https://ชื่อผู้ใช้.github.io/ชื่อ-repo/</code></li>
+      <li style="font-size:21px;margin:6px 0">ผูกโดเมนตัวเองได้ และมี HTTPS ให้</li>
+    </ol>
+    <div class="card"><h3>ข้อจำกัด</h3><ul class="b"><li style="font-size:19px">รัน PHP และฐานข้อมูลไม่ได้ (งานบทที่ 7–9 ต้องใช้โฮสต์ที่รองรับ)</li><li style="font-size:19px">Repository สาธารณะ ทุกคนเห็นโค้ด ห้ามใส่รหัสผ่านหรือข้อมูลส่วนบุคคล</li><li style="font-size:19px">เหมาะกับพอร์ตโฟลิโอ เว็บประวัติ เอกสารรายวิชา</li></ul>
+      <a class="lk" style="margin-top:10px" href="https://pages.github.com/" target="_blank" rel="noopener noreferrer"><b>GitHub Pages</b><span>pages.github.com</span></a></div>
+  </div>
+</section>
+
+<section class="slide" data-title="10.4 HTTPS และ TLS">
+  <p class="kicker">10.4 HTTPS และใบรับรองอิเล็กทรอนิกส์ (Cloudflare, 2024; OWASP, 2023f)</p>
+  <h2>ก่อนส่งข้อมูล เบราว์เซอร์กับเซิร์ฟเวอร์ "จับมือ" กันก่อน</h2>
+  <div class="grid2" style="grid-template-columns:1.2fr 1fr;align-items:start">
+    <div class="hs" id="hs">
+      <div class="c">1. เบราว์เซอร์: สวัสดี ฉันรองรับ TLS 1.3 และวิธีเข้ารหัสเหล่านี้</div>
+      <div class="s">2. เซิร์ฟเวอร์: ตกลงใช้วิธีนี้ นี่คือใบรับรองของ mysite.ac.th</div>
+      <div class="c">3. เบราว์เซอร์: ตรวจใบรับรองกับผู้ออก (CA) ที่เชื่อถือ ชื่อตรง ยังไม่หมดอายุ ✓</div>
+      <div class="x">4. ทั้งสองฝ่ายสร้างกุญแจลับร่วมกัน (Key Exchange)</div>
+      <div class="x">5. 🔒 ส่ง HTTP ทั้งหมดผ่านช่องทางเข้ารหัส</div>
+    </div>
+    <div><button class="btn" id="hsGo">▶ ดูการจับมือ</button><div class="card" style="margin-top:12px"><p style="font-size:18px">ถ้าใบรับรองหมดอายุ หรือชื่อโดเมนไม่ตรง เบราว์เซอร์จะขึ้นหน้าเตือน "การเชื่อมต่อนี้ไม่เป็นส่วนตัว" ผู้ใช้ส่วนใหญ่จะออกจากเว็บทันที</p></div><p class="muted" style="font-size:16px;margin-top:8px">ทบทวนพื้นฐาน HTTP/HTTPS ในบทที่ 2 หัวข้อ 2.8.1</p></div>
+  </div>
+</section>
+
+<section class="slide" data-title="10.4.1 Let's Encrypt และ Cloudflare">
+  <p class="kicker">10.4.1 การติดตั้งใบรับรองความปลอดภัยฟรี (ISRG, 2024; Cloudflare, 2024)</p>
+  <h2>ใบรับรองฟรี อายุสั้น ต่ออายุอัตโนมัติ</h2>
+  <div class="grid2" style="align-items:start">
+    <div>
+      <div class="vars"><label>วันที่ออกใบรับรอง<input type="date" id="crtD"></label></div>
+      <dl class="cert" id="crt" style="margin-top:10px"></dl>
+    </div>
+    <div class="card"><h3>สองทางที่นิยม</h3><ul class="b"><li style="font-size:18px"><b>Let's Encrypt</b> ผ่าน AutoSSL ของ cPanel หรือ certbot บน VPS ต่ออายุให้อัตโนมัติ</li><li style="font-size:18px"><b>Cloudflare</b> ชี้ DNS ผ่าน Cloudflare ได้ HTTPS และ CDN ควรตั้งโหมด Full (strict) ให้ช่วงระหว่าง Cloudflare กับเซิร์ฟเวอร์เข้ารหัสด้วย</li><li style="font-size:18px">ตั้ง redirect HTTP → HTTPS ทั้งเว็บ (10.6.4)</li></ul>
+      <div class="links" style="grid-template-columns:1fr 1fr;margin-top:8px"><a class="lk" href="https://letsencrypt.org/docs/" target="_blank" rel="noopener noreferrer"><b>Let's Encrypt Docs</b><span>ISRG</span></a><a class="lk" href="https://www.cloudflare.com/learning/" target="_blank" rel="noopener noreferrer"><b>Cloudflare Learning</b><span>SSL, DNS, CDN</span></a></div></div>
+  </div>
+</section>
+
+<section class="slide" data-title="10.5 DNS">
+  <p class="kicker">10.5 ระบบชื่อโดเมน (DNS) (ICANN, 2024)</p>
+  <h2>เบราว์เซอร์หาเลข IP ของ mysite.ac.th อย่างไร</h2>
+  <div class="dns" id="dns"><div class="st">แคชในเครื่อง<br><small>เคยเปิดไหม?</small></div><span class="ar">→</span><div class="st">Resolver<br><small>ของผู้ให้บริการเน็ต</small></div><span class="ar">→</span><div class="st">Root<br><small>รู้จัก .th</small></div><span class="ar">→</span><div class="st">TLD .th<br><small>รู้จัก mysite.ac.th</small></div><span class="ar">→</span><div class="st">Authoritative<br><small>ตอบ IP จริง</small></div></div>
+  <div style="display:flex;gap:10px;align-items:center;margin-top:10px"><button class="btn" id="dnsGo">▶ ค้นหา</button><span id="dnsTxt" style="font-size:18px"></span></div>
+  <p style="font-size:18px;font-weight:600;margin-top:12px">ระเบียน DNS ที่ต้องตั้ง (คลิกเพื่อดูคำอธิบาย) <span class="sim">ค่าตัวอย่าง</span></p>
+  <div class="grid2" style="grid-template-columns:1.3fr 1fr;align-items:start;margin-top:4px">
+    <table class="r" id="rec"><tr><th>ชนิด</th><th>ชื่อ</th><th>ค่า</th></tr><tr data-r="A"><td>A</td><td>mysite.ac.th</td><td>203.0.113.10</td></tr><tr data-r="AAAA"><td>AAAA</td><td>mysite.ac.th</td><td>2001:db8::10</td></tr><tr data-r="CNAME"><td>CNAME</td><td>www</td><td>mysite.ac.th</td></tr><tr data-r="MX"><td>MX</td><td>mysite.ac.th</td><td>10 mail.mysite.ac.th</td></tr><tr data-r="TXT"><td>TXT</td><td>mysite.ac.th</td><td>"v=spf1 ..."</td></tr></table>
+    <div class="card" id="recTxt" style="min-height:150px"><p style="font-size:18px">การเปลี่ยน DNS อาจใช้เวลาตาม TTL กว่าทุกที่จะเห็นค่าใหม่</p></div>
+  </div>
+</section>
+
+<section class="slide" data-title="10.5 CI/CD">
+  <p class="kicker">10.5 การนำส่งเว็บไซต์สมัยใหม่ด้วยระบบอัตโนมัติ (CI/CD) (ศุภชัย สมพานิช, 2566ก)</p>
+  <h2>push แล้วเว็บอัปเดตเอง: ตัวอย่างจริงของเว็บรายวิชานี้</h2>
+  <div class="pipe" id="ci"><div class="st">1. git push<br><small>แก้ไฟล์ใบงาน .md</small></div><span class="ar">→</span><div class="st">2. GitHub Actions<br><small>เริ่มงานอัตโนมัติ</small></div><span class="ar">→</span><div class="st">3. Build<br><small>แปลง .md เป็นหน้าเว็บ</small></div><span class="ar">→</span><div class="st">4. Deploy<br><small>ส่งขึ้นเซิร์ฟเวอร์ด้วย SFTP</small></div><span class="ar">→</span><div class="st">5. เว็บจริง<br><small>fms.pnu.ac.th/lessons</small></div></div>
+  <button class="btn" id="ciGo" style="margin-top:12px">▶ จำลองการ push</button>
+  <div class="grid2" style="margin-top:12px;align-items:start">
+    <div class="card"><ul class="b"><li style="font-size:18px"><b>CI</b> (Continuous Integration) รวมโค้ดและตรวจ/ทดสอบอัตโนมัติทุกครั้ง</li><li style="font-size:18px"><b>CD</b> (Continuous Delivery/Deployment) ส่งขึ้นเซิร์ฟเวอร์อัตโนมัติ</li><li style="font-size:18px">รหัสผ่านเซิร์ฟเวอร์เก็บใน <b>GitHub Secrets</b> ไม่เขียนลงไฟล์</li></ul></div>
+    <div class="log" id="ciLog" style="height:180px"></div>
+  </div>
+</section>
+
+<section class="slide" data-title="10.6.1 Lighthouse">
+  <p class="kicker">10.6.1 การวิเคราะห์ผลการทดสอบประสิทธิภาพ (Google Developers, 2024)</p>
+  <h2>แก้ทีละข้อ ดูคะแนนเปลี่ยน</h2>
+  <div class="grid2" style="grid-template-columns:1fr 1fr;align-items:start">
+    <div><div class="gauges" id="gg"></div><p class="muted" style="font-size:15px;margin-top:8px">คะแนนในสไลด์เป็นค่าจำลองเพื่ออธิบายผลของการแก้แต่ละข้อ วัดจริงด้วย Chrome DevTools › Lighthouse</p></div>
+    <div class="fixes" id="lh">
+      <label><input type="checkbox" data-f="img"> <span>บีบอัดภาพและใช้ WebP กำหนด width/height</span></label>
+      <label><input type="checkbox" data-f="defer"> <span>ใส่ defer ให้สคริปต์ ไม่บล็อกการแสดงผล</span></label>
+      <label><input type="checkbox" data-f="alt"> <span>ใส่ alt ทุกภาพ และ label ทุกช่องฟอร์ม</span></label>
+      <label><input type="checkbox" data-f="contrast"> <span>ปรับสีตัวอักษรให้ความต่างผ่าน 4.5:1</span></label>
+      <label><input type="checkbox" data-f="https"> <span>ใช้ HTTPS และไม่มีไลบรารีที่มีช่องโหว่</span></label>
+      <label><input type="checkbox" data-f="meta"> <span>ใส่ title, meta description, viewport</span></label>
+    </div>
+  </div>
+  <a class="src" href="https://developer.chrome.com/docs/lighthouse/" target="_blank" rel="noopener noreferrer">Lighthouse (Google Developers, 2024)</a>
+</section>
+
+<section class="slide" data-title="10.6.2 วิเคราะห์ Log">
+  <p class="kicker">10.6.2 การตรวจจับข้อผิดพลาดและวิเคราะห์ไฟล์บันทึกระบบ (Log Analysis)</p>
+  <h2>อ่าน access log หาความผิดปกติ</h2>
+  <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="chip on" data-lf="all">ทั้งหมด</button><button class="chip" data-lf="404">404 ไม่พบหน้า</button><button class="chip" data-lf="500">500 เซิร์ฟเวอร์ผิดพลาด</button><button class="chip" data-lf="brute">เดารหัสผ่าน</button><button class="chip" data-lf="scan">สแกนหาไฟล์ลับ</button></div>
+  <div class="grid2" style="grid-template-columns:1.45fr 1fr;align-items:start;margin-top:10px">
+    <div class="lines" id="lg"></div>
+    <div class="card" id="lgTxt" style="min-height:330px"></div>
+  </div>
+</section>
+
+<section class="slide" data-title="10.6.3–10.6.4 คอนฟิกและ Prompt">
+  <p class="kicker">10.6.3 Prompt for Server Configuration · 10.6.4 GitHub Actions และ .htaccess บังคับ HTTPS</p>
+  <h2>ให้ AI ร่างคอนฟิก แล้วเข้าใจทุกบรรทัดก่อนใช้</h2>
+  <div class="tabs" id="cfTabs"><button class="on" data-k="ht">.htaccess</button><button data-k="yml">deploy.yml</button><button data-k="pr">Prompt</button></div>
+  <div class="grid2" style="grid-template-columns:1.3fr 1fr;align-items:start">
+    <div class="lines" id="cf" style="height:360px"></div>
+    <div class="card" id="cfTxt" style="min-height:360px"></div>
+  </div>
+</section>
+
+<section class="slide" data-title="เช็กลิสต์ก่อนเปิดเว็บ">
+  <p class="kicker">บูรณาการบทที่ 1–10 · โครงงานกลุ่ม</p>
+  <h2>เช็กลิสต์ก่อนส่งและนำเสนอโครงงาน</h2>
+  <div class="grid2" style="grid-template-columns:1.3fr 1fr;align-items:start">
+    <div class="chk" id="go">
+      <label><input type="checkbox"> <span>เว็บเปิดได้ด้วยโดเมนจริง และบังคับ HTTPS</span></label>
+      <label><input type="checkbox"> <span>รองรับมือถือ ตรวจด้วย DevTools หลายขนาดจอ (บทที่ 4–5)</span></label>
+      <label><input type="checkbox"> <span>ฟอร์มตรวจข้อมูลทั้งฝั่งผู้ใช้และ PHP (บทที่ 3, 6, 7)</span></label>
+      <label><input type="checkbox"> <span>ทุกคำสั่ง SQL ใช้ Prepared Statement (บทที่ 8)</span></label>
+      <label><input type="checkbox"> <span>รหัสผ่านใช้ password_hash · ไม่มีรหัสผ่านใน GitHub</span></label>
+      <label><input type="checkbox"> <span>มีประกาศความเป็นส่วนตัว (PDPA บทที่ 2)</span></label>
+      <label><input type="checkbox"> <span>อ้างอิงภาพ ฟอนต์ ธีม ปลั๊กอิน และบันทึกการใช้ AI</span></label>
+      <label><input type="checkbox"> <span>Lighthouse ผ่านเกณฑ์ที่กลุ่มตั้งไว้</span></label>
+      <label><input type="checkbox"> <span>แบ่งบทบาทในกลุ่มชัดเจน และซ้อมนำเสนอครบทุกคน</span></label>
+    </div>
+    <div class="card"><h3>ความพร้อมเปิดเว็บ</h3><div class="meter"><i id="goM"></i></div><p id="goT" style="margin-top:10px;font-size:22px"></p><p class="muted" style="font-size:16px;margin-top:8px">ดูเกณฑ์การให้คะแนนโครงงานที่หน้า <a href="../assessment.html" target="_blank">เกณฑ์การประเมินผล</a></p></div>
+  </div>
+</section>
+
+<section class="slide dark" data-title="สรุปและงานที่ได้รับมอบหมาย">
+  <p class="kicker">สรุปบทที่ 10 · ปิดท้ายรายวิชา</p>
+  <h2>จากโค้ดในเครื่อง สู่เว็บไซต์ที่คนทั้งโลกเปิดได้</h2>
+  <div class="grid2" style="align-items:start">
+    <ul class="b" style="color:#fff">
+      <li>โดเมน + โฮสติ้งที่เหมาะกับงาน · DNS ชี้โดเมนไปยังเซิร์ฟเวอร์</li>
+      <li>อัปโหลดด้วย SFTP · ย้ายฐานข้อมูลด้วย .sql · แก้ config</li>
+      <li>HTTPS ด้วย Let's Encrypt หรือ Cloudflare</li>
+      <li>CI/CD ส่งงานอัตโนมัติ · ความลับเก็บใน Secrets</li>
+      <li>Lighthouse + Log + AI ช่วยตรวจ แต่เราเป็นผู้ตัดสินใจ</li>
+    </ul>
+    <div class="card" style="color:var(--ink)"><h3>งานสัปดาห์นี้</h3><p>ใบงานที่ 10: จัดตั้งเว็บไซต์บนเซิร์ฟเวอร์จริง ติดตั้ง HTTPS และตรวจสอบประสิทธิภาพ</p><p style="margin-top:8px">เตรียมนำเสนอโครงงานกลุ่ม (CLO7) · แบบฝึกหัดท้ายบทที่ 10 ส่งผ่าน Google Classroom</p><p style="margin-top:10px"><a href="../worksheets/ws10.html" target="_blank">เปิดใบงานที่ 10</a> · <a href="../chapters/ch10.html" target="_blank">อ่านบทที่ 10</a></p></div>
+  </div>
+  <div class="foot"><span>อ้างอิงหลัก: เอกสารประกอบการสอนบทที่ 10; ICANN (2024); ISRG (2024); Cloudflare (2024); OWASP (2023f); Google Developers (2024); ศุภชัย สมพานิช (2566ก)</span><span></span></div>
+</section>
+
+</div>
+<script src="deck.js" data-ch="10" data-back="../chapters/ch10.html"></script>
+<script>
+(function(){
+var $=function(id){return document.getElementById(id)};
+var all=function(q){return [].slice.call(document.querySelectorAll(q))};
+var esc=function(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")};
+// 3 URL
+var UR={sch:"<b>https://</b> โพรโทคอลที่ใช้ เติม s คือเข้ารหัส (10.4) เว็บจริงควรใช้ https เสมอ",sub:"<b>www.</b> ซับโดเมน ตั้งเพิ่มเองได้ไม่ต้องจดใหม่ เช่น shop.mysite.ac.th หรือ lessons.mysite.ac.th",sld:"<b>mysite</b> ชื่อโดเมนที่จดทะเบียน ควรสั้น จำง่าย สะกดง่าย ไม่ละเมิดเครื่องหมายการค้าผู้อื่น",tld:"<b>.ac.th</b> โดเมนระดับบนสุด .com .org ทั่วไป · .th ประเทศไทย · .ac.th สถานศึกษา · .co.th บริษัท (ต้องแสดงเอกสาร)",path:"<b>/menu/latte</b> เส้นทางไปยังหน้าในเว็บ ตั้งให้อ่านออกเหมือนลิงก์ถาวรในบทที่ 9"};
+function ur(p){all("#url span").forEach(function(s){s.classList.toggle("hl",s.dataset.p===p)});all("#urlBtns button").forEach(function(b){b.classList.toggle("on",b.dataset.p===p)});$("urlTxt").innerHTML='<p style="font-size:20px">'+UR[p]+'</p>'}
+all("#url span,#urlBtns button").forEach(function(e){e.onclick=function(){ur(e.dataset.p)}});
+// 4 hosting
+function host(){var n={};all("#need input").forEach(function(i){n[i.dataset.n]=i.checked});var best,why;
+ if(n.static&&!n.php){best="static";why="มีแค่ไฟล์หน้าเว็บ ใช้ Static Hosting อย่าง GitHub Pages ได้ฟรีและเร็ว"}
+ else if(n.traffic){best="cloud";why="ผู้ใช้มากและต้องขยายระบบได้ Cloud Platform เหมาะสุด แต่ต้องวางแผนค่าใช้จ่ายและมีผู้ดูแลระบบ"}
+ else if(n.root){best="vps";why="ต้องติดตั้งซอฟต์แวร์เอง VPS ให้สิทธิ์เต็ม แต่ต้องอัปเดตระบบและตั้งไฟร์วอลล์เอง"}
+ else{best="shared";why="เว็บ PHP + MySQL ขนาดเล็กถึงกลาง งบน้อย Shared Hosting เหมาะที่สุด ติดตั้ง WordPress ได้ในไม่กี่คลิก"}
+ if(n.static&&n.php)why+=" (ติ๊ก PHP ไว้ด้วย จึงใช้ Static Hosting ไม่ได้)";
+ all(".host").forEach(function(h){h.classList.toggle("best",h.dataset.h===best);h.classList.toggle("no",h.dataset.h==="static"&&n.php)});
+ $("hostTxt").innerHTML='<p style="font-size:19px"><b>แนะนำ:</b> '+why+'</p><p class="muted" style="font-size:15px;margin-top:4px">เปรียบเทียบเพิ่ม: เวอร์ชัน PHP, พื้นที่, การสำรองข้อมูล, SSL ฟรี, ที่ตั้งเซิร์ฟเวอร์, บริการหลังการขาย</p>'}
+all("#need input").forEach(function(i){i.onchange=host});host();
+// 5 FileZilla
+var LF=[["index.php","4 KB"],["config.php","1 KB"],["css/","—"],["js/","—"],["uploads/","—"],[".env (รหัสผ่าน)","1 KB"]],RF=[],conn=false;
+function fzlog(t,c){$("fzLog").insertAdjacentHTML("beforeend",'<div class="'+(c||"")+'">'+esc(t)+'</div>');$("fzLog").scrollTop=1e6}
+function fz(nw){$("fzL").innerHTML=LF.map(function(f,i){return '<div class="f" data-i="'+i+'"><span>'+(f[1]==="—"?"📁 ":"📄 ")+esc(f[0])+'</span><span>'+f[1]+'</span></div>'}).join("");
+ $("fzR").innerHTML=RF.length?RF.map(function(f){return '<div class="f'+(f===nw?" new":"")+'"><span>'+(/\/$/.test(f)?"📁 ":"📄 ")+esc(f)+'</span></div>'}).join(""):'<div class="f" style="color:#94a3b8;cursor:default">'+(conn?"(ว่าง)":"ยังไม่ได้เชื่อมต่อ")+'</div>';
+ all("#fzL .f").forEach(function(d){d.onclick=function(){up(+d.dataset.i)}})}
+function up(i){var f=LF[i][0];if(!conn){fzlog("ข้อผิดพลาด: ยังไม่ได้เชื่อมต่อ กด Quickconnect ก่อน","e");return}
+ if(/\.env/.test(f)){fzlog("คำเตือน: ไม่ควรอัปโหลดไฟล์ที่มีรหัสผ่านไว้ใน public_html ผู้อื่นอาจเปิดอ่านได้ ให้เก็บนอกโฟลเดอร์สาธารณะ","w");return}
+ var nm=f.replace(" (รหัสผ่าน)","");if(RF.indexOf(nm)>-1){fzlog("ไฟล์ "+nm+" มีอยู่แล้ว เขียนทับ","w")}else RF.push(nm);
+ fzlog("สถานะ: อัปโหลด "+nm+" สำเร็จ","ok");fz(nm)}
+$("fzCon").onclick=function(){var p=$("fzProto").value;conn=true;RF=[];$("fzLog").innerHTML="";
+ fzlog("สถานะ: กำลังเชื่อมต่อ mysite.ac.th:"+(p==="sftp"?"22":"21")+" ...");
+ if(p==="ftp")fzlog("คำเตือน: FTP ส่งชื่อผู้ใช้และรหัสผ่านแบบไม่เข้ารหัส ควรใช้ SFTP หรือ FTPS","w");
+ else fzlog("สถานะ: ตรวจลายนิ้วมือกุญแจของเซิร์ฟเวอร์ (host key) ครั้งแรก ให้เทียบกับที่ผู้ให้บริการแจ้ง","w");
+ fzlog("สถานะ: เชื่อมต่อสำเร็จ แสดงรายการ /public_html/","ok");fz()};
+$("fzProto").onchange=function(){conn=false;RF=[];fz();$("fzLog").innerHTML="";fzlog("เลือก "+this.options[this.selectedIndex].text+" แล้วกด Quickconnect")};
+fz();fzlog("กรอกโฮสต์ ชื่อผู้ใช้ รหัสผ่าน แล้วกด Quickconnect (ชื่อเมนูอาจต่างตามรุ่นของ FileZilla)");
+// 6 config
+var CFG={local:'$db = new mysqli(\n  "localhost",   // host\n  "root",        // user\n  "",            // password\n  "db_test"      // database\n);',host:'$db = new mysqli(\n  "localhost",          // หรือตามที่โฮสต์กำหนด\n  "u1234_shop",         // ผู้ใช้ที่สร้างในแผงควบคุม\n  getenv("DB_PASS"),    // อ่านจากค่าแวดล้อม ไม่เขียนรหัสลงไฟล์\n  "u1234_db_test"       // ชื่อฐานข้อมูลบนโฮสต์\n);'};
+Deck.tabs($("cfgTabs"),function(b){$("cfgCode").textContent=CFG[b.dataset.k]});$("cfgCode").textContent=CFG.local;
+// 8 handshake
+$("hsGo").onclick=function(){var s=all("#hs div"),k=0;s.forEach(function(x){x.classList.remove("on")});var t=setInterval(function(){if(k>=s.length){clearInterval(t);return}s[k].classList.add("on");k++},700)};
+// 9 cert
+function crt(){var v=$("crtD").value;var d=v?new Date(v+"T00:00:00"):new Date();var exp=new Date(d.getTime()+90*864e5),now=new Date(),left=Math.ceil((exp-now)/864e5);var f=function(x){return x.toLocaleDateString("th-TH",{year:"numeric",month:"long",day:"numeric"})};
+ $("crt").innerHTML='<dt>ออกให้แก่ (Common Name)</dt><dd>mysite.ac.th</dd><dt>ผู้ออก (Issuer)</dt><dd>Let\'s Encrypt</dd><dt>ใช้ได้ตั้งแต่ / ถึง</dt><dd>'+f(d)+' – '+f(exp)+'</dd><dt>สถานะ</dt><dd style="color:'+(left<0?"#dc2626":left<=30?"#d97706":"#059669")+'">'+(left<0?"หมดอายุแล้ว "+(-left)+" วัน เบราว์เซอร์จะเตือน":left<=30?"เหลือ "+left+" วัน ระบบอัตโนมัติควรต่ออายุแล้ว":"ใช้ได้อีก "+left+" วัน")+'</dd><p class="muted" style="font-size:14px;margin-top:6px">อายุ 90 วันตามแนวทางปัจจุบันของ Let\'s Encrypt ข้อมูลเป็นตัวอย่าง <span class="sim">จำลอง</span></p>'}
+var t0=new Date(Date.now()-75*864e5);$("crtD").value=t0.toISOString().slice(0,10);$("crtD").onchange=crt;crt();
+// 10 DNS
+$("dnsGo").onclick=function(){var s=all("#dns .st"),k=0,msg=["ไม่มีในแคช ถามต่อ","Resolver ไม่รู้ ถาม Root","Root: ไปถามเซิร์ฟเวอร์ของ .th","TLD: ไปถามเซิร์ฟเวอร์ของ mysite.ac.th","ได้คำตอบ A = 203.0.113.10 (เก็บแคชตาม TTL)"];s.forEach(function(x){x.classList.remove("lit")});
+ var t=setInterval(function(){if(k>0)s[k-1].classList.remove("lit");if(k>=s.length){clearInterval(t);s[s.length-1].classList.add("lit");return}s[k].classList.add("lit");$("dnsTxt").textContent=msg[k];k++},800)};
+var RC={A:"ชี้ชื่อโดเมนไปยัง IPv4 ของเซิร์ฟเวอร์ โฮสต์จะแจ้งเลข IP ให้",AAAA:"ชี้ไปยัง IPv6 ของเซิร์ฟเวอร์",CNAME:"ตั้งชื่อเล่น ให้ www ไปที่เดียวกับชื่อหลัก",MX:"บอกว่าอีเมลของโดเมนนี้ส่งไปเซิร์ฟเวอร์ใด ตัวเลขน้อยสำคัญกว่า",TXT:"ข้อความอิสระ ใช้ยืนยันเจ้าของโดเมนหรือกันอีเมลปลอม (SPF)"};
+all("#rec tr[data-r]").forEach(function(tr){tr.onclick=function(){all("#rec tr").forEach(function(x){x.classList.toggle("sel",x===tr)});$("recTxt").innerHTML='<h3 style="font-family:Mono,monospace">'+tr.dataset.r+'</h3><p style="font-size:19px">'+RC[tr.dataset.r]+'</p><p class="muted" style="font-size:14px;margin-top:6px">IP ในตารางเป็นช่วงตัวอย่างสำหรับเอกสาร ไม่ใช่เซิร์ฟเวอร์จริง</p>'}});
+// 11 CI/CD
+$("ciGo").onclick=function(){Deck.pipe("ci");var L=["$ git push origin main","▶ Workflow: Deploy website (on: push)","✓ Checkout code","✓ แปลง worksheets/*.md เป็น site/worksheets/*.html","✓ ตรวจลายนิ้วมือกุญแจเซิร์ฟเวอร์ (host key pinning)","✓ อัปโหลดผ่าน SFTP ด้วยค่าใน Secrets (ไม่แสดงรหัสผ่านใน log)","✓ เสร็จใน ~1 นาที · เว็บอัปเดตแล้ว"],k=0;$("ciLog").innerHTML="";var t=setInterval(function(){if(k>=L.length){clearInterval(t);return}$("ciLog").insertAdjacentHTML("beforeend",'<div class="'+(k===L.length-1?"ok":"")+'">'+esc(L[k])+'</div>');k++},450)};
+// 12 Lighthouse
+var BASE={perf:52,acc:71,bp:75,seo:78},FX={img:{perf:22},defer:{perf:14},alt:{acc:16,seo:4},contrast:{acc:9},https:{bp:17},meta:{seo:16,bp:4}};
+function gauge(v,l){var c=v>=90?"#0cce6b":v>=50?"#ffa400":"#ff4e42",r=34,C=2*Math.PI*r,o=C*(1-v/100);return '<div class="gauge"><svg width="90" height="90" viewBox="0 0 90 90"><circle cx="45" cy="45" r="'+r+'" fill="none" stroke="#e5e7eb" stroke-width="8"/><circle cx="45" cy="45" r="'+r+'" fill="none" stroke="'+c+'" stroke-width="8" stroke-dasharray="'+C+'" stroke-dashoffset="'+o+'" transform="rotate(-90 45 45)" style="transition:stroke-dashoffset .5s"/><text x="45" y="52" text-anchor="middle" font-family="Mono" font-size="22" font-weight="700" fill="'+c+'">'+v+'</text></svg>'+l+'</div>'}
+function lh(){var s=Object.assign({},BASE);all("#lh input").forEach(function(i){if(i.checked){var f=FX[i.dataset.f];for(var k in f)s[k]=Math.min(100,s[k]+f[k])}});$("gg").innerHTML=gauge(s.perf,"Performance")+gauge(s.acc,"Accessibility")+gauge(s.bp,"Best Practices")+gauge(s.seo,"SEO")}
+all("#lh input").forEach(function(i){i.onchange=lh});lh();
+// 13 logs
+var LG=[["203.0.113.5 - - [14/Nov/2026:09:01:12] \"GET / HTTP/1.1\" 200 5120","ok"],["198.51.100.7 - - [14/Nov/2026:09:01:40] \"GET /menu/latte HTTP/1.1\" 200 3011","ok"],["198.51.100.7 - - [14/Nov/2026:09:02:03] \"GET /img/logo.pnj HTTP/1.1\" 404 512","404"],["192.0.2.66 - - [14/Nov/2026:09:03:10] \"POST /wp-login.php HTTP/1.1\" 200 4100","brute"],["192.0.2.66 - - [14/Nov/2026:09:03:11] \"POST /wp-login.php HTTP/1.1\" 200 4100","brute"],["192.0.2.66 - - [14/Nov/2026:09:03:11] \"POST /wp-login.php HTTP/1.1\" 200 4100","brute"],["192.0.2.66 - - [14/Nov/2026:09:03:12] \"POST /wp-login.php HTTP/1.1\" 200 4100","brute"],["203.0.113.9 - - [14/Nov/2026:09:04:30] \"POST /order.php HTTP/1.1\" 500 230","500"],["192.0.2.80 - - [14/Nov/2026:09:05:01] \"GET /.env HTTP/1.1\" 404 512","scan"],["192.0.2.80 - - [14/Nov/2026:09:05:02] \"GET /backup.sql HTTP/1.1\" 404 512","scan"],["192.0.2.80 - - [14/Nov/2026:09:05:02] \"GET /phpmyadmin/ HTTP/1.1\" 403 300","scan"],["203.0.113.5 - - [14/Nov/2026:09:06:44] \"GET /about HTTP/1.1\" 200 2800","ok"]];
+var LT={all:"บรรทัดละ 1 คำขอ: IP ผู้เข้าชม · เวลา · คำขอ · รหัสสถานะ · ขนาด (บทที่ 2) เลือกตัวกรองด้านบนเพื่อหาความผิดปกติ",404:"ลิงก์รูปภาพสะกดผิด (.pnj) แก้ลิงก์ในหน้าเว็บ ผู้ใช้จะได้ไม่เห็นภาพแตก",500:"order.php ผิดพลาดฝั่งเซิร์ฟเวอร์ เปิดดู error log ของ PHP ประกอบ แต่ไม่แสดงรายละเอียดให้ผู้ใช้เห็น",brute:"IP เดียวส่งคำขอเข้าสู่ระบบถี่ ๆ ในไม่กี่วินาที คือการเดารหัสผ่าน ใช้จำกัดการล็อกอิน 2FA และบล็อก IP (บทที่ 9)",scan:"มีคนสแกนหาไฟล์ลับ (.env, backup.sql, phpmyadmin) ดีที่ไม่พบ ยืนยันว่าไม่มีไฟล์เหล่านี้ในโฟลเดอร์สาธารณะ"};
+function lg(f){$("lg").innerHTML=LG.map(function(l){return '<div class="'+(f==="all"?"":l[1]===f?"hl":"dim")+'">'+esc(l[0])+'</div>'}).join("");$("lgTxt").innerHTML='<p style="font-size:19px">'+LT[f]+'</p><p class="muted" style="font-size:14px;margin-top:10px">IP เป็นช่วงตัวอย่างสำหรับเอกสาร · ก่อนส่ง log ให้ AI วิเคราะห์ ให้ปิดบัง IP และข้อมูลผู้ใช้จริง (PDPA)</p>';all("[data-lf]").forEach(function(b){b.classList.toggle("on",b.dataset.lf===f)})}
+all("[data-lf]").forEach(function(b){b.onclick=function(){lg(b.dataset.lf)}});lg("all");
+// 14 configs
+var CF={ht:[["RewriteEngine On","เปิดระบบเขียน URL ใหม่ของ Apache (ต้องมี mod_rewrite)"],["RewriteCond %{HTTPS} off","เงื่อนไข: ถ้าคำขอนี้ยังไม่ใช่ HTTPS"],["RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]","ส่งต่อไปที่อยู่เดิมแต่เป็น https ด้วยรหัส 301 (ย้ายถาวร)"],["",""],["Header always set X-Content-Type-Options \"nosniff\"","ห้ามเบราว์เซอร์เดาชนิดไฟล์เอง ลดความเสี่ยงไฟล์อัปโหลดถูกรันเป็นสคริปต์"],["Header always set X-Frame-Options \"SAMEORIGIN\"","ห้ามเว็บอื่นนำหน้าเราไปใส่ใน iframe ป้องกัน Clickjacking"],["Header always set Strict-Transport-Security \"max-age=31536000; includeSubDomains\"","HSTS บอกเบราว์เซอร์ให้ใช้ HTTPS เท่านั้นเป็นเวลา 1 ปี ใส่หลังจากแน่ใจว่า HTTPS ทำงานทุกซับโดเมนแล้ว"]],
+yml:[["name: Deploy Web Application","ชื่อ workflow ที่แสดงในแท็บ Actions"],["on:",""],["  push:",""],["    branches: [ \"main\" ]","ทำงานทุกครั้งที่ push เข้า branch main"],["jobs:",""],["  deploy:",""],["    runs-on: ubuntu-latest","รันบนเครื่องเสมือน Linux ของ GitHub"],["    steps:",""],["    - uses: actions/checkout@v4","ดึงโค้ดจาก repository มาไว้ในเครื่องที่รัน"],["    - name: Deploy via RSYNC SSH",""],["      uses: easingthemes/ssh-deploy@main","ใช้ action สำเร็จรูปส่งไฟล์ด้วย SSH · งานจริงควรระบุเวอร์ชันแน่นอนแทน @main"],["      env:",""],["        SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}","กุญแจลับอ่านจาก GitHub Secrets ไม่เขียนลงไฟล์ ไม่แสดงใน log"],["        SOURCE: \"public_html/\"","โฟลเดอร์ต้นทางใน repository"],["        REMOTE_HOST: ${{ secrets.SERVER_IP }}",""],["        TARGET: \"/var/www/html/\"","โฟลเดอร์ปลายทางบนเซิร์ฟเวอร์"]],
+pr:[["บทบาท: ผู้ดูแลระบบ Apache และความปลอดภัยเว็บ",""],["งาน: เขียนไฟล์ .htaccess สำหรับเว็บ PHP บน Shared Hosting","ระบุสภาพแวดล้อมให้ชัด คอนฟิกต่างกันตามเซิร์ฟเวอร์"],["ข้อกำหนด:",""],["- บังคับ HTTPS ด้วย 301",""],["- ใส่ Security Headers ตามคำแนะนำของ OWASP",""],["- ห้ามเปิดดูรายชื่อไฟล์ในโฟลเดอร์ (Options -Indexes)",""],["- ป้องกันการเข้าถึงไฟล์ .env และ .sql",""],["ผลลัพธ์: ไฟล์ .htaccess พร้อมคอมเมนต์อธิบายทุกบรรทัด","ขอคำอธิบายทุกบรรทัด เพื่อเข้าใจก่อนใช้"],["  และวิธีทดสอบว่าทำงานจริง","ทดสอบบนเว็บทดลองก่อน ถ้าผิดอาจขึ้น 500 ทั้งเว็บ"]]};
+var CK="ht";function cf(){var L=CF[CK];$("cf").innerHTML=L.map(function(l,k){return '<div data-k="'+k+'" style="cursor:pointer">'+esc(l[0]||" ")+'</div>'}).join("");$("cfTxt").innerHTML='<p style="font-size:19px">คลิกบรรทัดทางซ้ายเพื่อดูความหมาย</p><p class="muted" style="font-size:15px;margin-top:10px">'+(CK==="pr"?"ตัวอย่างกรอบคำสั่งตามหัวข้อ 10.6.3":"โค้ดจากหัวข้อ 10.6.4 (ตัดบางบรรทัดให้สั้นลง)")+'</p>';
+ all("#cf div").forEach(function(d){d.onclick=function(){var k=+d.dataset.k;while(k>0&&!L[k][1])k--;all("#cf .hl").forEach(function(e){e.classList.remove("hl")});d.classList.add("hl");$("cfTxt").innerHTML='<p style="font-family:Mono,monospace;font-size:14px;color:#4338ca;word-break:break-all">'+esc(L[k][0].trim())+'</p><p style="font-size:20px;margin-top:8px">'+(L[k][1]||"ส่วนประกอบของคำสั่ง")+'</p>'}})}
+Deck.tabs($("cfTabs"),function(b){CK=b.dataset.k;cf()});cf();
+// 15 go-live
+function go(){var c=all("#go input"),n=c.filter(function(x){return x.checked}).length;$("goM").style.width=(n/c.length*100)+"%";$("goT").textContent="พร้อม "+n+" จาก "+c.length+" ข้อ"+(n===c.length?" เปิดเว็บได้ 🎉":"")}
+all("#go input").forEach(function(x){x.onchange=go});go();
+})();
+</script>
+</body>
+</html>

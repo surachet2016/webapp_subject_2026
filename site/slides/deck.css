@@ -21,7 +21,7 @@ h2{font-size:44px;line-height:1.2;font-weight:700;margin-bottom:18px}
 h3{font-size:26px;font-weight:700;margin-bottom:8px}
 p,li{font-size:26px;line-height:1.55}
 .muted{color:var(--muted)}
-.kicker{font-size:20px;font-weight:600;letter-spacing:.04em;color:var(--brand2);margin-bottom:6px}
+.kicker{font-size:20px;font-weight:600;letter-spacing:.04em;color:var(--brand2);margin-bottom:10px}
 .dark .kicker{color:#c4b5fd}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:center}
 .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
