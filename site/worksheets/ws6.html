@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="เว็บไซต์ประกอบการเรียนรายวิชาการโปรแกรมบนเว็บ 07-034-210 บทเรียน 10 บท ใบงาน และตัวอย่างโค้ดที่ลองรันได้">
+<meta name="description" content="เว็บไซต์ประกอบการเรียนรายวิชาการเขียนโปรแกรมบนเว็บ 07-034-210 บทเรียน 10 บท ใบงาน และตัวอย่างโค้ดที่ลองรันได้">
 <meta name="theme-color" content="#4338ca">
-<title>ใบงานที่ 6 · การโปรแกรมบนเว็บ</title>
+<title>ใบงานที่ 6 · การเขียนโปรแกรมบนเว็บ</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%234338ca'/%3E%3Cpath d='M26 20 14 32l12 12M38 20l12 12-12 12' fill='none' stroke='%23fff' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <link rel="preload" href="../assets/fonts/Sarabun-400-thai.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../assets/style.css">
@@ -15,7 +15,7 @@
 <body class="ch-page">
 <a class="skip" href="#main">ข้ามไปยังเนื้อหา</a>
 <header class="top"><div class="wrap nav">
-<a class="brand" href="../index.html" aria-label="หน้าแรก การโปรแกรมบนเว็บ"><span class="logo" aria-hidden="true">&lt;/&gt;</span><span class="bt"><b>การโปรแกรมบนเว็บ</b><small>07-034-210</small></span></a>
+<a class="brand" href="../index.html" aria-label="หน้าแรก การเขียนโปรแกรมบนเว็บ"><span class="logo" aria-hidden="true">&lt;/&gt;</span><span class="bt"><b>การเขียนโปรแกรมบนเว็บ</b><small>07-034-210</small></span></a>
 <button id="menuBtn" class="iconbtn menu-btn" type="button" aria-expanded="false" aria-controls="menu" aria-label="เปิดเมนู"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v2H3V6Zm0 5h18v2H3v-2Zm0 5h18v2H3v-2Z"/></svg></button>
 <nav id="menu" aria-label="เมนูหลัก">
 <a href="../chapters.html">บทเรียน</a><a href="../worksheets.html" aria-current="page">ใบงาน</a><a href="../start.html">เริ่มต้นใช้งาน</a><a href="../about.html">เกี่ยวกับรายวิชา</a>
@@ -30,19 +30,21 @@
 <p><strong>ผลการเรียนรู้ที่คาดหวัง (CLO):</strong> CLO 4 (สร้างเว็บเพจที่มีปฏิสัมพันธ์ด้วย JavaScript) และ CLO 5 (ประยุกต์แก้ปัญหาตามโจทย์)</p>
 <p><strong>เครื่องมือและซอฟต์แวร์ที่ใช้:</strong> Visual Studio Code, เบราว์เซอร์ Developer Console</p>
 <h2>คำสั่งและขั้นตอนการปฏิบัติงาน</h2>
+<p><strong>การแบ่งส่วนของใบงาน (ตรงกับแผนการสอนรายสัปดาห์ใน มคอ.3):</strong> ส่วนที่ 1 สัปดาห์ที่ 10 ทำข้อ 6.1–6.3; ส่วนที่ 2 สัปดาห์ที่ 11 ทำข้อ 6.4 ส่งใบงานฉบับสมบูรณ์ทั้งสองส่วนผ่าน Google Classroom ภายในสัปดาห์ที่ 11 และประเมินด้วยแบบประเมินรูบริกฉบับเดียว</p>
 <ul>
 <li><strong>6.1 การควบคุมองค์ประกอบ DOM และ Event Handling</strong>: เขียนฟังก์ชันคำนวณราคาสินค้าและภาษีมูลค่าเพิ่มแบบเรียลไทม์ (ดูหัวข้อ 6.8.4) โดยดักจับเหตุการณ์ input หรือ change ผ่าน addEventListener</li>
 <li><strong>6.2 การตรวจสอบความถูกต้องของฟอร์มฝั่ง Client (Client-Side Validation)</strong>: เขียนคำสั่งตรวจสอบรหัสผ่านตรงกัน และตรวจสอบความถูกต้องของอีเมลด้วย Regular Expression ก่อนส่งข้อมูล</li>
 <li><strong>6.3 การสร้างลูกเล่นและการโต้ตอบทางสายตา</strong>: เขียนโปรแกรมสลับโหมด Dark Mode / Light Mode โดยการสลับคลาสของแท็ก <body> ผ่าน JavaScript classList.toggle (ดูหัวข้อ 6.8.4)</li>
 <li><strong>6.4 การเชื่อมต่อข้อมูลแบบอะซิงโครนัสด้วย Fetch API</strong>: เขียนฟังก์ชัน async/await ดึงข้อมูลจำลองรูปแบบ JSON จากภายนอก (เช่น JSONPlaceholder API ดูหัวข้อ 6.9.1) แล้วนำมาเรนเดอร์ลงในตารางหรือการ์ด HTML</li>
 </ul>
+<p><strong>การแปลงคะแนน:</strong> คะแนนจากแบบประเมินรูบริก (เต็ม 20) ÷ 20 = คะแนนเก็บของใบงานนี้ (เต็ม 1 คะแนน) ใบงาน 10 ชุดรวมเป็น 10 คะแนนตาม มคอ.3</p>
 <p><strong>เกณฑ์การส่งมอบงานและการประเมินผล:</strong> บันทึกภาพหน้าจอผลลัพธ์การทำงานพร้อมแนบซอร์สโค้ด และส่งผ่านระบบบริหารการเรียนรู้ (LMS) ภายในระยะเวลาที่กำหนด โดยจะประเมินผลตามเกณฑ์รูบริกการประเมินใบงาน</p>
 <div class="callout"><b>การส่งงาน</b> ส่งผ่าน Google Classroom ตามกำหนดของอาจารย์ ตั้งชื่อไฟล์ตามรูปแบบ <code>รหัสนักศึกษา_ใบงานที่6</code></div>
 <p><a class="btn alt" href="../chapters/ch6.html">อ่านบทที่ 6 ที่เกี่ยวข้อง</a></p></article>
 <div class="pager"><a class="pn" href="ws5.html"><small>ก่อนหน้า</small><b>ใบงานที่ 5</b></a><a class="pn next" href="ws7.html"><small>ถัดไป</small><b>ใบงานที่ 7</b></a></div></div>
 </main>
 <footer class="foot"><div class="wrap fgrid">
-<div><a class="brand" href="../index.html"><span class="logo" aria-hidden="true">&lt;/&gt;</span><span class="bt"><b>การโปรแกรมบนเว็บ</b><small>Web Programming</small></span></a>
+<div><a class="brand" href="../index.html"><span class="logo" aria-hidden="true">&lt;/&gt;</span><span class="bt"><b>การเขียนโปรแกรมบนเว็บ</b><small>Web Programming</small></span></a>
 <p class="small">สื่อเสริมการเรียนรู้ ใช้ประกอบเอกสารประกอบการสอน ไม่มีระบบสมาชิกและไม่เก็บข้อมูลส่วนบุคคล ส่งงานผ่าน Google Classroom</p></div>
 <div><p class="fh">เรียนรู้</p><a href="../chapters.html">บทเรียน 10 บท</a><a href="../worksheets.html">ใบงานประจำบท</a><a href="../start.html">เริ่มต้นใช้งาน</a></div>
 <div><p class="fh">รายวิชา</p><a href="../about.html">เกี่ยวกับรายวิชา</a><span>ผู้สอน: ดร.สุรเชษฐ์ สังขพันธ์</span><span>พ.ศ. 2569</span></div>
