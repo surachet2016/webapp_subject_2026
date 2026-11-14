@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="สไลด์บทที่ 5 Bootstrap 5 รายวิชา 07-034-210 พร้อมตัวอย่างที่กดลองได้">
+<meta name="theme-color" content="#1e1b4b">
+<title>สไลด์บทที่ 5 Bootstrap 5 · การเขียนโปรแกรมบนเว็บ</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%234338ca'/%3E%3Cpath d='M26 20 14 32l12 12M38 20l12 12-12 12' fill='none' stroke='%23fff' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="deck.css">
+<style>
+/* เฉพาะบทที่ 5 */
+.sc{position:relative;overflow:hidden;background:#e5e7eb;border-radius:14px}
+.sc iframe{position:absolute;left:0;top:0;border:0;background:#fff;transform-origin:0 0}
+.chip{font:inherit;font-size:17px;border:2px solid var(--line);background:#fff;border-radius:12px;padding:6px 12px;cursor:pointer}
+.chip.on{border-color:var(--accent);background:#fffbeb}
+.bp{width:100%;border-collapse:collapse;margin-top:10px}
+.bp td,.bp th{border:1px solid var(--line);padding:5px 8px;font-size:16px;text-align:left}
+.bp th{background:#eef2ff}
+.bp tr.on td{background:#fde68a;font-weight:700}
+.g12{display:grid;grid-template-columns:repeat(12,1fr);gap:6px}
+.g12 .c{height:26px;border-radius:6px;background:#e0e7ff;font-size:13px;display:flex;align-items:center;justify-content:center;color:#4338ca}
+.g12 .k{border-radius:10px;color:#fff;font-weight:700;font-size:18px;display:flex;align-items:center;justify-content:center;height:70px;font-family:Mono,monospace;transition:all .35s}
+.rg{display:grid;grid-template-columns:120px 1fr 60px;gap:6px 10px;align-items:center}
+.rg label{font-size:18px;font-family:Mono,monospace}
+.rg output{font-family:Mono,monospace;font-size:17px}
+select{font:inherit;font-size:17px;border:1px solid var(--line);border-radius:8px;padding:5px 8px;background:#fff}
+.sel-row{display:grid;grid-template-columns:150px 1fr;gap:8px 10px;align-items:center}
+.sel-row label{font-size:17px;font-weight:600}
+.clsout{font-family:Mono,monospace;font-size:20px;background:#0f1226;color:#fcd34d;border-radius:10px;padding:12px 14px;word-break:break-all}
+.bug{font-family:Mono,monospace;font-size:16px;line-height:1.75;background:#0f1226;color:#e8eaf8;border-radius:12px;padding:12px 6px}
+.bug div{padding:0 12px;border-radius:6px;cursor:pointer;white-space:pre-wrap}
+.bug div:hover{background:rgba(255,255,255,.08)}
+.bug div.ok{background:rgba(5,150,105,.35)}
+.bug div.no{background:rgba(220,38,38,.35)}
+.net{font-size:15px;color:var(--muted);margin-top:6px}
+</style>
+</head>
+<body>
+<div id="stage">
+
+<section class="slide dark" data-title="ปก">
+  <div style="position:absolute;left:72px;top:180px;width:600px">
+    <p class="kicker">รายวิชา 07-034-210 การเขียนโปรแกรมบนเว็บ · บทที่ 5</p>
+    <h1>Bootstrap 5</h1>
+    <p class="muted" style="margin-top:18px">ติดตั้ง Container ระบบกริด 12 คอลัมน์ Breakpoint แบบฟอร์ม การตรวจข้อมูล คอมโพเนนต์ คลาสอรรถประโยชน์ และ AI ช่วยร่างหน้าเว็บ</p>
+    <p class="muted" style="margin-top:28px;font-size:20px">ดร.สุรเชษฐ์ สังขพันธ์ · กด → หรือ Space ไปสไลด์ถัดไป · กด O ดูสารบัญ</p>
+  </div>
+  <svg style="position:absolute;right:60px;top:140px" width="480" height="430" viewBox="0 0 480 430" aria-hidden="true">
+    <rect x="20" y="20" width="440" height="390" rx="20" fill="rgba(255,255,255,.06)" stroke="#a78bfa" stroke-width="2"/>
+    <rect x="40" y="40" width="400" height="44" rx="8" fill="#7952b3"/>
+    <text x="60" y="69" font-family="Sarabun" font-size="20" font-weight="700" fill="#fff">ร้านกาแฟบ้านสวน</text>
+    <g fill="#c4b5fd" opacity=".5"><rect x="40" y="100" width="28" height="290" rx="4"/><rect x="74" y="100" width="28" height="290" rx="4"/><rect x="108" y="100" width="28" height="290" rx="4"/><rect x="142" y="100" width="28" height="290" rx="4"/><rect x="176" y="100" width="28" height="290" rx="4"/><rect x="210" y="100" width="28" height="290" rx="4"/><rect x="244" y="100" width="28" height="290" rx="4"/><rect x="278" y="100" width="28" height="290" rx="4"/><rect x="312" y="100" width="28" height="290" rx="4"/><rect x="346" y="100" width="28" height="290" rx="4"/><rect x="380" y="100" width="28" height="290" rx="4"/><rect x="414" y="100" width="26" height="290" rx="4"/></g>
+    <rect x="40" y="120" width="130" height="120" rx="12" fill="#f59e0b"><animate attributeName="width" values="130;400;130" dur="5s" repeatCount="indefinite"/></rect>
+    <rect x="176" y="120" width="130" height="120" rx="12" fill="#ec4899"><animate attributeName="y" values="120;250;120" dur="5s" repeatCount="indefinite"/><animate attributeName="x" values="176;40;176" dur="5s" repeatCount="indefinite"/></rect>
+    <rect x="312" y="120" width="128" height="120" rx="12" fill="#10b981"><animate attributeName="y" values="120;250;120" dur="5s" repeatCount="indefinite"/><animate attributeName="x" values="312;240;312" dur="5s" repeatCount="indefinite"/></rect>
+    <text x="240" y="400" text-anchor="middle" font-family="Mono" font-size="18" fill="#fde68a">col-12 col-md-4</text>
+  </svg>
+  <div class="foot"><span>ภาพประกอบในสไลด์ชุดนี้สร้างด้วย SVG/CSS โดยใช้ปัญญาประดิษฐ์ (AI) ช่วยสร้าง · ตัวอย่างสดโหลด Bootstrap 5.3.8 จาก CDN ต้องต่ออินเทอร์เน็ต</span><span>พ.ศ. 2569</span></div>
+</section>
+
+<section class="slide" data-title="เป้าหมายของบทนี้">
+  <p class="kicker">เป้าหมายของบทนี้</p>
+  <h2>เรียนจบบทนี้ นักศึกษาจะ...</h2>
+  <div class="grid2" style="align-items:start">
+    <ul class="b">
+      <li>ติดตั้ง Bootstrap 5 ด้วย CDN หรือดาวน์โหลดไฟล์</li>
+      <li>วางโครงด้วย Container และกริด 12 คอลัมน์</li>
+      <li>ใช้ Breakpoint ออกแบบแบบ Mobile-First</li>
+      <li>สร้างแบบฟอร์มที่ตรวจข้อมูลและแจ้งผู้ใช้ได้</li>
+      <li>ประกอบหน้าเว็บจากคอมโพเนนต์และคลาสอรรถประโยชน์</li>
+    </ul>
+    <div class="card">
+      <h3>ผลลัพธ์การเรียนรู้ (CLO) ของบทนี้</h3>
+      <p><b>CLO3</b> ใช้ภาษาและเครื่องมือในการพัฒนา จัดตั้ง และบริหารเว็บไซต์ให้ทำงานได้ตามข้อกำหนด</p>
+      <p style="margin-top:6px"><b>CLO4</b> สร้างเว็บเพจที่มีปฏิสัมพันธ์กับผู้ใช้ โดยใช้ภาษาสคริปต์และส่วนเสริมได้เหมาะสมกับลักษณะงาน</p>
+      <p style="margin-top:6px"><b>CLO5</b> ประยุกต์ความรู้พัฒนาเว็บไซต์แก้ปัญหาจากสถานการณ์ที่กำหนด พร้อมทดสอบและปรับปรุง</p>
+      <p class="muted" style="margin-top:8px;font-size:16px">ใบงานที่ 5: ส่วนติดต่อผู้ใช้แบบ Responsive ด้วย Bootstrap 5 และ Utility Classes</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-title="ทำไมต้องใช้เฟรมเวิร์ก">
+  <p class="kicker">Bootstrap คืออะไร</p>
+  <h2>เขียน CSS เอง หรือใช้คลาสสำเร็จรูป</h2>
+  <div class="grid2" style="align-items:start">
+    <div>
+      <div class="tabs" id="whyTabs"><button class="on" data-k="pure">CSS เอง (บทที่ 4)</button><button data-k="bs">Bootstrap</button></div>
+      <div class="code" id="whyCode" style="font-size:15px;height:260px;white-space:pre"></div>
+      <p id="whyNote" style="font-size:19px;margin-top:10px"></p>
+    </div>
+    <div>
+      <div class="card"><h3>ข้อดี</h3><p>เร็ว หน้าตาสม่ำเสมอ รองรับทุกจอ มีคอมโพเนนต์พร้อมใช้ เอกสารดี · Bootstrap 5 <b>ไม่ต้องใช้ jQuery</b> แล้ว</p></div>
+      <div class="card" style="margin-top:12px"><h3>ข้อจำกัด</h3><p>หน้าตาคล้ายเว็บอื่น ไฟล์ใหญ่กว่าที่ใช้จริง HTML มีคลาสยาว และต้องเข้าใจ CSS พื้นฐานจึงปรับแต่งได้</p></div>
+      <a class="lk" style="margin-top:12px" href="https://getbootstrap.com/docs/5.3/getting-started/introduction/" target="_blank" rel="noopener noreferrer"><b>getbootstrap.com</b><span>เอกสารทางการ Bootstrap 5.3</span></a>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-title="5.1 ติดตั้ง Bootstrap">
+  <p class="kicker">5.1 การติดตั้ง Bootstrap (Bootstrap Core Team, 2024b; บัญชา ปะสีละเตสัง, 2565ก)</p>
+  <h2>สองบรรทัดก็เริ่มใช้งานได้</h2>
+  <div class="tabs" id="instTabs"><button class="on" data-k="cdn">ลิงก์ CDN</button><button data-k="dl">ดาวน์โหลดไฟล์</button></div>
+  <div class="grid2" style="grid-template-columns:1.3fr 1fr;align-items:start">
+    <div class="code" id="instCode" style="font-size:14px;height:380px;white-space:pre"></div>
+    <div class="card" id="instTxt" style="min-height:380px"></div>
+  </div>
+</section>
+
+<section class="slide" data-title="5.2 Containers">
+  <p class="kicker">5.2 Bootstrap5 Containers</p>
+  <h2>.container กับ .container-fluid</h2>
+  <div class="grid2" style="grid-template-columns:380px 1fr;align-items:start">
+    <div>
+      <label for="cW">ความกว้างจอจำลอง <b id="cWo"></b></label><input type="range" id="cW" min="360" max="1500" value="1200">
+      <table class="bp" id="cTbl"><tr><th>จอ</th><th>.container กว้าง</th></tr><tr data-min="0"><td>&lt; 576px</td><td>100%</td></tr><tr data-min="576"><td>sm ≥ 576</td><td>540px</td></tr><tr data-min="768"><td>md ≥ 768</td><td>720px</td></tr><tr data-min="992"><td>lg ≥ 992</td><td>960px</td></tr><tr data-min="1200"><td>xl ≥ 1200</td><td>1140px</td></tr><tr data-min="1400"><td>xxl ≥ 1400</td><td>1320px</td></tr></table>
+    </div>
+    <div class="sc" style="height:440px"><iframe id="cFr" title="ตัวอย่าง container"></iframe></div>
+  </div>
+</section>
+
+<section class="slide" data-title="5.3 กริด 12 คอลัมน์">
+  <p class="kicker">5.3 Bootstrap5 Grid System (Bootstrap Core Team, 2024a; ศุภชัย สมพานิช, 2566ข)</p>
+  <h2>หนึ่งแถวแบ่งเป็น 12 ส่วน</h2>
+  <div class="g12" id="g12bg"></div>
+  <div class="g12" id="g12" style="margin-top:10px"></div>
+  <div class="grid2" style="margin-top:16px;align-items:start">
+    <div class="rg">
+      <label for="k1">col-A</label><input type="range" id="k1" min="1" max="12" value="4"><output id="ok1"></output>
+      <label for="k2">col-B</label><input type="range" id="k2" min="1" max="12" value="4"><output id="ok2"></output>
+      <label for="k3">col-C</label><input type="range" id="k3" min="1" max="12" value="4"><output id="ok3"></output>
+    </div>
+    <div><div class="code" id="gCode" style="font-size:15px;white-space:pre"></div><p id="gMsg" style="font-size:19px;margin-top:8px"></p></div>
+  </div>
+  <div style="display:flex;gap:8px;margin-top:10px"><button class="chip" data-g="4,4,4">4+4+4</button><button class="chip" data-g="3,6,3">3+6+3</button><button class="chip" data-g="8,4,12">8+4 แล้ว 12</button><button class="chip" data-g="6,6,6">6+6+6 (เกิน 12)</button></div>
+</section>
+
+<section class="slide" data-title="Breakpoint และ Mobile-First">
+  <p class="kicker">5.3 Breakpoint และแนวคิด Mobile-First</p>
+  <h2>col-12 col-md-6 col-lg-4 ทำงานอย่างไร</h2>
+  <div class="grid2" style="grid-template-columns:380px 1fr;align-items:start">
+    <div>
+      <label for="bW">ความกว้างจอจำลอง <b id="bWo"></b></label><input type="range" id="bW" min="360" max="1300" value="1100">
+      <div style="display:flex;gap:8px;margin-top:8px"><button class="chip" data-bw="375">มือถือ</button><button class="chip" data-bw="820">แท็บเล็ต</button><button class="chip" data-bw="1200">คอมพิวเตอร์</button></div>
+      <table class="bp" id="bTbl"><tr><th>ช่วงจอ</th><th>คลาสที่มีผล</th><th>ต่อแถว</th></tr><tr data-r="0"><td>&lt; 768</td><td>col-12</td><td>1 ใบ</td></tr><tr data-r="768"><td>md ≥ 768</td><td>col-md-6</td><td>2 ใบ</td></tr><tr data-r="992"><td>lg ≥ 992</td><td>col-lg-4</td><td>3 ใบ</td></tr></table>
+      <p style="font-size:18px;margin-top:10px">คลาสไม่มีตัวย่อมีผลตั้งแต่จอเล็กสุด ตัวที่มีตัวย่อมีผล <b>ตั้งแต่ขนาดนั้นขึ้นไป</b> จึงคิดจากมือถือก่อน</p>
+    </div>
+    <div class="sc" style="height:460px"><iframe id="bFr" title="ตัวอย่าง breakpoint"></iframe></div>
+  </div>
+</section>
+
+<section class="slide" data-title="5.4 แบบฟอร์ม">
+  <p class="kicker">5.4 Bootstrap5 Forms</p>
+  <h2>ใส่คลาสให้ถูก ฟอร์มก็สวยและใช้ง่าย</h2>
+  <div class="grid2" style="grid-template-columns:1fr 1fr;align-items:start">
+    <div class="sc" style="height:440px"><iframe id="fFr" title="ตัวอย่างแบบฟอร์ม Bootstrap"></iframe></div>
+    <div>
+      <div class="tabs" id="fTabs"><button class="on" data-k="form-control">form-control</button><button data-k="form-label">form-label</button><button data-k="form-select">form-select</button><button data-k="form-check">form-check</button><button data-k="mb-3">mb-3</button></div>
+      <div class="card" id="fTxt" style="min-height:120px"></div>
+      <div class="code" id="fCode" style="font-size:14px;margin-top:10px;white-space:pre-wrap"></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-title="5.5 ตรวจข้อมูลในฟอร์ม">
+  <p class="kicker">5.5 Bootstrap5 Form Validation</p>
+  <h2>บอกผู้ใช้ว่าช่องไหนถูก ช่องไหนต้องแก้</h2>
+  <div class="grid2" style="grid-template-columns:1fr 1fr;align-items:start">
+    <div class="sc" style="height:440px"><iframe id="vFr" title="ตัวอย่างการตรวจฟอร์ม Bootstrap"></iframe></div>
+    <div>
+      <div class="tabs" id="vTabs"><button class="on" data-k="0">ยังไม่ตรวจ</button><button data-k="1">ใส่ .was-validated</button></div>
+      <div class="card"><ul class="b"><li style="font-size:19px"><b>.was-validated</b> ที่ &lt;form&gt; สั่งให้แสดงผลการตรวจ (ขอบเขียว/แดง)</li><li style="font-size:19px"><b>.valid-feedback</b> ข้อความเมื่อถูก</li><li style="font-size:19px"><b>.invalid-feedback</b> ข้อความเมื่อผิด</li><li style="font-size:19px">อาศัย required, type, pattern ของ HTML5 (บทที่ 3)</li></ul></div>
+      <p style="font-size:18px;margin-top:10px">ลองพิมพ์ในช่องทางซ้าย ขอบจะเปลี่ยนสีทันที · ตรวจซ้ำที่ PHP เสมอ</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-title="5.7.1 คอมโพเนนต์">
+  <p class="kicker">5.7.1 คอมโพเนนต์ส่วนต่อประสานผู้ใช้ที่สำคัญ (Bootstrap Core Team, 2024b)</p>
+  <h2>ชิ้นส่วนสำเร็จรูป กดลองได้จริง</h2>
+  <div class="tabs" id="cmpTabs"><button class="on" data-k="navbar">Navbar</button><button data-k="card">Card</button><button data-k="alert">Alert</button><button data-k="modal">Modal</button><button data-k="accordion">Accordion</button><button data-k="carousel">Carousel</button><button data-k="badge">Button · Badge</button></div>
+  <div class="grid2" style="grid-template-columns:1fr 1fr;align-items:start">
+    <div class="sc" style="height:420px"><iframe id="cmpFr" title="ตัวอย่างคอมโพเนนต์"></iframe></div>
+    <div class="code" id="cmpCode" style="font-size:13px;height:420px;white-space:pre-wrap"></div>
+  </div>
+</section>
+
+<section class="slide" data-title="5.7.2 คลาสอรรถประโยชน์">
+  <p class="kicker">5.7.2 คลาสอรรถประโยชน์ (Utility Classes)</p>
+  <h2>ตกแต่งด้วยคลาส ไม่ต้องเขียน CSS เพิ่ม</h2>
+  <div class="grid2" style="grid-template-columns:430px 1fr;align-items:start">
+    <div class="sel-row">
+      <label for="u1">ระยะภายใน</label><select id="u1"><option value="">-</option><option>p-2</option><option selected>p-4</option><option>px-5 py-2</option></select>
+      <label for="u2">ระยะภายนอก</label><select id="u2"><option value="">-</option><option selected>m-3</option><option>mt-5</option><option>mx-auto</option></select>
+      <label for="u3">พื้นหลัง</label><select id="u3"><option value="">-</option><option selected>bg-primary</option><option>bg-success</option><option>bg-warning</option><option>bg-dark</option><option>bg-light</option></select>
+      <label for="u4">ตัวอักษร</label><select id="u4"><option value="">-</option><option selected>text-white</option><option>text-dark</option><option>text-center</option><option>fw-bold fs-4</option></select>
+      <label for="u5">ขอบ/มุม</label><select id="u5"><option value="">-</option><option selected>rounded-3</option><option>rounded-pill</option><option>border border-3</option></select>
+      <label for="u6">เงา</label><select id="u6"><option value="">-</option><option selected>shadow</option><option>shadow-lg</option></select>
+      <label for="u7">การแสดงผล</label><select id="u7"><option value="">-</option><option>d-flex justify-content-between</option><option>d-none d-md-block</option><option>w-50</option></select>
+    </div>
+    <div>
+      <div class="clsout" id="uOut"></div>
+      <div class="sc" style="height:300px;margin-top:10px"><iframe id="uFr" title="ตัวอย่างคลาสอรรถประโยชน์"></iframe></div>
+      <p class="muted" style="font-size:16px;margin-top:6px">รูปแบบชื่อ: {m|p}{t|b|s|e|x|y}-{0–5|auto} เช่น mt-3 = margin-top ระดับ 3</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-title="5.6 เทมเพลตทั้งหน้า">
+  <p class="kicker">5.6 Bootstrap5 Template · 5.8.5 Hero และแถวการ์ด</p>
+  <h2>ประกอบชิ้นส่วนเป็นหน้าเว็บทั้งหน้า</h2>
+  <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px"><button class="chip" data-tw="390">มือถือ</button><button class="chip" data-tw="820">แท็บเล็ต</button><button class="chip on" data-tw="1280">คอมพิวเตอร์</button><span class="net">ลองกดเมนู ☰ ในมุมมองมือถือ</span></div>
+  <div class="sc" style="height:500px"><iframe id="tFr" title="เทมเพลตหน้าเว็บ"></iframe></div>
+</section>
+
+<section class="slide" data-title="5.8 ใช้ AI ช่วยสร้าง UI">
+  <p class="kicker">5.8 AI-Assisted Bootstrap UI (ศุภชัย สมพานิช, 2566ข)</p>
+  <h2>ให้ AI ร่าง แล้วเราตรวจเวอร์ชันและการเข้าถึง</h2>
+  <div class="grid2" style="align-items:start">
+    <div>
+      <div class="code" style="white-space:pre-wrap;font-size:15px;height:300px">บทบาท: นักพัฒนา Front-end ที่ใช้ Bootstrap 5.3
+งาน: ร่างหน้าแดชบอร์ดผู้ดูแลร้านกาแฟ
+ส่วนประกอบ: navbar, sidebar ซ่อนได้บนมือถือ,
+  การ์ดสรุปยอด 4 ใบ, ตารางคำสั่งซื้อล่าสุด
+ข้อกำหนด: ใช้คลาส Bootstrap 5 เท่านั้น (ไม่ใช้ jQuery),
+  responsive ด้วย col-12 col-md-6 col-xl-3,
+  ทุกปุ่มและฟอร์มมี label, ใช้ข้อมูลสมมติ
+ผลลัพธ์: ไฟล์ HTML เดียว พร้อมคำอธิบายโครงสร้าง</div>
+      <p class="muted" style="font-size:17px;margin-top:8px">ตัวอย่างกรอบคำสั่งจากหัวข้อ 5.8.3</p>
+    </div>
+    <div class="card"><h3>ข้อควรระวัง (5.8.2)</h3><ul class="b"><li style="font-size:19px">AI มักปนคลาสของ Bootstrap 3/4 เช่น ml-3, float-right, form-group</li><li style="font-size:19px">ใช้ data-toggle แทน data-bs-toggle ทำให้ปุ่มไม่ทำงาน</li><li style="font-size:19px">แนบ jQuery โดยไม่จำเป็น</li><li style="font-size:19px">ตรวจกับเอกสาร v5.3 และทดสอบทุกขนาดจอ</li><li style="font-size:19px">ไม่ใส่ข้อมูลจริงของลูกค้าใน Prompt</li></ul></div>
+  </div>
+</section>
+
+<section class="slide" data-title="ภารกิจ: จับคลาสรุ่นเก่า">
+  <p class="kicker">5.8.2 แนวปฏิบัติที่ดีในการใช้ AI พัฒนา Bootstrap</p>
+  <h2>AI ให้โค้ดนี้มา คลิกบรรทัดที่ใช้ของรุ่นเก่า (มี 5 จุด)</h2>
+  <div class="grid2" style="grid-template-columns:1.2fr 1fr;align-items:start">
+    <div class="bug" id="bugs"></div>
+    <div><div class="card" id="bugTxt" style="min-height:270px"></div><button class="btn alt" id="bugReset" style="margin-top:10px">เริ่มใหม่</button></div>
+  </div>
+</section>
+
+<section class="slide" data-title="สนามทดลอง Bootstrap">
+  <p class="kicker">5.8.4 Responsive Navbar และ Card Grid</p>
+  <h2>สนามทดลอง: แก้คลาสแล้วรันดู</h2>
+  <div class="grid2" style="grid-template-columns:1fr 1.1fr;align-items:start">
+    <div><textarea id="playTa" spellcheck="false" style="font-family:Mono,monospace;font-size:13px;height:440px">&lt;nav class="navbar navbar-dark bg-dark px-3"&gt;
+  &lt;span class="navbar-brand"&gt;ร้านกาแฟบ้านสวน&lt;/span&gt;
+&lt;/nav&gt;
+&lt;div class="container my-4"&gt;
+  &lt;div class="row g-3"&gt;
+    &lt;div class="col-12 col-md-6 col-lg-4"&gt;
+      &lt;div class="card h-100 shadow-sm"&gt;
+        &lt;div class="card-body"&gt;
+          &lt;h5 class="card-title"&gt;ลาเต้&lt;/h5&gt;
+          &lt;p class="card-text"&gt;นมสด กาแฟคั่วกลาง&lt;/p&gt;
+          &lt;a href="#" class="btn btn-primary"&gt;55 บาท&lt;/a&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="col-12 col-md-6 col-lg-4"&gt;
+      &lt;div class="card h-100 shadow-sm"&gt;&lt;div class="card-body"&gt;
+        &lt;h5 class="card-title"&gt;มอคค่า&lt;/h5&gt;
+        &lt;span class="badge text-bg-warning"&gt;ขายดี&lt;/span&gt;
+      &lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="col-12 col-md-6 col-lg-4"&gt;
+      &lt;div class="card h-100 shadow-sm"&gt;&lt;div class="card-body"&gt;
+        &lt;h5 class="card-title"&gt;ชาเขียว&lt;/h5&gt;
+        &lt;p class="card-text text-muted"&gt;50 บาท&lt;/p&gt;
+      &lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</textarea>
+      <div style="display:flex;gap:10px;margin-top:8px;align-items:center"><button class="btn" id="playRun">▶ ลองรัน</button><button class="chip" data-pw="390">มือถือ</button><button class="chip" data-pw="820">แท็บเล็ต</button><button class="chip on" data-pw="1200">คอมพิวเตอร์</button></div></div>
+    <div class="sc" style="height:490px"><iframe id="playFr" title="ผลลัพธ์สนามทดลอง"></iframe></div>
+  </div>
+</section>
+
+<section class="slide dark" data-title="สรุปและงานที่ได้รับมอบหมาย">
+  <p class="kicker">สรุปบทที่ 5</p>
+  <h2>Bootstrap ช่วยให้เร็ว แต่ต้องเข้าใจ CSS ที่อยู่ข้างใน</h2>
+  <div class="grid2" style="align-items:start">
+    <ul class="b" style="color:#fff">
+      <li>ติดตั้งด้วย CDN: CSS ใน head, JS bundle ท้าย body</li>
+      <li>.container / .container-fluid → .row → .col-*</li>
+      <li>12 คอลัมน์ + Breakpoint sm md lg xl xxl แบบ Mobile-First</li>
+      <li>ฟอร์ม: form-control, form-label · ตรวจด้วย .was-validated</li>
+      <li>คอมโพเนนต์ + Utility Classes · ตรวจโค้ดจาก AI ว่าเป็น v5</li>
+    </ul>
+    <div class="card" style="color:var(--ink)"><h3>งานสัปดาห์นี้</h3><p>ใบงานที่ 5: พัฒนาส่วนติดต่อผู้ใช้แบบ Responsive ด้วย Bootstrap 5 และ Utility Classes</p><p style="margin-top:8px">แบบฝึกหัดท้ายบทที่ 5 ส่งผ่าน Google Classroom</p><p style="margin-top:10px"><a href="../worksheets/ws5.html" target="_blank">เปิดใบงานที่ 5</a> · <a href="../chapters/ch5.html" target="_blank">อ่านบทที่ 5</a></p></div>
+  </div>
+  <div class="foot"><span>อ้างอิงหลัก: เอกสารประกอบการสอนบทที่ 5; Bootstrap Core Team (2024a, 2024b); บัญชา ปะสีละเตสัง (2565ก); ศุภชัย สมพานิช (2566ข)</span><span></span></div>
+</section>
+
+</div>
+<script src="deck.js" data-ch="5" data-back="../chapters/ch5.html"></script>
+<script>
+(function(){
+var $=function(id){return document.getElementById(id)};
+var all=function(q){return [].slice.call(document.querySelectorAll(q))};
+var CDN="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/";
+function bs(fr,body,js,css){$(fr).srcdoc='<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link href="'+CDN+'css/bootstrap.min.css" rel="stylesheet"><style>body{font-family:"Sarabun","Noto Sans Thai",system-ui,sans-serif}'+(css||"")+'</style></head><body>'+body+(js?'<script src="'+CDN+'js/bootstrap.bundle.min.js"><\/script>':'')+'</body></html>'}
+// ปรับ iframe ให้กว้างเท่าจอจำลอง W แล้วย่อให้พอดีกรอบ
+function sim(fr,W){var f=$(fr),box=f.parentNode,s=Math.min(1,box.clientWidth/W);f.style.width=W+"px";f.style.height=(box.clientHeight/s)+"px";f.style.transform="scale("+s+")";f.style.left=Math.max(0,(box.clientWidth-W*s)/2)+"px"}
+// 3 why
+var WHY={pure:['.btn {\n  display: inline-block;\n  padding: .375rem .75rem;\n  font-size: 1rem;\n  border: 1px solid transparent;\n  border-radius: .375rem;\n  background: #0d6efd;\n  color: #fff;\n  cursor: pointer;\n}\n.btn:hover { background: #0b5ed7; }\n\n<button class="btn">สั่งเลย</button>',"ต้องเขียน CSS ราว 12 บรรทัด และออกแบบสถานะ hover, focus, disabled เอง"],
+bs:['<link href=".../bootstrap.min.css" rel="stylesheet">\n\n<button class="btn btn-primary">สั่งเลย</button>\n<button class="btn btn-outline-success">ดูเมนู</button>\n<button class="btn btn-danger btn-lg">ยกเลิก</button>',"ใส่คลาสเดียวก็ได้ปุ่มที่มีสถานะครบ สลับสีและขนาดด้วยคลาสเพิ่ม"]};
+Deck.tabs($("whyTabs"),function(b){$("whyCode").textContent=WHY[b.dataset.k][0];$("whyNote").textContent=WHY[b.dataset.k][1]});$("whyCode").textContent=WHY.pure[0];$("whyNote").textContent=WHY.pure[1];
+// 4 install
+var INS={cdn:['<!DOCTYPE html>\n<html lang="th">\n<head>\n  <meta charset="UTF-8">\n  <meta name="viewport"\n        content="width=device-width, initial-scale=1">\n  <title>Bootstrap 5</title>\n  <link href="https://cdn.jsdelivr.net/npm/\n     bootstrap@5.3.8/dist/css/bootstrap.min.css"\n     rel="stylesheet">\n</head>\n<body>\n  <h1 class="text-primary">สวัสดี Bootstrap</h1>\n\n  <script src="https://cdn.jsdelivr.net/npm/\n     bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js">\n  <\/script>\n</body>\n</html>','<h3>ลิงก์ CDN</h3><ul class="b"><li style="font-size:19px">CSS ไว้ใน &lt;head&gt;</li><li style="font-size:19px">JS bundle (รวม Popper) ไว้ท้าย &lt;body&gt;</li><li style="font-size:19px">ห้ามลืม meta viewport</li><li style="font-size:19px">ต้องต่ออินเทอร์เน็ต · ใส่ integrity และ crossorigin ตามเอกสารเพื่อความปลอดภัย</li></ul>'],
+dl:['project/\n├── index.html\n├── css/\n│   └── bootstrap.min.css\n└── js/\n    └── bootstrap.bundle.min.js\n\n<link href="css/bootstrap.min.css" rel="stylesheet">\n...\n<script src="js/bootstrap.bundle.min.js"><\/script>','<h3>ดาวน์โหลดไฟล์</h3><ul class="b"><li style="font-size:19px">Compiled CSS and JS: ใช้งานได้ทันที</li><li style="font-size:19px">Source files: ปรับแต่งด้วย Sass</li><li style="font-size:19px">ใช้ได้แม้ไม่มีอินเทอร์เน็ต เหมาะกับห้องแล็บและเครื่อง XAMPP</li></ul><a class="lk" style="margin-top:10px" href="https://getbootstrap.com/docs/5.3/getting-started/download/" target="_blank" rel="noopener noreferrer"><b>Download Bootstrap</b><span>getbootstrap.com</span></a>']};
+function ins(k){$("instCode").textContent=INS[k][0];$("instTxt").innerHTML=INS[k][1]}Deck.tabs($("instTabs"),function(b){ins(b.dataset.k)});ins("cdn");
+// 5 container
+bs("cFr",'<div class="container py-3 my-3" style="background:#cfe2ff;border:2px dashed #0d6efd"><b>.container</b> ความกว้างคงที่ตาม breakpoint จัดกึ่งกลาง</div><div class="container-fluid py-3" style="background:#d1e7dd;border:2px dashed #198754"><b>.container-fluid</b> กว้างเต็มจอเสมอ</div><p class="text-center text-muted mt-3" id="w"></p><script>function u(){document.getElementById("w").textContent="จอกว้าง "+innerWidth+"px · .container กว้าง "+document.querySelector(".container").offsetWidth+"px"}onresize=u;u()<\/script>',false,"body{padding-top:8px}");
+function cw(){var W=+$("cW").value;$("cWo").textContent=W+"px";sim("cFr",W);var r=all("#cTbl tr[data-min]"),a=null;r.forEach(function(t){t.classList.remove("on");if(W>=+t.dataset.min)a=t});if(a)a.classList.add("on")}
+$("cW").oninput=cw;
+// 6 grid 12
+$("g12bg").innerHTML=Array.apply(null,Array(12)).map(function(_,i){return '<div class="c">'+(i+1)+'</div>'}).join("");
+var GC=["#6366f1","#ec4899","#10b981"];
+function g(){var v=[+$("k1").value,+$("k2").value,+$("k3").value],h="",used=0;$("ok1").textContent=v[0];$("ok2").textContent=v[1];$("ok3").textContent=v[2];
+ v.forEach(function(n,i){if(used+n>12)used=0;h+='<div class="k" style="grid-column:'+(used+1)+' / span '+n+';background:'+GC[i]+'">col-'+n+'</div>';used+=n});
+ $("g12").innerHTML=h;var sum=v[0]+v[1]+v[2];
+ $("gCode").textContent='<div class="row">\n  <div class="col-'+v[0]+'">A</div>\n  <div class="col-'+v[1]+'">B</div>\n  <div class="col-'+v[2]+'">C</div>\n</div>';
+ $("gMsg").innerHTML=sum===12?'<b style="color:#059669">รวม 12 พอดีหนึ่งแถว</b>':sum<12?'รวม '+sum+' เหลือที่ว่าง '+(12-sum)+' ส่วน':'<b style="color:#d97706">รวม '+sum+' เกิน 12 คอลัมน์ที่ล้นจะขึ้นบรรทัดใหม่</b>'}
+["k1","k2","k3"].forEach(function(i){$(i).oninput=g});all("[data-g]").forEach(function(b){b.onclick=function(){var p=b.dataset.g.split(",");$("k1").value=p[0];$("k2").value=p[1];$("k3").value=p[2];g()}});g();
+// 7 breakpoints
+var cards="";["ลาเต้","มอคค่า","ชาเขียว","โกโก้","อเมริกาโน","น้ำส้ม"].forEach(function(n,i){cards+='<div class="col-12 col-md-6 col-lg-4"><div class="card h-100 shadow-sm"><div class="card-body"><h5 class="card-title">'+n+'</h5><p class="card-text text-muted mb-0">การ์ดที่ '+(i+1)+'</p></div></div></div>'});
+bs("bFr",'<div class="container py-3"><div class="alert alert-primary py-2" id="w"></div><div class="row g-3">'+cards+'</div></div><script>function u(){var w=innerWidth;document.getElementById("w").textContent="จอ "+w+"px → "+(w>=992?"col-lg-4 (3 ใบต่อแถว)":w>=768?"col-md-6 (2 ใบต่อแถว)":"col-12 (1 ใบต่อแถว)")}onresize=u;u()<\/script>');
+function bw(){var W=+$("bW").value;$("bWo").textContent=W+"px";sim("bFr",W);all("#bTbl tr[data-r]").forEach(function(t){t.classList.remove("on")});var a=null;all("#bTbl tr[data-r]").forEach(function(t){if(W>=+t.dataset.r)a=t});if(a)a.classList.add("on")}
+$("bW").oninput=bw;all("[data-bw]").forEach(function(b){b.onclick=function(){$("bW").value=b.dataset.bw;bw()}});
+// 8 forms
+bs("fFr",'<div class="container py-3"><h4>สมัครสมาชิกร้านกาแฟ</h4><form onsubmit="return false"><div class="mb-3"><label for="em" class="form-label">อีเมล</label><input type="email" class="form-control" id="em" placeholder="name@example.com"></div><div class="mb-3"><label for="pw" class="form-label">รหัสผ่าน</label><input type="password" class="form-control" id="pw"></div><div class="mb-3"><label for="br" class="form-label">สาขาที่สะดวก</label><select class="form-select" id="br"><option>นราธิวาส</option><option>ตากใบ</option></select></div><div class="form-check mb-3"><input class="form-check-input" type="checkbox" id="ok"><label class="form-check-label" for="ok">รับข่าวสารโปรโมชัน</label></div><button class="btn btn-primary">สมัคร</button></form></div>');
+var FC={"form-control":["ช่องกรอกข้อความ กว้างเต็มแถว มีขอบมน และเรืองแสงเมื่อคลิก",'<input type="email" class="form-control" id="em">'],"form-label":["ป้ายชื่อของช่อง จับคู่ด้วย for กับ id ของช่อง",'<label for="em" class="form-label">อีเมล</label>'],"form-select":["เมนูเลือก (select) ที่หน้าตาเข้าชุดกับ form-control",'<select class="form-select">\n  <option>นราธิวาส</option>\n</select>'],"form-check":["ครอบช่องติ๊กหรือปุ่มเลือก ใช้คู่กับ form-check-input และ form-check-label",'<div class="form-check">\n  <input class="form-check-input" type="checkbox" id="ok">\n  <label class="form-check-label" for="ok">...</label>\n</div>'],"mb-3":["คลาสอรรถประโยชน์ เว้นระยะด้านล่าง ใช้ครอบแต่ละช่องให้ไม่ชิดกัน",'<div class="mb-3"> ...ป้าย + ช่อง... </div>']};
+function fc(k){$("fTxt").innerHTML='<p style="font-size:21px"><b>.'+k+'</b> '+FC[k][0]+'</p>';$("fCode").textContent=FC[k][1]}Deck.tabs($("fTabs"),function(b){fc(b.dataset.k)});fc("form-control");
+// 9 validation
+function vf(on){bs("vFr",'<div class="container py-3"><h4>ฟอร์มสมัครใช้งาน</h4><form class="'+(on?"was-validated":"")+'" onsubmit="return false" novalidate><div class="mb-3"><label for="u" class="form-label">ชื่อผู้ใช้</label><input class="form-control" id="u" required minlength="4"><div class="valid-feedback">ใช้ชื่อนี้ได้</div><div class="invalid-feedback">กรอกอย่างน้อย 4 ตัวอักษร</div></div><div class="mb-3"><label for="e" class="form-label">อีเมล</label><input type="email" class="form-control" id="e" required><div class="valid-feedback">รูปแบบถูกต้อง</div><div class="invalid-feedback">กรอกอีเมลให้ถูกรูปแบบ</div></div><div class="form-check mb-3"><input class="form-check-input" type="checkbox" id="c" required><label class="form-check-label" for="c">ยอมรับเงื่อนไข</label><div class="invalid-feedback">ต้องยอมรับก่อนส่ง</div></div><button class="btn btn-primary">ส่ง</button></form></div>')}
+Deck.tabs($("vTabs"),function(b){vf(b.dataset.k==="1")});vf(false);
+// 10 components
+var CM={navbar:['<nav class="navbar navbar-expand-sm bg-dark navbar-dark">\n  <div class="container-fluid">\n    <a class="navbar-brand" href="#">บ้านสวน</a>\n    <button class="navbar-toggler" type="button"\n      data-bs-toggle="collapse" data-bs-target="#m"\n      aria-label="เปิดเมนู">\n      <span class="navbar-toggler-icon"></span></button>\n    <div class="collapse navbar-collapse" id="m">\n      <ul class="navbar-nav">\n        <li class="nav-item"><a class="nav-link active" href="#">หน้าแรก</a></li>\n        <li class="nav-item"><a class="nav-link" href="#">เมนู</a></li>\n      </ul>\n    </div>\n  </div>\n</nav>'],
+card:['<div class="card" style="width:18rem">\n  <div class="card-body">\n    <h5 class="card-title">ลาเต้เย็น</h5>\n    <p class="card-text">กาแฟคั่วกลาง นมสด</p>\n    <a href="#" class="btn btn-primary">สั่งเลย</a>\n  </div>\n  <div class="card-footer text-muted">55 บาท</div>\n</div>'],
+alert:['<div class="alert alert-success">บันทึกคำสั่งซื้อแล้ว</div>\n<div class="alert alert-warning">เหลือเมนูนี้ 2 แก้ว</div>\n<div class="alert alert-danger alert-dismissible fade show">\n  ชำระเงินไม่สำเร็จ\n  <button type="button" class="btn-close"\n    data-bs-dismiss="alert" aria-label="ปิด"></button>\n</div>'],
+modal:['<button class="btn btn-primary" data-bs-toggle="modal"\n  data-bs-target="#cf">ยืนยันคำสั่งซื้อ</button>\n<div class="modal fade" id="cf" tabindex="-1">\n  <div class="modal-dialog"><div class="modal-content">\n    <div class="modal-header"><h5 class="modal-title">ยืนยัน</h5>\n      <button class="btn-close" data-bs-dismiss="modal" aria-label="ปิด"></button></div>\n    <div class="modal-body">สั่งลาเต้ 2 แก้ว 110 บาท ?</div>\n    <div class="modal-footer"><button class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>\n      <button class="btn btn-primary" data-bs-dismiss="modal">ยืนยัน</button></div>\n  </div></div>\n</div>'],
+accordion:['<div class="accordion" id="faq">\n  <div class="accordion-item">\n    <h2 class="accordion-header"><button class="accordion-button"\n      data-bs-toggle="collapse" data-bs-target="#q1">ร้านเปิดกี่โมง</button></h2>\n    <div id="q1" class="accordion-collapse collapse show" data-bs-parent="#faq">\n      <div class="accordion-body">07:00–17:00 น. ทุกวัน</div></div>\n  </div>\n  <div class="accordion-item">\n    <h2 class="accordion-header"><button class="accordion-button collapsed"\n      data-bs-toggle="collapse" data-bs-target="#q2">มีที่จอดรถไหม</button></h2>\n    <div id="q2" class="accordion-collapse collapse" data-bs-parent="#faq">\n      <div class="accordion-body">มี 10 คัน</div></div>\n  </div>\n</div>'],
+carousel:['<div id="pro" class="carousel slide" data-bs-ride="carousel">\n  <div class="carousel-inner">\n    <div class="carousel-item active"><div class="p-5 bg-primary text-white text-center fs-4">ซื้อ 2 แถม 1</div></div>\n    <div class="carousel-item"><div class="p-5 bg-success text-white text-center fs-4">เมนูใหม่ ชาไทย</div></div>\n  </div>\n  <button class="carousel-control-prev" data-bs-target="#pro" data-bs-slide="prev">\n    <span class="carousel-control-prev-icon"></span></button>\n  <button class="carousel-control-next" data-bs-target="#pro" data-bs-slide="next">\n    <span class="carousel-control-next-icon"></span></button>\n</div>'],
+badge:['<button class="btn btn-primary">หลัก</button>\n<button class="btn btn-outline-secondary">รอง</button>\n<button class="btn btn-success btn-sm">เล็ก</button>\n<button class="btn btn-danger" disabled>ปิดใช้งาน</button>\n\n<h4 class="mt-3">ตะกร้า <span class="badge bg-danger">3</span></h4>\n<span class="badge rounded-pill text-bg-warning">ขายดี</span>\n<div class="spinner-border text-primary mt-2"></div>']};
+function cm(k){var c=CM[k][0];$("cmpCode").textContent=c;bs("cmpFr",'<div class="'+(k==="navbar"?"":"p-3")+'">'+c+'</div>',true)}
+Deck.tabs($("cmpTabs"),function(b){cm(b.dataset.k)});cm("navbar");
+// 11 utilities
+function ut(){var c=["u1","u2","u3","u4","u5","u6","u7"].map(function(i){return $(i).value}).filter(Boolean).join(" ");$("uOut").textContent='class="'+c+'"';
+ var inner=/d-flex/.test(c)?'<span>ลาเต้เย็น</span><span>55 บาท</span>':'ลาเต้เย็น 55 บาท';
+ bs("uFr",'<div class="p-2"><div class="'+c+'">'+inner+'</div></div><p class="text-muted small px-3">'+(/d-none d-md-block/.test(c)?"(d-none d-md-block: ซ่อนบนจอเล็กกว่า 768px)":"")+'</p>')}
+["u1","u2","u3","u4","u5","u6","u7"].forEach(function(i){$(i).onchange=ut});ut();
+// 12 template
+bs("tFr",'<nav class="navbar navbar-expand-md navbar-dark" style="background:#7952b3"><div class="container"><a class="navbar-brand fw-bold" href="#">ชมรมถ่ายภาพ</a><button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nv" aria-label="เปิดเมนู"><span class="navbar-toggler-icon"></span></button><div class="collapse navbar-collapse" id="nv"><ul class="navbar-nav ms-auto"><li class="nav-item"><a class="nav-link active" href="#">หน้าแรก</a></li><li class="nav-item"><a class="nav-link" href="#">ผลงาน</a></li><li class="nav-item"><a class="nav-link" href="#">สมัคร</a></li></ul></div></div></nav><div class="p-5 text-white text-center" style="background:linear-gradient(135deg,#7952b3,#0d6efd)"><h1 class="display-5 fw-bold">ชมรมถ่ายภาพสร้างสรรค์</h1><p class="lead">เรียนรู้ ถ่ายจริง แบ่งปันผลงาน</p><a class="btn btn-warning btn-lg" href="#">สมัครเลย</a></div><div class="container py-4"><div class="row g-3">'+["ทิวทัศน์","บุคคล","สตรีท"].map(function(t,i){return '<div class="col-12 col-md-4"><div class="card h-100 shadow-sm"><div style="height:120px;background:'+["#a5b4fc","#f9a8d4","#86efac"][i]+'" class="card-img-top d-flex align-items-center justify-content-center fw-bold">ภาพ '+t+'</div><div class="card-body"><h5 class="card-title">'+t+'</h5><p class="card-text text-muted">กิจกรรมทุกเดือน</p></div></div></div>'}).join("")+'</div></div><footer class="bg-dark text-white-50 text-center py-3">© 2569 ชมรมถ่ายภาพ</footer>',true);
+function tw(W){sim("tFr",W);all("[data-tw]").forEach(function(b){b.classList.toggle("on",+b.dataset.tw===W)})}
+all("[data-tw]").forEach(function(b){b.onclick=function(){tw(+b.dataset.tw)}});
+// 14 bugs
+var BG=[['<script src="jquery-3.7.1.min.js"><\/script>',"Bootstrap 5 ไม่ต้องใช้ jQuery ลบออกได้"],['<link href=".../bootstrap@5.3.8/.../bootstrap.min.css" rel="stylesheet">',0],['<nav class="navbar navbar-expand-md bg-dark navbar-dark">',0],['  <button class="navbar-toggler" data-toggle="collapse" data-target="#m">',"v5 ใช้ data-bs-toggle และ data-bs-target"],['  <ul class="navbar-nav ml-auto">',"ml-auto เปลี่ยนเป็น ms-auto (margin-start) ใน v5"],['</nav>',0],['<div class="container mt-3">',0],['  <div class="form-group">',"form-group ถูกเลิกใช้ ใช้ mb-3 แทน"],['    <label for="em" class="form-label">อีเมล</label>',0],['    <input type="email" class="form-control" id="em">',0],['  </div>',0],['  <button class="btn btn-primary float-right">ส่ง</button>',"float-right เปลี่ยนเป็น float-end ใน v5"],['</div>',0]];
+var esc=function(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")};
+var found=0;function bugs(){found=0;$("bugTxt").innerHTML='<h3>พบแล้ว <span id="bugN">0</span> / 5</h3><p class="muted">คลิกบรรทัดที่คิดว่าเป็นของ Bootstrap รุ่นเก่า</p>';
+ $("bugs").innerHTML=BG.map(function(r,k){return '<div data-k="'+k+'">'+esc(r[0])+'</div>'}).join("");
+ all("#bugs div").forEach(function(d){d.onclick=function(){if(d.classList.contains("ok"))return;var r=BG[d.dataset.k];if(r[1]){d.classList.add("ok");found++;$("bugN").textContent=found;$("bugTxt").insertAdjacentHTML("beforeend",'<p style="font-size:18px;margin-top:6px">✓ '+esc(r[1])+'</p>');if(found===5)$("bugTxt").insertAdjacentHTML("beforeend",'<p style="font-size:19px;margin-top:8px;color:#059669"><b>ครบแล้ว!</b> ถ้าไม่แก้ ปุ่มเมนูบนมือถือจะกดไม่ได้</p>')}else{d.classList.add("no");setTimeout(function(){d.classList.remove("no")},600)}}})}
+$("bugReset").onclick=bugs;bugs();
+// 15 playground
+var PW=1200;function prun(){$("playFr").srcdoc="";bs("playFr",$("playTa").value,true);sim("playFr",PW)}
+$("playRun").onclick=prun;all("[data-pw]").forEach(function(b){b.onclick=function(){PW=+b.dataset.pw;all("[data-pw]").forEach(function(x){x.classList.toggle("on",x===b)});sim("playFr",PW)}});prun();
+// ปรับขนาด iframe จำลองจอเมื่อเข้าสไลด์ (ต้องรู้ขนาดกรอบก่อน)
+function fitAll(){cw();bw();tw(+(document.querySelector("[data-tw].on")||{dataset:{tw:1280}}).dataset.tw);sim("playFr",PW);["fFr","vFr","cmpFr","uFr"].forEach(function(f){var e=$(f);e.style.width="100%";e.style.height="100%"})}
+fitAll();addEventListener("resize",fitAll);
+})();
+</script>
+</body>
+</html>
