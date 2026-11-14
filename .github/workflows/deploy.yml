@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - "site/**"
+      - "worksheets/**"
       - ".github/deploy/**"
       - ".github/workflows/deploy.yml"
   workflow_dispatch:
@@ -25,6 +26,8 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install paramiko
+      - name: สร้างหน้าใบงานจากไฟล์ worksheets/*.md
+        run: python .github/deploy/build_worksheets.py
       - name: Upload site/ via SFTP
         env:
           SFTP_HOST: fms.pnu.ac.th
