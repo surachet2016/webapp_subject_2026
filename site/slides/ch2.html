@@ -95,17 +95,6 @@
   <a class="src" href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Getting_started/Web_standards/How_the_web_works" target="_blank" rel="noopener noreferrer">อ่านต่อ: How the web works (MDN)</a>
 </section>
 
-<section class="slide" data-title="2.8 Front-end และ Back-end">
-  <p class="kicker">2.8 Front-end และ Back-end</p>
-  <h2>สามชั้นของเว็บแอปพลิเคชัน</h2>
-  <div class="layers">
-    <div class="layer hov" style="background:linear-gradient(160deg,#4f46e5,#6366f1)"><h3>Front-end (หน้าบ้าน)</h3><p style="font-size:19px">ทำงานในเบราว์เซอร์ สิ่งที่ผู้ใช้เห็นและโต้ตอบ</p><span class="badge">HTML</span><span class="badge">CSS</span><span class="badge">JavaScript</span><span class="badge">Bootstrap</span></div>
-    <div class="layer hov" style="background:linear-gradient(160deg,#7c3aed,#a855f7)"><h3>Back-end (หลังบ้าน)</h3><p style="font-size:19px">ทำงานบนเซิร์ฟเวอร์ ประมวลผล ตรวจสิทธิ์ ติดต่อฐานข้อมูล</p><span class="badge">PHP</span><span class="badge">ASP.NET Core</span><span class="badge">Node.js</span><span class="badge">Python</span></div>
-    <div class="layer hov" style="background:linear-gradient(160deg,#059669,#10b981)"><h3>ฐานข้อมูล</h3><p style="font-size:19px">เก็บข้อมูลถาวร เช่น สมาชิก สินค้า คำสั่งซื้อ</p><span class="badge">MySQL/MariaDB</span><span class="badge">PostgreSQL</span><span class="badge">MongoDB</span></div>
-  </div>
-  <div class="card" style="margin-top:18px"><p><b>ลองคิด:</b> ปุ่ม "ลงทะเบียน" ในเว็บมหาวิทยาลัย ส่วนไหนคือหน้าบ้าน ส่วนไหนคือหลังบ้าน และข้อมูลไปเก็บที่ใด</p></div>
-</section>
-
 <section class="slide" data-title="HTML · CSS · JavaScript">
   <p class="kicker">2.1 HTML · 2.4 CSS · JavaScript</p>
   <h2>โครงสร้าง + รูปแบบ + พฤติกรรม</h2>
@@ -169,6 +158,17 @@
   <div class="card" style="margin-top:18px"><p><b>ลองเลย:</b> กด F12 บนสไลด์นี้ เปิดแท็บ Elements แล้วชี้ที่หัวข้อ จะเห็นแท็ก &lt;h2&gt; ที่เราเขียน → ตรวจฟีเจอร์ที่ <a href="https://caniuse.com/" target="_blank" rel="noopener noreferrer">caniuse.com</a></p></div>
 </section>
 
+<section class="slide" data-title="2.8 Front-end และ Back-end">
+  <p class="kicker">2.8 Front-end และ Back-end</p>
+  <h2>สามชั้นของเว็บแอปพลิเคชัน</h2>
+  <div class="layers">
+    <div class="layer hov" style="background:linear-gradient(160deg,#4f46e5,#6366f1)"><h3>Front-end (หน้าบ้าน)</h3><p style="font-size:19px">ทำงานในเบราว์เซอร์ สิ่งที่ผู้ใช้เห็นและโต้ตอบ</p><span class="badge">HTML</span><span class="badge">CSS</span><span class="badge">JavaScript</span><span class="badge">Bootstrap</span></div>
+    <div class="layer hov" style="background:linear-gradient(160deg,#7c3aed,#a855f7)"><h3>Back-end (หลังบ้าน)</h3><p style="font-size:19px">ทำงานบนเซิร์ฟเวอร์ ประมวลผล ตรวจสิทธิ์ ติดต่อฐานข้อมูล</p><span class="badge">PHP</span><span class="badge">ASP.NET Core</span><span class="badge">Node.js</span><span class="badge">Python</span></div>
+    <div class="layer hov" style="background:linear-gradient(160deg,#059669,#10b981)"><h3>ฐานข้อมูล</h3><p style="font-size:19px">เก็บข้อมูลถาวร เช่น สมาชิก สินค้า คำสั่งซื้อ</p><span class="badge">MySQL/MariaDB</span><span class="badge">PostgreSQL</span><span class="badge">MongoDB</span></div>
+  </div>
+  <div class="card" style="margin-top:18px"><p><b>ลองคิด:</b> ปุ่ม "ลงทะเบียน" ในเว็บมหาวิทยาลัย ส่วนไหนคือหน้าบ้าน ส่วนไหนคือหลังบ้าน และข้อมูลไปเก็บที่ใด</p></div>
+</section>
+
 <section class="slide" data-title="2.8.1 HTTP และรหัสสถานะ">
   <p class="kicker">2.8.1 โปรโตคอล HTTP (MDN, 2024d)</p>
   <h2>คำขอ–การตอบกลับ และรหัสสถานะ</h2>
@@ -210,6 +210,16 @@
   </div>
 </section>
 
+<section class="slide" data-title="2.13 Ajax และ Fetch API">
+  <p class="kicker">2.13 Ajax และ Fetch API</p>
+  <h2>โหลดทั้งหน้า หรือโหลดเฉพาะส่วนที่เปลี่ยน</h2>
+  <div class="grid2" style="align-items:start">
+    <div class="card" style="text-align:center"><h3>แบบเดิม: โหลดทั้งหน้า</h3><div id="fullPage" style="height:180px;border-radius:10px;background:#eef2ff;display:flex;align-items:center;justify-content:center;font-size:22px;transition:opacity .25s">หน้าเว็บ</div><button class="btn alt" id="btnFull" style="margin-top:10px">กดถูกใจ (รีโหลด)</button><p id="fullTime" class="muted" style="font-size:17px"></p></div>
+    <div class="card" style="text-align:center"><h3>Fetch: อัปเดตบางส่วน</h3><div style="height:180px;border-radius:10px;background:#ecfdf5;display:flex;align-items:center;justify-content:center;font-size:22px">หน้าเว็บ <span id="likeN" style="margin-left:10px;font-weight:700;color:#059669">❤ 12</span></div><button class="btn" id="btnFetch" style="margin-top:10px">กดถูกใจ (fetch)</button><p class="muted" style="font-size:17px">ผู้ใช้ไม่เสียตำแหน่งที่อ่านอยู่ และส่งข้อมูลน้อยกว่า</p></div>
+  </div>
+  <p class="muted" style="font-size:18px;margin-top:10px">jQuery (2.12) เคยใช้ทำ Ajax อย่างแพร่หลาย ปัจจุบันใช้ fetch() ของเบราว์เซอร์ได้โดยตรง</p>
+</section>
+
 <section class="slide" data-title="2.15 DOM Tree">
   <p class="kicker">2.15 DOM (Document Object Model)</p>
   <h2>เบราว์เซอร์มอง HTML เป็นต้นไม้</h2>
@@ -220,16 +230,6 @@
       <p style="font-size:19px;margin-top:12px">JavaScript ใช้ DOM ค้นหาและแก้โหนด เช่น <code>document.querySelector('button')</code> (บทที่ 6)</p></div>
   </div>
   <a class="src" href="https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model" target="_blank" rel="noopener noreferrer">อ่านต่อ: DOM (MDN)</a>
-</section>
-
-<section class="slide" data-title="2.13 Ajax และ Fetch API">
-  <p class="kicker">2.13 Ajax และ Fetch API</p>
-  <h2>โหลดทั้งหน้า หรือโหลดเฉพาะส่วนที่เปลี่ยน</h2>
-  <div class="grid2" style="align-items:start">
-    <div class="card" style="text-align:center"><h3>แบบเดิม: โหลดทั้งหน้า</h3><div id="fullPage" style="height:180px;border-radius:10px;background:#eef2ff;display:flex;align-items:center;justify-content:center;font-size:22px;transition:opacity .25s">หน้าเว็บ</div><button class="btn alt" id="btnFull" style="margin-top:10px">กดถูกใจ (รีโหลด)</button><p id="fullTime" class="muted" style="font-size:17px"></p></div>
-    <div class="card" style="text-align:center"><h3>Fetch: อัปเดตบางส่วน</h3><div style="height:180px;border-radius:10px;background:#ecfdf5;display:flex;align-items:center;justify-content:center;font-size:22px">หน้าเว็บ <span id="likeN" style="margin-left:10px;font-weight:700;color:#059669">❤ 12</span></div><button class="btn" id="btnFetch" style="margin-top:10px">กดถูกใจ (fetch)</button><p class="muted" style="font-size:17px">ผู้ใช้ไม่เสียตำแหน่งที่อ่านอยู่ และส่งข้อมูลน้อยกว่า</p></div>
-  </div>
-  <p class="muted" style="font-size:18px;margin-top:10px">jQuery (2.12) เคยใช้ทำ Ajax อย่างแพร่หลาย ปัจจุบันใช้ fetch() ของเบราว์เซอร์ได้โดยตรง</p>
 </section>
 
 <section class="slide" data-title="2.16–2.17 Framework และ MVC">

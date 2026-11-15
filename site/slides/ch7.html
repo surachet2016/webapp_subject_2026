@@ -295,15 +295,6 @@ if (password_verify($input, $hash)) {
   </div>
 </section>
 
-<section class="slide" data-title="ภารกิจ: ตรวจโค้ดล็อกอิน">
-  <p class="kicker">7.13.2 ให้ AI ตรวจช่องโหว่ (Security Code Review) แล้วเราตรวจซ้ำ</p>
-  <h2>คลิกบรรทัดที่ไม่ปลอดภัย (มี 5 จุด)</h2>
-  <div class="grid2" style="grid-template-columns:1.25fr 1fr;align-items:start">
-    <div class="php click" id="bugs" style="font-size:13.5px"></div>
-    <div><div class="card" id="bugTxt" style="min-height:300px"></div><button class="btn alt" id="bugReset" style="margin-top:10px">เริ่มใหม่</button></div>
-  </div>
-</section>
-
 <section class="slide" data-title="7.13 ใช้ AI ช่วยเขียน PHP">
   <p class="kicker">7.13 AI-Assisted PHP Development (OWASP, 2023d; The PHP Group, 2024b)</p>
   <h2>สั่งให้ตรวจตามหัวข้อ แล้วทดสอบเองทุกครั้ง</h2>
@@ -323,6 +314,15 @@ if (password_verify($input, $hash)) {
     </div>
     <div class="card"><h3>หลักการ</h3><ul class="b"><li style="font-size:19px">AI ช่วยหาจุดเสี่ยงได้เร็ว แต่อาจตกหล่นหรือแนะนำฟังก์ชันที่เลิกใช้ เช่น mysql_*</li><li style="font-size:19px">ทดสอบด้วยข้อมูลผิดปกติ เช่น <code>' OR '1'='1</code></li><li style="font-size:19px">อ้างอิงคู่มือ php.net และ OWASP</li><li style="font-size:19px">บันทึกการใช้ AI แนบใบงาน</li></ul>
       <div class="links" style="grid-template-columns:1fr;margin-top:10px"><a class="lk" href="https://www.php.net/manual/en/" target="_blank" rel="noopener noreferrer"><b>PHP Manual</b><span>The PHP Group</span></a><a class="lk" href="https://cheatsheetseries.owasp.org/cheatsheets/PHP_Configuration_Cheat_Sheet.html" target="_blank" rel="noopener noreferrer"><b>OWASP PHP Configuration</b><span>Cheat Sheet Series</span></a></div></div>
+  </div>
+</section>
+
+<section class="slide" data-title="ภารกิจ: ตรวจโค้ดล็อกอิน">
+  <p class="kicker">7.13.2 ให้ AI ตรวจช่องโหว่ (Security Code Review) แล้วเราตรวจซ้ำ</p>
+  <h2>คลิกบรรทัดที่ไม่ปลอดภัย (มี 5 จุด)</h2>
+  <div class="grid2" style="grid-template-columns:1.25fr 1fr;align-items:start">
+    <div class="php click" id="bugs" style="font-size:13.5px"></div>
+    <div><div class="card" id="bugTxt" style="min-height:300px"></div><button class="btn alt" id="bugReset" style="margin-top:10px">เริ่มใหม่</button></div>
   </div>
 </section>
 

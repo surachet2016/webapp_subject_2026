@@ -291,6 +291,34 @@ console.log("D จบ");</div>
   </div>
 </section>
 
+<section class="slide" data-title="6.9.1 fetch ข้อมูลจาก API">
+  <p class="kicker">6.9.1 ดึงข้อมูลจาก JSONPlaceholder API มาแสดงในตาราง</p>
+  <h2>fetch + async/await ของจริง</h2>
+  <div class="grid2" style="grid-template-columns:1fr 1fr;align-items:start">
+    <div>
+      <div class="code" style="font-size:14px;white-space:pre;height:300px">async function loadUsers() {
+  out.textContent = "กำลังโหลด...";
+  try {
+    const res = await fetch(
+      "https://jsonplaceholder.typicode.com/users");
+    if (!res.ok) throw new Error(res.status);
+    const users = await res.json();
+    users.forEach((u) =&gt; {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `&lt;td&gt;${u.id}&lt;/td&gt;...`;
+      tbody.append(tr);
+    });
+  } catch (err) {
+    out.textContent = "โหลดไม่สำเร็จ: " + err.message;
+  }
+}</div>
+      <div style="display:flex;gap:8px;margin-top:10px"><button class="btn" id="fGo">▶ โหลดข้อมูล</button><button class="btn alt" id="fBad">ลอง URL ผิด</button></div>
+      <p class="muted" style="font-size:15px;margin-top:6px">JSONPlaceholder เป็น API ทดลองที่ให้ข้อมูลสมมติ ต้องต่ออินเทอร์เน็ต</p>
+    </div>
+    <div><p id="fMsg" style="font-size:19px;min-height:30px"></p><div style="height:400px;overflow:auto"><table class="u"><thead><tr><th>id</th><th>ชื่อ</th><th>อีเมล</th><th>เมือง</th></tr></thead><tbody id="fBody"></tbody></table></div></div>
+  </div>
+</section>
+
 <section class="slide" data-title="6.9.2 Promise">
   <p class="kicker">6.9.2 แนวคิด Promise และความสัมพันธ์กับ async/await</p>
   <h2>Promise = สัญญาว่าจะได้ผลลัพธ์ในอนาคต</h2>
@@ -324,31 +352,27 @@ console.log("D จบ");</div>
   <div class="con" id="pmLog" style="height:90px;margin-top:12px"></div>
 </section>
 
-<section class="slide" data-title="6.9.1 fetch ข้อมูลจาก API">
-  <p class="kicker">6.9.1 ดึงข้อมูลจาก JSONPlaceholder API มาแสดงในตาราง</p>
-  <h2>fetch + async/await ของจริง</h2>
-  <div class="grid2" style="grid-template-columns:1fr 1fr;align-items:start">
+<section class="slide" data-title="6.10 ใช้ AI ช่วยเขียน JS">
+  <p class="kicker">6.10 AI-Assisted JS Development (Haverbeke, 2024; OWASP, 2023a)</p>
+  <h2>ให้ AI ช่วยหาสาเหตุ แต่ตัดสินใจเอง</h2>
+  <div class="grid2" style="align-items:start">
     <div>
-      <div class="code" style="font-size:14px;white-space:pre;height:300px">async function loadUsers() {
-  out.textContent = "กำลังโหลด...";
-  try {
-    const res = await fetch(
-      "https://jsonplaceholder.typicode.com/users");
-    if (!res.ok) throw new Error(res.status);
-    const users = await res.json();
-    users.forEach((u) =&gt; {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `&lt;td&gt;${u.id}&lt;/td&gt;...`;
-      tbody.append(tr);
-    });
-  } catch (err) {
-    out.textContent = "โหลดไม่สำเร็จ: " + err.message;
-  }
-}</div>
-      <div style="display:flex;gap:8px;margin-top:10px"><button class="btn" id="fGo">▶ โหลดข้อมูล</button><button class="btn alt" id="fBad">ลอง URL ผิด</button></div>
-      <p class="muted" style="font-size:15px;margin-top:6px">JSONPlaceholder เป็น API ทดลองที่ให้ข้อมูลสมมติ ต้องต่ออินเทอร์เน็ต</p>
+      <div class="code" style="white-space:pre-wrap;font-size:15px;height:300px">บทบาท: ผู้ตรวจสอบความปลอดภัย JavaScript
+งาน: ตรวจโค้ดด้านล่าง 2 ประเด็น
+1) Asynchronous: มีจุดลืม await, ไม่จัดการ error
+   หรือ res.ok หรือไม่
+2) XSS: มีการนำข้อมูลภายนอกใส่ innerHTML,
+   eval หรือ document.write หรือไม่
+ผลลัพธ์: ตาราง บรรทัด / ปัญหา / ความเสี่ยง / วิธีแก้
+[วางโค้ด ไม่วาง API key หรือข้อมูลผู้ใช้จริง]</div>
+      <p class="muted" style="font-size:17px;margin-top:8px">ตัวอย่างกรอบคำสั่งจากหัวข้อ 6.10.4</p>
     </div>
-    <div><p id="fMsg" style="font-size:19px;min-height:30px"></p><div style="height:400px;overflow:auto"><table class="u"><thead><tr><th>id</th><th>ชื่อ</th><th>อีเมล</th><th>เมือง</th></tr></thead><tbody id="fBody"></tbody></table></div></div>
+    <div class="card"><h3>ข้อควรระวัง (6.10.3)</h3><ul class="b"><li style="font-size:19px">ห้ามวาง API key รหัสผ่าน หรือข้อมูลส่วนบุคคลใน Prompt</li><li style="font-size:19px">ห้ามเก็บรหัสลับไว้ในโค้ด JavaScript ฝั่งผู้ใช้</li><li style="font-size:19px">ตรวจ innerHTML, eval, ไลบรารีที่ AI แนะนำ</li><li style="font-size:19px">ทดสอบด้วย Console และกรณีข้อมูลผิดพลาด</li></ul></div>
+  </div>
+  <div class="links" style="margin-top:12px">
+    <a class="lk" href="https://eloquentjavascript.net/" target="_blank" rel="noopener noreferrer"><b>Eloquent JavaScript</b><span>Haverbeke (2024) อ่านฟรีออนไลน์</span></a>
+    <a class="lk" href="https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html" target="_blank" rel="noopener noreferrer"><b>OWASP XSS Prevention</b><span>แนวทางป้องกัน XSS</span></a>
+    <a class="lk" href="https://developer.chrome.com/docs/devtools/console" target="_blank" rel="noopener noreferrer"><b>Chrome DevTools Console</b><span>คู่มือการดีบัก</span></a>
   </div>
 </section>
 
@@ -382,30 +406,6 @@ consol.log(msg);</textarea>
       <div class="card" style="margin-top:12px"><ul class="b"><li style="font-size:19px">ข้อความที่มีแท็กถูกตีความเป็น HTML และรันสคริปต์ได้ (XSS)</li><li style="font-size:19px">ใช้ <b>textContent</b> หรือสร้างเอลิเมนต์ทีละตัว</li><li style="font-size:19px">โค้ดจาก AI ชอบใช้ innerHTML ต้องตรวจทุกครั้ง</li></ul></div>
     </div>
     <div><p style="font-size:17px" class="muted">หน้าเว็บจำลองแยกในกรอบปิด (sandbox) ไม่กระทบหน้านี้</p><iframe class="box" id="xFr" sandbox="allow-scripts" title="หน้าเว็บจำลองแสดงความคิดเห็น" style="height:360px"></iframe></div>
-  </div>
-</section>
-
-<section class="slide" data-title="6.10 ใช้ AI ช่วยเขียน JS">
-  <p class="kicker">6.10 AI-Assisted JS Development (Haverbeke, 2024; OWASP, 2023a)</p>
-  <h2>ให้ AI ช่วยหาสาเหตุ แต่ตัดสินใจเอง</h2>
-  <div class="grid2" style="align-items:start">
-    <div>
-      <div class="code" style="white-space:pre-wrap;font-size:15px;height:300px">บทบาท: ผู้ตรวจสอบความปลอดภัย JavaScript
-งาน: ตรวจโค้ดด้านล่าง 2 ประเด็น
-1) Asynchronous: มีจุดลืม await, ไม่จัดการ error
-   หรือ res.ok หรือไม่
-2) XSS: มีการนำข้อมูลภายนอกใส่ innerHTML,
-   eval หรือ document.write หรือไม่
-ผลลัพธ์: ตาราง บรรทัด / ปัญหา / ความเสี่ยง / วิธีแก้
-[วางโค้ด ไม่วาง API key หรือข้อมูลผู้ใช้จริง]</div>
-      <p class="muted" style="font-size:17px;margin-top:8px">ตัวอย่างกรอบคำสั่งจากหัวข้อ 6.10.4</p>
-    </div>
-    <div class="card"><h3>ข้อควรระวัง (6.10.3)</h3><ul class="b"><li style="font-size:19px">ห้ามวาง API key รหัสผ่าน หรือข้อมูลส่วนบุคคลใน Prompt</li><li style="font-size:19px">ห้ามเก็บรหัสลับไว้ในโค้ด JavaScript ฝั่งผู้ใช้</li><li style="font-size:19px">ตรวจ innerHTML, eval, ไลบรารีที่ AI แนะนำ</li><li style="font-size:19px">ทดสอบด้วย Console และกรณีข้อมูลผิดพลาด</li></ul></div>
-  </div>
-  <div class="links" style="margin-top:12px">
-    <a class="lk" href="https://eloquentjavascript.net/" target="_blank" rel="noopener noreferrer"><b>Eloquent JavaScript</b><span>Haverbeke (2024) อ่านฟรีออนไลน์</span></a>
-    <a class="lk" href="https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html" target="_blank" rel="noopener noreferrer"><b>OWASP XSS Prevention</b><span>แนวทางป้องกัน XSS</span></a>
-    <a class="lk" href="https://developer.chrome.com/docs/devtools/console" target="_blank" rel="noopener noreferrer"><b>Chrome DevTools Console</b><span>คู่มือการดีบัก</span></a>
   </div>
 </section>
 

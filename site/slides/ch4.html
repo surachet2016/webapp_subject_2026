@@ -206,24 +206,6 @@ iframe.run{background:#fff}
   <p class="muted" style="font-size:18px;margin-top:10px">ยุคก่อนจัดเลย์เอาต์ด้วย float และ position ปัจจุบันใช้ Flexbox และ Grid ซึ่งง่ายและคาดเดาผลได้มากกว่า</p>
 </section>
 
-<section class="slide" data-title="4.11 Flexbox">
-  <p class="kicker">4.11 CSS Flexbox (Coyier, n.d.-a)</p>
-  <h2>Flexbox: จัดเรียงแนวเดียว (1 มิติ)</h2>
-  <div class="grid2" style="grid-template-columns:420px 1fr;align-items:start">
-    <div>
-      <div class="sel-row">
-        <label for="fd">flex-direction</label><select id="fd"><option>row</option><option>row-reverse</option><option>column</option></select>
-        <label for="jc">justify-content</label><select id="jc"><option>flex-start</option><option>center</option><option>flex-end</option><option selected>space-between</option><option>space-around</option><option>space-evenly</option></select>
-        <label for="ai">align-items</label><select id="ai"><option>stretch</option><option selected>center</option><option>flex-start</option><option>flex-end</option></select>
-        <label for="fw">flex-wrap</label><select id="fw"><option>nowrap</option><option>wrap</option></select>
-        <label for="fn">จำนวนกล่อง</label><input type="range" id="fn" min="2" max="6" value="4">
-      </div>
-      <div class="code" id="fCode" style="font-size:16px;margin-top:12px;white-space:pre"></div>
-    </div>
-    <div class="play" id="flexP"></div>
-  </div>
-</section>
-
 <section class="slide" data-title="4.9 Grid">
   <p class="kicker">4.9 CSS Grid Layout Module (Coyier, n.d.-b)</p>
   <h2>Grid: จัดเป็นตาราง 2 มิติ (แถวและคอลัมน์)</h2>
@@ -237,21 +219,6 @@ iframe.run{background:#fff}
       <div class="code" id="gCode" style="font-size:16px;margin-top:12px;white-space:pre"></div>
     </div>
     <div class="play" id="gridP"></div>
-  </div>
-</section>
-
-<section class="slide" data-title="Flexbox หรือ Grid">
-  <p class="kicker">เลือกเครื่องมือให้ถูกงาน</p>
-  <h2>Flexbox หรือ Grid?</h2>
-  <div class="grid2" style="align-items:start">
-    <div class="card hov"><h3 style="color:#4338ca">Flexbox (1 มิติ)</h3><ul class="b"><li style="font-size:21px">เรียงแถวเดียวหรือคอลัมน์เดียว</li><li style="font-size:21px">ขนาดตามเนื้อหา กระจายพื้นที่ที่เหลือ</li><li style="font-size:21px">เช่น แถบเมนู ปุ่มเรียงกัน จัดของกลางกล่อง</li></ul></div>
-    <div class="card hov"><h3 style="color:#059669">Grid (2 มิติ)</h3><ul class="b"><li style="font-size:21px">คุมทั้งแถวและคอลัมน์พร้อมกัน</li><li style="font-size:21px">วางโครงหน้าก่อน แล้วใส่เนื้อหา</li><li style="font-size:21px">เช่น โครงหน้าเว็บ แกลเลอรี การ์ดสินค้า</li></ul></div>
-  </div>
-  <div class="card" style="margin-top:16px"><p><b>ใช้ร่วมกันได้:</b> Grid วางโครงหน้า แล้วใช้ Flexbox จัดของภายในแต่ละส่วน เช่น เมนูใน header</p></div>
-  <div class="links" style="margin-top:12px">
-    <a class="lk" href="https://css-tricks.com/snippets/css/a-guide-to-flexbox/" target="_blank" rel="noopener noreferrer"><b>A Complete Guide to Flexbox</b><span>CSS-Tricks</span></a>
-    <a class="lk" href="https://css-tricks.com/snippets/css/complete-guide-grid/" target="_blank" rel="noopener noreferrer"><b>A Complete Guide to Grid</b><span>CSS-Tricks</span></a>
-    <a class="lk" href="https://flexboxfroggy.com/#th" target="_blank" rel="noopener noreferrer"><b>Flexbox Froggy</b><span>เกมฝึก Flexbox (มีภาษาไทย)</span></a>
   </div>
 </section>
 
@@ -309,6 +276,39 @@ iframe.run{background:#fff}
   <a class="src" href="https://fonts.google.com/?subset=thai" target="_blank" rel="noopener noreferrer">fonts.google.com (ฟอนต์ภาษาไทย)</a>
 </section>
 
+<section class="slide" data-title="4.11 Flexbox">
+  <p class="kicker">4.11 CSS Flexbox (Coyier, n.d.-a)</p>
+  <h2>Flexbox: จัดเรียงแนวเดียว (1 มิติ)</h2>
+  <div class="grid2" style="grid-template-columns:420px 1fr;align-items:start">
+    <div>
+      <div class="sel-row">
+        <label for="fd">flex-direction</label><select id="fd"><option>row</option><option>row-reverse</option><option>column</option></select>
+        <label for="jc">justify-content</label><select id="jc"><option>flex-start</option><option>center</option><option>flex-end</option><option selected>space-between</option><option>space-around</option><option>space-evenly</option></select>
+        <label for="ai">align-items</label><select id="ai"><option>stretch</option><option selected>center</option><option>flex-start</option><option>flex-end</option></select>
+        <label for="fw">flex-wrap</label><select id="fw"><option>nowrap</option><option>wrap</option></select>
+        <label for="fn">จำนวนกล่อง</label><input type="range" id="fn" min="2" max="6" value="4">
+      </div>
+      <div class="code" id="fCode" style="font-size:16px;margin-top:12px;white-space:pre"></div>
+    </div>
+    <div class="play" id="flexP"></div>
+  </div>
+</section>
+
+<section class="slide" data-title="Flexbox หรือ Grid">
+  <p class="kicker">เลือกเครื่องมือให้ถูกงาน</p>
+  <h2>Flexbox หรือ Grid?</h2>
+  <div class="grid2" style="align-items:start">
+    <div class="card hov"><h3 style="color:#4338ca">Flexbox (1 มิติ)</h3><ul class="b"><li style="font-size:21px">เรียงแถวเดียวหรือคอลัมน์เดียว</li><li style="font-size:21px">ขนาดตามเนื้อหา กระจายพื้นที่ที่เหลือ</li><li style="font-size:21px">เช่น แถบเมนู ปุ่มเรียงกัน จัดของกลางกล่อง</li></ul></div>
+    <div class="card hov"><h3 style="color:#059669">Grid (2 มิติ)</h3><ul class="b"><li style="font-size:21px">คุมทั้งแถวและคอลัมน์พร้อมกัน</li><li style="font-size:21px">วางโครงหน้าก่อน แล้วใส่เนื้อหา</li><li style="font-size:21px">เช่น โครงหน้าเว็บ แกลเลอรี การ์ดสินค้า</li></ul></div>
+  </div>
+  <div class="card" style="margin-top:16px"><p><b>ใช้ร่วมกันได้:</b> Grid วางโครงหน้า แล้วใช้ Flexbox จัดของภายในแต่ละส่วน เช่น เมนูใน header</p></div>
+  <div class="links" style="margin-top:12px">
+    <a class="lk" href="https://css-tricks.com/snippets/css/a-guide-to-flexbox/" target="_blank" rel="noopener noreferrer"><b>A Complete Guide to Flexbox</b><span>CSS-Tricks</span></a>
+    <a class="lk" href="https://css-tricks.com/snippets/css/complete-guide-grid/" target="_blank" rel="noopener noreferrer"><b>A Complete Guide to Grid</b><span>CSS-Tricks</span></a>
+    <a class="lk" href="https://flexboxfroggy.com/#th" target="_blank" rel="noopener noreferrer"><b>Flexbox Froggy</b><span>เกมฝึก Flexbox (มีภาษาไทย)</span></a>
+  </div>
+</section>
+
 <section class="slide" data-title="4.12.1 ตัวแปร CSS">
   <p class="kicker">4.12.1 ตัวแปรใน CSS (Custom Properties) (Verou, 2015)</p>
   <h2>เปลี่ยนค่าที่เดียว ทั้งเว็บเปลี่ยนตาม</h2>
@@ -364,24 +364,6 @@ iframe.run{background:#fff}
   </div>
 </section>
 
-<section class="slide" data-title="ภารกิจ: ซ่อมเลย์เอาต์แตก">
-  <p class="kicker">4.14.2 ใช้ AI ค้นหาและแก้ปัญหาเลย์เอาต์แตก (CSS Debugging)</p>
-  <h2>ภารกิจ: ซ่อมการ์ดที่ล้นจอ</h2>
-  <div class="grid2" style="grid-template-columns:420px 1fr;align-items:start">
-    <div>
-      <p style="font-size:19px">อาการ: บนจอมือถือ การ์ดล้นออกนอกกรอบ ภาพใหญ่เกินกล่อง ติ๊กวิธีแก้ทีละข้อ</p>
-      <div class="fixes" style="margin-top:8px">
-        <label><input type="checkbox" data-f="bs"> <code>* { box-sizing: border-box; }</code></label>
-        <label><input type="checkbox" data-f="wrap"> <code>.row { flex-wrap: wrap; }</code></label>
-        <label><input type="checkbox" data-f="img"> <code>img { max-width: 100%; }</code></label>
-        <label><input type="checkbox" data-f="w"> <code>.card { width: 300px }</code> → <code>flex: 1 1 140px</code></label>
-      </div>
-      <div class="card" id="fixTxt" style="margin-top:10px;min-height:100px"></div>
-    </div>
-    <div style="display:flex;justify-content:center;background:#e5e7eb;border-radius:14px;padding:10px;height:440px"><iframe id="fixFr" class="run" title="การ์ดที่กำลังซ่อม" style="width:340px;height:420px"></iframe></div>
-  </div>
-</section>
-
 <section class="slide" data-title="4.14 ใช้ AI ช่วยเขียน CSS">
   <p class="kicker">4.14 AI-Assisted CSS Development (Verou, 2015; Coyier, n.d.-a, n.d.-b)</p>
   <h2>บอกอาการให้ชัด แล้วตรวจคำตอบเสมอ</h2>
@@ -401,6 +383,24 @@ iframe.run{background:#fff}
     <a class="lk" href="https://developer.mozilla.org/en-US/docs/Web/CSS" target="_blank" rel="noopener noreferrer"><b>MDN: CSS</b><span>คู่มืออ้างอิงคุณสมบัติทั้งหมด</span></a>
     <a class="lk" href="https://caniuse.com/" target="_blank" rel="noopener noreferrer"><b>Can I use</b><span>ตรวจการรองรับของเบราว์เซอร์</span></a>
     <a class="lk" href="https://resilientwebdesign.com/" target="_blank" rel="noopener noreferrer"><b>Resilient Web Design</b><span>Keith (2016) อ่านฟรีออนไลน์</span></a>
+  </div>
+</section>
+
+<section class="slide" data-title="ภารกิจ: ซ่อมเลย์เอาต์แตก">
+  <p class="kicker">4.14.2 ใช้ AI ค้นหาและแก้ปัญหาเลย์เอาต์แตก (CSS Debugging)</p>
+  <h2>ภารกิจ: ซ่อมการ์ดที่ล้นจอ</h2>
+  <div class="grid2" style="grid-template-columns:420px 1fr;align-items:start">
+    <div>
+      <p style="font-size:19px">อาการ: บนจอมือถือ การ์ดล้นออกนอกกรอบ ภาพใหญ่เกินกล่อง ติ๊กวิธีแก้ทีละข้อ</p>
+      <div class="fixes" style="margin-top:8px">
+        <label><input type="checkbox" data-f="bs"> <code>* { box-sizing: border-box; }</code></label>
+        <label><input type="checkbox" data-f="wrap"> <code>.row { flex-wrap: wrap; }</code></label>
+        <label><input type="checkbox" data-f="img"> <code>img { max-width: 100%; }</code></label>
+        <label><input type="checkbox" data-f="w"> <code>.card { width: 300px }</code> → <code>flex: 1 1 140px</code></label>
+      </div>
+      <div class="card" id="fixTxt" style="margin-top:10px;min-height:100px"></div>
+    </div>
+    <div style="display:flex;justify-content:center;background:#e5e7eb;border-radius:14px;padding:10px;height:440px"><iframe id="fixFr" class="run" title="การ์ดที่กำลังซ่อม" style="width:340px;height:420px"></iframe></div>
   </div>
 </section>
 

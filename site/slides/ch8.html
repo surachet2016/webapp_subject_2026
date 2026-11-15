@@ -178,6 +178,28 @@ while ($row = mysqli_fetch_assoc($result)) {
   </div>
 </section>
 
+<section class="slide" data-title="8.10 อัปโหลดภาพ">
+  <p class="kicker">8.10 การ Upload image to Server</p>
+  <h2>ตรวจไฟล์ก่อนรับเข้าระบบ</h2>
+  <div class="grid2" style="grid-template-columns:400px 1fr;align-items:start">
+    <div class="card">
+      <label for="upF">เลือกไฟล์จากเครื่อง</label><input type="file" id="upF" style="margin-top:8px;font-size:16px">
+      <p class="muted" style="font-size:15px;margin-top:8px">ตรวจในเบราว์เซอร์เพื่อสาธิตเท่านั้น ไฟล์ไม่ถูกส่งไปที่ใด</p>
+      <div class="sql" style="font-size:12.5px;margin-top:10px">$f = $_FILES['photo'];
+$type = (new finfo(FILEINFO_MIME_TYPE))
+          -&gt;file($f['tmp_name']);
+$ok = ['image/jpeg' =&gt; 'jpg', 'image/png' =&gt; 'png'];
+if (!isset($ok[$type]) || $f['size'] &gt; 2_000_000) {
+    exit('ไฟล์ไม่ถูกต้อง');
+}
+$name = bin2hex(random_bytes(8)) . '.' . $ok[$type];
+move_uploaded_file($f['tmp_name'],
+                   __DIR__ . '/../uploads/' . $name);</div>
+    </div>
+    <div><div class="steps" id="upSteps"></div><div class="res" id="upRes" style="margin-top:10px"></div></div>
+  </div>
+</section>
+
 <section class="slide" data-title="8.12 SQL Injection">
   <p class="kicker">8.12 ป้องกันช่องโหว่ SQL Injection (OWASP, 2023e; The PHP Group, 2024a)</p>
   <h2>ลองเจาะระบบล็อกอินที่ต่อสตริงเข้า SQL</h2>
@@ -208,28 +230,6 @@ $stmt-&gt;bind_param("sd", $like, $min);
 $stmt-&gt;execute();
 $result = $stmt-&gt;get_result();</div>
     <div class="card"><h3>ตัวอักษรชนิดใน bind_param</h3><ul class="b"><li style="font-size:19px"><b>s</b> string ข้อความ</li><li style="font-size:19px"><b>i</b> integer จำนวนเต็ม</li><li style="font-size:19px"><b>d</b> double ทศนิยม</li><li style="font-size:19px"><b>b</b> blob ข้อมูลไบนารี</li></ul><p style="font-size:17px;margin-top:6px">ฐานข้อมูลถือค่าที่ผูกเป็น "ข้อมูล" เสมอ ไม่ตีความเป็นคำสั่ง แม้มีเครื่องหมาย ' หรือ --</p></div>
-  </div>
-</section>
-
-<section class="slide" data-title="8.10 อัปโหลดภาพ">
-  <p class="kicker">8.10 การ Upload image to Server</p>
-  <h2>ตรวจไฟล์ก่อนรับเข้าระบบ</h2>
-  <div class="grid2" style="grid-template-columns:400px 1fr;align-items:start">
-    <div class="card">
-      <label for="upF">เลือกไฟล์จากเครื่อง</label><input type="file" id="upF" style="margin-top:8px;font-size:16px">
-      <p class="muted" style="font-size:15px;margin-top:8px">ตรวจในเบราว์เซอร์เพื่อสาธิตเท่านั้น ไฟล์ไม่ถูกส่งไปที่ใด</p>
-      <div class="sql" style="font-size:12.5px;margin-top:10px">$f = $_FILES['photo'];
-$type = (new finfo(FILEINFO_MIME_TYPE))
-          -&gt;file($f['tmp_name']);
-$ok = ['image/jpeg' =&gt; 'jpg', 'image/png' =&gt; 'png'];
-if (!isset($ok[$type]) || $f['size'] &gt; 2_000_000) {
-    exit('ไฟล์ไม่ถูกต้อง');
-}
-$name = bin2hex(random_bytes(8)) . '.' . $ok[$type];
-move_uploaded_file($f['tmp_name'],
-                   __DIR__ . '/../uploads/' . $name);</div>
-    </div>
-    <div><div class="steps" id="upSteps"></div><div class="res" id="upRes" style="margin-top:10px"></div></div>
   </div>
 </section>
 

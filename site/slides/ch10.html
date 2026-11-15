@@ -218,6 +218,17 @@ table.r tr{cursor:pointer}table.r tr.sel td{background:#fef3c7}
   </div>
 </section>
 
+<section class="slide" data-title="10.5 CI/CD">
+  <p class="kicker">10.5 การนำส่งเว็บไซต์สมัยใหม่ด้วยระบบอัตโนมัติ (CI/CD) (ศุภชัย สมพานิช, 2566ก)</p>
+  <h2>push แล้วเว็บอัปเดตเอง: ตัวอย่างจริงของเว็บรายวิชานี้</h2>
+  <div class="pipe" id="ci"><div class="st">1. git push<br><small>แก้ไฟล์ใบงาน .md</small></div><span class="ar">→</span><div class="st">2. GitHub Actions<br><small>เริ่มงานอัตโนมัติ</small></div><span class="ar">→</span><div class="st">3. Build<br><small>แปลง .md เป็นหน้าเว็บ</small></div><span class="ar">→</span><div class="st">4. Deploy<br><small>ส่งขึ้นเซิร์ฟเวอร์ด้วย SFTP</small></div><span class="ar">→</span><div class="st">5. เว็บจริง<br><small>fms.pnu.ac.th/lessons</small></div></div>
+  <button class="btn" id="ciGo" style="margin-top:12px">▶ จำลองการ push</button>
+  <div class="grid2" style="margin-top:12px;align-items:start">
+    <div class="card"><ul class="b"><li style="font-size:18px"><b>CI</b> (Continuous Integration) รวมโค้ดและตรวจ/ทดสอบอัตโนมัติทุกครั้ง</li><li style="font-size:18px"><b>CD</b> (Continuous Delivery/Deployment) ส่งขึ้นเซิร์ฟเวอร์อัตโนมัติ</li><li style="font-size:18px">รหัสผ่านเซิร์ฟเวอร์เก็บใน <b>GitHub Secrets</b> ไม่เขียนลงไฟล์</li></ul></div>
+    <div class="log" id="ciLog" style="height:180px"></div>
+  </div>
+</section>
+
 <section class="slide" data-title="10.5 DNS">
   <p class="kicker">10.5 ระบบชื่อโดเมน (DNS) (ICANN, 2024)</p>
   <h2>เบราว์เซอร์หาเลข IP ของ mysite.ac.th อย่างไร</h2>
@@ -227,17 +238,6 @@ table.r tr{cursor:pointer}table.r tr.sel td{background:#fef3c7}
   <div class="grid2" style="grid-template-columns:1.3fr 1fr;align-items:start;margin-top:4px">
     <table class="r" id="rec"><tr><th>ชนิด</th><th>ชื่อ</th><th>ค่า</th></tr><tr data-r="A"><td>A</td><td>mysite.ac.th</td><td>203.0.113.10</td></tr><tr data-r="AAAA"><td>AAAA</td><td>mysite.ac.th</td><td>2001:db8::10</td></tr><tr data-r="CNAME"><td>CNAME</td><td>www</td><td>mysite.ac.th</td></tr><tr data-r="MX"><td>MX</td><td>mysite.ac.th</td><td>10 mail.mysite.ac.th</td></tr><tr data-r="TXT"><td>TXT</td><td>mysite.ac.th</td><td>"v=spf1 ..."</td></tr></table>
     <div class="card" id="recTxt" style="min-height:150px"><p style="font-size:18px">การเปลี่ยน DNS อาจใช้เวลาตาม TTL กว่าทุกที่จะเห็นค่าใหม่</p></div>
-  </div>
-</section>
-
-<section class="slide" data-title="10.5 CI/CD">
-  <p class="kicker">10.5 การนำส่งเว็บไซต์สมัยใหม่ด้วยระบบอัตโนมัติ (CI/CD) (ศุภชัย สมพานิช, 2566ก)</p>
-  <h2>push แล้วเว็บอัปเดตเอง: ตัวอย่างจริงของเว็บรายวิชานี้</h2>
-  <div class="pipe" id="ci"><div class="st">1. git push<br><small>แก้ไฟล์ใบงาน .md</small></div><span class="ar">→</span><div class="st">2. GitHub Actions<br><small>เริ่มงานอัตโนมัติ</small></div><span class="ar">→</span><div class="st">3. Build<br><small>แปลง .md เป็นหน้าเว็บ</small></div><span class="ar">→</span><div class="st">4. Deploy<br><small>ส่งขึ้นเซิร์ฟเวอร์ด้วย SFTP</small></div><span class="ar">→</span><div class="st">5. เว็บจริง<br><small>fms.pnu.ac.th/lessons</small></div></div>
-  <button class="btn" id="ciGo" style="margin-top:12px">▶ จำลองการ push</button>
-  <div class="grid2" style="margin-top:12px;align-items:start">
-    <div class="card"><ul class="b"><li style="font-size:18px"><b>CI</b> (Continuous Integration) รวมโค้ดและตรวจ/ทดสอบอัตโนมัติทุกครั้ง</li><li style="font-size:18px"><b>CD</b> (Continuous Delivery/Deployment) ส่งขึ้นเซิร์ฟเวอร์อัตโนมัติ</li><li style="font-size:18px">รหัสผ่านเซิร์ฟเวอร์เก็บใน <b>GitHub Secrets</b> ไม่เขียนลงไฟล์</li></ul></div>
-    <div class="log" id="ciLog" style="height:180px"></div>
   </div>
 </section>
 
