@@ -196,6 +196,65 @@
   <p class="muted" style="font-size:18px;margin-top:10px">ใบรับรองฟรีแบบอัตโนมัติ: Let's Encrypt (ใช้จริงในบทที่ 10)</p>
 </section>
 
+<section class="slide" data-title="2.9 Bootstrap">
+  <style>
+  .n2bs{font-family:system-ui,sans-serif;font-size:17px;line-height:1.5;border-radius:6px;padding:7px 14px;border:1px solid transparent;cursor:pointer;font-weight:500}
+  .n2bs.primary{background:#0d6efd;color:#fff}.n2bs.success{background:#198754;color:#fff}.n2bs.danger{background:#dc3545;color:#fff}
+  .n2bs.outline{background:#fff;color:#0d6efd;border-color:#0d6efd}
+  .n2plain{font:13px Arial,sans-serif;padding:1px 6px}
+  .n2demo{display:flex;gap:14px;align-items:center;justify-content:center;height:90px;border:1px dashed var(--line);border-radius:12px;background:#fff}
+  </style>
+  <p class="kicker">2.9 แนะนำ Bootstrap</p>
+  <h2>ใส่คลาสสำเร็จรูป แทนการเขียน CSS เองทั้งหมด</h2>
+  <div class="grid2" style="grid-template-columns:1fr 1fr;align-items:start">
+    <div class="card"><ul class="b">
+      <li>Front-end Framework ที่รวม HTML, CSS และ JavaScript ไว้ด้วยกัน เดิมพัฒนาโดยทีมงาน Twitter</li>
+      <li>ระบบกริด 12 คอลัมน์ รองรับทุกอุปกรณ์แบบ Mobile First</li>
+      <li>คอมโพเนนต์พร้อมใช้ เช่น ปุ่ม การ์ด แถบนำทาง แบบฟอร์ม และปลั๊กอิน JavaScript อย่าง modal, carousel, tooltip</li>
+      <li>Bootstrap 5 เลิกใช้ jQuery และเลิกรองรับ Internet Explorer ไฟล์จึงเล็กลง โหลดเร็วขึ้น</li>
+    </ul></div>
+    <div>
+      <div class="tabs" id="n2_bsTabs"><button class="on" data-v="primary">btn-primary</button><button data-v="success">btn-success</button><button data-v="danger">btn-danger</button><button data-v="outline">btn-outline-primary</button></div>
+      <div class="grid2" style="gap:12px">
+        <div><p class="muted" style="font-size:16px">HTML ล้วน</p><div class="n2demo"><button class="n2plain">สมัครเรียน</button></div></div>
+        <div><p class="muted" style="font-size:16px">ใส่คลาส Bootstrap</p><div class="n2demo"><button class="n2bs primary" id="n2_bsBtn">สมัครเรียน</button></div></div>
+      </div>
+      <div class="code" id="n2_bsCode" style="margin-top:12px;font-size:16px"></div>
+      <p class="muted" style="font-size:16px;margin-top:8px">ภาพปุ่มด้านขวาจำลองสไตล์ของ Bootstrap 5 เพื่อเปรียบเทียบ · ฝึกใช้จริงในบทที่ 5</p>
+    </div>
+  </div>
+  <a class="src" href="https://getbootstrap.com/" target="_blank" rel="noopener noreferrer">getbootstrap.com</a>
+</section>
+
+<section class="slide" data-title="2.10 Responsive Web Design">
+  <style>
+  .n2rw{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;margin:0 auto;transition:width .2s}
+  .n2rw .hd{background:#4338ca;color:#fff;border-radius:6px;padding:6px 10px;font-weight:700;font-size:16px}
+  .n2rw .cols{display:grid;gap:8px;margin-top:8px}
+  .n2rw .cols div{background:#eef2ff;border-radius:6px;height:70px;display:flex;align-items:center;justify-content:center;font-size:15px}
+  .n2rw .img{height:60px;border-radius:6px;margin-top:8px;background:linear-gradient(90deg,#a5b4fc,#fcd34d)}
+  .n2chip{display:inline-block;background:#ede9fe;color:#5b21b6;border-radius:999px;padding:4px 12px;font-size:16px;font-weight:600;margin:4px 4px 0 0}
+  </style>
+  <p class="kicker">2.10 แนะนำ Responsive Web Design</p>
+  <h2>โค้ดชุดเดียว URL เดียว แสดงผลพอดีทุกขนาดจอ</h2>
+  <div class="grid2" style="grid-template-columns:400px 1fr;align-items:start;gap:28px">
+    <div>
+      <label for="n2_w" style="font-size:19px">ความกว้างหน้าจอ: <b id="n2_wv"></b></label>
+      <input type="range" id="n2_w" min="320" max="760" value="760" style="width:100%">
+      <div class="code" id="n2_mq" style="font-size:15px;margin-top:10px;white-space:pre-wrap;min-height:120px"></div>
+      <p style="font-size:18px;margin-top:10px">หลักการ 3 ข้อ</p>
+      <span class="n2chip">Fluid Grid ใช้หน่วย % หรือ fr</span><span class="n2chip">Flexible Images</span><span class="n2chip">CSS3 Media Queries</span>
+    </div>
+    <div>
+      <div class="n2rw" id="n2_page"><div class="hd">ร้านกาแฟบ้านสวน</div><div class="img"></div><div class="cols"><div>เมนู</div><div>โปรโมชัน</div><div>ติดต่อ</div></div></div>
+      <div class="grid2" style="gap:12px;margin-top:12px">
+        <div class="card" style="padding:12px 16px"><h3 style="font-size:20px;color:#059669">ข้อดี</h3><p style="font-size:16px">ไม่ต้องเขียน HTML 2 ชุด · ใช้ได้ทุกอุปกรณ์ · ส่งผลดีต่อ SEO</p></div>
+        <div class="card" style="padding:12px 16px"><h3 style="font-size:20px;color:#dc2626">ข้อจำกัด</h3><p style="font-size:16px">เนื้อหาที่ซ่อนอาจยังถูกโหลด · ย่อภาพด้วย CSS ไม่ได้ลดขนาดไฟล์</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="slide" data-title="2.11 REST API และ JSON">
   <p class="kicker">2.11 Web Service · 2.22 RESTful API และ JSON</p>
   <h2>ลองส่งคำขอไปยัง API จำลอง</h2>
@@ -210,6 +269,28 @@
   </div>
 </section>
 
+<section class="slide" data-title="2.12 jQuery">
+  <style>
+  .n2jq p{font-size:19px;background:#eef2ff;border-radius:8px;padding:6px 12px;margin:6px 0;transition:opacity .2s}
+  .n2jq p[hidden]{display:none}
+  </style>
+  <p class="kicker">2.12 แนะนำ jQuery</p>
+  <h2>$(selector).action() เทียบกับ JavaScript มาตรฐาน</h2>
+  <div class="grid2" style="grid-template-columns:1fr 1fr;align-items:start">
+    <div>
+      <div class="tabs" id="n2_jqTabs"><button class="on" data-k="p">$("p")</button><button data-k="cls">$(".test")</button><button data-k="id">$("#test")</button><button data-k="show">แสดงทั้งหมด</button></div>
+      <div class="code" id="n2_jqCode" style="font-size:15px;white-space:pre-wrap;min-height:150px"></div>
+      <p class="muted" style="font-size:17px;margin-top:10px">ฟีเจอร์ของ jQuery: จัดการ HTML/DOM และ CSS · เหตุการณ์ · เอฟเฟกต์และแอนิเมชัน · AJAX · ยูทิลิตี</p>
+    </div>
+    <div class="card n2jq">
+      <p class="muted" style="background:none;padding:0;font-size:16px">ผลลัพธ์ (รันด้วย JavaScript มาตรฐานด้านซ้าย)</p>
+      <p>ย่อหน้าที่ 1</p><p class="test">ย่อหน้าที่ 2 (class="test")</p><p data-id="test">ย่อหน้าที่ 3 (id="test")</p><p>ย่อหน้าที่ 4</p>
+    </div>
+  </div>
+  <div class="card" style="margin-top:14px;padding:12px 18px"><p style="font-size:18px">jQuery ยังพบในเว็บรุ่นเดิมและ CMS บางระบบ แต่โครงการใหม่นิยมใช้ <code>document.querySelectorAll()</code> และ Fetch API ที่เบราว์เซอร์มีในตัว ส่วน Bootstrap 5 ก็ไม่ต้องพึ่ง jQuery แล้ว</p></div>
+  <a class="src" href="https://jquery.com/" target="_blank" rel="noopener noreferrer">jquery.com</a>
+</section>
+
 <section class="slide" data-title="2.13 Ajax และ Fetch API">
   <p class="kicker">2.13 Ajax และ Fetch API</p>
   <h2>โหลดทั้งหน้า หรือโหลดเฉพาะส่วนที่เปลี่ยน</h2>
@@ -218,6 +299,20 @@
     <div class="card" style="text-align:center"><h3>Fetch: อัปเดตบางส่วน</h3><div style="height:180px;border-radius:10px;background:#ecfdf5;display:flex;align-items:center;justify-content:center;font-size:22px">หน้าเว็บ <span id="likeN" style="margin-left:10px;font-weight:700;color:#059669">❤ 12</span></div><button class="btn" id="btnFetch" style="margin-top:10px">กดถูกใจ (fetch)</button><p class="muted" style="font-size:17px">ผู้ใช้ไม่เสียตำแหน่งที่อ่านอยู่ และส่งข้อมูลน้อยกว่า</p></div>
   </div>
   <p class="muted" style="font-size:18px;margin-top:10px">jQuery (2.12) เคยใช้ทำ Ajax อย่างแพร่หลาย ปัจจุบันใช้ fetch() ของเบราว์เซอร์ได้โดยตรง</p>
+</section>
+
+<section class="slide" data-title="2.14 XML">
+  <p class="kicker">2.14 แนะนำ XML (Extensible Markup Language)</p>
+  <h2>ข้อมูลชุดเดียวกัน สามรูปแบบ</h2>
+  <div class="grid2" style="grid-template-columns:1fr 1fr;align-items:start">
+    <div>
+      <div class="tabs" id="n2_xTabs"><button class="on" data-x="xml">XML</button><button data-x="json">JSON</button><button data-x="html">HTML</button></div>
+      <div class="code" id="n2_xCode" style="font-size:16px;height:300px"></div>
+    </div>
+    <div class="card" id="n2_xTxt" style="min-height:300px"></div>
+  </div>
+  <p class="muted" style="font-size:18px;margin-top:12px">XML ยังใช้ในงานบางประเภท เช่น ฟีด RSS, ไฟล์ sitemap.xml สำหรับเครื่องมือค้นหา และภาพ SVG</p>
+  <a class="src" href="https://www.w3.org/XML/" target="_blank" rel="noopener noreferrer">w3.org/XML</a>
 </section>
 
 <section class="slide" data-title="2.15 DOM Tree">
@@ -375,7 +470,7 @@ function mvc(){var M=[["Model","ข้อมูล/ฐานข้อมูล",
  [[420,278,322,212,"1 คำขอ",392,236,"start"],[240,148,240,84,"2 ขอข้อมูล",232,122,"end"],[280,82,280,146,"3 ส่งข้อมูล",290,122,"start"],[200,212,118,276,"4 เลือกหน้า",150,236,"end"],[182,310,356,310,"5 หน้าเว็บ",269,300,"middle"]].forEach(function(e,j){s+='<path class="edge" style="animation-delay:'+(j*.35)+'s" d="M'+e[0]+' '+e[1]+' L'+e[2]+' '+e[3]+'" marker-end="url(#ah)"/><text x="'+e[5]+'" y="'+e[6]+'" font-size="15" font-weight="600" font-family="Sarabun" fill="#334155" text-anchor="'+e[7]+'">'+e[4]+'</text>'});
  M.forEach(function(m,j){var cx=m[2]+m[4]/2;s+='<g class="node" style="animation-delay:'+(j*.15)+'s;transform-origin:'+cx+'px '+(m[3]+30)+'px"><rect x="'+m[2]+'" y="'+m[3]+'" width="'+m[4]+'" height="62" rx="12" fill="'+m[5]+'"/><text x="'+cx+'" y="'+(m[3]+28)+'" text-anchor="middle" font-size="20" font-weight="700" font-family="Sarabun" fill="#fff">'+m[0]+'</text><text x="'+cx+'" y="'+(m[3]+50)+'" text-anchor="middle" font-size="14" font-family="Sarabun" fill="#fff">'+m[1]+'</text></g>'});
  $("mvc").innerHTML=s}
-Deck.onEnter(15,mvc);mvc();
+Deck.onEnter(19,mvc);mvc();
 // 16 eras
 var ER=["<h3>Web 1.0 อ่านอย่างเดียว</h3><p>หน้าเว็บคงที่ (Static) เจ้าของเว็บเป็นผู้สร้างเนื้อหา ผู้ใช้อ่านได้อย่างเดียว เช่น เว็บแนะนำองค์กรยุคแรก</p>","<h3>Web 2.0 อ่านและเขียน</h3><p>ผู้ใช้สร้างเนื้อหาเอง โซเชียลมีเดีย บล็อก วิกิ Ajax ทำให้เว็บโต้ตอบได้เหมือนแอป</p>","<h3>Web 3.0 เว็บเชิงความหมาย</h3><p>ข้อมูลมีความหมายที่เครื่องเข้าใจ (Semantic Web) ผสาน AI เชื่อมต่อทุกที่ และแนวคิดเครือข่ายกระจายอำนาจ</p>","<h3>Web 4.0 ยุคเอเจนต์ AI</h3><p>ระบบ AI ทำงานแทนผู้ใช้ได้หลายขั้นตอน เช่น ค้นหา เปรียบเทียบ และทำรายการให้ นักพัฒนาต้องออกแบบเว็บให้ทั้งคนและ AI ใช้ได้อย่างปลอดภัย</p>"];
 function era(k){[].forEach.call(document.querySelectorAll(".era"),function(e){e.classList.toggle("on",+e.dataset.e===k)});$("eraTxt").innerHTML=ER[k]}
@@ -388,6 +483,39 @@ $("gitBtn").onclick=function(){if(gs<3){gs++;gitDraw()}};$("gitReset").onclick=f
 function pd(){var b=[].slice.call(document.querySelectorAll("#pdpa input")),n=b.filter(function(x){return x.checked}).length;$("pdpaM").style.width=(n/b.length*100)+"%";$("pdpaT").innerHTML=n===b.length?'<b style="color:#059669">ครบทุกข้อ พร้อมเปิดใช้งาน</b>':"ผ่าน "+n+" จาก "+b.length+" ข้อ"}
 [].forEach.call(document.querySelectorAll("#pdpa input"),function(x){x.onchange=pd});pd();
 Deck.onEnter(3,function(){});
+})();
+</script>
+<script>
+(function(){
+// 2.9 Bootstrap
+var bsB=document.getElementById('n2_bsBtn'),bsC=document.getElementById('n2_bsCode');
+var BS={primary:'btn btn-primary',success:'btn btn-success',danger:'btn btn-danger',outline:'btn btn-outline-primary'};
+function bs(v){bsB.className='n2bs '+v;bsC.textContent='<button class="'+BS[v]+'">\n  สมัครเรียน\n</button>'}
+[].forEach.call(document.querySelectorAll('#n2_bsTabs button'),function(b){b.onclick=function(){[].forEach.call(b.parentNode.children,function(x){x.classList.toggle('on',x===b)});bs(b.dataset.v)}});bs('primary');
+// 2.10 Responsive
+var w=document.getElementById('n2_w'),pg=document.getElementById('n2_page'),mq=document.getElementById('n2_mq'),wv=document.getElementById('n2_wv');
+function rw(){var v=+w.value,c,t,dev;if(v<480){c=1;dev='มือถือ';t='/* ค่าเริ่มต้น (Mobile First) */\n.cols { grid-template-columns: 1fr; }'}
+ else if(v<640){c=2;dev='แท็บเล็ต';t='@media (min-width: 480px) {\n  .cols { grid-template-columns: 1fr 1fr; }\n}'}
+ else{c=3;dev='เดสก์ท็อป';t='@media (min-width: 640px) {\n  .cols { grid-template-columns: repeat(3, 1fr); }\n}'}
+ pg.style.width=v+'px';pg.querySelector('.cols').style.gridTemplateColumns='repeat('+c+',1fr)';wv.textContent=v+'px ('+dev+')';mq.textContent=t}
+w.oninput=rw;rw();
+// 2.12 jQuery
+var JQ={p:['$("p").hide();','document.querySelectorAll("p")\n  .forEach((e) => (e.hidden = true));',function(a){a.forEach(function(e){e.hidden=true})},'p:not(.muted)'],
+cls:['$(".test").hide();','document.querySelectorAll(".test")\n  .forEach((e) => (e.hidden = true));',null,'.test'],
+id:['$("#test").hide();','document.querySelector("#test").hidden = true;',null,'[data-id=test]'],
+show:['$("p").show();','document.querySelectorAll("p")\n  .forEach((e) => (e.hidden = false));',null,'*']};
+var area=document.querySelector('.n2jq'),jc=document.getElementById('n2_jqCode');
+function jq(k){var d=JQ[k],ps=[].slice.call(area.querySelectorAll('p:not(.muted)'));ps.forEach(function(e){e.hidden=false});
+ if(k!=='show')[].forEach.call(area.querySelectorAll(d[3]),function(e){if(!e.classList.contains('muted'))e.hidden=true});
+ jc.textContent='// jQuery\n'+d[0]+'\n\n// JavaScript มาตรฐาน\n'+d[1]}
+[].forEach.call(document.querySelectorAll('#n2_jqTabs button'),function(b){b.onclick=function(){[].forEach.call(b.parentNode.children,function(x){x.classList.toggle('on',x===b)});jq(b.dataset.k)}});
+jc.textContent='// เลือกตัวอย่างด้านบน แล้วดูผลทางขวา';
+// 2.14 XML
+var X={xml:['<?xml version="1.0" encoding="UTF-8"?>\n<students>\n  <student id="6501">\n    <name>สมชาย ใจดี</name>\n    <major>เทคโนโลยีสารสนเทศ</major>\n    <gpa>3.45</gpa>\n  </student>\n</students>','<h3>XML: เก็บและแลกเปลี่ยนข้อมูล</h3><ul class="b"><li>ตั้งชื่อแท็กเองได้ เช่น &lt;student&gt; บอกทั้งข้อมูลและโครงสร้าง</li><li>ทุกแท็กต้องมีแท็กปิด และตัวพิมพ์เล็กใหญ่มีผล</li><li>แสดงผลเองไม่ได้ ต้องใช้ร่วมกับ XSL, CSS หรือภาษาฝั่งเซิร์ฟเวอร์อย่าง PHP</li><li>ไฟล์นามสกุล .xml สร้างด้วย Text Editor ทั่วไป</li></ul>'],
+json:['{\n  "students": [\n    {\n      "id": 6501,\n      "name": "สมชาย ใจดี",\n      "major": "เทคโนโลยีสารสนเทศ",\n      "gpa": 3.45\n    }\n  ]\n}','<h3>JSON: ทางเลือกที่นิยมกว่าในปัจจุบัน</h3><ul class="b"><li>ข้อมูลเดียวกันแต่สั้นกว่าและอ่านง่ายกว่า</li><li>JavaScript แปลงเป็นออบเจกต์ได้ทันทีด้วย JSON.parse()</li><li>เป็นรูปแบบหลักของ REST API (หัวข้อ 2.11 และ 2.22)</li></ul>'],
+html:['<table>\n  <tr><th>รหัส</th><th>ชื่อ</th><th>เกรดเฉลี่ย</th></tr>\n  <tr><td>6501</td><td>สมชาย ใจดี</td>\n      <td><b>3.45</b></td></tr>\n</table>','<h3>HTML: แสดงผลบนหน้าเว็บ</h3><ul class="b"><li>แท็กกำหนดตายตัวโดย W3C/WHATWG เช่น &lt;table&gt; &lt;b&gt;</li><li>บอกว่าจะแสดงอย่างไร แต่ไม่บอกว่า 3.45 คือเกรดเฉลี่ย</li><li>จึงใช้ XML หรือ JSON รับส่งข้อมูล แล้วใช้ HTML แสดงผล</li></ul>']};
+function xs(k){document.getElementById('n2_xCode').textContent=X[k][0];document.getElementById('n2_xTxt').innerHTML=X[k][1]}
+[].forEach.call(document.querySelectorAll('#n2_xTabs button'),function(b){b.onclick=function(){[].forEach.call(b.parentNode.children,function(x){x.classList.toggle('on',x===b)});xs(b.dataset.x)}});xs('xml');
 })();
 </script>
 </body>

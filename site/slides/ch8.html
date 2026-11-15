@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="สไลด์บทที่ 8 PHP กับฐานข้อมูล MySQLi รายวิชา 07-034-210 พร้อมตัวอย่างจำลองที่กดลองได้">
 <meta name="theme-color" content="#1e1b4b">
-<title>สไลด์บทที่ 8 PHP กับ MySQLi · การเขียนโปรแกรมบนเว็บ</title>
+<title>สไลด์บทที่ 8 พื้นฐาน MySQLi · การเขียนโปรแกรมบนเว็บ</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%234338ca'/%3E%3Cpath d='M26 20 14 32l12 12M38 20l12 12-12 12' fill='none' stroke='%23fff' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="deck.css">
 <style>
@@ -198,6 +198,25 @@ move_uploaded_file($f['tmp_name'],
     </div>
     <div><div class="steps" id="upSteps"></div><div class="res" id="upRes" style="margin-top:10px"></div></div>
   </div>
+</section>
+
+<section class="slide" data-title="8.11 Form Login">
+  <p class="kicker">8.11 การทำ Form Login · ระบบล็อกอินแยกสิทธิ์ด้วย Session</p>
+  <h2>ล็อกอินแล้วพาไปหน้าตามสิทธิ์ ADMIN หรือ USER</h2>
+  <div class="grid2" style="grid-template-columns:380px 1fr;align-items:start;gap:28px">
+    <div class="card">
+      <h3 style="font-size:22px">login.php (จำลอง)</h3>
+      <label for="n8_u" style="font-size:18px">Username</label><input type="text" id="n8_u" autocomplete="off" style="width:100%;margin:4px 0 10px">
+      <label for="n8_p" style="font-size:18px">Password</label><input type="password" id="n8_p" autocomplete="off" style="width:100%;margin:4px 0 12px;font:inherit;font-size:18px;padding:8px 10px;border:1px solid var(--line);border-radius:10px">
+      <button class="btn" id="n8_go">Login</button>
+      <p class="muted" style="font-size:15px;margin-top:10px">ผู้ใช้ตัวอย่างจาก seed_member.php ในเล่ม: win / win123 (USER) · chai / chai123 (ADMIN)</p>
+    </div>
+    <div>
+      <div class="pipe" id="n8_pipe" style="margin-top:0"><div class="st">login.php</div><div class="st">check_login.php</div><div class="st">Session</div><div class="st" id="n8_dest">admin / user</div></div>
+      <div class="code" id="n8_out" style="margin-top:14px;font-size:15px;white-space:pre-wrap;height:270px"></div>
+    </div>
+  </div>
+  <p class="muted" style="font-size:16px;margin-top:8px">จำลองในเบราว์เซอร์ ไม่ได้เชื่อมฐานข้อมูลจริง · ไฟล์ครบชุดในเล่ม: login, check_login, admin_page, user_page, edit_profile, save_profile, logout</p>
 </section>
 
 <section class="slide" data-title="8.12 SQL Injection">
@@ -418,6 +437,21 @@ var found=0;function bugs(){found=0;$("bugTxt").innerHTML='<h3>พบแล้�
  $("bugs").innerHTML=BG.map(function(r,k){return '<div data-k="'+k+'">'+esc(r[0])+'</div>'}).join("");
  all("#bugs div").forEach(function(dv){dv.onclick=function(){if(dv.classList.contains("ok"))return;var r=BG[dv.dataset.k];if(r[1]){dv.classList.add("ok");found++;$("bugN").textContent=found;$("bugTxt").insertAdjacentHTML("beforeend",'<p style="font-size:16px;margin-top:6px">✓ '+esc(r[1])+'</p>');if(found===5)$("bugTxt").insertAdjacentHTML("beforeend",'<p style="font-size:17px;margin-top:8px;color:#059669"><b>ครบแล้ว!</b> เทียบกับผลที่ AI ตรวจ ว่าเจอครบหรือไม่</p>')}else{dv.classList.add("no");setTimeout(function(){dv.classList.remove("no")},600)}}})}
 $("bugReset").onclick=bugs;bugs();
+})();
+</script>
+<script>
+(function(){
+var U={win:{pw:'win123',id:'001',st:'USER',name:'Napat Srisuk'},chai:{pw:'chai123',id:'002',st:'ADMIN',name:'Kanya Thongdee'}};
+var out=document.getElementById('n8_out'),sts=document.querySelectorAll('#n8_pipe .st'),dest=document.getElementById('n8_dest');
+var CORE='// check_login.php (ส่วนสำคัญ)\n$stmt = mysqli_prepare($conn,\n  "SELECT UserID, Password, Status FROM member WHERE Username = ?");\nmysqli_stmt_bind_param($stmt, "s", $username);\n...\nif (!$row || !password_verify($password, $row["Password"])) {\n  echo "Username and Password Incorrect!";\n} else {\n  session_regenerate_id(true);\n  $_SESSION["UserID"] = $row["UserID"];\n  $_SESSION["Status"] = $row["Status"];\n  header("location:" . ($row["Status"] == "ADMIN"\n    ? "admin_page.php" : "user_page.php"));\n}';
+function lit(n){[].forEach.call(sts,function(s,k){s.classList.toggle('lit',k<n)})}
+out.textContent=CORE;dest.textContent='admin / user';
+document.getElementById('n8_go').onclick=function(){
+ var u=document.getElementById('n8_u').value.trim(),p=document.getElementById('n8_p').value,r=U[u];
+ lit(1);setTimeout(function(){lit(2);
+  if(!r||r.pw!==p){out.textContent='POST check_login.php\n→ ค้นหา Username ด้วย Prepared Statement\n→ password_verify() = false\n\nUsername and Password Incorrect!';dest.textContent='admin / user';return}
+  setTimeout(function(){lit(3);setTimeout(function(){var page=r.st==='ADMIN'?'admin_page.php':'user_page.php';dest.textContent=page;lit(4);
+   out.textContent='POST check_login.php\n→ password_verify() = true\n→ session_regenerate_id(true)\n$_SESSION["UserID"] = "'+r.id+'"\n$_SESSION["Status"] = "'+r.st+'"\n→ header("location:'+page+'")\n\nWelcome to '+(r.st==='ADMIN'?'Admin':'User')+' Page!\nUsername: '+u+'\nName: '+r.name+'\n[Edit] [Logout]'},400)},400)},400)};
 })();
 </script>
 </body>
