@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="ตัวอย่างการทำใบงานที่ 10: ตั้งค่า DNS, อัปโหลดเว็บและฐานข้อมูลด้วย FileZilla, ตรวจ HTTPS และวิเคราะห์ผล Google Lighthouse">
+<meta name="theme-color" content="#4338ca">
+<title>ตัวอย่างใบงานที่ 10 · การเขียนโปรแกรมบนเว็บ</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%234338ca'/%3E%3Cpath d='M26 20 14 32l12 12M38 20l12 12-12 12' fill='none' stroke='%23fff' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preload" href="../assets/fonts/Sarabun-400-thai.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css">
+<style>
+.wsx{display:grid;gap:52px;padding-block:28px 24px;font-size:1.05rem;line-height:1.75;
+  --term-bg:#0f1226;--term-ink:#e8eaf8;--term-dim:#7b84aa;--ok-bg:#1f7a4a}
+.wsx p{margin:0;max-width:74ch}
+.wsx section{display:grid;gap:18px;scroll-margin-top:84px;min-width:0}
+.wsx h2{margin:0;font-size:clamp(1.4rem,3vw,1.75rem)}
+.wsx h3{margin:8px 0 0;font-size:1.18rem}
+.wsx kbd{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:.82em;padding:1px 6px;border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;background:var(--surface)}
+.wsx .x-muted{color:var(--muted);font-size:.95rem}
+.wsx .x-intro{display:grid;gap:16px}
+.wsx .x-toc{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:0;padding:0}
+.wsx .x-toc a{display:inline-flex;gap:8px;align-items:baseline;padding:6px 14px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--ink);text-decoration:none;font-size:.95rem}
+.wsx .x-toc b{color:var(--brand);font-family:"JetBrains Mono",monospace;font-weight:600;font-size:.85em}
+.wsx .x-head{display:flex;align-items:center;gap:14px;border-top:2px solid var(--ink);padding-top:16px}
+.wsx .x-num{font-family:"JetBrains Mono",monospace;font-weight:600;color:var(--brand-ink);background:var(--brand);padding:2px 10px;border-radius:8px;font-size:.95rem}
+.wsx .x-steps{margin:0;padding-left:1.4em;display:grid;gap:6px}
+.wsx .x-grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:20px;align-items:start}
+.wsx .x-grid2>*{min-width:0}
+.wsx .x-os{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px;display:grid;gap:10px}
+.wsx .x-os h3{margin:0}
+.wsx .x-checks{display:grid;gap:8px}
+.wsx .x-checks ul{margin:0;padding-left:1.2em;display:grid;gap:6px}
+.wsx .x-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.wsx .x-table{min-width:640px;background:var(--surface);border:1px solid var(--line)}
+.wsx .x-table th,.wsx .x-table td{border:1px solid var(--line)}
+.wsx .x-table code{font-size:.85em;overflow-wrap:anywhere}
+.wsx .x-shots{background:var(--soft);border-radius:12px;padding:12px 18px;display:grid;gap:4px}
+.wsx .x-shots b{color:var(--brand)}
+.wsx .x-shots ul{margin:0;padding-left:1.2em}
+.wsx .x-trouble{border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.wsx .x-trouble summary{cursor:pointer;padding:12px 18px;font-weight:700}
+.wsx .x-trouble dl{margin:0;padding:0 18px 14px;display:grid;gap:12px}
+.wsx .x-trouble dt{font-family:"JetBrains Mono",monospace;font-size:.88rem;color:var(--ink);font-weight:600}
+.wsx .x-trouble dd{margin:2px 0 0;color:var(--muted)}
+.wsx .x-callout{background:var(--warn-bg);color:var(--warn-ink);border-left:4px solid var(--accent);border-radius:10px;padding:12px 16px}
+.wsx .x-callout code{background:none}
+/* terminal + tree (always dark, like a real terminal) */
+.wsx .x-term{background:var(--term-bg);color:var(--term-ink);border-radius:12px;overflow:hidden;min-width:0}
+.wsx .x-term-bar{display:flex;gap:6px;align-items:center;padding:8px 12px;background:#181c38;font-size:.8rem;color:var(--term-dim)}
+.wsx .x-term-bar i{width:10px;height:10px;border-radius:50%;background:#3a3f63;display:inline-block}
+.wsx .x-term-bar span{margin-left:8px}
+.wsx .x-term pre{color:var(--term-ink);font-size:13.5px;white-space:pre;overflow-x:auto}
+.wsx .x-term b{color:#8be9a8;font-weight:600}
+.wsx .x-term .c{color:var(--term-dim)}
+.wsx .x-tree{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow-x:auto}
+.wsx .x-tree pre{color:var(--ink);font-size:14px;white-space:pre}
+.wsx .x-tree b{color:var(--brand)}
+.wsx .x-tree span{color:var(--muted)}
+/* mock UIs */
+.wsx .x-mock{border-radius:12px;overflow:hidden;font-family:"Segoe UI",system-ui,sans-serif;font-size:13px}
+.wsx .x-vsc{background:#1f1f1f;color:#ccc;border:1px solid #333}
+.wsx .x-vsc-hd{padding:10px 14px;font-size:11px;letter-spacing:.06em;color:#9a9a9a}
+.wsx .x-ext{display:grid;grid-template-columns:40px 1fr auto;gap:10px;align-items:center;padding:8px 14px}
+.wsx .x-ext:nth-child(2){background:#04395e}
+.wsx .x-ext b{display:block;color:#eee;font-weight:600}
+.wsx .x-ext small{color:#9a9a9a}
+.wsx .x-ext em{font-style:normal;color:#73c991}
+.wsx .x-ico{width:40px;height:40px;border-radius:6px;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px}
+.wsx .x-vsc-status{display:flex;gap:16px;justify-content:flex-end;background:#007acc;color:#fff;padding:3px 12px;font-size:12px;margin-top:10px}
+.wsx .x-vsc-status span:first-child{margin-right:auto}
+.wsx .x-xampp{min-width:520px;background:#f3f3f3;color:#222;border:1px solid #c8c8c8}
+.wsx .x-xampp-hd{background:#fb7a24;color:#fff;font-weight:700;padding:8px 14px}
+.wsx .x-xampp table{width:100%;font-size:13px;background:#fff}
+.wsx .x-xampp th{background:#e8e8e8;color:#222;font-weight:600}
+.wsx .x-xampp th,.wsx .x-xampp td{border:1px solid #d6d6d6;padding:6px 10px}
+.wsx .x-xampp td{background:#fff;color:#222}
+.wsx .x-xampp tr.on td:first-child{background:#9be29b;font-weight:600}
+.wsx .x-xampp td span{display:inline-block;border:1px solid #aaa;border-radius:3px;padding:0 8px;margin-right:6px;background:#f7f7f7}
+.wsx .x-log{font-family:"JetBrains Mono",monospace;font-size:12px;padding:8px 14px;color:#1a5fb4;background:#fff;border-top:1px solid #d6d6d6}
+
+.wsx .x-head{flex-wrap:wrap}
+.wsx .x-part{margin-left:auto;font-size:.85rem;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:2px 12px}
+.wsx .x-file{margin:6px 0 -10px;font-family:"JetBrains Mono",monospace;font-size:.85rem;color:var(--brand);font-weight:600}
+.wsx .x-plain{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.wsx .x-plain li{display:grid;grid-template-columns:96px 1fr;gap:10px;align-items:baseline}
+.wsx .x-wk{font-size:.8rem;font-weight:700;color:var(--brand);background:var(--soft);border-radius:6px;padding:1px 8px;text-align:center}
+.wsx .x-plain-dots{margin:0;padding-left:1.2em;display:grid;gap:6px}
+.wsx .x-sem{display:grid;gap:6px;font-family:"JetBrains Mono",monospace;font-size:12.5px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px}
+.wsx .x-sem div{border:1.5px solid var(--line);border-radius:6px;padding:6px 8px;color:var(--ink)}
+.wsx .x-sem .s-hd,.wsx .x-sem .s-ft{background:var(--s1-soft);border-color:var(--s1)}
+.wsx .x-sem .s-nav{background:var(--s2-soft);border-color:var(--s2)}
+.wsx .x-sem .s-row{display:grid;grid-template-columns:2fr 1fr;gap:6px;border:0;padding:0}
+.wsx .x-sem .s-main{background:var(--s3-soft);border-color:var(--s3);display:grid;gap:6px}
+.wsx .x-sem .s-art{background:var(--surface);display:grid;gap:5px}
+.wsx .x-sem .s-sec,.wsx .x-sem .s-sub{border-style:dashed;font-size:11.5px}
+.wsx .x-sem .s-aside{background:var(--s4-soft);border-color:var(--s4)}
+
+
+.wsx .x-wrap pre{white-space:pre-wrap;overflow-wrap:anywhere}
+
+.wsx .x-wrap pre{white-space:pre-wrap;overflow-wrap:anywhere}
+.wsx .x-preview{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface2)}
+.wsx .x-pv-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 12px;border-bottom:1px solid var(--line);background:var(--surface)}
+.wsx .x-pv-bar button{font:inherit;font-size:.9rem;padding:4px 12px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.wsx .x-pv-bar button[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
+.wsx .x-pv-sep{width:1px;height:22px;background:var(--line);margin:0 4px}
+.wsx .x-pv-bar .pvw{margin-left:auto;font-family:"JetBrains Mono",monospace;font-size:.85rem;color:var(--muted)}
+.wsx .x-pv-stage{overflow-x:auto;padding:12px}
+.wsx .x-pv-stage iframe{display:block;margin:0 auto;border:1px solid var(--line);border-radius:8px;background:#fff;max-width:none;transition:width .25s}
+</style>
+<script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+
+</head>
+<body class="ch-page">
+<a class="skip" href="#main">ข้ามไปยังเนื้อหา</a>
+<header class="top"><div class="wrap nav">
+<a class="brand" href="../index.html" aria-label="หน้าแรก การเขียนโปรแกรมบนเว็บ"><span class="logo" aria-hidden="true">&lt;/&gt;</span><span class="bt"><b>การเขียนโปรแกรมบนเว็บ</b><small>07-034-210</small></span></a>
+<button id="menuBtn" class="iconbtn menu-btn" type="button" aria-expanded="false" aria-controls="menu" aria-label="เปิดเมนู"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v2H3V6Zm0 5h18v2H3v-2Zm0 5h18v2H3v-2Z"/></svg></button>
+<nav id="menu" aria-label="เมนูหลัก">
+<a href="../chapters.html">บทเรียน</a><a href="../worksheets.html" aria-current="page">ใบงาน</a><a href="../assessment.html">เกณฑ์ประเมินผล</a><a href="../clo.html">ผลลัพธ์การเรียนรู้</a><a href="../start.html">เริ่มต้นใช้งาน</a><a href="../about.html">เกี่ยวกับรายวิชา</a>
+</nav>
+<button id="theme" class="iconbtn" type="button" aria-label="สลับโหมดมืดและสว่าง"><span class="i-moon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5Z"/></svg></span><span class="i-sun"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg></span></button>
+</div><div id="bar" class="bar" aria-hidden="true"></div></header>
+<main id="main">
+<div class="chead s4"><div class="wrap">
+<nav class="crumb" aria-label="เส้นทาง"><a href="../index.html">หน้าแรก</a><span>/</span><a href="../worksheets.html">ใบงาน</a><span>/</span><a href="ws10.html">ใบงานที่ 10</a><span>/</span><span aria-current="page">ตัวอย่าง</span></nav>
+<div class="chrow"><span class="badge b-s4 big" aria-hidden="true">LIVE</span><div><p class="kicker">ตัวอย่างการทำใบงานที่ 10</p><h1>นำเว็บไซต์ร้านไร่ภูคำขึ้นใช้งานจริง: โดเมน DNS อัปโหลด HTTPS และ Lighthouse</h1></div></div></div></div>
+<div class="wrap narrow"><div class="wsx">
+
+<header class="x-intro">
+  <p>ตัวอย่างนี้นำเว็บร้านสมมติ "ไร่ภูคำ" จากใบงานที่ 8 ขึ้นใช้งานจริง ตัวอย่าง DNS ใช้โดเมน <code>phukham.example</code> และ IP <code>203.0.113.10</code> ซึ่งเป็นชื่อและเลขที่สงวนไว้สำหรับเขียนเอกสาร (ใช้จริงไม่ได้) ส่วนการตรวจ HTTPS ใช้เซิร์ฟเวอร์ของรายวิชา fms.pnu.ac.th ซึ่งตรวจจริงแล้ว ข้อมูลบัญชี SFTP และฐานข้อมูลของนักศึกษาแต่ละคนอยู่ในภาคผนวก จ ของเอกสารประกอบการสอน</p>
+  <div class="x-grid2">
+    <div class="x-os"><p class="x-os-h">เส้นทางของเว็บไซต์</p>
+      <ul class="x-plain">
+        <li><span class="x-wk">ชื่อ</span><span>โดเมน phukham.example</span></li>
+        <li><span class="x-wk">DNS</span><span>A Record ชี้ไปที่ IP ของโฮสติ้ง</span></li>
+        <li><span class="x-wk">โฮสติ้ง</span><span>Apache + PHP + MySQL รับไฟล์ผ่าน SFTP</span></li>
+        <li><span class="x-wk">HTTPS</span><span>ใบรับรอง Let's Encrypt</span></li>
+      </ul></div>
+    <div class="x-tree"><pre><b>public_html/</b>      <span>← โฟลเดอร์เว็บบนโฮสติ้ง</span>
+├── .htaccess     <span>← 10.3 บังคับ HTTPS</span>
+├── login.php
+├── products.php
+├── …
+├── <b>includes/</b>
+│   └── db.php    <span>← แก้เป็นค่าของโฮสติ้ง</span>
+└── <b>uploads/products/</b> <span>← ต้องเขียนได้</span></pre></div>
+  </div>
+  <ul class="x-toc">
+    <li><a href="#e1"><b>10.1</b>โดเมน + DNS</a></li>
+    <li><a href="#e2"><b>10.2</b>อัปโหลด + ฐานข้อมูล</a></li>
+    <li><a href="#e3"><b>10.3</b>HTTPS</a></li>
+    <li><a href="#e4"><b>10.4</b>Lighthouse</a></li>
+    <li><a href="#e5"><b>สรุป</b>สิ่งที่ต้องส่ง</a></li>
+  </ul>
+</header>
+
+<section id="e1">
+  <div class="x-head"><span class="x-num">10.1</span><h2>วางแผนโดเมนและตั้งค่า DNS</h2></div>
+  <h3>เลือกชื่อโดเมน</h3>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>เกณฑ์</th><th>ตัวอย่างที่ดี</th><th>ควรเลี่ยง</th></tr></thead><tbody><tr><td>สั้น จำง่าย สะกดตามเสียงได้</td><td>phukham.coffee</td><td>phukhamcoffeeroasterschiangrai.com</td></tr><tr><td>ไม่มีขีดหรือตัวเลขที่ต้องอธิบาย</td><td>phukham.co.th</td><td>phu-kham-2569.com</td></tr><tr><td>ตรงกับชื่อแบรนด์และบัญชีโซเชียล</td><td>@phukham ทุกช่องทาง</td><td>ชื่อเว็บกับเพจคนละชื่อ</td></tr><tr><td>ไม่ซ้ำเครื่องหมายการค้าของผู้อื่น</td><td>ตรวจที่กรมทรัพย์สินทางปัญญาก่อนจด</td><td>ชื่อคล้ายแบรนด์ดัง</td></tr></tbody></table></div>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>นามสกุล</th><th>เหมาะกับ</th><th>เงื่อนไขโดยสรุป</th></tr></thead><tbody><tr><td><code>.com</code></td><td>ธุรกิจทั่วไป ลูกค้าหลายประเทศ</td><td>ใครก็จดได้</td></tr><tr><td><code>.co.th</code></td><td>บริษัทที่จดทะเบียนในไทย</td><td>ต้องใช้เอกสารนิติบุคคลหรือเครื่องหมายการค้า จดผ่านผู้รับจดที่ THNIC รับรอง</td></tr><tr><td><code>.in.th</code></td><td>บุคคลทั่วไปหรือโครงการ</td><td>จดได้โดยไม่ต้องมีบริษัท</td></tr><tr><td><code>.ac.th</code> <code>.go.th</code></td><td>สถานศึกษา หน่วยงานรัฐ</td><td>สำหรับหน่วยงานประเภทนั้นเท่านั้น</td></tr></tbody></table></div>
+  <p class="x-muted">ร้านในตัวอย่างเป็นบริษัท จึงเลือก .co.th เป็นชื่อหลัก และจด .com ไว้ด้วยเพื่อกันคนอื่นจดชื่อเดียวกัน ตรวจเงื่อนไขล่าสุดกับผู้รับจดก่อนจดจริงเสมอ</p>
+
+  <h3>ระเบียน DNS ที่ต้องตั้ง</h3>
+  <p>หลังซื้อโฮสติ้ง ผู้ให้บริการจะแจ้ง IP ของเซิร์ฟเวอร์ (ตัวอย่างนี้ 203.0.113.10) แล้วเข้าหน้าจัดการ DNS ของผู้รับจดโดเมน เพิ่มระเบียนตามตาราง</p>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>ชนิด</th><th>ชื่อ (Name/Host)</th><th>ค่า (Value/Points to)</th><th>TTL</th><th>ความหมาย</th></tr></thead><tbody><tr><td><code>A</code></td><td><code>@</code></td><td><code>203.0.113.10</code></td><td>3600</td><td>phukham.example ไปที่ IPv4 ของโฮสติ้ง (@ คือตัวโดเมนเอง)</td></tr><tr><td><code>CNAME</code></td><td><code>www</code></td><td><code>phukham.example.</code></td><td>3600</td><td>www.phukham.example เป็นชื่อเรียกอีกชื่อของโดเมนหลัก จึงตาม A Record ไปเอง</td></tr><tr><td><code>CNAME</code></td><td><code>shop</code></td><td><code>phukham.myshopify.com.</code> (ตัวอย่าง)</td><td>3600</td><td>ชี้ซับโดเมนไปที่บริการภายนอกที่ให้ชื่อมา</td></tr></tbody></table></div>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th></th><th>A Record</th><th>CNAME</th></tr></thead><tbody><tr><td>ชี้ไปที่</td><td>IP Address (ตัวเลข)</td><td>ชื่อโดเมนอื่น</td></tr><tr><td>ใช้เมื่อ</td><td>รู้ IP ของเซิร์ฟเวอร์ และ IP ไม่เปลี่ยนบ่อย</td><td>ผู้ให้บริการให้เป็นชื่อ เช่น GitHub Pages, CDN</td></tr><tr><td>ใช้กับตัวโดเมนหลัก (@)</td><td>ได้</td><td>ไม่ได้ตามมาตรฐาน DNS เพราะชื่อที่มี CNAME ต้องไม่มีระเบียนอื่น แต่โดเมนหลักต้องมี NS และ SOA</td></tr></tbody></table></div>
+  <p class="x-muted">TTL (Time To Live) คือจำนวนวินาทีที่เครื่องอื่นจำค่าเดิมไว้ 3600 คือ 1 ชั่วโมง การเปลี่ยน DNS จึงอาจยังไม่เห็นผลทันที หนังสือแนะนำให้เผื่อเวลา 24–48 ชั่วโมงเมื่อเปลี่ยน Name Server ก่อนย้ายเซิร์ฟเวอร์ ให้ลด TTL ลงก่อนล่วงหน้า</p>
+  <h3>ตรวจผลด้วยคำสั่ง</h3>
+  <div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code># macOS / Linux
+dig phukham.example A
+dig www.phukham.example CNAME
+
+# Windows (Command Prompt หรือ PowerShell)
+nslookup phukham.example
+nslookup -type=CNAME www.phukham.example</code></pre></div>
+  <p>กรณีเผยแพร่ด้วย GitHub Pages (หัวข้อ 10.3.2) ให้ตั้ง CNAME ของ www ไปที่ <code>ชื่อผู้ใช้.github.io</code> และ A Record ของโดเมนหลักไปที่ IP ของ GitHub Pages ทั้ง 4 ตัว ซึ่งตรวจได้ด้วยคำสั่ง dig (รันจริงเมื่อ 19 พ.ย. 2569):</p>
+  <div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>$ dig +noall +answer github.github.io A
+github.github.io.  2023  IN  A  185.199.109.153
+github.github.io.  2023  IN  A  185.199.111.153
+github.github.io.  2023  IN  A  185.199.110.153
+github.github.io.  2023  IN  A  185.199.108.153</code></pre></div>
+  <details class="x-trouble"><summary>ข้อผิดพลาดที่พบบ่อย</summary><dl><div><dt>เปิดโดเมนแล้วยังเป็นหน้าเว็บเก่าหรือหน้าที่จอดโดเมน</dt><dd>DNS ยังไม่กระจายครบ หรือเครื่องจำค่าเดิม ลองเปิดด้วยมือถือที่ปิด Wi-Fi หรือใช้ dig @1.1.1.1 เทียบ</dd></div><div><dt>ใส่ชื่อ www.phukham.example ในช่อง Name</dt><dd>ผู้ให้บริการส่วนใหญ่เติมชื่อโดเมนให้เอง จะกลายเป็น www.phukham.example.phukham.example ใส่แค่ www</dd></div><div><dt>ตั้ง CNAME ที่ @ แล้วบันทึกไม่ได้</dt><dd>ใช้ A Record ที่ @ แทน หรือใช้ระเบียน ALIAS/ANAME ถ้าผู้ให้บริการมี</dd></div></dl></details>
+  <div class="x-shots"><b>ภาพหน้าจอที่ต้องแนบ</b><ul><li>หน้าจัดการ DNS ที่มี A และ CNAME (ถ้าไม่มีโดเมนจริง ให้ส่งตาราง DNS ที่วางแผนไว้)</li><li>ผลคำสั่ง nslookup หรือ dig</li></ul></div>
+</section>
+
+<section id="e2">
+  <div class="x-head"><span class="x-num">10.2</span><h2>อัปโหลดเว็บไซต์และฐานข้อมูล</h2></div>
+  <h3>1. เตรียมไฟล์ก่อนอัปโหลด</h3>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>ตรวจ</th><th>เหตุผล</th></tr></thead><tbody><tr><td>ไม่อัปโหลด .git, node_modules, ไฟล์ .sql สำรอง, data/users.json</td><td>ไฟล์เหล่านี้ไม่ใช่ส่วนของเว็บ และบางไฟล์มีข้อมูลลับ</td></tr><tr><td>ชื่อไฟล์และโฟลเดอร์เป็นตัวพิมพ์เล็กทั้งหมด ตรงกับที่อ้างในโค้ด</td><td>เซิร์ฟเวอร์ Linux แยกตัวพิมพ์ใหญ่เล็ก ไฟล์ที่เปิดได้บน Windows อาจขึ้น 404 (ใบงานที่ 3)</td></tr><tr><td>ลิงก์ใช้ path สัมพัทธ์</td><td>เว็บอาจอยู่ในโฟลเดอร์ย่อยบนเซิร์ฟเวอร์</td></tr><tr><td>ปิด display_errors</td><td>ไม่ให้ข้อความผิดพลาดเปิดเผยโครงสร้างไฟล์และฐานข้อมูล</td></tr></tbody></table></div>
+  <h3>2. ส่งไฟล์ด้วย FileZilla (SFTP)</h3>
+  <ol class="x-steps">
+    <li>ติดตั้ง FileZilla Client จาก <a href="https://filezilla-project.org/" target="_blank" rel="noopener noreferrer">filezilla-project.org</a> (เลือกตัวติดตั้งที่ไม่มีโปรแกรมแถม)</li>
+    <li>File › Site Manager › New site · Protocol: <b>SFTP - SSH File Transfer Protocol</b> · Host: ชื่อเซิร์ฟเวอร์ · Port: 22 · Logon Type: Ask for password · User: ชื่อผู้ใช้ตามภาคผนวก จ หรือที่โฮสติ้งแจ้ง</li>
+    <li>กด Connect ครั้งแรกจะถามยืนยัน Host key ให้ตรวจลายนิ้วมือกับที่ผู้ดูแลแจ้งก่อนกด OK</li>
+    <li>ด้านซ้ายเป็นเครื่องเรา ด้านขวาเป็นเซิร์ฟเวอร์ เปิดโฟลเดอร์ปลายทาง (เช่น public_html หรือโฟลเดอร์ที่ภาคผนวก จ กำหนด) แล้วลากไฟล์จากซ้ายไปขวา</li>
+    <li>ดูแท็บ Failed transfers ด้านล่างว่าต้องเป็น 0</li>
+  </ol>
+  <p class="x-muted">เลือก SFTP ไม่ใช้ FTP ธรรมดา เพราะ FTP ส่งรหัสผ่านและไฟล์แบบไม่เข้ารหัส สิทธิ์ไฟล์ที่ใช้ทั่วไปบนโฮสติ้ง: โฟลเดอร์ 755 ไฟล์ 644 (คลิกขวา › File permissions ใน FileZilla) โฟลเดอร์ uploads ต้องให้เว็บเซิร์ฟเวอร์เขียนได้ ถ้าอัปโหลดรูปไม่ได้ให้สอบถามผู้ดูแลโฮสติ้งก่อนเปลี่ยนเป็น 777</p>
+  <h3>3. ย้ายฐานข้อมูล (หัวข้อ 10.3.1)</h3>
+  <ol class="x-steps">
+    <li>phpMyAdmin บนเครื่อง › เลือก phukham_shop › Export › Quick › SQL › Export</li>
+    <li>แผงควบคุมโฮสติ้ง › MySQL Databases: สร้างฐานข้อมูล สร้างผู้ใช้ และ Add User To Database ให้สิทธิ์</li>
+    <li>phpMyAdmin บนโฮสติ้ง › เลือกฐานข้อมูลที่สร้าง › Import › เลือกไฟล์ .sql › Import</li>
+    <li>แก้ includes/db.php บนเซิร์ฟเวอร์เป็นค่าของโฮสติ้ง</li>
+  </ol>
+  <p class="x-file">includes/db.php (บนโฮสติ้ง)</p><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;?php
+// includes/db.php บนโฮสติ้ง: ใช้ค่าที่ได้จากแผงควบคุมของโฮสติ้ง (หรือภาคผนวก จ สำหรับเซิร์ฟเวอร์ของรายวิชา)
+$dbHost = &#x27;localhost&#x27;;               // บางโฮสติ้งให้ชื่อเซิร์ฟเวอร์ฐานข้อมูลแยก
+$dbUser = &#x27;ชื่อผู้ใช้ฐานข้อมูลบนโฮสติ้ง&#x27;;  // มักมีคำนำหน้าตามบัญชี เช่น abc123_shop
+$dbPass = &#x27;รหัสผ่านที่ตั้งบนโฮสติ้ง&#x27;;     // ห้ามใช้ root และห้ามใช้รหัสผ่านว่าง
+$dbName = &#x27;ชื่อฐานข้อมูลบนโฮสติ้ง&#x27;;</code></pre></div>
+  <div class="x-callout"><b>ข้อผิดพลาดที่เจอบ่อยตอน Import:</b> ไฟล์ .sql ของใบงานที่ 8 ขึ้นต้นด้วย <code>CREATE DATABASE</code> และ <code>USE phukham_shop;</code> บนโฮสติ้งแบบแชร์ ผู้ใช้มักไม่มีสิทธิ์สร้างฐานข้อมูล และชื่อฐานข้อมูลมีคำนำหน้าตามบัญชี จึงขึ้น error <code>#1044 Access denied for user … to database</code> ให้ลบ 2 คำสั่งนี้ออกจากไฟล์ก่อน Import หรือ Export จาก phpMyAdmin ใหม่ (ไฟล์จากการ Export ปกติไม่มีคำสั่งเหล่านี้)</div>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>ทดสอบหลังอัปโหลด</th><th>ผลที่ควรได้</th></tr></thead><tbody><tr><td>เปิดหน้าแรกด้วยโดเมน</td><td>แสดงผลครบ ไม่มีรูปหรือ CSS หาย (DevTools › Network ไม่มี 404)</td></tr><tr><td>ล็อกอินด้วยบัญชีทดสอบ</td><td>เข้าได้ แปลว่าเชื่อมฐานข้อมูลสำเร็จ</td></tr><tr><td>เพิ่ม แก้ไข ลบ สินค้า และอัปโหลดรูป</td><td>ทำงานเหมือนบนเครื่อง</td></tr><tr><td>เปิด /sql/phukham_shop.sql หรือ /includes/db.php ตรง ๆ</td><td>ห้ามเห็นเนื้อไฟล์ (403 หรือหน้าว่าง)</td></tr></tbody></table></div>
+  <p class="x-muted">เว็บที่มีแค่ HTML, CSS และ JavaScript (ใบงานที่ 3–6) เผยแพร่ฟรีด้วย GitHub Pages ได้ตามหัวข้อ 10.3.2 แต่ใบงานที่ 7–9 ใช้ PHP และ MySQL ต้องใช้โฮสติ้ง</p>
+  <details class="x-trouble"><summary>ข้อผิดพลาดที่พบบ่อย</summary><dl><div><dt>500 Internal Server Error หลังอัปโหลด</dt><dd>ดู error log ในแผงควบคุม สาเหตุที่พบบ่อยคือ .htaccess ใช้คำสั่งที่โฮสติ้งไม่เปิดโมดูล หรือรุ่น PHP บนโฮสติ้งเก่ากว่าบนเครื่อง</dd></div><div><dt>หน้าเว็บขึ้นภาษาไทยเป็น ???</dt><dd>ตาราง Import มาไม่ใช่ utf8mb4 หรือลืม mysqli_set_charset</dd></div><div><dt>Connection timed out ใน FileZilla</dt><dd>ใช้ Port ผิด (SFTP คือ 22) หรือเครือข่ายที่ใช้อยู่ปิดพอร์ตนี้</dd></div></dl></details>
+  <div class="x-shots"><b>ภาพหน้าจอที่ต้องแนบ</b><ul><li>หน้าต่าง FileZilla ที่เชื่อมต่อแล้ว เห็นไฟล์ทั้งสองฝั่ง</li><li>phpMyAdmin บนโฮสติ้งหลัง Import สำเร็จ</li><li>หน้าเว็บที่เปิดด้วยโดเมนจริงและล็อกอินได้</li></ul></div>
+</section>
+
+<section id="e3">
+  <div class="x-head"><span class="x-num">10.3</span><h2>เปิดใช้ HTTPS</h2></div>
+  <h3>ติดตั้งใบรับรองฟรี</h3>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>วิธี</th><th>ทำอย่างไร</th><th>ข้อควรรู้</th></tr></thead><tbody><tr><td>Let's Encrypt ผ่านแผงควบคุม</td><td>cPanel: SSL/TLS Status › Run AutoSSL · DirectAdmin: SSL Certificates › Free & automatic certificate from Let's Encrypt</td><td>ใบรับรองมีอายุ 90 วัน ระบบต่ออายุให้อัตโนมัติ</td></tr><tr><td>Cloudflare</td><td>ย้าย Name Server ไป Cloudflare เปิด Proxy (เมฆสีส้ม) แล้วตั้ง SSL/TLS เป็น Full (strict)</td><td>ต้องมีใบรับรองบนเซิร์ฟเวอร์ด้วย ห้ามใช้โหมด Flexible คู่กับการบังคับ HTTPS ใน .htaccess เพราะจะเกิด ERR_TOO_MANY_REDIRECTS</td></tr></tbody></table></div>
+  <h3>ตรวจใบรับรองของเซิร์ฟเวอร์รายวิชา (รันจริง 19 พ.ย. 2569)</h3>
+  <div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>$ curl -s -o /dev/null -w &quot;%{http_code} -&gt; %{redirect_url}\n&quot; http://fms.pnu.ac.th/lessons/
+301 -&gt; https://fms.pnu.ac.th/lessons/
+
+$ echo | openssl s_client -connect fms.pnu.ac.th:443 -servername fms.pnu.ac.th 2&gt;/dev/null \
+    | openssl x509 -noout -subject -issuer -dates
+subject=CN=fms.pnu.ac.th
+issuer=C=US, O=Let&#x27;s Encrypt, CN=YE1
+notBefore=Oct 30 16:01:18 2026 GMT
+notAfter=Jan 28 16:01:17 2027 GMT</code></pre></div>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>ค่าที่ได้</th><th>อ่านว่า</th></tr></thead><tbody><tr><td>301 → https://…</td><td>เปิดด้วย http:// แล้วเซิร์ฟเวอร์ส่งต่อไป https:// อัตโนมัติ</td></tr><tr><td>subject=CN=fms.pnu.ac.th</td><td>ใบรับรองออกให้ชื่อนี้ ตรงกับโดเมนที่เปิด</td></tr><tr><td>issuer=Let's Encrypt</td><td>ใบรับรองฟรีจาก Let's Encrypt</td></tr><tr><td>30 ต.ค. 2569 – 28 ม.ค. 2570</td><td>อายุ 90 วันตามแบบของ Let's Encrypt</td></tr><tr><td>Protocol TLSv1.3</td><td>ใช้โปรโตคอลรุ่นล่าสุด</td></tr></tbody></table></div>
+  <p>ในเบราว์เซอร์: คลิกไอคอนหน้า URL › Connection is secure › Certificate is valid จะเห็นข้อมูลชุดเดียวกัน</p>
+  <h3>บังคับ HTTPS และปรับเซิร์ฟเวอร์ด้วย .htaccess</h3>
+  <p>ใช้เมื่อโฮสติ้งยังไม่ได้บังคับให้ ไฟล์นี้ทดสอบกับ Apache 2.4.66 แล้ว: เปิดด้วย http ได้ 301 ไป https, ไฟล์ CSS ส่งแบบ gzip และมี Cache-Control 7 วัน, ส่ง Security Headers ทั้ง 3 ตัว และเปิดไฟล์ .sql ได้ 403</p>
+  <p class="x-file">.htaccess</p><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code># .htaccess สำหรับเว็บไซต์ที่ขึ้นโฮสติ้งจริงแล้ว (Apache 2.4)
+
+# 1) บังคับใช้ HTTPS: ส่งทุกคำขอ http:// ไป https:// ด้วยรหัส 301
+RewriteEngine On
+RewriteCond %{HTTPS} !=on
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# 2) บีบอัดไฟล์ข้อความก่อนส่ง (ช่วยคะแนน Performance)
+&lt;IfModule mod_deflate.c&gt;
+  AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/json image/svg+xml
+&lt;/IfModule&gt;
+
+# 3) ให้เบราว์เซอร์เก็บไฟล์ไว้ใช้ซ้ำ (Browser Caching)
+&lt;IfModule mod_expires.c&gt;
+  ExpiresActive On
+  ExpiresByType image/webp &quot;access plus 1 month&quot;
+  ExpiresByType image/jpeg &quot;access plus 1 month&quot;
+  ExpiresByType image/png  &quot;access plus 1 month&quot;
+  ExpiresByType text/css   &quot;access plus 1 week&quot;
+  ExpiresByType text/javascript &quot;access plus 1 week&quot;
+&lt;/IfModule&gt;
+
+# 4) Security Headers (ช่วยคะแนน Best Practices)
+&lt;IfModule mod_headers.c&gt;
+  Header always set X-Content-Type-Options &quot;nosniff&quot;
+  Header always set X-Frame-Options &quot;SAMEORIGIN&quot;
+  Header always set Referrer-Policy &quot;strict-origin-when-cross-origin&quot;
+&lt;/IfModule&gt;
+
+# 5) ห้ามเปิดไฟล์ที่มีข้อมูลลับผ่านเว็บ
+&lt;FilesMatch &quot;(^\.env|\.sql|\.log|composer\.(json|lock))$&quot;&gt;
+  Require all denied
+&lt;/FilesMatch&gt;</code></pre></div>
+  <div class="x-callout"><b>Mixed Content:</b> หน้า https ที่ยังเรียกรูป CSS หรือสคริปต์ด้วย <code>http://</code> จะถูกเบราว์เซอร์บล็อกหรือแจ้งว่าไม่ปลอดภัย ค้นหาคำว่า <code>http://</code> ในโค้ดแล้วเปลี่ยนเป็น <code>https://</code> หรือ path สัมพัทธ์ ดูรายการที่ถูกบล็อกได้ใน DevTools › Console</div>
+  <div class="x-shots"><b>ภาพหน้าจอที่ต้องแนบ</b><ul><li>หน้าเว็บที่เปิดด้วย https:// และหน้าต่างรายละเอียดใบรับรอง</li><li>ผลเมื่อพิมพ์ http:// แล้วถูกส่งไป https:// (DevTools › Network เห็นรหัส 301)</li></ul></div>
+</section>
+
+<section id="e4">
+  <div class="x-head"><span class="x-num">10.4</span><h2>ตรวจประสิทธิภาพด้วย Google Lighthouse</h2></div>
+  <ol class="x-steps">
+    <li>เปิดเว็บที่ขึ้นโฮสติ้งแล้วในหน้าต่าง Incognito (ส่วนขยายของเบราว์เซอร์ทำให้คะแนนเพี้ยน)</li>
+    <li>F12 › แท็บ <b>Lighthouse</b> · Mode: Navigation · Device: <b>Mobile</b> · เลือกครบ 4 หมวด › Analyze page load</li>
+    <li>รัน 3 ครั้ง ใช้คะแนนกลาง (median) เพราะ Performance แกว่งตามเครือข่ายและเครื่อง</li>
+    <li>บันทึกรายงาน (เมนู ⋮ › Save as HTML) ก่อนแก้ แล้วแก้ทีละเรื่อง รันใหม่ เทียบผล</li>
+  </ol>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>คะแนน</th><th>สี</th><th>ความหมาย</th></tr></thead><tbody><tr><td>90–100</td><td>เขียว</td><td>ดี เป้าหมายของใบงาน</td></tr><tr><td>50–89</td><td>ส้ม</td><td>ต้องปรับปรุง</td></tr><tr><td>0–49</td><td>แดง</td><td>แย่</td></tr></tbody></table></div>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>ตัวชี้วัดใน Performance</th><th>เกณฑ์ดี</th><th>มักเกิดจาก</th></tr></thead><tbody><tr><td>LCP (Largest Contentful Paint)</td><td>ไม่เกิน 2.5 วินาที (หัวข้อ 10.6.1)</td><td>รูป Hero ใหญ่ ฟอนต์โหลดช้า</td></tr><tr><td>CLS (Cumulative Layout Shift)</td><td>ไม่เกิน 0.1</td><td>รูปไม่มี width/height หน้าเลื่อนตอนรูปโหลดเสร็จ</td></tr><tr><td>TBT (Total Blocking Time)</td><td>ไม่เกิน 200 มิลลิวินาที</td><td>JavaScript ทำงานนานตอนเปิดหน้า</td></tr></tbody></table></div>
+  <h3>ปัญหาที่พบบ่อยและวิธีแก้ (เชื่อมกับใบงานก่อนหน้า)</h3>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>หมวด</th><th>สิ่งที่ Lighthouse แจ้ง</th><th>วิธีแก้</th></tr></thead><tbody><tr><td>Performance</td><td>Properly size images / Serve images in next-gen formats</td><td>ย่อรูปให้กว้างไม่เกินที่แสดงจริง แปลงเป็น WebP</td></tr><tr><td>Performance</td><td>Image elements do not have explicit width and height</td><td>ใส่ width และ height ที่ img ทุกรูป (ใบงานที่ 3)</td></tr><tr><td>Performance</td><td>Defer offscreen images</td><td>ใส่ loading="lazy" ที่รูปที่อยู่ใต้หน้าจอแรก ห้ามใส่ที่รูป Hero</td></tr><tr><td>Performance</td><td>Enable text compression / Serve static assets with an efficient cache policy</td><td>ใช้ .htaccess ในข้อ 10.3</td></tr><tr><td>Performance</td><td>Eliminate render-blocking resources</td><td>ใส่ defer ที่ script และโหลดฟอนต์ด้วย display=swap (ใบงานที่ 4)</td></tr><tr><td>Accessibility</td><td>Image elements do not have [alt] attributes</td><td>ใส่ alt ทุกรูป (ใบงานที่ 3, 9)</td></tr><tr><td>Accessibility</td><td>Form elements do not have associated labels</td><td>label for คู่กับ id (ใบงานที่ 3)</td></tr><tr><td>Accessibility</td><td>Background and foreground colors do not have a sufficient contrast ratio</td><td>ปรับสีให้ได้อย่างน้อย 4.5:1 (ใบงานที่ 1, 5)</td></tr><tr><td>Best Practices</td><td>Does not use HTTPS / Mixed content / Browser errors were logged to the console</td><td>ข้อ 10.3 และแก้ error ใน Console</td></tr><tr><td>SEO</td><td>Document does not have a meta description</td><td>เพิ่ม &lt;meta name="description"&gt; (ใบงานที่ 9)</td></tr><tr><td>SEO</td><td>Links do not have descriptive text</td><td>เลิกใช้ "คลิกที่นี่" (ใบงานที่ 3)</td></tr></tbody></table></div>
+  <h3>ใช้ AI ช่วยอ่านรายงาน (หัวข้อ 10.6.1)</h3>
+  <div class="x-wrap"><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>Role: Web Performance Engineer
+Task: วิเคราะห์ผล Google Lighthouse (Mobile) ของเว็บไซต์ร้านค้าขนาดเล็กที่เขียนด้วย HTML, CSS, Bootstrap 5 และ PHP บนโฮสติ้ง Apache
+ข้อมูล: [วางคะแนน 4 ด้าน และรายการใน Opportunities / Diagnostics / Failed audits ตรงนี้]
+Output:
+- จัดลำดับปัญหา 5 ข้อที่แก้แล้วได้ผลมากที่สุด
+- บอกว่าแก้ที่ไฟล์ไหน (HTML, CSS, รูปภาพ, .htaccess) พร้อมโค้ดตัวอย่าง
+- ห้ามแนะนำปลั๊กอินหรือบริการเสียเงิน
+- ถ้าข้อไหนไม่แน่ใจ ให้บอกว่าต้องตรวจอะไรเพิ่ม</code></pre></div></div>
+  <p class="x-muted">ส่งเฉพาะคะแนนและชื่อรายการที่ไม่ผ่าน ห้ามส่ง URL หน้าผู้ดูแล รหัสผ่าน หรือไฟล์ log ที่มีข้อมูลส่วนบุคคลของผู้ใช้ (หัวข้อ 10.6.2) และทดสอบทุกคำแนะนำของ AI ด้วยการรัน Lighthouse ซ้ำ</p>
+  <h3>ตารางบันทึกผล (ให้นักศึกษากรอกจากผลจริง)</h3>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>หมวด</th><th>ก่อนแก้ (median)</th><th>สิ่งที่แก้</th><th>หลังแก้ (median)</th></tr></thead><tbody><tr><td>Performance</td><td>…</td><td>…</td><td>…</td></tr><tr><td>Accessibility</td><td>…</td><td>…</td><td>…</td></tr><tr><td>Best Practices</td><td>…</td><td>…</td><td>…</td></tr><tr><td>SEO</td><td>…</td><td>…</td><td>…</td></tr></tbody></table></div>
+  <div class="x-shots"><b>ภาพหน้าจอที่ต้องแนบ</b><ul><li>รายงาน Lighthouse ก่อนแก้ (เห็นคะแนน 4 หมวด)</li><li>รายการที่ไม่ผ่านและสิ่งที่แก้</li><li>รายงานหลังแก้ที่ทุกหมวดเป็นสีเขียว หรืออธิบายเหตุผลถ้าหมวดใดยังไม่ถึง</li></ul></div>
+</section>
+
+<section id="e5">
+  <div class="x-head"><span class="x-num">สรุป</span><h2>สิ่งที่ต้องส่ง</h2></div>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>ข้อ</th><th>หลักฐาน</th></tr></thead><tbody><tr><td>10.1</td><td>ชื่อโดเมนที่เลือกพร้อมเหตุผล ตาราง DNS และผล nslookup/dig</td></tr><tr><td>10.2</td><td>ภาพ FileZilla, phpMyAdmin บนโฮสติ้ง และหน้าเว็บที่ทำงานบนเซิร์ฟเวอร์จริง พร้อม URL</td></tr><tr><td>10.3</td><td>ภาพใบรับรอง HTTPS และการ redirect จาก http</td></tr><tr><td>10.4</td><td>รายงาน Lighthouse ก่อนและหลังแก้ (ไฟล์ HTML หรือภาพ) และตารางบันทึกผล</td></tr></tbody></table></div>
+  <p class="x-muted">รวมภาพหน้าจอเป็น PDF ไฟล์เดียว แนบ URL ของเว็บที่เปิดใช้งานได้จริง ส่งภายในกำหนด ตั้งชื่อตามรูปแบบ <code>รหัสนักศึกษา_ใบงานที่10</code> ห้ามใส่รหัสผ่านของโฮสติ้งหรือฐานข้อมูลในเอกสารที่ส่ง</p>
+</section>
+
+</div>
+<div class="pager"><a class="pn" href="ws10.html"><small>กลับไปที่</small><b>ใบงานที่ 10</b></a><a class="pn next" href="../worksheets.html"><small>ถัดไป</small><b>ใบงานทั้งหมด</b></a></div></div>
+</main>
+<footer class="foot"><div class="wrap fgrid">
+<div><a class="brand" href="../index.html"><span class="logo" aria-hidden="true">&lt;/&gt;</span><span class="bt"><b>การเขียนโปรแกรมบนเว็บ</b><small>Web Programming</small></span></a>
+<p class="small">สื่อเสริมการเรียนรู้ ใช้ประกอบเอกสารประกอบการสอน ไม่มีระบบสมาชิกและไม่เก็บข้อมูลส่วนบุคคล ส่งงานผ่าน Google Classroom</p></div>
+<div><p class="fh">เรียนรู้</p><a href="../chapters.html">บทเรียน 10 บท</a><a href="../worksheets.html">ใบงานประจำบท</a><a href="../assessment.html">เกณฑ์การประเมินผล</a><a href="../clo.html">ผลลัพธ์การเรียนรู้ (CLO)</a><a href="../start.html">เริ่มต้นใช้งาน</a></div>
+<div><p class="fh">รายวิชา</p><a href="../about.html">เกี่ยวกับรายวิชา</a><span>ผู้สอน: ดร.สุรเชษฐ์ สังขพันธ์</span><span>พ.ศ. 2569</span></div>
+</div></footer>
+<script src="../assets/app.js"></script>
+<script>
+document.querySelectorAll(".x-preview").forEach(function(pv){
+  var frames=pv.querySelectorAll("iframe"), out=pv.querySelector(".pvw");
+  pv.querySelectorAll("button[data-w]").forEach(function(b,_,all){b.addEventListener("click",function(){
+    all.forEach(function(x){x.setAttribute("aria-pressed","false")});b.setAttribute("aria-pressed","true");
+    frames.forEach(function(f){f.style.width=b.dataset.w+"px"});out.textContent=b.dataset.w+"px";});});
+  pv.querySelectorAll("button[data-doc]").forEach(function(b,_,all){b.addEventListener("click",function(){
+    all.forEach(function(x){x.setAttribute("aria-pressed","false")});b.setAttribute("aria-pressed","true");
+    frames.forEach(function(f,k){f.hidden=(k!=b.dataset.doc)});});});
+});
+</script>
+</body>
+</html>
