@@ -1,0 +1,1083 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="ตัวอย่างการทำใบงานที่ 7: PHP พื้นฐาน, $_GET และ $_POST, Type Declarations และ match(), ระบบล็อกอินด้วย Session และ password_hash()">
+<meta name="theme-color" content="#4338ca">
+<title>ตัวอย่างใบงานที่ 7 · การเขียนโปรแกรมบนเว็บ</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%234338ca'/%3E%3Cpath d='M26 20 14 32l12 12M38 20l12 12-12 12' fill='none' stroke='%23fff' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preload" href="../assets/fonts/Sarabun-400-thai.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css">
+<style>
+.wsx{display:grid;gap:52px;padding-block:28px 24px;font-size:1.05rem;line-height:1.75;
+  --term-bg:#0f1226;--term-ink:#e8eaf8;--term-dim:#7b84aa;--ok-bg:#1f7a4a}
+.wsx p{margin:0;max-width:74ch}
+.wsx section{display:grid;gap:18px;scroll-margin-top:84px;min-width:0}
+.wsx h2{margin:0;font-size:clamp(1.4rem,3vw,1.75rem)}
+.wsx h3{margin:8px 0 0;font-size:1.18rem}
+.wsx kbd{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:.82em;padding:1px 6px;border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;background:var(--surface)}
+.wsx .x-muted{color:var(--muted);font-size:.95rem}
+.wsx .x-intro{display:grid;gap:16px}
+.wsx .x-toc{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:0;padding:0}
+.wsx .x-toc a{display:inline-flex;gap:8px;align-items:baseline;padding:6px 14px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--ink);text-decoration:none;font-size:.95rem}
+.wsx .x-toc b{color:var(--brand);font-family:"JetBrains Mono",monospace;font-weight:600;font-size:.85em}
+.wsx .x-head{display:flex;align-items:center;gap:14px;border-top:2px solid var(--ink);padding-top:16px}
+.wsx .x-num{font-family:"JetBrains Mono",monospace;font-weight:600;color:var(--brand-ink);background:var(--brand);padding:2px 10px;border-radius:8px;font-size:.95rem}
+.wsx .x-steps{margin:0;padding-left:1.4em;display:grid;gap:6px}
+.wsx .x-grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:20px;align-items:start}
+.wsx .x-grid2>*{min-width:0}
+.wsx .x-os{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px;display:grid;gap:10px}
+.wsx .x-os h3{margin:0}
+.wsx .x-checks{display:grid;gap:8px}
+.wsx .x-checks ul{margin:0;padding-left:1.2em;display:grid;gap:6px}
+.wsx .x-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.wsx .x-table{min-width:640px;background:var(--surface);border:1px solid var(--line)}
+.wsx .x-table th,.wsx .x-table td{border:1px solid var(--line)}
+.wsx .x-table code{font-size:.85em;overflow-wrap:anywhere}
+.wsx .x-shots{background:var(--soft);border-radius:12px;padding:12px 18px;display:grid;gap:4px}
+.wsx .x-shots b{color:var(--brand)}
+.wsx .x-shots ul{margin:0;padding-left:1.2em}
+.wsx .x-trouble{border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.wsx .x-trouble summary{cursor:pointer;padding:12px 18px;font-weight:700}
+.wsx .x-trouble dl{margin:0;padding:0 18px 14px;display:grid;gap:12px}
+.wsx .x-trouble dt{font-family:"JetBrains Mono",monospace;font-size:.88rem;color:var(--ink);font-weight:600}
+.wsx .x-trouble dd{margin:2px 0 0;color:var(--muted)}
+.wsx .x-callout{background:var(--warn-bg);color:var(--warn-ink);border-left:4px solid var(--accent);border-radius:10px;padding:12px 16px}
+.wsx .x-callout code{background:none}
+/* terminal + tree (always dark, like a real terminal) */
+.wsx .x-term{background:var(--term-bg);color:var(--term-ink);border-radius:12px;overflow:hidden;min-width:0}
+.wsx .x-term-bar{display:flex;gap:6px;align-items:center;padding:8px 12px;background:#181c38;font-size:.8rem;color:var(--term-dim)}
+.wsx .x-term-bar i{width:10px;height:10px;border-radius:50%;background:#3a3f63;display:inline-block}
+.wsx .x-term-bar span{margin-left:8px}
+.wsx .x-term pre{color:var(--term-ink);font-size:13.5px;white-space:pre;overflow-x:auto}
+.wsx .x-term b{color:#8be9a8;font-weight:600}
+.wsx .x-term .c{color:var(--term-dim)}
+.wsx .x-tree{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow-x:auto}
+.wsx .x-tree pre{color:var(--ink);font-size:14px;white-space:pre}
+.wsx .x-tree b{color:var(--brand)}
+.wsx .x-tree span{color:var(--muted)}
+/* mock UIs */
+.wsx .x-mock{border-radius:12px;overflow:hidden;font-family:"Segoe UI",system-ui,sans-serif;font-size:13px}
+.wsx .x-vsc{background:#1f1f1f;color:#ccc;border:1px solid #333}
+.wsx .x-vsc-hd{padding:10px 14px;font-size:11px;letter-spacing:.06em;color:#9a9a9a}
+.wsx .x-ext{display:grid;grid-template-columns:40px 1fr auto;gap:10px;align-items:center;padding:8px 14px}
+.wsx .x-ext:nth-child(2){background:#04395e}
+.wsx .x-ext b{display:block;color:#eee;font-weight:600}
+.wsx .x-ext small{color:#9a9a9a}
+.wsx .x-ext em{font-style:normal;color:#73c991}
+.wsx .x-ico{width:40px;height:40px;border-radius:6px;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px}
+.wsx .x-vsc-status{display:flex;gap:16px;justify-content:flex-end;background:#007acc;color:#fff;padding:3px 12px;font-size:12px;margin-top:10px}
+.wsx .x-vsc-status span:first-child{margin-right:auto}
+.wsx .x-xampp{min-width:520px;background:#f3f3f3;color:#222;border:1px solid #c8c8c8}
+.wsx .x-xampp-hd{background:#fb7a24;color:#fff;font-weight:700;padding:8px 14px}
+.wsx .x-xampp table{width:100%;font-size:13px;background:#fff}
+.wsx .x-xampp th{background:#e8e8e8;color:#222;font-weight:600}
+.wsx .x-xampp th,.wsx .x-xampp td{border:1px solid #d6d6d6;padding:6px 10px}
+.wsx .x-xampp td{background:#fff;color:#222}
+.wsx .x-xampp tr.on td:first-child{background:#9be29b;font-weight:600}
+.wsx .x-xampp td span{display:inline-block;border:1px solid #aaa;border-radius:3px;padding:0 8px;margin-right:6px;background:#f7f7f7}
+.wsx .x-log{font-family:"JetBrains Mono",monospace;font-size:12px;padding:8px 14px;color:#1a5fb4;background:#fff;border-top:1px solid #d6d6d6}
+
+.wsx .x-head{flex-wrap:wrap}
+.wsx .x-part{margin-left:auto;font-size:.85rem;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:2px 12px}
+.wsx .x-file{margin:6px 0 -10px;font-family:"JetBrains Mono",monospace;font-size:.85rem;color:var(--brand);font-weight:600}
+.wsx .x-plain{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.wsx .x-plain li{display:grid;grid-template-columns:96px 1fr;gap:10px;align-items:baseline}
+.wsx .x-wk{font-size:.8rem;font-weight:700;color:var(--brand);background:var(--soft);border-radius:6px;padding:1px 8px;text-align:center}
+.wsx .x-plain-dots{margin:0;padding-left:1.2em;display:grid;gap:6px}
+.wsx .x-sem{display:grid;gap:6px;font-family:"JetBrains Mono",monospace;font-size:12.5px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px}
+.wsx .x-sem div{border:1.5px solid var(--line);border-radius:6px;padding:6px 8px;color:var(--ink)}
+.wsx .x-sem .s-hd,.wsx .x-sem .s-ft{background:var(--s1-soft);border-color:var(--s1)}
+.wsx .x-sem .s-nav{background:var(--s2-soft);border-color:var(--s2)}
+.wsx .x-sem .s-row{display:grid;grid-template-columns:2fr 1fr;gap:6px;border:0;padding:0}
+.wsx .x-sem .s-main{background:var(--s3-soft);border-color:var(--s3);display:grid;gap:6px}
+.wsx .x-sem .s-art{background:var(--surface);display:grid;gap:5px}
+.wsx .x-sem .s-sec,.wsx .x-sem .s-sub{border-style:dashed;font-size:11.5px}
+.wsx .x-sem .s-aside{background:var(--s4-soft);border-color:var(--s4)}
+
+
+.wsx .x-flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.wsx .x-flow div{background:var(--surface);border:1.5px solid var(--brand);border-radius:10px;padding:8px 12px;font-family:"JetBrains Mono",monospace;font-size:.85rem;font-weight:600;color:var(--ink);display:grid;gap:2px}
+.wsx .x-flow small{font-weight:400;color:var(--muted);font-size:.78rem}
+.wsx .x-flow span{color:var(--muted)}
+
+.wsx .x-wrap pre{white-space:pre-wrap;overflow-wrap:anywhere}
+.wsx .x-preview{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface2)}
+.wsx .x-pv-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 12px;border-bottom:1px solid var(--line);background:var(--surface)}
+.wsx .x-pv-bar button{font:inherit;font-size:.9rem;padding:4px 12px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.wsx .x-pv-bar button[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
+.wsx .x-pv-sep{width:1px;height:22px;background:var(--line);margin:0 4px}
+.wsx .x-pv-bar .pvw{margin-left:auto;font-family:"JetBrains Mono",monospace;font-size:.85rem;color:var(--muted)}
+.wsx .x-pv-stage{overflow-x:auto;padding:12px}
+.wsx .x-pv-stage iframe{display:block;margin:0 auto;border:1px solid var(--line);border-radius:8px;background:#fff;max-width:none;transition:width .25s}
+</style>
+<script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+
+</head>
+<body class="ch-page">
+<a class="skip" href="#main">ข้ามไปยังเนื้อหา</a>
+<header class="top"><div class="wrap nav">
+<a class="brand" href="../index.html" aria-label="หน้าแรก การเขียนโปรแกรมบนเว็บ"><span class="logo" aria-hidden="true">&lt;/&gt;</span><span class="bt"><b>การเขียนโปรแกรมบนเว็บ</b><small>07-034-210</small></span></a>
+<button id="menuBtn" class="iconbtn menu-btn" type="button" aria-expanded="false" aria-controls="menu" aria-label="เปิดเมนู"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v2H3V6Zm0 5h18v2H3v-2Zm0 5h18v2H3v-2Z"/></svg></button>
+<nav id="menu" aria-label="เมนูหลัก">
+<a href="../chapters.html">บทเรียน</a><a href="../worksheets.html" aria-current="page">ใบงาน</a><a href="../assessment.html">เกณฑ์ประเมินผล</a><a href="../clo.html">ผลลัพธ์การเรียนรู้</a><a href="../start.html">เริ่มต้นใช้งาน</a><a href="../about.html">เกี่ยวกับรายวิชา</a>
+</nav>
+<button id="theme" class="iconbtn" type="button" aria-label="สลับโหมดมืดและสว่าง"><span class="i-moon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5Z"/></svg></span><span class="i-sun"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg></span></button>
+</div><div id="bar" class="bar" aria-hidden="true"></div></header>
+<main id="main">
+<div class="chead s3"><div class="wrap">
+<nav class="crumb" aria-label="เส้นทาง"><a href="../index.html">หน้าแรก</a><span>/</span><a href="../worksheets.html">ใบงาน</a><span>/</span><a href="ws7.html">ใบงานที่ 7</a><span>/</span><span aria-current="page">ตัวอย่าง</span></nav>
+<div class="chrow"><span class="badge b-s3 big" aria-hidden="true">PHP</span><div><p class="kicker">ตัวอย่างการทำใบงานที่ 7</p><h1>PHP ฝั่งเซิร์ฟเวอร์ของร้านไร่ภูคำ: ฟอร์ม ฟังก์ชัน Session และรหัสผ่าน</h1></div></div></div></div>
+<div class="wrap narrow"><div class="wsx">
+
+<header class="x-intro">
+  <p>PHP ทำงานบนเซิร์ฟเวอร์ ตัวอย่างในหน้านี้จึงกดใช้งานไม่ได้เหมือนใบงานก่อนหน้า แต่ทุกไฟล์ผ่านการรันจริงบน PHP 8.5 ด้วย <code>php -S</code> และทดสอบทุกเส้นทางด้วยคำสั่ง curl กรอบ "ผลลัพธ์จริง" คือ HTML ที่ PHP ส่งกลับมาจริงในแต่ละกรณี (กดไม่ได้) และ HTML ที่ได้ทุกหน้าผ่าน W3C Nu HTML Checker โดยไม่มี error</p>
+  <div class="x-grid2">
+    <div class="x-os"><h3>แบ่งงานตามสัปดาห์</h3>
+      <ul class="x-plain">
+        <li><span class="x-wk">สัปดาห์ 12</span><span>ส่วนที่ 1 ข้อ 7.0 และ 7.2 <code>basics.php</code> <code>discount.php</code></span></li>
+        <li><span class="x-wk">สัปดาห์ 13</span><span>ส่วนที่ 2 ข้อ 7.1, 7.3, 7.4 <code>grade.php</code> และระบบสมาชิก</span></li>
+        <li><span class="x-wk">ส่ง</span><span>ทั้งสองส่วนรวมกันภายในสัปดาห์ที่ 13</span></li>
+      </ul></div>
+    <div class="x-tree"><pre><b>htdocs/ws7/</b>
+├── basics.php      <span>← 7.0</span>
+├── grade.php       <span>← 7.1</span>
+├── discount.php    <span>← 7.2</span>
+├── login.php       <span>← 7.3 + 7.4</span>
+├── dashboard.php   <span>← 7.3</span>
+├── logout.php      <span>← 7.3</span>
+├── register.php    <span>← 7.4</span>
+├── <b>includes/</b>
+│   ├── header.php
+│   ├── footer.php
+│   └── users.php   <span>← 7.4 ฟังก์ชันผู้ใช้</span>
+├── <b>css/</b>style.css
+└── <b>data/</b>
+    ├── .htaccess   <span>← ห้ามเปิดผ่านเว็บ</span>
+    └── users.json  <span>← สร้างเองตอนสมัคร</span></pre></div>
+  </div>
+  <ol class="x-steps">
+    <li>เปิด XAMPP แล้ว Start Apache (ใบงานที่ 2) วางโฟลเดอร์ <code>ws7</code> ไว้ใน <code>C:\xampp\htdocs</code> (MAMP: <code>/Applications/MAMP/htdocs</code>)</li>
+    <li>เปิด <code>http://localhost/ws7/basics.php</code> (MAMP: <code>http://localhost:8888/ws7/basics.php</code>) ห้ามดับเบิลคลิกไฟล์ หรือเปิดผ่าน Live Server เพราะจะไม่ประมวลผล PHP</li>
+    <li>ทุกหน้าใช้ <code>includes/header.php</code> และ <code>footer.php</code> ร่วมกันด้วย <code>require_once</code> ตามโครงสร้างโฟลเดอร์ในใบงานที่ 2</li>
+  </ol>
+  <ul class="x-toc">
+    <li><a href="#e0"><b>7.0</b>PHP พื้นฐาน</a></li>
+    <li><a href="#e2"><b>7.2</b>Type + match()</a></li>
+    <li><a href="#e1"><b>7.1</b>$_GET / $_POST</a></li>
+    <li><a href="#e3"><b>7.3–7.4</b>Session + รหัสผ่าน</a></li>
+    <li><a href="#e5"><b>สรุป</b>สิ่งที่ต้องส่ง</a></li>
+  </ul>
+</header>
+
+<section id="e0">
+  <div class="x-head"><span class="x-num">7.0</span><h2>PHP พื้นฐาน: ตัวแปร if/else และการวนซ้ำ</h2><span class="x-part">ส่วนที่ 1 · สัปดาห์ 12</span></div>
+  <p class="x-file">includes/header.php</p><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;?php
+// ส่วนหัวที่ใช้ร่วมกันทุกหน้า ตั้งค่า $title ก่อน require_once ไฟล์นี้
+$title = $title ?? &#x27;ใบงานที่ 7&#x27;;
+?&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;title&gt;&lt;?= htmlspecialchars($title) ?&gt;&lt;/title&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;css/style.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;</code></pre></div>
+  <p class="x-file">includes/footer.php</p><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;hr&gt;
+&lt;p&gt;&lt;small&gt;ไร่ภูคำ Coffee Roasters · ใบงานที่ 7&lt;/small&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+  <p class="x-file">basics.php</p><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;?php
+// 7.0 PHP พื้นฐาน: ตัวแปร ชนิดข้อมูล if/else for และ foreach
+$title = &#x27;PHP พื้นฐาน&#x27;;
+require_once &#x27;includes/header.php&#x27;;
+
+// ---------- ตัวแปรและชนิดข้อมูล ----------
+$shopName  = &#x27;ไร่ภูคำ&#x27;;          // string
+$openYear  = 2567;              // int
+$vatRate   = 0.07;              // float
+$isOpen    = true;              // bool
+$roasts    = [&#x27;Light&#x27;, &#x27;Medium&#x27;, &#x27;Dark&#x27;];   // array
+
+// ---------- รายการสินค้า (อาร์เรย์ของอาร์เรย์) ----------
+$products = [
+    [&#x27;name&#x27; =&gt; &#x27;ภูคำ Natural&#x27;, &#x27;price&#x27; =&gt; 420, &#x27;stock&#x27; =&gt; 12],
+    [&#x27;name&#x27; =&gt; &#x27;ภูคำ Honey&#x27;,   &#x27;price&#x27; =&gt; 390, &#x27;stock&#x27; =&gt; 3],
+    [&#x27;name&#x27; =&gt; &#x27;House Blend&#x27;, &#x27;price&#x27; =&gt; 320, &#x27;stock&#x27; =&gt; 0],
+];
+
+$n = 12;   // แม่สูตรคูณที่จะแสดง
+?&gt;
+&lt;h1&gt;ร้าน&lt;?= $shopName ?&gt;&lt;/h1&gt;
+
+&lt;h2&gt;ตัวแปรและชนิดข้อมูล&lt;/h2&gt;
+&lt;table&gt;
+  &lt;tr&gt;&lt;th&gt;ตัวแปร&lt;/th&gt;&lt;th&gt;ค่า&lt;/th&gt;&lt;th&gt;gettype()&lt;/th&gt;&lt;/tr&gt;
+  &lt;tr&gt;&lt;td&gt;$shopName&lt;/td&gt;&lt;td&gt;&lt;?= $shopName ?&gt;&lt;/td&gt;&lt;td&gt;&lt;?= gettype($shopName) ?&gt;&lt;/td&gt;&lt;/tr&gt;
+  &lt;tr&gt;&lt;td&gt;$openYear&lt;/td&gt;&lt;td&gt;&lt;?= $openYear ?&gt;&lt;/td&gt;&lt;td&gt;&lt;?= gettype($openYear) ?&gt;&lt;/td&gt;&lt;/tr&gt;
+  &lt;tr&gt;&lt;td&gt;$vatRate&lt;/td&gt;&lt;td&gt;&lt;?= $vatRate ?&gt;&lt;/td&gt;&lt;td&gt;&lt;?= gettype($vatRate) ?&gt;&lt;/td&gt;&lt;/tr&gt;
+  &lt;tr&gt;&lt;td&gt;$isOpen&lt;/td&gt;&lt;td&gt;&lt;?= var_export($isOpen, true) ?&gt;&lt;/td&gt;&lt;td&gt;&lt;?= gettype($isOpen) ?&gt;&lt;/td&gt;&lt;/tr&gt;
+  &lt;tr&gt;&lt;td&gt;$roasts&lt;/td&gt;&lt;td&gt;&lt;?= implode(&#x27;, &#x27;, $roasts) ?&gt;&lt;/td&gt;&lt;td&gt;&lt;?= gettype($roasts) ?&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;h2&gt;if / else&lt;/h2&gt;
+&lt;?php if ($isOpen): ?&gt;
+  &lt;p class=&quot;ok&quot;&gt;วันนี้ร้านเปิด&lt;/p&gt;
+&lt;?php else: ?&gt;
+  &lt;p class=&quot;error&quot;&gt;วันนี้ร้านปิด&lt;/p&gt;
+&lt;?php endif; ?&gt;
+
+&lt;h2&gt;foreach: รายการสินค้า&lt;/h2&gt;
+&lt;table&gt;
+  &lt;tr&gt;&lt;th&gt;สินค้า&lt;/th&gt;&lt;th&gt;ราคา&lt;/th&gt;&lt;th&gt;ราคารวม VAT&lt;/th&gt;&lt;th&gt;สถานะ&lt;/th&gt;&lt;/tr&gt;
+  &lt;?php foreach ($products as $p): ?&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;?= $p[&#x27;name&#x27;] ?&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;?= number_format($p[&#x27;price&#x27;], 2) ?&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;?= number_format($p[&#x27;price&#x27;] * (1 + $vatRate), 2) ?&gt;&lt;/td&gt;
+      &lt;td&gt;
+        &lt;?php if ($p[&#x27;stock&#x27;] === 0): ?&gt;
+          &lt;span class=&quot;error&quot;&gt;สินค้าหมด&lt;/span&gt;
+        &lt;?php elseif ($p[&#x27;stock&#x27;] &lt; 5): ?&gt;
+          เหลือ &lt;?= $p[&#x27;stock&#x27;] ?&gt; ถุง
+        &lt;?php else: ?&gt;
+          &lt;span class=&quot;ok&quot;&gt;มีสินค้า&lt;/span&gt;
+        &lt;?php endif; ?&gt;
+      &lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;?php endforeach; ?&gt;
+&lt;/table&gt;
+
+&lt;h2&gt;for: สูตรคูณแม่ &lt;?= $n ?&gt;&lt;/h2&gt;
+&lt;table&gt;
+  &lt;?php for ($i = 1; $i &lt;= 12; $i++): ?&gt;
+    &lt;tr&gt;&lt;td&gt;&lt;?= $n ?&gt; × &lt;?= $i ?&gt;&lt;/td&gt;&lt;td&gt;= &lt;?= $n * $i ?&gt;&lt;/td&gt;&lt;/tr&gt;
+  &lt;?php endfor; ?&gt;
+&lt;/table&gt;
+&lt;?php require_once &#x27;includes/footer.php&#x27;; ?&gt;</code></pre></div>
+  <div class="x-preview" id="pv0"><div class="x-pv-bar" role="group" aria-label="เลือกความกว้างจอ"><button type="button" data-w="720" aria-pressed="true">ผลลัพธ์จริง</button><span class="pvw">720px</span></div><div class="x-pv-stage"><iframe title="ตัวอย่างหน้าเว็บ basics.php" sandbox="allow-scripts allow-forms" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;title&gt;PHP พื้นฐาน&lt;/title&gt;
+  &lt;style&gt;body { font-family: Tahoma, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 16px; line-height: 1.6; color: #1e1a17; background: #f7f5f0; }
+h1 { color: #1f4d3a; }
+table { border-collapse: collapse; margin: 12px 0; }
+th, td { border: 1px solid #bbb; padding: 4px 10px; text-align: left; }
+th { background: #e7efe9; }
+label { display: block; margin-top: 10px; font-weight: bold; }
+input, select { padding: 6px; font: inherit; }
+button { margin-top: 12px; padding: 8px 18px; font: inherit; background: #1f4d3a; color: #fff; border: 0; border-radius: 6px; }
+.box { background: #fff; border-radius: 8px; padding: 12px 16px; margin: 12px 0; }
+.ok { color: #1f7a4a; font-weight: bold; }
+.error { color: #b3261e; font-weight: bold; }
+nav a { margin-right: 12px; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;ร้านไร่ภูคำ&lt;/h1&gt;
+
+&lt;h2&gt;ตัวแปรและชนิดข้อมูล&lt;/h2&gt;
+&lt;table&gt;
+  &lt;tr&gt;&lt;th&gt;ตัวแปร&lt;/th&gt;&lt;th&gt;ค่า&lt;/th&gt;&lt;th&gt;gettype()&lt;/th&gt;&lt;/tr&gt;
+  &lt;tr&gt;&lt;td&gt;$shopName&lt;/td&gt;&lt;td&gt;ไร่ภูคำ&lt;/td&gt;&lt;td&gt;string&lt;/td&gt;&lt;/tr&gt;
+  &lt;tr&gt;&lt;td&gt;$openYear&lt;/td&gt;&lt;td&gt;2567&lt;/td&gt;&lt;td&gt;integer&lt;/td&gt;&lt;/tr&gt;
+  &lt;tr&gt;&lt;td&gt;$vatRate&lt;/td&gt;&lt;td&gt;0.07&lt;/td&gt;&lt;td&gt;double&lt;/td&gt;&lt;/tr&gt;
+  &lt;tr&gt;&lt;td&gt;$isOpen&lt;/td&gt;&lt;td&gt;true&lt;/td&gt;&lt;td&gt;boolean&lt;/td&gt;&lt;/tr&gt;
+  &lt;tr&gt;&lt;td&gt;$roasts&lt;/td&gt;&lt;td&gt;Light, Medium, Dark&lt;/td&gt;&lt;td&gt;array&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;h2&gt;if / else&lt;/h2&gt;
+  &lt;p class=&quot;ok&quot;&gt;วันนี้ร้านเปิด&lt;/p&gt;
+
+&lt;h2&gt;foreach: รายการสินค้า&lt;/h2&gt;
+&lt;table&gt;
+  &lt;tr&gt;&lt;th&gt;สินค้า&lt;/th&gt;&lt;th&gt;ราคา&lt;/th&gt;&lt;th&gt;ราคารวม VAT&lt;/th&gt;&lt;th&gt;สถานะ&lt;/th&gt;&lt;/tr&gt;
+      &lt;tr&gt;
+      &lt;td&gt;ภูคำ Natural&lt;/td&gt;
+      &lt;td&gt;420.00&lt;/td&gt;
+      &lt;td&gt;449.40&lt;/td&gt;
+      &lt;td&gt;
+                  &lt;span class=&quot;ok&quot;&gt;มีสินค้า&lt;/span&gt;
+              &lt;/td&gt;
+    &lt;/tr&gt;
+      &lt;tr&gt;
+      &lt;td&gt;ภูคำ Honey&lt;/td&gt;
+      &lt;td&gt;390.00&lt;/td&gt;
+      &lt;td&gt;417.30&lt;/td&gt;
+      &lt;td&gt;
+                  เหลือ 3 ถุง
+              &lt;/td&gt;
+    &lt;/tr&gt;
+      &lt;tr&gt;
+      &lt;td&gt;House Blend&lt;/td&gt;
+      &lt;td&gt;320.00&lt;/td&gt;
+      &lt;td&gt;342.40&lt;/td&gt;
+      &lt;td&gt;
+                  &lt;span class=&quot;error&quot;&gt;สินค้าหมด&lt;/span&gt;
+              &lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/table&gt;
+
+&lt;h2&gt;for: สูตรคูณแม่ 12&lt;/h2&gt;
+&lt;table&gt;
+      &lt;tr&gt;&lt;td&gt;12 × 1&lt;/td&gt;&lt;td&gt;= 12&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;12 × 2&lt;/td&gt;&lt;td&gt;= 24&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;12 × 3&lt;/td&gt;&lt;td&gt;= 36&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;12 × 4&lt;/td&gt;&lt;td&gt;= 48&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;12 × 5&lt;/td&gt;&lt;td&gt;= 60&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;12 × 6&lt;/td&gt;&lt;td&gt;= 72&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;12 × 7&lt;/td&gt;&lt;td&gt;= 84&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;12 × 8&lt;/td&gt;&lt;td&gt;= 96&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;12 × 9&lt;/td&gt;&lt;td&gt;= 108&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;12 × 10&lt;/td&gt;&lt;td&gt;= 120&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;12 × 11&lt;/td&gt;&lt;td&gt;= 132&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;12 × 12&lt;/td&gt;&lt;td&gt;= 144&lt;/td&gt;&lt;/tr&gt;
+  &lt;/table&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;small&gt;ไร่ภูคำ Coffee Roasters · ใบงานที่ 7&lt;/small&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+" style="width:720px;height:640px" ></iframe></div></div>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>หัวข้อ</th><th>สิ่งที่ควรสังเกต</th></tr></thead><tbody><tr><td>ชนิดข้อมูล</td><td>gettype() ของ 0.07 ได้ <code>double</code> ซึ่งเป็นชื่อเดิมของ float ใน PHP ไม่ใช่ข้อผิดพลาด</td></tr><tr><td><code>&lt;?= … ?&gt;</code></td><td>ย่อมาจาก <code>&lt;?php echo … ?&gt;</code> ใช้แทรกค่าลงใน HTML</td></tr><tr><td><code>if: … elseif: … endif;</code></td><td>รูปแบบที่มีโคลอนอ่านง่ายเมื่อสลับกับ HTML ทำงานเหมือนวงเล็บปีกกา</td></tr><tr><td><code>foreach ($products as $p)</code></td><td>วนอาร์เรย์ทีละตัว เรียกค่าด้วย <code>$p[&#x27;name&#x27;]</code></td></tr><tr><td><code>=== 0</code></td><td>เทียบทั้งค่าและชนิด (strict) ปลอดภัยกว่า ==</td></tr><tr><td><code>number_format($x, 2)</code></td><td>แสดงทศนิยม 2 ตำแหน่งและใส่ลูกน้ำ</td></tr></tbody></table></div>
+  <details class="x-trouble"><summary>ข้อผิดพลาดที่พบบ่อย</summary><dl><div><dt>เปิดแล้วเห็นโค้ด PHP ดิบ หรือเบราว์เซอร์ดาวน์โหลดไฟล์</dt><dd>เปิดไฟล์ตรง ๆ หรือผ่าน Live Server ต้องเปิดผ่าน http://localhost/… ที่ Apache ทำงานอยู่</dd></div><div><dt>หน้าขาวว่าง ไม่มีข้อความผิดพลาด</dt><dd>PHP ซ่อน error ไว้ ให้ดูไฟล์ C:\xampp\apache\logs\error.log หรือเปิด display_errors ใน php.ini ระหว่างพัฒนา</dd></div><div><dt>Parse error: syntax error, unexpected …</dt><dd>มักลืม ; ท้ายคำสั่ง หรือวงเล็บไม่ครบ ดูเลขบรรทัดที่แจ้ง แล้วตรวจบรรทัดก่อนหน้าด้วย</dd></div></dl></details>
+  <div class="x-shots"><b>ภาพหน้าจอที่ต้องแนบ</b><ul><li>หน้า basics.php บนเบราว์เซอร์ที่ URL เป็น http://localhost/…</li><li>ไฟล์ใน htdocs/ws7 ใน VS Code</li></ul></div>
+</section>
+
+<section id="e2">
+  <div class="x-head"><span class="x-num">7.2</span><h2>ฟังก์ชันแบบระบุชนิดข้อมูล และ match()</h2><span class="x-part">ส่วนที่ 1 · สัปดาห์ 12</span></div>
+  <p class="x-file">discount.php</p><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;?php
+// 7.2 ฟังก์ชันแบบระบุชนิดข้อมูล และ match() ของ PHP 8
+declare(strict_types=1);   // ต้องอยู่บรรทัดแรกของไฟล์ ให้ PHP ตรวจชนิดข้อมูลแบบเข้มงวด
+
+/** คืนอัตราส่วนลดตามระดับสมาชิก */
+function discountRate(string $level): float
+{
+    return match ($level) {
+        &#x27;gold&#x27;   =&gt; 0.15,
+        &#x27;silver&#x27; =&gt; 0.10,
+        &#x27;member&#x27; =&gt; 0.05,
+        default  =&gt; 0.0,     // ผู้ใช้ทั่วไปหรือระดับที่ไม่รู้จัก
+    };
+}
+
+/** คืนราคาหลังหักส่วนลด ปัดเป็นทศนิยม 2 ตำแหน่ง */
+function finalPrice(float $price, string $level): float
+{
+    if ($price &lt; 0) {
+        throw new InvalidArgumentException(&#x27;ราคาต้องไม่ติดลบ&#x27;);
+    }
+    return round($price * (1 - discountRate($level)), 2);
+}
+
+$title = &#x27;ส่วนลดตามระดับสมาชิก&#x27;;
+require_once &#x27;includes/header.php&#x27;;
+
+$orders = [
+    [&#x27;customer&#x27; =&gt; &#x27;คุณนภา&#x27;,   &#x27;level&#x27; =&gt; &#x27;gold&#x27;,   &#x27;price&#x27; =&gt; 1260.0],
+    [&#x27;customer&#x27; =&gt; &#x27;คุณกิตติ&#x27;,  &#x27;level&#x27; =&gt; &#x27;silver&#x27;, &#x27;price&#x27; =&gt; 420.0],
+    [&#x27;customer&#x27; =&gt; &#x27;คุณมานี&#x27;,   &#x27;level&#x27; =&gt; &#x27;member&#x27;, &#x27;price&#x27; =&gt; 390.0],
+    [&#x27;customer&#x27; =&gt; &#x27;คุณสมชาย&#x27;, &#x27;level&#x27; =&gt; &#x27;guest&#x27;,  &#x27;price&#x27; =&gt; 320.0],
+];
+?&gt;
+&lt;h1&gt;ส่วนลดตามระดับสมาชิก&lt;/h1&gt;
+&lt;table&gt;
+  &lt;tr&gt;&lt;th&gt;ลูกค้า&lt;/th&gt;&lt;th&gt;ระดับ&lt;/th&gt;&lt;th&gt;ราคา&lt;/th&gt;&lt;th&gt;ส่วนลด&lt;/th&gt;&lt;th&gt;ราคาสุทธิ&lt;/th&gt;&lt;/tr&gt;
+  &lt;?php foreach ($orders as $o): ?&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;?= htmlspecialchars($o[&#x27;customer&#x27;]) ?&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;?= htmlspecialchars($o[&#x27;level&#x27;]) ?&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;?= number_format($o[&#x27;price&#x27;], 2) ?&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;?= discountRate($o[&#x27;level&#x27;]) * 100 ?&gt;%&lt;/td&gt;
+      &lt;td&gt;&lt;?= number_format(finalPrice($o[&#x27;price&#x27;], $o[&#x27;level&#x27;]), 2) ?&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;?php endforeach; ?&gt;
+&lt;/table&gt;
+
+&lt;h2&gt;ทดลองส่งชนิดข้อมูลผิด&lt;/h2&gt;
+&lt;?php
+try {
+    echo finalPrice(&#x27;420&#x27;, &#x27;gold&#x27;);          // ส่ง string แทน float
+} catch (TypeError $e) {
+    echo &#x27;&lt;p class=&quot;error&quot;&gt;TypeError: &#x27; . htmlspecialchars($e-&gt;getMessage()) . &#x27;&lt;/p&gt;&#x27;;
+}
+?&gt;
+&lt;?php require_once &#x27;includes/footer.php&#x27;; ?&gt;</code></pre></div>
+  <div class="x-preview" id="pv2"><div class="x-pv-bar" role="group" aria-label="เลือกความกว้างจอ"><button type="button" data-w="720" aria-pressed="true">ผลลัพธ์จริง</button><span class="pvw">720px</span></div><div class="x-pv-stage"><iframe title="ตัวอย่างหน้าเว็บ discount.php" sandbox="allow-scripts allow-forms" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;title&gt;ส่วนลดตามระดับสมาชิก&lt;/title&gt;
+  &lt;style&gt;body { font-family: Tahoma, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 16px; line-height: 1.6; color: #1e1a17; background: #f7f5f0; }
+h1 { color: #1f4d3a; }
+table { border-collapse: collapse; margin: 12px 0; }
+th, td { border: 1px solid #bbb; padding: 4px 10px; text-align: left; }
+th { background: #e7efe9; }
+label { display: block; margin-top: 10px; font-weight: bold; }
+input, select { padding: 6px; font: inherit; }
+button { margin-top: 12px; padding: 8px 18px; font: inherit; background: #1f4d3a; color: #fff; border: 0; border-radius: 6px; }
+.box { background: #fff; border-radius: 8px; padding: 12px 16px; margin: 12px 0; }
+.ok { color: #1f7a4a; font-weight: bold; }
+.error { color: #b3261e; font-weight: bold; }
+nav a { margin-right: 12px; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;ส่วนลดตามระดับสมาชิก&lt;/h1&gt;
+&lt;table&gt;
+  &lt;tr&gt;&lt;th&gt;ลูกค้า&lt;/th&gt;&lt;th&gt;ระดับ&lt;/th&gt;&lt;th&gt;ราคา&lt;/th&gt;&lt;th&gt;ส่วนลด&lt;/th&gt;&lt;th&gt;ราคาสุทธิ&lt;/th&gt;&lt;/tr&gt;
+      &lt;tr&gt;
+      &lt;td&gt;คุณนภา&lt;/td&gt;
+      &lt;td&gt;gold&lt;/td&gt;
+      &lt;td&gt;1,260.00&lt;/td&gt;
+      &lt;td&gt;15%&lt;/td&gt;
+      &lt;td&gt;1,071.00&lt;/td&gt;
+    &lt;/tr&gt;
+      &lt;tr&gt;
+      &lt;td&gt;คุณกิตติ&lt;/td&gt;
+      &lt;td&gt;silver&lt;/td&gt;
+      &lt;td&gt;420.00&lt;/td&gt;
+      &lt;td&gt;10%&lt;/td&gt;
+      &lt;td&gt;378.00&lt;/td&gt;
+    &lt;/tr&gt;
+      &lt;tr&gt;
+      &lt;td&gt;คุณมานี&lt;/td&gt;
+      &lt;td&gt;member&lt;/td&gt;
+      &lt;td&gt;390.00&lt;/td&gt;
+      &lt;td&gt;5%&lt;/td&gt;
+      &lt;td&gt;370.50&lt;/td&gt;
+    &lt;/tr&gt;
+      &lt;tr&gt;
+      &lt;td&gt;คุณสมชาย&lt;/td&gt;
+      &lt;td&gt;guest&lt;/td&gt;
+      &lt;td&gt;320.00&lt;/td&gt;
+      &lt;td&gt;0%&lt;/td&gt;
+      &lt;td&gt;320.00&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/table&gt;
+
+&lt;h2&gt;ทดลองส่งชนิดข้อมูลผิด&lt;/h2&gt;
+&lt;p class=&quot;error&quot;&gt;TypeError: finalPrice(): Argument #1 ($price) must be of type float, string given, called in .../htdocs/ws7/discount.php on line 52&lt;/p&gt;&lt;hr&gt;
+&lt;p&gt;&lt;small&gt;ไร่ภูคำ Coffee Roasters · ใบงานที่ 7&lt;/small&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+" style="width:720px;height:460px" ></iframe></div></div>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>โค้ด</th><th>ความหมาย</th></tr></thead><tbody><tr><td><code>declare(strict_types=1);</code></td><td>ให้ PHP ตรวจชนิดข้อมูลแบบเข้มงวด ต้องเป็นคำสั่งแรกของไฟล์ ถ้าไม่มี PHP จะแปลง "420" เป็น 420.0 ให้เองโดยไม่เตือน</td></tr><tr><td><code>function discountRate(string $level): float</code></td><td>รับ string และสัญญาว่าจะคืน float</td></tr><tr><td><code>match ($level) { &#x27;gold&#x27; =&gt; 0.15, … }</code></td><td>เทียบแบบ === และคืนค่าทันที ไม่ต้องเขียน break เหมือน switch</td></tr><tr><td><code>default =&gt; 0.0</code></td><td>ถ้าไม่มี default แล้วส่งระดับที่ไม่รู้จัก เช่น 'guest' จะเกิด UnhandledMatchError</td></tr><tr><td><code>try { … } catch (TypeError $e)</code></td><td>ดักข้อผิดพลาดเมื่อส่งชนิดข้อมูลผิด แล้วแสดงข้อความแทนที่หน้าเว็บจะหยุดทำงาน</td></tr></tbody></table></div>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>switch</th><th>match</th></tr></thead><tbody><tr><td>เทียบแบบ == (แปลงชนิดก่อนเทียบ)</td><td>เทียบแบบ === (ชนิดต้องตรงกัน)</td></tr><tr><td>ต้องเขียน break ทุก case ลืมแล้วทำต่อ case ถัดไป</td><td>ไม่มี break เลือกได้แค่ทางเดียว</td></tr><tr><td>เป็นคำสั่ง ต้องกำหนดค่าให้ตัวแปรเองในแต่ละ case</td><td>เป็นนิพจน์ คืนค่าได้ทันที</td></tr><tr><td>ไม่ตรงกรณีใดและไม่มี default ก็ข้ามไปเฉย ๆ</td><td>ไม่ตรงกรณีใดและไม่มี default จะ error ทำให้เห็นบั๊กเร็ว</td></tr></tbody></table></div>
+  <div class="x-shots"><b>ภาพหน้าจอที่ต้องแนบ</b><ul><li>หน้า discount.php ที่แสดงตารางส่วนลดและข้อความ TypeError</li></ul></div>
+</section>
+
+<section id="e1">
+  <div class="x-head"><span class="x-num">7.1</span><h2>ฟอร์มคำนวณเกรดด้วย $_GET และ $_POST</h2><span class="x-part">ส่วนที่ 2 · สัปดาห์ 13</span></div>
+  <p>ใช้เกณฑ์เกรดตามตัวอย่าง If Else-If ในหัวข้อ 7.7 ของบทที่ 7 (A ≥ 80, B ≥ 70, C ≥ 60, D ≥ 50) แล้วย้ายไปไว้ในฟังก์ชัน หน้าเดียวกันรับค่าทั้งสองแบบ: เลือกวิชาจากลิงก์ด้วย <code>$_GET</code> และส่งชื่อกับคะแนนด้วย <code>$_POST</code></p>
+  <p class="x-file">grade.php</p><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;?php
+// 7.1 รับค่าด้วย $_GET และ $_POST แล้วคำนวณเกรดด้วยฟังก์ชัน
+declare(strict_types=1);
+
+/** แปลงคะแนน 0–100 เป็นเกรด (เกณฑ์ตามตัวอย่างในบทที่ 7) */
+function gradeFromScore(float $score): string
+{
+    if ($score &gt;= 80) {
+        return &#x27;A&#x27;;
+    } elseif ($score &gt;= 70) {
+        return &#x27;B&#x27;;
+    } elseif ($score &gt;= 60) {
+        return &#x27;C&#x27;;
+    } elseif ($score &gt;= 50) {
+        return &#x27;D&#x27;;
+    }
+    return &#x27;F&#x27;;
+}
+
+// $_GET: เลือกวิชาจากลิงก์ ค่าอยู่ใน URL เช่น grade.php?subject=database
+$subjects = [&#x27;web&#x27; =&gt; &#x27;การเขียนโปรแกรมบนเว็บ&#x27;, &#x27;database&#x27; =&gt; &#x27;ระบบฐานข้อมูล&#x27;];
+$subjectKey = $_GET[&#x27;subject&#x27;] ?? &#x27;web&#x27;;
+if (!array_key_exists($subjectKey, $subjects)) {
+    $subjectKey = &#x27;web&#x27;;                    // รับเฉพาะค่าที่อยู่ในรายการ
+}
+
+$name = &#x27;&#x27;;
+$scoreInput = &#x27;&#x27;;
+$result = null;
+$error = &#x27;&#x27;;
+
+// $_POST: รับข้อมูลจากฟอร์ม ค่าไม่แสดงใน URL
+if ($_SERVER[&#x27;REQUEST_METHOD&#x27;] === &#x27;POST&#x27;) {
+    $name = trim($_POST[&#x27;name&#x27;] ?? &#x27;&#x27;);
+    $scoreInput = trim($_POST[&#x27;score&#x27;] ?? &#x27;&#x27;);
+
+    if ($name === &#x27;&#x27;) {
+        $error = &#x27;กรุณากรอกชื่อ&#x27;;
+    } elseif (!is_numeric($scoreInput) || $scoreInput &lt; 0 || $scoreInput &gt; 100) {
+        $error = &#x27;คะแนนต้องเป็นตัวเลข 0–100&#x27;;
+    } else {
+        $result = gradeFromScore((float) $scoreInput);
+    }
+}
+
+$title = &#x27;คำนวณเกรด&#x27;;
+require_once &#x27;includes/header.php&#x27;;
+?&gt;
+&lt;h1&gt;คำนวณเกรด&lt;/h1&gt;
+&lt;nav&gt;
+  วิชา:
+  &lt;?php foreach ($subjects as $key =&gt; $label): ?&gt;
+    &lt;a href=&quot;grade.php?subject=&lt;?= urlencode($key) ?&gt;&quot;&gt;&lt;?= htmlspecialchars($label) ?&gt;&lt;/a&gt;
+  &lt;?php endforeach; ?&gt;
+&lt;/nav&gt;
+
+&lt;form method=&quot;post&quot; action=&quot;grade.php?subject=&lt;?= urlencode($subjectKey) ?&gt;&quot;&gt;
+  &lt;p&gt;วิชาที่เลือก: &lt;strong&gt;&lt;?= htmlspecialchars($subjects[$subjectKey]) ?&gt;&lt;/strong&gt;&lt;/p&gt;
+  &lt;label for=&quot;name&quot;&gt;ชื่อนักศึกษา&lt;/label&gt;
+  &lt;input type=&quot;text&quot; id=&quot;name&quot; name=&quot;name&quot; value=&quot;&lt;?= htmlspecialchars($name) ?&gt;&quot; required&gt;
+  &lt;label for=&quot;score&quot;&gt;คะแนน (0–100)&lt;/label&gt;
+  &lt;input type=&quot;number&quot; id=&quot;score&quot; name=&quot;score&quot; min=&quot;0&quot; max=&quot;100&quot; step=&quot;0.5&quot; value=&quot;&lt;?= htmlspecialchars($scoreInput) ?&gt;&quot; required&gt;
+  &lt;button type=&quot;submit&quot;&gt;คำนวณ&lt;/button&gt;
+&lt;/form&gt;
+
+&lt;?php if ($error !== &#x27;&#x27;): ?&gt;
+  &lt;p class=&quot;error&quot;&gt;&lt;?= htmlspecialchars($error) ?&gt;&lt;/p&gt;
+&lt;?php elseif ($result !== null): ?&gt;
+  &lt;div class=&quot;box&quot;&gt;
+    &lt;!-- htmlspecialchars แปลง &lt; &gt; &quot; &#x27; &amp; เป็นข้อความ จึงกัน XSS ได้ --&gt;
+    &lt;p&gt;&lt;?= htmlspecialchars($name) ?&gt; ได้ &lt;?= htmlspecialchars($scoreInput) ?&gt; คะแนน&lt;/p&gt;
+    &lt;p class=&quot;ok&quot;&gt;เกรด &lt;?= $result ?&gt;&lt;/p&gt;
+  &lt;/div&gt;
+&lt;?php endif; ?&gt;
+&lt;?php require_once &#x27;includes/footer.php&#x27;; ?&gt;</code></pre></div>
+  <div class="x-preview" id="pv1"><div class="x-pv-bar" role="group" aria-label="เลือกความกว้างจอ"><button type="button" data-w="720" aria-pressed="true">ผลลัพธ์จริง</button><span class="x-pv-sep"></span><button type="button" class="doc" data-doc="0" aria-pressed="true">POST: 79 คะแนน</button><button type="button" class="doc" data-doc="1" aria-pressed="false">ทดลอง XSS</button><button type="button" class="doc" data-doc="2" aria-pressed="false">คะแนน 120</button><button type="button" class="doc" data-doc="3" aria-pressed="false">GET: ?subject=database</button><span class="pvw">720px</span></div><div class="x-pv-stage"><iframe title="ตัวอย่างหน้าเว็บ POST: 79 คะแนน" sandbox="allow-scripts allow-forms" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;title&gt;คำนวณเกรด&lt;/title&gt;
+  &lt;style&gt;body { font-family: Tahoma, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 16px; line-height: 1.6; color: #1e1a17; background: #f7f5f0; }
+h1 { color: #1f4d3a; }
+table { border-collapse: collapse; margin: 12px 0; }
+th, td { border: 1px solid #bbb; padding: 4px 10px; text-align: left; }
+th { background: #e7efe9; }
+label { display: block; margin-top: 10px; font-weight: bold; }
+input, select { padding: 6px; font: inherit; }
+button { margin-top: 12px; padding: 8px 18px; font: inherit; background: #1f4d3a; color: #fff; border: 0; border-radius: 6px; }
+.box { background: #fff; border-radius: 8px; padding: 12px 16px; margin: 12px 0; }
+.ok { color: #1f7a4a; font-weight: bold; }
+.error { color: #b3261e; font-weight: bold; }
+nav a { margin-right: 12px; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;คำนวณเกรด&lt;/h1&gt;
+&lt;nav&gt;
+  วิชา:
+      &lt;a href=&quot;grade.php?subject=web&quot;&gt;การเขียนโปรแกรมบนเว็บ&lt;/a&gt;
+      &lt;a href=&quot;grade.php?subject=database&quot;&gt;ระบบฐานข้อมูล&lt;/a&gt;
+  &lt;/nav&gt;
+
+&lt;form method=&quot;post&quot; action=&quot;grade.php?subject=web&quot;&gt;
+  &lt;p&gt;วิชาที่เลือก: &lt;strong&gt;การเขียนโปรแกรมบนเว็บ&lt;/strong&gt;&lt;/p&gt;
+  &lt;label for=&quot;name&quot;&gt;ชื่อนักศึกษา&lt;/label&gt;
+  &lt;input type=&quot;text&quot; id=&quot;name&quot; name=&quot;name&quot; value=&quot;สมหญิง ใจดี&quot; required&gt;
+  &lt;label for=&quot;score&quot;&gt;คะแนน (0–100)&lt;/label&gt;
+  &lt;input type=&quot;number&quot; id=&quot;score&quot; name=&quot;score&quot; min=&quot;0&quot; max=&quot;100&quot; step=&quot;0.5&quot; value=&quot;79&quot; required&gt;
+  &lt;button type=&quot;submit&quot;&gt;คำนวณ&lt;/button&gt;
+&lt;/form&gt;
+
+  &lt;div class=&quot;box&quot;&gt;
+    &lt;!-- htmlspecialchars แปลง &lt; &gt; &quot; &#x27; &amp; เป็นข้อความ จึงกัน XSS ได้ --&gt;
+    &lt;p&gt;สมหญิง ใจดี ได้ 79 คะแนน&lt;/p&gt;
+    &lt;p class=&quot;ok&quot;&gt;เกรด B&lt;/p&gt;
+  &lt;/div&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;small&gt;ไร่ภูคำ Coffee Roasters · ใบงานที่ 7&lt;/small&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+" style="width:720px;height:520px" ></iframe><iframe title="ตัวอย่างหน้าเว็บ ทดลอง XSS" sandbox="allow-scripts allow-forms" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;title&gt;คำนวณเกรด&lt;/title&gt;
+  &lt;style&gt;body { font-family: Tahoma, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 16px; line-height: 1.6; color: #1e1a17; background: #f7f5f0; }
+h1 { color: #1f4d3a; }
+table { border-collapse: collapse; margin: 12px 0; }
+th, td { border: 1px solid #bbb; padding: 4px 10px; text-align: left; }
+th { background: #e7efe9; }
+label { display: block; margin-top: 10px; font-weight: bold; }
+input, select { padding: 6px; font: inherit; }
+button { margin-top: 12px; padding: 8px 18px; font: inherit; background: #1f4d3a; color: #fff; border: 0; border-radius: 6px; }
+.box { background: #fff; border-radius: 8px; padding: 12px 16px; margin: 12px 0; }
+.ok { color: #1f7a4a; font-weight: bold; }
+.error { color: #b3261e; font-weight: bold; }
+nav a { margin-right: 12px; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;คำนวณเกรด&lt;/h1&gt;
+&lt;nav&gt;
+  วิชา:
+      &lt;a href=&quot;grade.php?subject=web&quot;&gt;การเขียนโปรแกรมบนเว็บ&lt;/a&gt;
+      &lt;a href=&quot;grade.php?subject=database&quot;&gt;ระบบฐานข้อมูล&lt;/a&gt;
+  &lt;/nav&gt;
+
+&lt;form method=&quot;post&quot; action=&quot;grade.php?subject=web&quot;&gt;
+  &lt;p&gt;วิชาที่เลือก: &lt;strong&gt;การเขียนโปรแกรมบนเว็บ&lt;/strong&gt;&lt;/p&gt;
+  &lt;label for=&quot;name&quot;&gt;ชื่อนักศึกษา&lt;/label&gt;
+  &lt;input type=&quot;text&quot; id=&quot;name&quot; name=&quot;name&quot; value=&quot;&amp;lt;script&amp;gt;alert(&amp;#039;XSS&amp;#039;)&amp;lt;/script&amp;gt;&quot; required&gt;
+  &lt;label for=&quot;score&quot;&gt;คะแนน (0–100)&lt;/label&gt;
+  &lt;input type=&quot;number&quot; id=&quot;score&quot; name=&quot;score&quot; min=&quot;0&quot; max=&quot;100&quot; step=&quot;0.5&quot; value=&quot;85&quot; required&gt;
+  &lt;button type=&quot;submit&quot;&gt;คำนวณ&lt;/button&gt;
+&lt;/form&gt;
+
+  &lt;div class=&quot;box&quot;&gt;
+    &lt;!-- htmlspecialchars แปลง &lt; &gt; &quot; &#x27; &amp; เป็นข้อความ จึงกัน XSS ได้ --&gt;
+    &lt;p&gt;&amp;lt;script&amp;gt;alert(&amp;#039;XSS&amp;#039;)&amp;lt;/script&amp;gt; ได้ 85 คะแนน&lt;/p&gt;
+    &lt;p class=&quot;ok&quot;&gt;เกรด A&lt;/p&gt;
+  &lt;/div&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;small&gt;ไร่ภูคำ Coffee Roasters · ใบงานที่ 7&lt;/small&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+" style="width:720px;height:520px" hidden></iframe><iframe title="ตัวอย่างหน้าเว็บ คะแนน 120" sandbox="allow-scripts allow-forms" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;title&gt;คำนวณเกรด&lt;/title&gt;
+  &lt;style&gt;body { font-family: Tahoma, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 16px; line-height: 1.6; color: #1e1a17; background: #f7f5f0; }
+h1 { color: #1f4d3a; }
+table { border-collapse: collapse; margin: 12px 0; }
+th, td { border: 1px solid #bbb; padding: 4px 10px; text-align: left; }
+th { background: #e7efe9; }
+label { display: block; margin-top: 10px; font-weight: bold; }
+input, select { padding: 6px; font: inherit; }
+button { margin-top: 12px; padding: 8px 18px; font: inherit; background: #1f4d3a; color: #fff; border: 0; border-radius: 6px; }
+.box { background: #fff; border-radius: 8px; padding: 12px 16px; margin: 12px 0; }
+.ok { color: #1f7a4a; font-weight: bold; }
+.error { color: #b3261e; font-weight: bold; }
+nav a { margin-right: 12px; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;คำนวณเกรด&lt;/h1&gt;
+&lt;nav&gt;
+  วิชา:
+      &lt;a href=&quot;grade.php?subject=web&quot;&gt;การเขียนโปรแกรมบนเว็บ&lt;/a&gt;
+      &lt;a href=&quot;grade.php?subject=database&quot;&gt;ระบบฐานข้อมูล&lt;/a&gt;
+  &lt;/nav&gt;
+
+&lt;form method=&quot;post&quot; action=&quot;grade.php?subject=web&quot;&gt;
+  &lt;p&gt;วิชาที่เลือก: &lt;strong&gt;การเขียนโปรแกรมบนเว็บ&lt;/strong&gt;&lt;/p&gt;
+  &lt;label for=&quot;name&quot;&gt;ชื่อนักศึกษา&lt;/label&gt;
+  &lt;input type=&quot;text&quot; id=&quot;name&quot; name=&quot;name&quot; value=&quot;ทดสอบ&quot; required&gt;
+  &lt;label for=&quot;score&quot;&gt;คะแนน (0–100)&lt;/label&gt;
+  &lt;input type=&quot;number&quot; id=&quot;score&quot; name=&quot;score&quot; min=&quot;0&quot; max=&quot;100&quot; step=&quot;0.5&quot; value=&quot;120&quot; required&gt;
+  &lt;button type=&quot;submit&quot;&gt;คำนวณ&lt;/button&gt;
+&lt;/form&gt;
+
+  &lt;p class=&quot;error&quot;&gt;คะแนนต้องเป็นตัวเลข 0–100&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;small&gt;ไร่ภูคำ Coffee Roasters · ใบงานที่ 7&lt;/small&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+" style="width:720px;height:520px" hidden></iframe><iframe title="ตัวอย่างหน้าเว็บ GET: ?subject=database" sandbox="allow-scripts allow-forms" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;title&gt;คำนวณเกรด&lt;/title&gt;
+  &lt;style&gt;body { font-family: Tahoma, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 16px; line-height: 1.6; color: #1e1a17; background: #f7f5f0; }
+h1 { color: #1f4d3a; }
+table { border-collapse: collapse; margin: 12px 0; }
+th, td { border: 1px solid #bbb; padding: 4px 10px; text-align: left; }
+th { background: #e7efe9; }
+label { display: block; margin-top: 10px; font-weight: bold; }
+input, select { padding: 6px; font: inherit; }
+button { margin-top: 12px; padding: 8px 18px; font: inherit; background: #1f4d3a; color: #fff; border: 0; border-radius: 6px; }
+.box { background: #fff; border-radius: 8px; padding: 12px 16px; margin: 12px 0; }
+.ok { color: #1f7a4a; font-weight: bold; }
+.error { color: #b3261e; font-weight: bold; }
+nav a { margin-right: 12px; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;คำนวณเกรด&lt;/h1&gt;
+&lt;nav&gt;
+  วิชา:
+      &lt;a href=&quot;grade.php?subject=web&quot;&gt;การเขียนโปรแกรมบนเว็บ&lt;/a&gt;
+      &lt;a href=&quot;grade.php?subject=database&quot;&gt;ระบบฐานข้อมูล&lt;/a&gt;
+  &lt;/nav&gt;
+
+&lt;form method=&quot;post&quot; action=&quot;grade.php?subject=database&quot;&gt;
+  &lt;p&gt;วิชาที่เลือก: &lt;strong&gt;ระบบฐานข้อมูล&lt;/strong&gt;&lt;/p&gt;
+  &lt;label for=&quot;name&quot;&gt;ชื่อนักศึกษา&lt;/label&gt;
+  &lt;input type=&quot;text&quot; id=&quot;name&quot; name=&quot;name&quot; value=&quot;&quot; required&gt;
+  &lt;label for=&quot;score&quot;&gt;คะแนน (0–100)&lt;/label&gt;
+  &lt;input type=&quot;number&quot; id=&quot;score&quot; name=&quot;score&quot; min=&quot;0&quot; max=&quot;100&quot; step=&quot;0.5&quot; value=&quot;&quot; required&gt;
+  &lt;button type=&quot;submit&quot;&gt;คำนวณ&lt;/button&gt;
+&lt;/form&gt;
+
+&lt;hr&gt;
+&lt;p&gt;&lt;small&gt;ไร่ภูคำ Coffee Roasters · ใบงานที่ 7&lt;/small&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+" style="width:720px;height:520px" hidden></iframe></div></div>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>ทดสอบ (รันจริง)</th><th>ผลที่ได้</th></tr></thead><tbody><tr><td>POST ชื่อ สมหญิง ใจดี คะแนน 79</td><td>"สมหญิง ใจดี ได้ 79 คะแนน" เกรด B</td></tr><tr><td>POST ชื่อ <code>&lt;script&gt;alert(&#x27;XSS&#x27;)&lt;/script&gt;</code> คะแนน 85</td><td>แสดงชื่อเป็นข้อความ <code>&amp;lt;script&amp;gt;…</code> สคริปต์ไม่ทำงาน เกรด A</td></tr><tr><td>POST คะแนน 120</td><td>"คะแนนต้องเป็นตัวเลข 0–100"</td></tr><tr><td>GET <code>grade.php?subject=database</code></td><td>หัวข้อวิชาเปลี่ยนเป็น ระบบฐานข้อมูล</td></tr><tr><td>GET <code>grade.php?subject=../../etc</code></td><td>ไม่อยู่ในรายการ จึงกลับไปใช้วิชาเริ่มต้น</td></tr></tbody></table></div>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>$_GET</th><th>$_POST</th></tr></thead><tbody><tr><td>ค่าอยู่ใน URL เช่น ?subject=web</td><td>ค่าอยู่ในเนื้อคำขอ ไม่แสดงใน URL</td></tr><tr><td>บุ๊กมาร์กและแชร์ลิงก์ได้</td><td>กดรีเฟรชแล้วเบราว์เซอร์ถามว่าจะส่งข้อมูลซ้ำไหม</td></tr><tr><td>ใช้กับการเลือกดู ค้นหา กรอง</td><td>ใช้กับการส่งข้อมูล บันทึก ล็อกอิน</td></tr><tr><td>ห้ามใช้ส่งรหัสผ่าน (ติดอยู่ในประวัติเบราว์เซอร์และ log)</td><td>ใช้ส่งรหัสผ่านได้ (ร่วมกับ HTTPS)</td></tr></tbody></table></div>
+  <div class="x-callout"><b>กฎข้อเดียวที่ต้องจำ:</b> ค่าที่มาจากผู้ใช้ (<code>$_GET</code> <code>$_POST</code> <code>$_SESSION</code> ที่เก็บจากผู้ใช้) ทุกครั้งที่ echo ลง HTML ต้องผ่าน <code>htmlspecialchars()</code> รวมถึงใน attribute value="" ของช่องกรอกด้วย และต้องตรวจค่าที่ฝั่งเซิร์ฟเวอร์เสมอ แม้ฟอร์มจะมี required หรือ min/max แล้ว เพราะผู้ใช้ส่งคำขอตรงไปที่ PHP ได้โดยไม่ผ่านฟอร์ม</div>
+  <details class="x-trouble"><summary>ข้อผิดพลาดที่พบบ่อย</summary><dl><div><dt>Warning: Undefined array key "name"</dt><dd>เปิดหน้าครั้งแรกยังไม่มีการส่งฟอร์ม ใช้ $_POST['name'] ?? '' และตรวจ $_SERVER['REQUEST_METHOD'] === 'POST' ก่อนอ่านค่า</dd></div><div><dt>ชื่อตัวแปรใน $_POST ไม่ตรงกับฟอร์ม</dt><dd>คีย์ใน $_POST มาจาก attribute name ของ input ไม่ใช่ id</dd></div></dl></details>
+  <div class="x-shots"><b>ภาพหน้าจอที่ต้องแนบ</b><ul><li>ผลเกรดเมื่อกรอกถูกต้อง</li><li>ผลเมื่อกรอกชื่อเป็นสคริปต์ (แสดงเป็นข้อความ)</li><li>URL ที่มี ?subject= ในแถบที่อยู่</li></ul></div>
+</section>
+
+<section id="e3">
+  <div class="x-head"><span class="x-num">7.3–7.4</span><h2>ระบบสมาชิกด้วย Session และ password_hash()</h2><span class="x-part">ส่วนที่ 2 · สัปดาห์ 13</span></div>
+  <p>ต่อยอดจากไฟล์เริ่มต้นใน <code>starter/week07/</code> และหัวข้อ 7.11.3 เดิมเขียนผู้ใช้ไว้ในโค้ด ตัวอย่างนี้เพิ่มหน้าสมัครสมาชิก และเก็บผู้ใช้ในไฟล์ <code>data/users.json</code> ชั่วคราว บทที่ 8 จะเปลี่ยนไปเก็บในฐานข้อมูล MySQL โดยแก้แค่ไฟล์ <code>includes/users.php</code></p>
+  <div class="x-flow" aria-label="ลำดับการทำงานของระบบสมาชิก">
+    <div>register.php<small>password_hash()</small></div><span>→</span>
+    <div>users.json<small>เก็บค่าแฮช</small></div><span>→</span>
+    <div>login.php<small>password_verify()<br>$_SESSION['user']</small></div><span>→</span>
+    <div>dashboard.php<small>ไม่มี session → login</small></div><span>→</span>
+    <div>logout.php<small>session_destroy()</small></div>
+  </div>
+  <p class="x-file">includes/users.php</p><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;?php
+// ฟังก์ชันจัดการผู้ใช้ เก็บในไฟล์ JSON ชั่วคราว (บทที่ 8 จะเปลี่ยนไปใช้ฐานข้อมูล MySQL)
+declare(strict_types=1);
+
+const USERS_FILE = __DIR__ . &#x27;/../data/users.json&#x27;;
+
+/** อ่านผู้ใช้ทั้งหมด คืนอาร์เรย์ [username =&gt; passwordHash] */
+function loadUsers(): array
+{
+    if (!file_exists(USERS_FILE)) {
+        return [];
+    }
+    $data = json_decode((string) file_get_contents(USERS_FILE), true);
+    return is_array($data) ? $data : [];
+}
+
+/** สมัครสมาชิก: คืนข้อความผิดพลาด หรือสตริงว่างถ้าสำเร็จ */
+function registerUser(string $username, string $password, string $confirm): string
+{
+    if (!preg_match(&#x27;/^[a-z0-9_]{4,20}$/&#x27;, $username)) {
+        return &#x27;ชื่อผู้ใช้ต้องเป็น a–z, 0–9 หรือ _ ยาว 4–20 ตัว&#x27;;
+    }
+    if (strlen($password) &lt; 8) {
+        return &#x27;รหัสผ่านต้องยาวอย่างน้อย 8 ตัว&#x27;;
+    }
+    if ($password !== $confirm) {
+        return &#x27;รหัสผ่านทั้งสองช่องไม่ตรงกัน&#x27;;
+    }
+    $users = loadUsers();
+    if (isset($users[$username])) {
+        return &#x27;ชื่อผู้ใช้นี้ถูกใช้แล้ว&#x27;;
+    }
+    // เก็บเฉพาะค่าแฮช ไม่เก็บรหัสผ่านจริง
+    $users[$username] = password_hash($password, PASSWORD_DEFAULT);
+    file_put_contents(USERS_FILE, json_encode($users, JSON_PRETTY_PRINT), LOCK_EX);
+    return &#x27;&#x27;;
+}
+
+/** ตรวจชื่อผู้ใช้และรหัสผ่าน คืน true ถ้าถูกต้อง */
+function verifyLogin(string $username, string $password): bool
+{
+    $users = loadUsers();
+    return isset($users[$username]) &amp;&amp; password_verify($password, $users[$username]);
+}</code></pre></div>
+  <p class="x-file">register.php</p><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;?php
+// 7.4 สมัครสมาชิก: บันทึกรหัสผ่านด้วย password_hash()
+declare(strict_types=1);
+require_once &#x27;includes/users.php&#x27;;
+
+$error = &#x27;&#x27;;
+$username = &#x27;&#x27;;
+if ($_SERVER[&#x27;REQUEST_METHOD&#x27;] === &#x27;POST&#x27;) {
+    $username = trim($_POST[&#x27;username&#x27;] ?? &#x27;&#x27;);
+    $error = registerUser($username, $_POST[&#x27;password&#x27;] ?? &#x27;&#x27;, $_POST[&#x27;confirm&#x27;] ?? &#x27;&#x27;);
+    if ($error === &#x27;&#x27;) {
+        header(&#x27;Location: login.php?registered=1&#x27;);
+        exit;
+    }
+}
+
+$title = &#x27;สมัครสมาชิก&#x27;;
+require_once &#x27;includes/header.php&#x27;;
+?&gt;
+&lt;h1&gt;สมัครสมาชิก&lt;/h1&gt;
+&lt;?php if ($error !== &#x27;&#x27;): ?&gt;
+  &lt;p class=&quot;error&quot;&gt;&lt;?= htmlspecialchars($error) ?&gt;&lt;/p&gt;
+&lt;?php endif; ?&gt;
+&lt;form method=&quot;post&quot;&gt;
+  &lt;label for=&quot;username&quot;&gt;ชื่อผู้ใช้&lt;/label&gt;
+  &lt;input type=&quot;text&quot; id=&quot;username&quot; name=&quot;username&quot; value=&quot;&lt;?= htmlspecialchars($username) ?&gt;&quot; required&gt;
+  &lt;label for=&quot;password&quot;&gt;รหัสผ่าน (อย่างน้อย 8 ตัว)&lt;/label&gt;
+  &lt;input type=&quot;password&quot; id=&quot;password&quot; name=&quot;password&quot; required minlength=&quot;8&quot;&gt;
+  &lt;label for=&quot;confirm&quot;&gt;ยืนยันรหัสผ่าน&lt;/label&gt;
+  &lt;input type=&quot;password&quot; id=&quot;confirm&quot; name=&quot;confirm&quot; required&gt;
+  &lt;button type=&quot;submit&quot;&gt;สมัครสมาชิก&lt;/button&gt;
+&lt;/form&gt;
+&lt;p&gt;มีบัญชีแล้ว &lt;a href=&quot;login.php&quot;&gt;เข้าสู่ระบบ&lt;/a&gt;&lt;/p&gt;
+&lt;?php require_once &#x27;includes/footer.php&#x27;; ?&gt;</code></pre></div>
+  <p class="x-file">login.php</p><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;?php
+// 7.3 + 7.4 เข้าสู่ระบบ: ตรวจรหัสผ่านด้วย password_verify() แล้วเก็บสถานะใน $_SESSION
+declare(strict_types=1);
+session_start();
+require_once &#x27;includes/users.php&#x27;;
+
+if (isset($_SESSION[&#x27;user&#x27;])) {          // ล็อกอินอยู่แล้ว ไปหน้าแดชบอร์ดเลย
+    header(&#x27;Location: dashboard.php&#x27;);
+    exit;
+}
+
+$error = &#x27;&#x27;;
+$username = &#x27;&#x27;;
+if ($_SERVER[&#x27;REQUEST_METHOD&#x27;] === &#x27;POST&#x27;) {
+    $username = trim($_POST[&#x27;username&#x27;] ?? &#x27;&#x27;);
+    if (verifyLogin($username, $_POST[&#x27;password&#x27;] ?? &#x27;&#x27;)) {
+        session_regenerate_id(true);     // เปลี่ยนรหัสเซสชันใหม่ กัน Session Fixation
+        $_SESSION[&#x27;user&#x27;] = $username;
+        $_SESSION[&#x27;login_time&#x27;] = date(&#x27;H:i&#x27;);
+        header(&#x27;Location: dashboard.php&#x27;);
+        exit;
+    }
+    // ไม่บอกว่าผิดที่ชื่อหรือรหัสผ่าน เพื่อไม่ให้เดาได้ว่ามีชื่อผู้ใช้นี้หรือไม่
+    $error = &#x27;ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง&#x27;;
+}
+
+$title = &#x27;เข้าสู่ระบบ&#x27;;
+require_once &#x27;includes/header.php&#x27;;
+?&gt;
+&lt;h1&gt;เข้าสู่ระบบ&lt;/h1&gt;
+&lt;?php if (isset($_GET[&#x27;registered&#x27;])): ?&gt;
+  &lt;p class=&quot;ok&quot;&gt;สมัครสมาชิกสำเร็จ กรุณาเข้าสู่ระบบ&lt;/p&gt;
+&lt;?php endif; ?&gt;
+&lt;?php if ($error !== &#x27;&#x27;): ?&gt;
+  &lt;p class=&quot;error&quot;&gt;&lt;?= htmlspecialchars($error) ?&gt;&lt;/p&gt;
+&lt;?php endif; ?&gt;
+&lt;form method=&quot;post&quot;&gt;
+  &lt;label for=&quot;username&quot;&gt;ชื่อผู้ใช้&lt;/label&gt;
+  &lt;input type=&quot;text&quot; id=&quot;username&quot; name=&quot;username&quot; value=&quot;&lt;?= htmlspecialchars($username) ?&gt;&quot; required&gt;
+  &lt;label for=&quot;password&quot;&gt;รหัสผ่าน&lt;/label&gt;
+  &lt;input type=&quot;password&quot; id=&quot;password&quot; name=&quot;password&quot; required&gt;
+  &lt;button type=&quot;submit&quot;&gt;เข้าสู่ระบบ&lt;/button&gt;
+&lt;/form&gt;
+&lt;p&gt;ยังไม่มีบัญชี &lt;a href=&quot;register.php&quot;&gt;สมัครสมาชิก&lt;/a&gt;&lt;/p&gt;
+&lt;?php require_once &#x27;includes/footer.php&#x27;; ?&gt;</code></pre></div>
+  <p class="x-file">dashboard.php</p><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;?php
+// 7.3 แดชบอร์ด: เข้าได้เฉพาะผู้ที่ล็อกอินแล้ว
+declare(strict_types=1);
+session_start();
+
+if (!isset($_SESSION[&#x27;user&#x27;])) {         // ยังไม่ได้ล็อกอิน ส่งกลับไปหน้า login
+    header(&#x27;Location: login.php&#x27;);
+    exit;                                // ต้องมี exit ไม่อย่างนั้นโค้ดด้านล่างยังทำงานต่อ
+}
+
+$title = &#x27;แดชบอร์ด&#x27;;
+require_once &#x27;includes/header.php&#x27;;
+?&gt;
+&lt;h1&gt;แดชบอร์ด&lt;/h1&gt;
+&lt;div class=&quot;box&quot;&gt;
+  &lt;p&gt;สวัสดีคุณ &lt;strong&gt;&lt;?= htmlspecialchars($_SESSION[&#x27;user&#x27;]) ?&gt;&lt;/strong&gt;&lt;/p&gt;
+  &lt;p&gt;เข้าสู่ระบบเมื่อเวลา &lt;?= htmlspecialchars($_SESSION[&#x27;login_time&#x27;] ?? &#x27;-&#x27;) ?&gt; น.&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;a href=&quot;logout.php&quot;&gt;ออกจากระบบ&lt;/a&gt;&lt;/p&gt;
+&lt;?php require_once &#x27;includes/footer.php&#x27;; ?&gt;</code></pre></div>
+  <p class="x-file">logout.php</p><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;?php
+// 7.3 ออกจากระบบ: ล้างข้อมูลเซสชันและคุกกี้
+declare(strict_types=1);
+session_start();
+$_SESSION = [];                                   // ล้างตัวแปรในเซสชัน
+if (ini_get(&#x27;session.use_cookies&#x27;)) {             // ลบคุกกี้เซสชันในเบราว์เซอร์
+    $p = session_get_cookie_params();
+    setcookie(session_name(), &#x27;&#x27;, time() - 42000, $p[&#x27;path&#x27;], $p[&#x27;domain&#x27;], $p[&#x27;secure&#x27;], $p[&#x27;httponly&#x27;]);
+}
+session_destroy();                                // ลบไฟล์เซสชันบนเซิร์ฟเวอร์
+header(&#x27;Location: login.php&#x27;);
+exit;</code></pre></div>
+  <p class="x-file">data/.htaccess</p><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code># ห้ามเปิดไฟล์ในโฟลเดอร์นี้ผ่านเว็บ (Apache 2.4 ของ XAMPP/MAMP)
+Require all denied</code></pre></div>
+  <div class="x-preview" id="pv3"><div class="x-pv-bar" role="group" aria-label="เลือกความกว้างจอ"><button type="button" data-w="720" aria-pressed="true">ผลลัพธ์จริง</button><span class="x-pv-sep"></span><button type="button" class="doc" data-doc="0" aria-pressed="true">สมัครสมาชิก</button><button type="button" class="doc" data-doc="1" aria-pressed="false">สมัครสำเร็จ</button><button type="button" class="doc" data-doc="2" aria-pressed="false">รหัสผ่านผิด</button><button type="button" class="doc" data-doc="3" aria-pressed="false">แดชบอร์ด</button><span class="pvw">720px</span></div><div class="x-pv-stage"><iframe title="ตัวอย่างหน้าเว็บ สมัครสมาชิก" sandbox="allow-scripts allow-forms" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;title&gt;สมัครสมาชิก&lt;/title&gt;
+  &lt;style&gt;body { font-family: Tahoma, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 16px; line-height: 1.6; color: #1e1a17; background: #f7f5f0; }
+h1 { color: #1f4d3a; }
+table { border-collapse: collapse; margin: 12px 0; }
+th, td { border: 1px solid #bbb; padding: 4px 10px; text-align: left; }
+th { background: #e7efe9; }
+label { display: block; margin-top: 10px; font-weight: bold; }
+input, select { padding: 6px; font: inherit; }
+button { margin-top: 12px; padding: 8px 18px; font: inherit; background: #1f4d3a; color: #fff; border: 0; border-radius: 6px; }
+.box { background: #fff; border-radius: 8px; padding: 12px 16px; margin: 12px 0; }
+.ok { color: #1f7a4a; font-weight: bold; }
+.error { color: #b3261e; font-weight: bold; }
+nav a { margin-right: 12px; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;สมัครสมาชิก&lt;/h1&gt;
+&lt;form method=&quot;post&quot;&gt;
+  &lt;label for=&quot;username&quot;&gt;ชื่อผู้ใช้&lt;/label&gt;
+  &lt;input type=&quot;text&quot; id=&quot;username&quot; name=&quot;username&quot; value=&quot;&quot; required&gt;
+  &lt;label for=&quot;password&quot;&gt;รหัสผ่าน (อย่างน้อย 8 ตัว)&lt;/label&gt;
+  &lt;input type=&quot;password&quot; id=&quot;password&quot; name=&quot;password&quot; required minlength=&quot;8&quot;&gt;
+  &lt;label for=&quot;confirm&quot;&gt;ยืนยันรหัสผ่าน&lt;/label&gt;
+  &lt;input type=&quot;password&quot; id=&quot;confirm&quot; name=&quot;confirm&quot; required&gt;
+  &lt;button type=&quot;submit&quot;&gt;สมัครสมาชิก&lt;/button&gt;
+&lt;/form&gt;
+&lt;p&gt;มีบัญชีแล้ว &lt;a href=&quot;login.php&quot;&gt;เข้าสู่ระบบ&lt;/a&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;small&gt;ไร่ภูคำ Coffee Roasters · ใบงานที่ 7&lt;/small&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+" style="width:720px;height:480px" ></iframe><iframe title="ตัวอย่างหน้าเว็บ สมัครสำเร็จ" sandbox="allow-scripts allow-forms" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;title&gt;เข้าสู่ระบบ&lt;/title&gt;
+  &lt;style&gt;body { font-family: Tahoma, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 16px; line-height: 1.6; color: #1e1a17; background: #f7f5f0; }
+h1 { color: #1f4d3a; }
+table { border-collapse: collapse; margin: 12px 0; }
+th, td { border: 1px solid #bbb; padding: 4px 10px; text-align: left; }
+th { background: #e7efe9; }
+label { display: block; margin-top: 10px; font-weight: bold; }
+input, select { padding: 6px; font: inherit; }
+button { margin-top: 12px; padding: 8px 18px; font: inherit; background: #1f4d3a; color: #fff; border: 0; border-radius: 6px; }
+.box { background: #fff; border-radius: 8px; padding: 12px 16px; margin: 12px 0; }
+.ok { color: #1f7a4a; font-weight: bold; }
+.error { color: #b3261e; font-weight: bold; }
+nav a { margin-right: 12px; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;เข้าสู่ระบบ&lt;/h1&gt;
+  &lt;p class=&quot;ok&quot;&gt;สมัครสมาชิกสำเร็จ กรุณาเข้าสู่ระบบ&lt;/p&gt;
+&lt;form method=&quot;post&quot;&gt;
+  &lt;label for=&quot;username&quot;&gt;ชื่อผู้ใช้&lt;/label&gt;
+  &lt;input type=&quot;text&quot; id=&quot;username&quot; name=&quot;username&quot; value=&quot;&quot; required&gt;
+  &lt;label for=&quot;password&quot;&gt;รหัสผ่าน&lt;/label&gt;
+  &lt;input type=&quot;password&quot; id=&quot;password&quot; name=&quot;password&quot; required&gt;
+  &lt;button type=&quot;submit&quot;&gt;เข้าสู่ระบบ&lt;/button&gt;
+&lt;/form&gt;
+&lt;p&gt;ยังไม่มีบัญชี &lt;a href=&quot;register.php&quot;&gt;สมัครสมาชิก&lt;/a&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;small&gt;ไร่ภูคำ Coffee Roasters · ใบงานที่ 7&lt;/small&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+" style="width:720px;height:480px" hidden></iframe><iframe title="ตัวอย่างหน้าเว็บ รหัสผ่านผิด" sandbox="allow-scripts allow-forms" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;title&gt;เข้าสู่ระบบ&lt;/title&gt;
+  &lt;style&gt;body { font-family: Tahoma, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 16px; line-height: 1.6; color: #1e1a17; background: #f7f5f0; }
+h1 { color: #1f4d3a; }
+table { border-collapse: collapse; margin: 12px 0; }
+th, td { border: 1px solid #bbb; padding: 4px 10px; text-align: left; }
+th { background: #e7efe9; }
+label { display: block; margin-top: 10px; font-weight: bold; }
+input, select { padding: 6px; font: inherit; }
+button { margin-top: 12px; padding: 8px 18px; font: inherit; background: #1f4d3a; color: #fff; border: 0; border-radius: 6px; }
+.box { background: #fff; border-radius: 8px; padding: 12px 16px; margin: 12px 0; }
+.ok { color: #1f7a4a; font-weight: bold; }
+.error { color: #b3261e; font-weight: bold; }
+nav a { margin-right: 12px; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;เข้าสู่ระบบ&lt;/h1&gt;
+  &lt;p class=&quot;error&quot;&gt;ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง&lt;/p&gt;
+&lt;form method=&quot;post&quot;&gt;
+  &lt;label for=&quot;username&quot;&gt;ชื่อผู้ใช้&lt;/label&gt;
+  &lt;input type=&quot;text&quot; id=&quot;username&quot; name=&quot;username&quot; value=&quot;somying&quot; required&gt;
+  &lt;label for=&quot;password&quot;&gt;รหัสผ่าน&lt;/label&gt;
+  &lt;input type=&quot;password&quot; id=&quot;password&quot; name=&quot;password&quot; required&gt;
+  &lt;button type=&quot;submit&quot;&gt;เข้าสู่ระบบ&lt;/button&gt;
+&lt;/form&gt;
+&lt;p&gt;ยังไม่มีบัญชี &lt;a href=&quot;register.php&quot;&gt;สมัครสมาชิก&lt;/a&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;small&gt;ไร่ภูคำ Coffee Roasters · ใบงานที่ 7&lt;/small&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+" style="width:720px;height:480px" hidden></iframe><iframe title="ตัวอย่างหน้าเว็บ แดชบอร์ด" sandbox="allow-scripts allow-forms" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;title&gt;แดชบอร์ด&lt;/title&gt;
+  &lt;style&gt;body { font-family: Tahoma, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 16px; line-height: 1.6; color: #1e1a17; background: #f7f5f0; }
+h1 { color: #1f4d3a; }
+table { border-collapse: collapse; margin: 12px 0; }
+th, td { border: 1px solid #bbb; padding: 4px 10px; text-align: left; }
+th { background: #e7efe9; }
+label { display: block; margin-top: 10px; font-weight: bold; }
+input, select { padding: 6px; font: inherit; }
+button { margin-top: 12px; padding: 8px 18px; font: inherit; background: #1f4d3a; color: #fff; border: 0; border-radius: 6px; }
+.box { background: #fff; border-radius: 8px; padding: 12px 16px; margin: 12px 0; }
+.ok { color: #1f7a4a; font-weight: bold; }
+.error { color: #b3261e; font-weight: bold; }
+nav a { margin-right: 12px; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;แดชบอร์ด&lt;/h1&gt;
+&lt;div class=&quot;box&quot;&gt;
+  &lt;p&gt;สวัสดีคุณ &lt;strong&gt;somying&lt;/strong&gt;&lt;/p&gt;
+  &lt;p&gt;เข้าสู่ระบบเมื่อเวลา 08:07 น.&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;a href=&quot;logout.php&quot;&gt;ออกจากระบบ&lt;/a&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;small&gt;ไร่ภูคำ Coffee Roasters · ใบงานที่ 7&lt;/small&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+" style="width:720px;height:480px" hidden></iframe></div></div>
+  <h3>ผลการทดสอบ (รันจริงด้วย curl)</h3>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>ทดสอบ</th><th>ผลที่ได้</th></tr></thead><tbody><tr><td>เปิด dashboard.php โดยไม่ล็อกอิน</td><td>302 ส่งกลับไป login.php</td></tr><tr><td>สมัครชื่อ <code>Ab</code> รหัส <code>123</code></td><td>"ชื่อผู้ใช้ต้องเป็น a–z, 0–9 หรือ _ ยาว 4–20 ตัว"</td></tr><tr><td>สมัคร somying รหัสผ่านสองช่องไม่ตรงกัน</td><td>"รหัสผ่านทั้งสองช่องไม่ตรงกัน"</td></tr><tr><td>สมัคร somying / coffee2569 ถูกต้อง</td><td>302 ไป login.php?registered=1 และ users.json มีค่าแฮช</td></tr><tr><td>สมัคร somying ซ้ำ</td><td>"ชื่อผู้ใช้นี้ถูกใช้แล้ว"</td></tr><tr><td>ล็อกอินด้วยรหัสผ่านผิด</td><td>"ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง"</td></tr><tr><td>ล็อกอินถูกต้อง</td><td>302 ไป dashboard.php แสดง "สวัสดีคุณ somying" และรหัสเซสชัน (PHPSESSID) เปลี่ยนเป็นค่าใหม่</td></tr><tr><td>เปิด login.php ขณะล็อกอินอยู่</td><td>302 ไป dashboard.php</td></tr><tr><td>กดออกจากระบบ แล้วเปิด dashboard.php อีกครั้ง</td><td>302 ส่งกลับไป login.php</td></tr></tbody></table></div>
+  <h3>password_hash() เก็บอะไรลงไฟล์</h3>
+  <p class="x-file">data/users.json (หลังสมัคร somying)</p><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>{
+    &quot;somying&quot;: &quot;$2y$12$2xDx245bbvT0X4kd5fGSqeT\/xSBpmRbecEIh5.iVKsNH.AvuHNGZe&quot;
+}</code></pre></div>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>ส่วนของค่าแฮช</th><th>ความหมาย</th></tr></thead><tbody><tr><td><code>$2y$</code></td><td>อัลกอริทึม bcrypt (PASSWORD_DEFAULT)</td></tr><tr><td><code>12$</code></td><td>cost ยิ่งสูงยิ่งคำนวณช้า ทำให้เดารหัสผ่านทีละมาก ๆ ได้ยาก PHP 8.4 ขึ้นไปใช้ 12 ส่วน PHP 8.2 ของ XAMPP ใช้ 10 นักศึกษาจะเห็น $2y$10$</td></tr><tr><td>22 ตัวถัดมา</td><td>Salt ที่สุ่มใหม่ทุกครั้ง รหัสผ่านเดียวกันจึงได้ค่าแฮชไม่ซ้ำกัน</td></tr><tr><td>ที่เหลือ</td><td>ผลแฮช password_verify() อ่าน salt และ cost จากค่านี้เอง จึงไม่ต้องเก็บ salt แยก</td></tr></tbody></table></div>
+  <p class="x-muted">ทดลองรันจริง: แฮช "coffee2569" สองครั้งได้ค่าต่างกัน แต่ <code>password_verify("coffee2569", $hash)</code> ได้ true ทั้งคู่ ส่วน <code>password_verify("Coffee2569", $hash)</code> ได้ false เพราะตัวพิมพ์ใหญ่ต่างกัน</p>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>แนวปฏิบัติ</th><th>ทำที่ไหนในตัวอย่าง</th></tr></thead><tbody><tr><td>ไม่เก็บรหัสผ่านจริง ไม่ใช้ md5() หรือ sha1()</td><td>register: password_hash()</td></tr><tr><td>เปลี่ยนรหัสเซสชันเมื่อล็อกอิน (กัน Session Fixation ตามหัวข้อ 7.12.3)</td><td>login: session_regenerate_id(true)</td></tr><tr><td>ข้อความผิดพลาดไม่บอกว่าผิดที่ชื่อหรือรหัสผ่าน</td><td>login: ข้อความเดียวกันทั้งสองกรณี</td></tr><tr><td>หยุดทำงานทันทีหลัง redirect</td><td>exit; ต่อจาก header('Location: …') ทุกครั้ง</td></tr><tr><td>ล้างเซสชันและคุกกี้เมื่อออกจากระบบ</td><td>logout: $_SESSION = [], setcookie หมดอายุ, session_destroy()</td></tr><tr><td>ห้ามเปิดไฟล์ข้อมูลผ่านเว็บ</td><td>data/.htaccess (Require all denied)</td></tr></tbody></table></div>
+  <div class="x-callout"><b>ข้อจำกัดของตัวอย่าง:</b> การเก็บผู้ใช้ในไฟล์ JSON ใช้เพื่อฝึกเรื่อง password_hash() ก่อนเรียนฐานข้อมูลเท่านั้น และ .htaccess ทำงานเมื่อ Apache เปิด AllowOverride ไว้ ซึ่ง XAMPP เปิดไว้สำหรับ htdocs ในงานจริงให้เก็บข้อมูลในฐานข้อมูล หรือไว้นอกโฟลเดอร์เว็บ และเพิ่ม CSRF token ให้ฟอร์ม (หัวข้อ 7.13)</div>
+  <details class="x-trouble"><summary>ข้อผิดพลาดที่พบบ่อย</summary><dl><div><dt>Warning: Cannot modify header information - headers already sent</dt><dd>มี echo, HTML หรือแม้แต่ช่องว่างก่อน &lt;?php ก่อนเรียก header() หรือ session_start() ให้วางโค้ด PHP ที่ใช้ header ไว้บนสุดของไฟล์ก่อน require header.php</dd></div><div><dt>ล็อกอินแล้วเข้า dashboard ไม่ได้ เด้งกลับ login</dt><dd>ลืม session_start() บรรทัดแรกของ dashboard.php</dd></div><div><dt>file_put_contents(…): Failed to open stream: Permission denied</dt><dd>โฟลเดอร์ data เขียนไม่ได้ บน macOS ให้คลิกขวาโฟลเดอร์ › Get Info แล้วอนุญาต Read & Write</dd></div><div><dt>password_verify() ได้ false ตลอด</dt><dd>ตรวจว่าเทียบกับค่าแฮชที่เก็บไว้ ไม่ใช่ password_hash() ใหม่อีกครั้ง และอย่า trim() รหัสผ่าน</dd></div></dl></details>
+  <div class="x-shots"><b>ภาพหน้าจอที่ต้องแนบ</b><ul><li>หน้าสมัครสมาชิกและข้อความเมื่อกรอกผิด</li><li>ไฟล์ users.json ที่มีค่าแฮช $2y$…</li><li>หน้าแดชบอร์ดหลังล็อกอิน</li><li>เปิด dashboard.php หลังออกจากระบบแล้วถูกส่งกลับหน้า login</li><li>DevTools › Application › Cookies ที่เห็น PHPSESSID</li></ul></div>
+</section>
+
+<section id="e5">
+  <div class="x-head"><span class="x-num">สรุป</span><h2>สิ่งที่ต้องส่ง</h2></div>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>ส่วน</th><th>ข้อ</th><th>ไฟล์ / หลักฐาน</th></tr></thead><tbody><tr><td>1 (สัปดาห์ 12)</td><td>7.0</td><td><code>basics.php</code> + includes/ + ภาพผลลัพธ์บน localhost</td></tr><tr><td></td><td>7.2</td><td><code>discount.php</code> + ภาพตารางส่วนลดและ TypeError</td></tr><tr><td>2 (สัปดาห์ 13)</td><td>7.1</td><td><code>grade.php</code> + ภาพผลปกติ ผล XSS และ URL ที่มี $_GET</td></tr><tr><td></td><td>7.3–7.4</td><td><code>register.php</code> <code>login.php</code> <code>dashboard.php</code> <code>logout.php</code> <code>includes/users.php</code> + ภาพตามรายการด้านบน</td></tr></tbody></table></div>
+  <p class="x-muted">บีบอัดโฟลเดอร์ ws7 เป็น .zip <b>โดยลบไฟล์ data/users.json ออกก่อน</b> และรวมภาพหน้าจอเป็น PDF ไฟล์เดียว ส่งพร้อมกันทั้งสองส่วนภายในสัปดาห์ที่ 13 ตั้งชื่อตามรูปแบบ <code>รหัสนักศึกษา_ใบงานที่7</code></p>
+</section>
+
+</div>
+<div class="pager"><a class="pn" href="ws7.html"><small>กลับไปที่</small><b>ใบงานที่ 7</b></a><a class="pn next" href="ws8.html"><small>ถัดไป</small><b>ใบงานที่ 8</b></a></div></div>
+</main>
+<footer class="foot"><div class="wrap fgrid">
+<div><a class="brand" href="../index.html"><span class="logo" aria-hidden="true">&lt;/&gt;</span><span class="bt"><b>การเขียนโปรแกรมบนเว็บ</b><small>Web Programming</small></span></a>
+<p class="small">สื่อเสริมการเรียนรู้ ใช้ประกอบเอกสารประกอบการสอน ไม่มีระบบสมาชิกและไม่เก็บข้อมูลส่วนบุคคล ส่งงานผ่าน Google Classroom</p></div>
+<div><p class="fh">เรียนรู้</p><a href="../chapters.html">บทเรียน 10 บท</a><a href="../worksheets.html">ใบงานประจำบท</a><a href="../assessment.html">เกณฑ์การประเมินผล</a><a href="../clo.html">ผลลัพธ์การเรียนรู้ (CLO)</a><a href="../start.html">เริ่มต้นใช้งาน</a></div>
+<div><p class="fh">รายวิชา</p><a href="../about.html">เกี่ยวกับรายวิชา</a><span>ผู้สอน: ดร.สุรเชษฐ์ สังขพันธ์</span><span>พ.ศ. 2569</span></div>
+</div></footer>
+<script src="../assets/app.js"></script>
+<script>
+document.querySelectorAll(".x-preview").forEach(function(pv){
+  var frames=pv.querySelectorAll("iframe"), out=pv.querySelector(".pvw");
+  pv.querySelectorAll("button[data-w]").forEach(function(b,_,all){b.addEventListener("click",function(){
+    all.forEach(function(x){x.setAttribute("aria-pressed","false")});b.setAttribute("aria-pressed","true");
+    frames.forEach(function(f){f.style.width=b.dataset.w+"px"});out.textContent=b.dataset.w+"px";});});
+  pv.querySelectorAll("button[data-doc]").forEach(function(b,_,all){b.addEventListener("click",function(){
+    all.forEach(function(x){x.setAttribute("aria-pressed","false")});b.setAttribute("aria-pressed","true");
+    frames.forEach(function(f,k){f.hidden=(k!=b.dataset.doc)});});});
+});
+</script>
+</body>
+</html>
