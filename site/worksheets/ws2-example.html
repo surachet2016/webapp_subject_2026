@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="ตัวอย่างการทำใบงานที่ 2: ติดตั้ง VS Code และส่วนขยาย, XAMPP/MAMP, โครงสร้างโฟลเดอร์โครงงานและ Git, และการใช้ผู้ช่วย AI เขียน Hello World">
+<meta name="theme-color" content="#4338ca">
+<title>ตัวอย่างใบงานที่ 2 · การเขียนโปรแกรมบนเว็บ</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%234338ca'/%3E%3Cpath d='M26 20 14 32l12 12M38 20l12 12-12 12' fill='none' stroke='%23fff' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preload" href="../assets/fonts/Sarabun-400-thai.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css">
+<style>
+.wsx{display:grid;gap:52px;padding-block:28px 24px;font-size:1.05rem;line-height:1.75;
+  --term-bg:#0f1226;--term-ink:#e8eaf8;--term-dim:#7b84aa;--ok-bg:#1f7a4a}
+.wsx p{margin:0;max-width:74ch}
+.wsx section{display:grid;gap:18px;scroll-margin-top:84px;min-width:0}
+.wsx h2{margin:0;font-size:clamp(1.4rem,3vw,1.75rem)}
+.wsx h3{margin:8px 0 0;font-size:1.18rem}
+.wsx kbd{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:.82em;padding:1px 6px;border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;background:var(--surface)}
+.wsx .x-muted{color:var(--muted);font-size:.95rem}
+.wsx .x-intro{display:grid;gap:16px}
+.wsx .x-toc{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:0;padding:0}
+.wsx .x-toc a{display:inline-flex;gap:8px;align-items:baseline;padding:6px 14px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--ink);text-decoration:none;font-size:.95rem}
+.wsx .x-toc b{color:var(--brand);font-family:"JetBrains Mono",monospace;font-weight:600;font-size:.85em}
+.wsx .x-head{display:flex;align-items:center;gap:14px;border-top:2px solid var(--ink);padding-top:16px}
+.wsx .x-num{font-family:"JetBrains Mono",monospace;font-weight:600;color:var(--brand-ink);background:var(--brand);padding:2px 10px;border-radius:8px;font-size:.95rem}
+.wsx .x-steps{margin:0;padding-left:1.4em;display:grid;gap:6px}
+.wsx .x-grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:20px;align-items:start}
+.wsx .x-grid2>*{min-width:0}
+.wsx .x-os{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px;display:grid;gap:10px}
+.wsx .x-os h3{margin:0}
+.wsx .x-checks{display:grid;gap:8px}
+.wsx .x-checks ul{margin:0;padding-left:1.2em;display:grid;gap:6px}
+.wsx .x-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.wsx .x-table{min-width:640px;background:var(--surface);border:1px solid var(--line)}
+.wsx .x-table th,.wsx .x-table td{border:1px solid var(--line)}
+.wsx .x-table code{font-size:.85em;overflow-wrap:anywhere}
+.wsx .x-shots{background:var(--soft);border-radius:12px;padding:12px 18px;display:grid;gap:4px}
+.wsx .x-shots b{color:var(--brand)}
+.wsx .x-shots ul{margin:0;padding-left:1.2em}
+.wsx .x-trouble{border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.wsx .x-trouble summary{cursor:pointer;padding:12px 18px;font-weight:700}
+.wsx .x-trouble dl{margin:0;padding:0 18px 14px;display:grid;gap:12px}
+.wsx .x-trouble dt{font-family:"JetBrains Mono",monospace;font-size:.88rem;color:var(--ink);font-weight:600}
+.wsx .x-trouble dd{margin:2px 0 0;color:var(--muted)}
+.wsx .x-callout{background:var(--warn-bg);color:var(--warn-ink);border-left:4px solid var(--accent);border-radius:10px;padding:12px 16px}
+.wsx .x-callout code{background:none}
+/* terminal + tree (always dark, like a real terminal) */
+.wsx .x-term{background:var(--term-bg);color:var(--term-ink);border-radius:12px;overflow:hidden;min-width:0}
+.wsx .x-term-bar{display:flex;gap:6px;align-items:center;padding:8px 12px;background:#181c38;font-size:.8rem;color:var(--term-dim)}
+.wsx .x-term-bar i{width:10px;height:10px;border-radius:50%;background:#3a3f63;display:inline-block}
+.wsx .x-term-bar span{margin-left:8px}
+.wsx .x-term pre{color:var(--term-ink);font-size:13.5px;white-space:pre;overflow-x:auto}
+.wsx .x-term b{color:#8be9a8;font-weight:600}
+.wsx .x-term .c{color:var(--term-dim)}
+.wsx .x-tree{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow-x:auto}
+.wsx .x-tree pre{color:var(--ink);font-size:14px;white-space:pre}
+.wsx .x-tree b{color:var(--brand)}
+.wsx .x-tree span{color:var(--muted)}
+/* mock UIs */
+.wsx .x-mock{border-radius:12px;overflow:hidden;font-family:"Segoe UI",system-ui,sans-serif;font-size:13px}
+.wsx .x-vsc{background:#1f1f1f;color:#ccc;border:1px solid #333}
+.wsx .x-vsc-hd{padding:10px 14px;font-size:11px;letter-spacing:.06em;color:#9a9a9a}
+.wsx .x-ext{display:grid;grid-template-columns:40px 1fr auto;gap:10px;align-items:center;padding:8px 14px}
+.wsx .x-ext:nth-child(2){background:#04395e}
+.wsx .x-ext b{display:block;color:#eee;font-weight:600}
+.wsx .x-ext small{color:#9a9a9a}
+.wsx .x-ext em{font-style:normal;color:#73c991}
+.wsx .x-ico{width:40px;height:40px;border-radius:6px;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px}
+.wsx .x-vsc-status{display:flex;gap:16px;justify-content:flex-end;background:#007acc;color:#fff;padding:3px 12px;font-size:12px;margin-top:10px}
+.wsx .x-vsc-status span:first-child{margin-right:auto}
+.wsx .x-xampp{min-width:520px;background:#f3f3f3;color:#222;border:1px solid #c8c8c8}
+.wsx .x-xampp-hd{background:#fb7a24;color:#fff;font-weight:700;padding:8px 14px}
+.wsx .x-xampp table{width:100%;font-size:13px;background:#fff}
+.wsx .x-xampp th{background:#e8e8e8;color:#222;font-weight:600}
+.wsx .x-xampp th,.wsx .x-xampp td{border:1px solid #d6d6d6;padding:6px 10px}
+.wsx .x-xampp td{background:#fff;color:#222}
+.wsx .x-xampp tr.on td:first-child{background:#9be29b;font-weight:600}
+.wsx .x-xampp td span{display:inline-block;border:1px solid #aaa;border-radius:3px;padding:0 8px;margin-right:6px;background:#f7f7f7}
+.wsx .x-log{font-family:"JetBrains Mono",monospace;font-size:12px;padding:8px 14px;color:#1a5fb4;background:#fff;border-top:1px solid #d6d6d6}
+</style>
+<script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+
+</head>
+<body class="ch-page">
+<a class="skip" href="#main">ข้ามไปยังเนื้อหา</a>
+<header class="top"><div class="wrap nav">
+<a class="brand" href="../index.html" aria-label="หน้าแรก การเขียนโปรแกรมบนเว็บ"><span class="logo" aria-hidden="true">&lt;/&gt;</span><span class="bt"><b>การเขียนโปรแกรมบนเว็บ</b><small>07-034-210</small></span></a>
+<button id="menuBtn" class="iconbtn menu-btn" type="button" aria-expanded="false" aria-controls="menu" aria-label="เปิดเมนู"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v2H3V6Zm0 5h18v2H3v-2Zm0 5h18v2H3v-2Z"/></svg></button>
+<nav id="menu" aria-label="เมนูหลัก">
+<a href="../chapters.html">บทเรียน</a><a href="../worksheets.html" aria-current="page">ใบงาน</a><a href="../assessment.html">เกณฑ์ประเมินผล</a><a href="../clo.html">ผลลัพธ์การเรียนรู้</a><a href="../start.html">เริ่มต้นใช้งาน</a><a href="../about.html">เกี่ยวกับรายวิชา</a>
+</nav>
+<button id="theme" class="iconbtn" type="button" aria-label="สลับโหมดมืดและสว่าง"><span class="i-moon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5Z"/></svg></span><span class="i-sun"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg></span></button>
+</div><div id="bar" class="bar" aria-hidden="true"></div></header>
+<main id="main">
+<div class="chead s1"><div class="wrap">
+<nav class="crumb" aria-label="เส้นทาง"><a href="../index.html">หน้าแรก</a><span>/</span><a href="../worksheets.html">ใบงาน</a><span>/</span><a href="ws2.html">ใบงานที่ 2</a><span>/</span><span aria-current="page">ตัวอย่าง</span></nav>
+<div class="chrow"><span class="badge b-s1 big" aria-hidden="true">WEB</span><div><p class="kicker">ตัวอย่างการทำใบงานที่ 2</p><h1>เตรียมเครื่องมือพัฒนาเว็บ: VS Code, XAMPP, Git และผู้ช่วย AI</h1></div></div></div></div>
+<div class="wrap narrow"><div class="wsx">
+
+<header class="x-intro">
+  <p>ตัวอย่างนี้ทำครบ 4 ข้อตามลำดับ แต่ละข้อมีขั้นตอน ผลที่ควรเห็น ภาพหน้าจอที่ต้องแนบ และปัญหาที่พบบ่อย ผลลัพธ์ของคำสั่ง Git ในหน้านี้ได้จากการรันจริงด้วย Git 2.54.0 รหัส commit ในเครื่องของนักศึกษาจะไม่ตรงกับตัวอย่าง</p>
+  <ul class="x-toc">
+    <li><a href="#e1"><b>2.1</b>VS Code + ส่วนขยาย</a></li>
+    <li><a href="#e2"><b>2.2</b>XAMPP / MAMP</a></li>
+    <li><a href="#e3"><b>2.3</b>โฟลเดอร์โครงงาน + Git</a></li>
+    <li><a href="#e4"><b>2.4</b>AI Pair Programming</a></li>
+    <li><a href="#e5"><b>สรุป</b>สิ่งที่ต้องส่ง</a></li>
+  </ul>
+</header>
+
+<section id="e1">
+  <div class="x-head"><span class="x-num">2.1</span><h2>ติดตั้งและปรับแต่ง VS Code</h2></div>
+  <ol class="x-steps">
+    <li>ดาวน์โหลดจาก <a href="https://code.visualstudio.com/" target="_blank" rel="noopener noreferrer">code.visualstudio.com</a> แล้วติดตั้ง บน Windows ให้ติ๊ก <b>Add "Open with Code" action</b> และ <b>Add to PATH</b> ไว้ด้วย</li>
+    <li>เปิดแท็บ Extensions (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>X</kbd> / <kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>X</kbd>) ค้นหาและติดตั้งทีละตัว ตรวจชื่อผู้พัฒนาให้ตรงตามตาราง เพราะมีส่วนขยายชื่อคล้ายกันหลายตัว</li>
+    <li>ตั้ง Prettier เป็นตัวจัดรูปแบบหลักและให้จัดอัตโนมัติเมื่อบันทึก: กด <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd> พิมพ์ <code>Preferences: Open User Settings (JSON)</code> แล้วเพิ่มค่าด้านล่าง</li>
+  </ol>
+  <div class="x-scroll"><table class="x-table">
+    <thead><tr><th>ส่วนขยาย</th><th>ผู้พัฒนา</th><th>Extension ID</th><th>ใช้ทำอะไร</th></tr></thead>
+    <tbody>
+      <tr><td>Live Server</td><td>Ritwick Dey</td><td><code>ritwickdey.LiveServer</code></td><td>เปิด HTML ผ่านเซิร์ฟเวอร์จำลองและรีเฟรชอัตโนมัติ (ไม่รัน PHP)</td></tr>
+      <tr><td>Prettier - Code formatter</td><td>Prettier</td><td><code>esbenp.prettier-vscode</code></td><td>จัดรูปแบบโค้ดให้เป็นระเบียบ</td></tr>
+      <tr><td>Auto Rename Tag</td><td>Jun Han</td><td><code>formulahendry.auto-rename-tag</code></td><td>แก้แท็กเปิดแล้วแท็กปิดเปลี่ยนตาม</td></tr>
+    </tbody>
+  </table></div>
+  <div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>{
+  &quot;editor.defaultFormatter&quot;: &quot;esbenp.prettier-vscode&quot;,
+  &quot;editor.formatOnSave&quot;: true,
+  &quot;liveServer.settings.donotShowInfoMsg&quot;: true
+}</code></pre></div>
+  <p class="x-muted">ทางลัดสำหรับคนที่ใช้ Terminal: ติดตั้งทั้งสามตัวด้วยคำสั่ง <code>code</code> แล้วตรวจรายการที่ติดตั้ง</p>
+  <div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>code --install-extension ritwickdey.LiveServer
+code --install-extension esbenp.prettier-vscode
+code --install-extension formulahendry.auto-rename-tag
+code --list-extensions</code></pre></div>
+  <h3>ผลที่ควรเห็น</h3>
+  <div class="x-grid2">
+    <div class="x-mock x-vsc" aria-label="ภาพจำลองแท็บ Extensions ใน VS Code">
+      <div class="x-vsc-hd">EXTENSIONS: INSTALLED</div>
+      <div class="x-ext"><span class="x-ico" style="background:#3c7dd9">LS</span><div><b>Live Server</b><small>Ritwick Dey</small></div><em>✓</em></div>
+      <div class="x-ext"><span class="x-ico" style="background:#56b3b4">P</span><div><b>Prettier - Code formatter</b><small>Prettier</small></div><em>✓</em></div>
+      <div class="x-ext"><span class="x-ico" style="background:#c46a2b">&lt;/&gt;</span><div><b>Auto Rename Tag</b><small>Jun Han</small></div><em>✓</em></div>
+      <div class="x-vsc-status"><span>main</span><span>Prettier ✓</span><span class="go">Go Live</span></div>
+    </div>
+    <div class="x-checks">
+      <p><b>ทดสอบว่าใช้ได้จริง</b></p>
+      <ul>
+        <li><b>Live Server:</b> คลิกขวาที่ <code>index.html</code> เลือก <i>Open with Live Server</i> เบราว์เซอร์เปิดที่ <code>http://127.0.0.1:5500/index.html</code> แก้ข้อความแล้วบันทึก หน้าเว็บต้องเปลี่ยนเองโดยไม่ต้องกดรีเฟรช</li>
+        <li><b>Prettier:</b> พิมพ์ HTML ให้ย่อหน้าเละ ๆ แล้วกด <kbd>Ctrl</kbd>+<kbd>S</kbd> โค้ดต้องจัดย่อหน้าใหม่ทันที</li>
+        <li><b>Auto Rename Tag:</b> แก้ <code>&lt;h1&gt;</code> เป็น <code>&lt;h2&gt;</code> แท็กปิดต้องเปลี่ยนเป็น <code>&lt;/h2&gt;</code> ตาม</li>
+      </ul>
+    </div>
+  </div>
+  <div class="x-shots"><b>ภาพหน้าจอที่ต้องแนบ</b><ul><li>แท็บ Extensions ที่เห็นส่วนขยายครบ 3 ตัว</li><li>เบราว์เซอร์ที่เปิดผ่าน Live Server (เห็น URL พอร์ต 5500)</li></ul></div>
+  <details class="x-trouble"><summary>ปัญหาที่พบบ่อยและวิธีแก้</summary><dl><div><dt>ไม่มีปุ่ม Go Live ที่แถบล่าง</dt><dd>ต้องเปิดเป็นโฟลเดอร์ (File › Open Folder) ไม่ใช่เปิดไฟล์เดี่ยว แล้วลองปิดเปิด VS Code ใหม่</dd></div><div><dt>บันทึกแล้ว Prettier ไม่จัดรูปแบบ</dt><dd>ตรวจว่า settings.json มี editor.defaultFormatter ถูกต้อง หรือคลิกขวาในไฟล์ เลือก Format Document With… › Prettier</dd></div><div><dt>พิมพ์ code ใน Terminal แล้วไม่รู้จักคำสั่ง</dt><dd>macOS: กด Cmd+Shift+P แล้วเลือก Shell Command: Install 'code' command in PATH · Windows: ติดตั้งใหม่โดยติ๊ก Add to PATH</dd></div></dl></details>
+</section>
+
+<section id="e2">
+  <div class="x-head"><span class="x-num">2.2</span><h2>ติดตั้งสภาพแวดล้อมจำลอง (XAMPP / MAMP)</h2></div>
+  <div class="x-grid2">
+    <div class="x-os"><h3>Windows: XAMPP</h3><ol class="x-steps">
+      <li>ดาวน์โหลดจาก <a href="https://www.apachefriends.org/" target="_blank" rel="noopener noreferrer">apachefriends.org</a> ติดตั้งที่ <code>C:\xampp</code> (ค่าเริ่มต้น) เลือกอย่างน้อย Apache, MySQL, PHP และ phpMyAdmin</li>
+      <li>เปิด <b>XAMPP Control Panel</b> กด <b>Start</b> ที่ Apache และ MySQL จนชื่อโมดูลเป็นสีเขียว ถ้า Windows Firewall ถาม ให้อนุญาตเฉพาะเครือข่ายส่วนตัว</li>
+      <li>เปิด <code>http://localhost</code> จะถูกพาไปหน้า Dashboard ของ XAMPP</li>
+      <li>วางไฟล์เว็บใน <code>C:\xampp\htdocs</code></li>
+    </ol></div>
+    <div class="x-os"><h3>macOS: MAMP (ตามภาคผนวก ค)</h3><ol class="x-steps">
+      <li>ดาวน์โหลดรุ่นฟรีจาก <a href="https://www.mamp.info/" target="_blank" rel="noopener noreferrer">mamp.info</a> แล้วลากลง Applications</li>
+      <li>เปิด MAMP กด <b>Start</b> ไฟของ Apache และ MySQL ต้องเป็นสีเขียว พอร์ตเริ่มต้นคือ Apache 8888 และ MySQL 8889</li>
+      <li>กด <b>WebStart</b> หรือเปิด <code>http://localhost:8888</code></li>
+      <li>วางไฟล์เว็บใน <code>/Applications/MAMP/htdocs</code> รหัส MySQL เริ่มต้น <code>root</code> / <code>root</code> ใช้ได้กับเครื่องตนเองเท่านั้น</li>
+    </ol></div>
+  </div>
+  <h3>ผลที่ควรเห็น</h3>
+  <div class="x-scroll"><div class="x-mock x-xampp" aria-label="ภาพจำลอง XAMPP Control Panel">
+    <div class="x-xampp-hd">XAMPP Control Panel</div>
+    <table><thead><tr><th>Module</th><th>PID(s)</th><th>Port(s)</th><th>Actions</th></tr></thead>
+    <tbody>
+      <tr class="on"><td>Apache</td><td>4120</td><td>80, 443</td><td><span>Stop</span><span>Admin</span></td></tr>
+      <tr class="on"><td>MySQL</td><td>5236</td><td>3306</td><td><span>Stop</span><span>Admin</span></td></tr>
+      <tr><td>FileZilla</td><td></td><td></td><td><span>Start</span><span>Admin</span></td></tr>
+      <tr><td>Mercury</td><td></td><td></td><td><span>Start</span><span>Admin</span></td></tr>
+    </tbody></table>
+    <div class="x-log">[Apache] Status change detected: running<br>[mysql] Status change detected: running</div>
+  </div></div>
+  <p class="x-muted">ภาพจำลอง หมายเลข PID ในเครื่องจริงจะต่างไป สิ่งที่ต้องดูคือชื่อ Apache และ MySQL เป็นพื้นสีเขียว และมีพอร์ตแสดง</p>
+  <p><b>ทดสอบว่า Apache ประมวลผล PHP ได้:</b> สร้างไฟล์ <code>htdocs/test/info.php</code> แล้วเปิด <code>http://localhost/test/info.php</code> (MAMP: <code>http://localhost:8888/test/info.php</code>) ต้องเห็นหัวข้อและเลขเวอร์ชัน PHP ไม่ใช่เห็นโค้ด PHP ดิบ</p>
+  <div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;?php
+echo &quot;&lt;h1&gt;Apache + PHP ทำงานแล้ว&lt;/h1&gt;&quot;;
+echo &quot;PHP version: &quot; . phpversion();</code></pre></div>
+  <div class="x-shots"><b>ภาพหน้าจอที่ต้องแนบ</b><ul><li>XAMPP Control Panel หรือหน้าต่าง MAMP ที่ Apache และ MySQL เป็นสีเขียว</li><li>หน้า Dashboard ที่ http://localhost (หรือ WebStart ของ MAMP)</li><li>หน้า info.php ที่แสดงเวอร์ชัน PHP</li></ul></div>
+  <details class="x-trouble"><summary>ปัญหาที่พบบ่อยและวิธีแก้</summary><dl><div><dt>Apache กด Start แล้วดับทันที / Port 80 in use</dt><dd>มีโปรแกรมอื่นใช้พอร์ต 80 อยู่ (เช่น IIS หรือ VMware) ปิดโปรแกรมนั้น หรือกด Config › httpd.conf เปลี่ยน Listen 80 เป็น 8080 แล้วเปิด http://localhost:8080</dd></div><div><dt>MySQL ขึ้น Error: MySQL shutdown unexpectedly</dt><dd>มักเกิดจากมี MySQL อีกตัวติดตั้งในเครื่องแล้วใช้พอร์ต 3306 ให้หยุด Service ตัวนั้นก่อน อย่าลบโฟลเดอร์ data ถ้ายังไม่ได้สำรองข้อมูล</dd></div><div><dt>เปิดไฟล์ .php แล้วเห็นโค้ดดิบหรือเบราว์เซอร์ให้ดาวน์โหลด</dt><dd>เปิดไฟล์จากดิสก์ตรง ๆ (file:///) หรือผ่าน Live Server ซึ่งไม่รัน PHP ต้องเปิดผ่าน http://localhost เท่านั้น</dd></div></dl></details>
+</section>
+
+<section id="e3">
+  <div class="x-head"><span class="x-num">2.3</span><h2>โครงสร้างโฟลเดอร์โครงงาน และ Git</h2></div>
+  <p>สร้างโฟลเดอร์ <code>my-website</code> ไว้ใน <code>htdocs</code> เพื่อให้ไฟล์ PHP ในบทที่ 7 เปิดผ่าน <code>http://localhost/my-website/</code> ได้ทันทีโดยไม่ต้องย้ายโฟลเดอร์ แล้วเปิดโฟลเดอร์นี้ใน VS Code (File › Open Folder)</p>
+  <div class="x-grid2">
+    <div class="x-tree" aria-label="โครงสร้างโฟลเดอร์">
+<pre><b>my-website/</b>
+├── index.html
+├── .gitignore
+├── <b>css/</b>
+│   └── style.css
+├── <b>js/</b>
+│   └── main.js
+├── <b>images/</b>
+│   └── .gitkeep        <span>← ไฟล์ว่าง ให้ Git เก็บโฟลเดอร์ได้</span>
+└── <b>includes/</b>          <span>← ใช้ในบทที่ 7</span>
+    ├── header.php
+    └── footer.php</pre>
+    </div>
+    <div class="x-checks"><p><b>หน้าที่ของแต่ละโฟลเดอร์</b></p><ul>
+      <li><code>css/</code> ไฟล์สไตล์ทั้งหมด</li>
+      <li><code>js/</code> ไฟล์ JavaScript</li>
+      <li><code>images/</code> รูปภาพ โลโก้ ไอคอน</li>
+      <li><code>includes/</code> ส่วนที่ใช้ซ้ำหลายหน้า เช่น header.php, footer.php, db.php เรียกใช้ด้วย <code>require_once</code></li>
+      <li><code>.gitignore</code> รายชื่อไฟล์ที่ไม่ให้ Git เก็บ เช่น <code>.env</code> และ <code>wp-config.php</code></li>
+    </ul></div>
+  </div>
+  <p><code>index.html</code> เริ่มต้นที่ใช้ทดสอบทั้ง Live Server และข้อ 2.4 (ลองพิมพ์ <code>!</code> แล้วกด <kbd>Tab</kbd> ใน VS Code เพื่อสร้างโครงหน้าเร็ว ๆ ด้วย Emmet)</p>
+  <div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;!doctype html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;utf-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;title&gt;เว็บไซต์ของฉัน&lt;/title&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;css/style.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;Hello World&lt;/h1&gt;
+  &lt;p id=&quot;greeting&quot;&gt;&lt;/p&gt;
+  &lt;script src=&quot;js/main.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+  <h3>ตั้งค่า Git ครั้งแรก (ทำครั้งเดียวต่อเครื่อง)</h3>
+  <div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>git --version
+git config --global user.name &quot;ชื่อของคุณ&quot;
+git config --global user.email &quot;อีเมลของคุณ&quot;</code></pre></div>
+  <h3>สร้าง Repository และบันทึกครั้งแรก</h3>
+  <p>เปิด Terminal ใน VS Code (<kbd>Ctrl</kbd>+<kbd>`</kbd>) ซึ่งจะอยู่ที่โฟลเดอร์ my-website อยู่แล้ว</p>
+  <div class="x-term"><div class="x-term-bar"><i></i><i></i><i></i><span>Terminal</span></div><pre><b>$ git init -b main</b>
+Initialized empty Git repository in …/my-website/.git/
+
+<b>$ git status</b>
+On branch main
+
+No commits yet
+
+Untracked files:
+  (use "git add &lt;file&gt;..." to include in what will be committed)
+	.gitignore
+	css/
+	includes/
+	index.html
+	js/
+
+nothing added to commit but untracked files present (use "git add" to track)</pre></div>
+  <div class="x-callout"><b>สังเกต:</b> โฟลเดอร์ <code>images/</code> ไม่อยู่ในรายการ เพราะ Git เก็บเฉพาะไฟล์ ไม่เก็บโฟลเดอร์ว่าง ถ้าอยากให้โฟลเดอร์นี้อยู่ใน Repository ด้วย ให้สร้างไฟล์ว่างชื่อ <code>.gitkeep</code> ไว้ข้างใน (ชื่อนี้เป็นธรรมเนียมที่นิยมใช้ ไม่ใช่คำสั่งของ Git)</div>
+  <div class="x-term"><div class="x-term-bar"><i></i><i></i><i></i><span>Terminal</span></div><pre><b>$ git add .</b>
+<b>$ git commit -m "เริ่มโครงงาน: โครงสร้างโฟลเดอร์และหน้าแรก"</b>
+[main (root-commit) a820dc5] เริ่มโครงงาน: โครงสร้างโฟลเดอร์และหน้าแรก
+ 6 files changed, 29 insertions(+)
+ create mode 100644 .gitignore
+ create mode 100644 css/style.css
+ create mode 100644 includes/footer.php
+ create mode 100644 includes/header.php
+ create mode 100644 index.html
+ create mode 100644 js/main.js
+
+<b>$ touch images/.gitkeep</b>        <span class="c"># Windows PowerShell: New-Item images/.gitkeep</span>
+<b>$ git add images/.gitkeep</b>
+<b>$ git commit -m "เก็บโฟลเดอร์ images ไว้ใน Git ด้วย .gitkeep"</b>
+
+<b>$ git log --oneline</b>
+45ab1ca เก็บโฟลเดอร์ images ไว้ใน Git ด้วย .gitkeep
+a820dc5 เริ่มโครงงาน: โครงสร้างโฟลเดอร์และหน้าแรก</pre></div>
+  <p class="x-muted">ข้อความ commit ที่ดีบอกว่า "ทำอะไร" สั้น ๆ ในบรรทัดเดียว เช่น "เพิ่มหน้าติดต่อเรา" ไม่ใช่ "แก้" หรือ "update"</p>
+  <div class="x-shots"><b>ภาพหน้าจอที่ต้องแนบ</b><ul><li>หน้าต่าง Explorer ของ VS Code ที่เห็นโครงสร้างโฟลเดอร์ครบ</li><li>Terminal ที่แสดงผล git log --oneline อย่างน้อย 2 commit</li></ul></div>
+  <details class="x-trouble"><summary>ปัญหาที่พบบ่อยและวิธีแก้</summary><dl><div><dt>fatal: not a git repository</dt><dd>ยังไม่ได้ cd เข้าโฟลเดอร์ my-website หรือยังไม่ได้รัน git init ตรวจตำแหน่งปัจจุบันด้วย pwd (macOS) หรือ cd (Windows)</dd></div><div><dt>Author identity unknown / Please tell me who you are</dt><dd>ยังไม่ได้ตั้ง git config user.name และ user.email ให้รันคำสั่งตั้งค่าครั้งแรกด้านบน</dd></div><div><dt>error: unknown switch `b'</dt><dd>Git รุ่นเก่ากว่า 2.28 ให้ใช้ git init แล้วตามด้วย git branch -M main หลัง commit แรก</dd></div></dl></details>
+</section>
+
+<section id="e4">
+  <div class="x-head"><span class="x-num">2.4</span><h2>AI Pair Programming Setup</h2></div>
+  <div class="x-grid2">
+    <div class="x-os"><h3>ทางเลือก A: GitHub Copilot ใน VS Code</h3><ol class="x-steps">
+      <li>สมัครบัญชี GitHub นักศึกษาขอสิทธิ์ GitHub Education ด้วยอีเมลมหาวิทยาลัยได้ ซึ่งรวมการใช้ Copilot แบบเต็ม ถ้ายังไม่ได้รับสิทธิ์ ใช้แผน Copilot Free ที่มีโควตาจำกัดต่อเดือนไปก่อน</li>
+      <li>ติดตั้งส่วนขยาย <b>GitHub Copilot</b> (ผู้พัฒนา GitHub) แล้ว Sign in ด้วยบัญชี GitHub</li>
+      <li>เมื่อเห็นไอคอน Copilot ที่แถบสถานะด้านล่าง แปลว่าพร้อมใช้</li>
+    </ol></div>
+    <div class="x-os"><h3>ทางเลือก B: Cursor</h3><ol class="x-steps">
+      <li>ดาวน์โหลดจาก <a href="https://cursor.com/" target="_blank" rel="noopener noreferrer">cursor.com</a> ตอนเปิดครั้งแรกนำเข้าส่วนขยายและการตั้งค่าจาก VS Code ได้</li>
+      <li>เปิดโฟลเดอร์ my-website ตัวเดิม</li>
+      <li>ใช้ <kbd>Tab</kbd> รับคำแนะนำ, <kbd>Ctrl/Cmd</kbd>+<kbd>K</kbd> สั่งแก้โค้ดตรงตำแหน่ง, <kbd>Ctrl/Cmd</kbd>+<kbd>L</kbd> เปิดหน้าต่างแชต</li>
+    </ol></div>
+  </div>
+  <h3>ทดลองเขียน Hello World ด้วย AI</h3>
+  <ol class="x-steps">
+    <li>เปิด <code>js/main.js</code> ลบโค้ดเดิม แล้วพิมพ์เฉพาะ <b>บรรทัดคอมเมนต์</b> ที่บอกสิ่งที่ต้องการ</li>
+    <li>กด <kbd>Enter</kbd> รอคำแนะนำตัวอักษรสีจาง (ghost text) แล้วกด <kbd>Tab</kbd> เพื่อรับ หรือ <kbd>Esc</kbd> เพื่อปฏิเสธ</li>
+    <li>อ่านทุกบรรทัดก่อนรับ แล้วเปิด index.html ด้วย Live Server ตรวจว่าทำงานจริง</li>
+  </ol>
+  <p>ตัวอย่างโค้ดหลังรับคำแนะนำและตรวจแล้ว บรรทัดแรกคือสิ่งที่นักศึกษาพิมพ์เอง ส่วนที่เหลือมาจาก AI ซึ่งแต่ละครั้งอาจได้ต่างกัน</p>
+  <div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>// แสดงข้อความ Hello World ในย่อหน้า id=&quot;greeting&quot; พร้อมวันที่ปัจจุบันแบบภาษาไทย
+const greeting = document.getElementById(&quot;greeting&quot;);
+const today = new Date().toLocaleDateString(&quot;th-TH&quot;, { dateStyle: &quot;long&quot; });
+greeting.textContent = `Hello World! วันนี้วันที่ ${today}`;</code></pre></div>
+  <p class="x-muted">กด ▶ ลองรัน เพื่อดูผลในหน้านี้ (รวม HTML กับ JavaScript ไว้ในไฟล์เดียวเพื่อให้ทดลองได้)</p>
+  <div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!doctype html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;utf-8&quot;&gt;
+  &lt;title&gt;Hello World&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;Hello World&lt;/h1&gt;
+  &lt;p id=&quot;greeting&quot;&gt;&lt;/p&gt;
+  &lt;script&gt;
+    // แสดงข้อความ Hello World ในย่อหน้า id=&quot;greeting&quot; พร้อมวันที่ปัจจุบันแบบภาษาไทย
+    const greeting = document.getElementById(&quot;greeting&quot;);
+    const today = new Date().toLocaleDateString(&quot;th-TH&quot;, { dateStyle: &quot;long&quot; });
+    greeting.textContent = `Hello World! วันนี้วันที่ ${today}`;
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+  <h3>แบบบันทึกผลการทำงาน</h3>
+  <div class="x-scroll"><table class="x-table">
+    <thead><tr><th>หัวข้อ</th><th>ตัวอย่างการกรอก</th></tr></thead>
+    <tbody>
+      <tr><td>เครื่องมือ / แผนที่ใช้</td><td>GitHub Copilot (GitHub Education) ใน VS Code</td></tr>
+      <tr><td>คำสั่ง (Prompt) หรือคอมเมนต์ที่พิมพ์</td><td><code>// แสดงข้อความ Hello World ในย่อหน้า id="greeting" พร้อมวันที่ปัจจุบันแบบภาษาไทย</code></td></tr>
+      <tr><td>สิ่งที่ AI เสนอ</td><td>โค้ด 3 บรรทัด ใช้ getElementById และ toLocaleDateString</td></tr>
+      <tr><td>รับทั้งหมด / แก้ไข / ปฏิเสธ</td><td>รับ แต่แก้ <code>innerHTML</code> เป็น <code>textContent</code> เพราะข้อความไม่มีแท็ก HTML</td></tr>
+      <tr><td>ผลการทดสอบ</td><td>เปิดผ่าน Live Server แสดง "Hello World! วันนี้วันที่ …" ถูกต้อง ไม่มี error ใน Console</td></tr>
+      <tr><td>อธิบายโค้ดด้วยคำพูดของตนเอง</td><td>บรรทัดที่ 2 หา element ที่มี id greeting, บรรทัดที่ 3 สร้างวันที่ภาษาไทย, บรรทัดที่ 4 ใส่ข้อความลงในย่อหน้า</td></tr>
+    </tbody>
+  </table></div>
+  <div class="x-callout"><b>ข้อตกลงการใช้ AI ในรายวิชา (ตามหัวข้อ 2.21.3):</b> ต้องอธิบายโค้ดที่รับมาได้ทุกบรรทัด ตรวจความปลอดภัยก่อนใช้ และห้ามวางรหัสผ่าน Token หรือข้อมูลส่วนบุคคลลงในหน้าต่างแชตของ AI</div>
+  <div class="x-shots"><b>ภาพหน้าจอที่ต้องแนบ</b><ul><li>ไอคอน Copilot ที่แถบสถานะ หรือหน้าต่าง Cursor ที่ล็อกอินแล้ว</li><li>ตอนที่ AI แสดงคำแนะนำสีจางก่อนกด Tab</li><li>ผล Hello World บนเบราว์เซอร์</li></ul></div>
+  <details class="x-trouble"><summary>ปัญหาที่พบบ่อยและวิธีแก้</summary><dl><div><dt>ไม่มีคำแนะนำขึ้นเลย</dt><dd>ตรวจว่าล็อกอินแล้ว ไอคอน Copilot ที่แถบสถานะไม่มีขีดฆ่า และไฟล์ที่เปิดเป็นภาษาที่เปิดใช้ ลองพิมพ์คอมเมนต์ใหม่แล้วกด Enter</dd></div><div><dt>Copilot แจ้งว่าใช้ครบโควตา</dt><dd>แผน Free มีโควตาต่อเดือน ให้ขอสิทธิ์ GitHub Education หรือเปลี่ยนไปทดลองกับ Cursor</dd></div></dl></details>
+</section>
+
+<section id="e5">
+  <div class="x-head"><span class="x-num">สรุป</span><h2>สิ่งที่ต้องส่ง</h2></div>
+  <div class="x-scroll"><table class="x-table">
+    <thead><tr><th>ข้อ</th><th>หลักฐาน</th><th>รูปแบบ</th></tr></thead>
+    <tbody>
+      <tr><td>2.1</td><td>Extensions ครบ 3 ตัว และหน้าเว็บที่เปิดผ่าน Live Server</td><td>ภาพหน้าจอ 2 ภาพ</td></tr>
+      <tr><td>2.2</td><td>Apache และ MySQL ทำงาน, Dashboard ที่ localhost, หน้า info.php</td><td>ภาพหน้าจอ 3 ภาพ</td></tr>
+      <tr><td>2.3</td><td>โครงสร้างโฟลเดอร์ และผล <code>git log --oneline</code></td><td>ภาพหน้าจอ 2 ภาพ + โฟลเดอร์ my-website บีบอัดเป็น .zip (รวมโฟลเดอร์ .git)</td></tr>
+      <tr><td>2.4</td><td>AI ที่เปิดใช้งาน, คำแนะนำของ AI, ผล Hello World และแบบบันทึกผล</td><td>ภาพหน้าจอ 3 ภาพ + ตารางบันทึกผล</td></tr>
+    </tbody>
+  </table></div>
+  <p class="x-muted">รวมภาพทั้งหมดเป็นไฟล์ PDF ไฟล์เดียว เรียงตามข้อ แล้วส่งพร้อมไฟล์ .zip ตั้งชื่อตามรูปแบบ <code>รหัสนักศึกษา_ใบงานที่2</code></p>
+</section>
+
+</div>
+<div class="pager"><a class="pn" href="ws2.html"><small>กลับไปที่</small><b>ใบงานที่ 2</b></a><a class="pn next" href="ws3.html"><small>ถัดไป</small><b>ใบงานที่ 3</b></a></div></div>
+</main>
+<footer class="foot"><div class="wrap fgrid">
+<div><a class="brand" href="../index.html"><span class="logo" aria-hidden="true">&lt;/&gt;</span><span class="bt"><b>การเขียนโปรแกรมบนเว็บ</b><small>Web Programming</small></span></a>
+<p class="small">สื่อเสริมการเรียนรู้ ใช้ประกอบเอกสารประกอบการสอน ไม่มีระบบสมาชิกและไม่เก็บข้อมูลส่วนบุคคล ส่งงานผ่าน Google Classroom</p></div>
+<div><p class="fh">เรียนรู้</p><a href="../chapters.html">บทเรียน 10 บท</a><a href="../worksheets.html">ใบงานประจำบท</a><a href="../assessment.html">เกณฑ์การประเมินผล</a><a href="../clo.html">ผลลัพธ์การเรียนรู้ (CLO)</a><a href="../start.html">เริ่มต้นใช้งาน</a></div>
+<div><p class="fh">รายวิชา</p><a href="../about.html">เกี่ยวกับรายวิชา</a><span>ผู้สอน: ดร.สุรเชษฐ์ สังขพันธ์</span><span>พ.ศ. 2569</span></div>
+</div></footer>
+<script src="../assets/app.js"></script>
+</body>
+</html>
