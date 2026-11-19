@@ -1,0 +1,1123 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="ตัวอย่างการทำใบงานที่ 5: Bootstrap 5 Grid, Navbar, Hero, Card, Modal, Form Validation และการใช้ AI ร่าง Dashboard แล้วปรับธีม">
+<meta name="theme-color" content="#4338ca">
+<title>ตัวอย่างใบงานที่ 5 · การเขียนโปรแกรมบนเว็บ</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%234338ca'/%3E%3Cpath d='M26 20 14 32l12 12M38 20l12 12-12 12' fill='none' stroke='%23fff' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preload" href="../assets/fonts/Sarabun-400-thai.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css">
+<style>
+.wsx{display:grid;gap:52px;padding-block:28px 24px;font-size:1.05rem;line-height:1.75;
+  --term-bg:#0f1226;--term-ink:#e8eaf8;--term-dim:#7b84aa;--ok-bg:#1f7a4a}
+.wsx p{margin:0;max-width:74ch}
+.wsx section{display:grid;gap:18px;scroll-margin-top:84px;min-width:0}
+.wsx h2{margin:0;font-size:clamp(1.4rem,3vw,1.75rem)}
+.wsx h3{margin:8px 0 0;font-size:1.18rem}
+.wsx kbd{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:.82em;padding:1px 6px;border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;background:var(--surface)}
+.wsx .x-muted{color:var(--muted);font-size:.95rem}
+.wsx .x-intro{display:grid;gap:16px}
+.wsx .x-toc{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:0;padding:0}
+.wsx .x-toc a{display:inline-flex;gap:8px;align-items:baseline;padding:6px 14px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--ink);text-decoration:none;font-size:.95rem}
+.wsx .x-toc b{color:var(--brand);font-family:"JetBrains Mono",monospace;font-weight:600;font-size:.85em}
+.wsx .x-head{display:flex;align-items:center;gap:14px;border-top:2px solid var(--ink);padding-top:16px}
+.wsx .x-num{font-family:"JetBrains Mono",monospace;font-weight:600;color:var(--brand-ink);background:var(--brand);padding:2px 10px;border-radius:8px;font-size:.95rem}
+.wsx .x-steps{margin:0;padding-left:1.4em;display:grid;gap:6px}
+.wsx .x-grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:20px;align-items:start}
+.wsx .x-grid2>*{min-width:0}
+.wsx .x-os{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px;display:grid;gap:10px}
+.wsx .x-os h3{margin:0}
+.wsx .x-checks{display:grid;gap:8px}
+.wsx .x-checks ul{margin:0;padding-left:1.2em;display:grid;gap:6px}
+.wsx .x-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.wsx .x-table{min-width:640px;background:var(--surface);border:1px solid var(--line)}
+.wsx .x-table th,.wsx .x-table td{border:1px solid var(--line)}
+.wsx .x-table code{font-size:.85em;overflow-wrap:anywhere}
+.wsx .x-shots{background:var(--soft);border-radius:12px;padding:12px 18px;display:grid;gap:4px}
+.wsx .x-shots b{color:var(--brand)}
+.wsx .x-shots ul{margin:0;padding-left:1.2em}
+.wsx .x-trouble{border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.wsx .x-trouble summary{cursor:pointer;padding:12px 18px;font-weight:700}
+.wsx .x-trouble dl{margin:0;padding:0 18px 14px;display:grid;gap:12px}
+.wsx .x-trouble dt{font-family:"JetBrains Mono",monospace;font-size:.88rem;color:var(--ink);font-weight:600}
+.wsx .x-trouble dd{margin:2px 0 0;color:var(--muted)}
+.wsx .x-callout{background:var(--warn-bg);color:var(--warn-ink);border-left:4px solid var(--accent);border-radius:10px;padding:12px 16px}
+.wsx .x-callout code{background:none}
+/* terminal + tree (always dark, like a real terminal) */
+.wsx .x-term{background:var(--term-bg);color:var(--term-ink);border-radius:12px;overflow:hidden;min-width:0}
+.wsx .x-term-bar{display:flex;gap:6px;align-items:center;padding:8px 12px;background:#181c38;font-size:.8rem;color:var(--term-dim)}
+.wsx .x-term-bar i{width:10px;height:10px;border-radius:50%;background:#3a3f63;display:inline-block}
+.wsx .x-term-bar span{margin-left:8px}
+.wsx .x-term pre{color:var(--term-ink);font-size:13.5px;white-space:pre;overflow-x:auto}
+.wsx .x-term b{color:#8be9a8;font-weight:600}
+.wsx .x-term .c{color:var(--term-dim)}
+.wsx .x-tree{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow-x:auto}
+.wsx .x-tree pre{color:var(--ink);font-size:14px;white-space:pre}
+.wsx .x-tree b{color:var(--brand)}
+.wsx .x-tree span{color:var(--muted)}
+/* mock UIs */
+.wsx .x-mock{border-radius:12px;overflow:hidden;font-family:"Segoe UI",system-ui,sans-serif;font-size:13px}
+.wsx .x-vsc{background:#1f1f1f;color:#ccc;border:1px solid #333}
+.wsx .x-vsc-hd{padding:10px 14px;font-size:11px;letter-spacing:.06em;color:#9a9a9a}
+.wsx .x-ext{display:grid;grid-template-columns:40px 1fr auto;gap:10px;align-items:center;padding:8px 14px}
+.wsx .x-ext:nth-child(2){background:#04395e}
+.wsx .x-ext b{display:block;color:#eee;font-weight:600}
+.wsx .x-ext small{color:#9a9a9a}
+.wsx .x-ext em{font-style:normal;color:#73c991}
+.wsx .x-ico{width:40px;height:40px;border-radius:6px;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px}
+.wsx .x-vsc-status{display:flex;gap:16px;justify-content:flex-end;background:#007acc;color:#fff;padding:3px 12px;font-size:12px;margin-top:10px}
+.wsx .x-vsc-status span:first-child{margin-right:auto}
+.wsx .x-xampp{min-width:520px;background:#f3f3f3;color:#222;border:1px solid #c8c8c8}
+.wsx .x-xampp-hd{background:#fb7a24;color:#fff;font-weight:700;padding:8px 14px}
+.wsx .x-xampp table{width:100%;font-size:13px;background:#fff}
+.wsx .x-xampp th{background:#e8e8e8;color:#222;font-weight:600}
+.wsx .x-xampp th,.wsx .x-xampp td{border:1px solid #d6d6d6;padding:6px 10px}
+.wsx .x-xampp td{background:#fff;color:#222}
+.wsx .x-xampp tr.on td:first-child{background:#9be29b;font-weight:600}
+.wsx .x-xampp td span{display:inline-block;border:1px solid #aaa;border-radius:3px;padding:0 8px;margin-right:6px;background:#f7f7f7}
+.wsx .x-log{font-family:"JetBrains Mono",monospace;font-size:12px;padding:8px 14px;color:#1a5fb4;background:#fff;border-top:1px solid #d6d6d6}
+
+.wsx .x-head{flex-wrap:wrap}
+.wsx .x-part{margin-left:auto;font-size:.85rem;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:2px 12px}
+.wsx .x-file{margin:6px 0 -10px;font-family:"JetBrains Mono",monospace;font-size:.85rem;color:var(--brand);font-weight:600}
+.wsx .x-plain{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.wsx .x-plain li{display:grid;grid-template-columns:96px 1fr;gap:10px;align-items:baseline}
+.wsx .x-wk{font-size:.8rem;font-weight:700;color:var(--brand);background:var(--soft);border-radius:6px;padding:1px 8px;text-align:center}
+.wsx .x-plain-dots{margin:0;padding-left:1.2em;display:grid;gap:6px}
+.wsx .x-sem{display:grid;gap:6px;font-family:"JetBrains Mono",monospace;font-size:12.5px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px}
+.wsx .x-sem div{border:1.5px solid var(--line);border-radius:6px;padding:6px 8px;color:var(--ink)}
+.wsx .x-sem .s-hd,.wsx .x-sem .s-ft{background:var(--s1-soft);border-color:var(--s1)}
+.wsx .x-sem .s-nav{background:var(--s2-soft);border-color:var(--s2)}
+.wsx .x-sem .s-row{display:grid;grid-template-columns:2fr 1fr;gap:6px;border:0;padding:0}
+.wsx .x-sem .s-main{background:var(--s3-soft);border-color:var(--s3);display:grid;gap:6px}
+.wsx .x-sem .s-art{background:var(--surface);display:grid;gap:5px}
+.wsx .x-sem .s-sec,.wsx .x-sem .s-sub{border-style:dashed;font-size:11.5px}
+.wsx .x-sem .s-aside{background:var(--s4-soft);border-color:var(--s4)}
+
+
+.wsx .x-wrap pre{white-space:pre-wrap;overflow-wrap:anywhere}
+.wsx .x-preview{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface2)}
+.wsx .x-pv-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 12px;border-bottom:1px solid var(--line);background:var(--surface)}
+.wsx .x-pv-bar button{font:inherit;font-size:.9rem;padding:4px 12px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.wsx .x-pv-bar button[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
+.wsx .x-pv-sep{width:1px;height:22px;background:var(--line);margin:0 4px}
+.wsx .x-pv-bar .pvw{margin-left:auto;font-family:"JetBrains Mono",monospace;font-size:.85rem;color:var(--muted)}
+.wsx .x-pv-stage{overflow-x:auto;padding:12px}
+.wsx .x-pv-stage iframe{display:block;margin:0 auto;border:1px solid var(--line);border-radius:8px;background:#fff;max-width:none;transition:width .25s}
+</style>
+<script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+
+</head>
+<body class="ch-page">
+<a class="skip" href="#main">ข้ามไปยังเนื้อหา</a>
+<header class="top"><div class="wrap nav">
+<a class="brand" href="../index.html" aria-label="หน้าแรก การเขียนโปรแกรมบนเว็บ"><span class="logo" aria-hidden="true">&lt;/&gt;</span><span class="bt"><b>การเขียนโปรแกรมบนเว็บ</b><small>07-034-210</small></span></a>
+<button id="menuBtn" class="iconbtn menu-btn" type="button" aria-expanded="false" aria-controls="menu" aria-label="เปิดเมนู"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v2H3V6Zm0 5h18v2H3v-2Zm0 5h18v2H3v-2Z"/></svg></button>
+<nav id="menu" aria-label="เมนูหลัก">
+<a href="../chapters.html">บทเรียน</a><a href="../worksheets.html" aria-current="page">ใบงาน</a><a href="../assessment.html">เกณฑ์ประเมินผล</a><a href="../clo.html">ผลลัพธ์การเรียนรู้</a><a href="../start.html">เริ่มต้นใช้งาน</a><a href="../about.html">เกี่ยวกับรายวิชา</a>
+</nav>
+<button id="theme" class="iconbtn" type="button" aria-label="สลับโหมดมืดและสว่าง"><span class="i-moon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5Z"/></svg></span><span class="i-sun"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg></span></button>
+</div><div id="bar" class="bar" aria-hidden="true"></div></header>
+<main id="main">
+<div class="chead s2"><div class="wrap">
+<nav class="crumb" aria-label="เส้นทาง"><a href="../index.html">หน้าแรก</a><span>/</span><a href="../worksheets.html">ใบงาน</a><span>/</span><a href="ws5.html">ใบงานที่ 5</a><span>/</span><span aria-current="page">ตัวอย่าง</span></nav>
+<div class="chrow"><span class="badge b-s2 big" aria-hidden="true">BS5</span><div><p class="kicker">ตัวอย่างการทำใบงานที่ 5</p><h1>ร้านไร่ภูคำด้วย Bootstrap 5: Grid, คอมโพเนนต์, Form Validation และ Dashboard</h1></div></div></div></div>
+<div class="wrap narrow"><div class="wsx">
+
+<header class="x-intro">
+  <p>ตัวอย่างนี้ใช้ Bootstrap 5.3.8 จาก CDN ของ jsDelivr ตามหัวข้อ 5.1 และใช้แบรนด์สมมติ "ไร่ภูคำ" ต่อจากใบงานก่อนหน้า หน้าเว็บทุกไฟล์ผ่าน W3C Nu HTML Checker และ theme.css ผ่าน W3C CSS Validator โดยไม่มี error ทุกตัวอย่างมี<b>หน้าเว็บจริงให้ลองใช้ในหน้านี้</b> กดปุ่มเลือกความกว้างจอเพื่อดูการเปลี่ยนเลย์เอาต์ได้</p>
+  <div class="x-grid2">
+    <div class="x-os"><h3>แบ่งงานตามสัปดาห์</h3>
+      <ul class="x-plain">
+        <li><span class="x-wk">สัปดาห์ 7</span><span>ส่วนที่ 1 ข้อ 5.1 <code>grid.html</code></span></li>
+        <li><span class="x-wk">สัปดาห์ 8</span><span>ส่วนที่ 2 ข้อ 5.2–5.4 <code>landing.html</code> <code>register.html</code> <code>dashboard.html</code></span></li>
+        <li><span class="x-wk">ส่ง</span><span>ทั้งสองส่วนรวมกันภายในสัปดาห์ที่ 8</span></li>
+      </ul></div>
+    <div class="x-tree"><pre><b>ws5/</b>
+├── grid.html       <span>← 5.1</span>
+├── landing.html    <span>← 5.2</span>
+├── register.html   <span>← 5.3</span>
+├── dashboard.html  <span>← 5.4</span>
+└── <b>css/</b>
+    └── theme.css   <span>← 5.4 ธีม</span></pre></div>
+  </div>
+  <ul class="x-toc">
+    <li><a href="#e1"><b>5.1</b>Grid System</a></li>
+    <li><a href="#e2"><b>5.2</b>Landing Page</a></li>
+    <li><a href="#e3"><b>5.3</b>Form Validation</a></li>
+    <li><a href="#e4"><b>5.4</b>AI Dashboard + ธีม</a></li>
+    <li><a href="#e5"><b>สรุป</b>สิ่งที่ต้องส่ง</a></li>
+  </ul>
+</header>
+
+<section id="e1">
+  <div class="x-head"><span class="x-num">5.1</span><h2>Bootstrap 5 Grid System</h2><span class="x-part">ส่วนที่ 1 · สัปดาห์ 7</span></div>
+  <p>ทุกหน้าที่ใช้ Bootstrap ต้องมี <code>&lt;meta name="viewport"&gt;</code> และลิงก์ไฟล์ CSS ของ Bootstrap ใน head หน้านี้ใช้แค่ Grid จึงยังไม่ต้องโหลดไฟล์ JavaScript</p>
+  <p class="x-file">grid.html</p><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;title&gt;ทดลอง Bootstrap 5 Grid System&lt;/title&gt;
+  &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+  &lt;style&gt;
+    .demo { background-color: #e7f1ec; border: 1px solid #1f4d3a; padding: 12px; text-align: center; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class=&quot;container my-4&quot;&gt;
+    &lt;h1 class=&quot;h3&quot;&gt;ทดลอง Bootstrap 5 Grid System&lt;/h1&gt;
+    &lt;p&gt;ย่อและขยายหน้าต่างเบราว์เซอร์ แล้วสังเกตจำนวนกล่องต่อแถว&lt;/p&gt;
+
+    &lt;h2 class=&quot;h5 mt-4&quot;&gt;1. 1 / 2 / 3 คอลัมน์ ตามขนาดจอ&lt;/h2&gt;
+    &lt;div class=&quot;row g-3&quot;&gt;
+      &lt;div class=&quot;col-12 col-md-6 col-lg-4&quot;&gt;&lt;div class=&quot;demo&quot;&gt;กล่อง 1&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;col-12 col-md-6 col-lg-4&quot;&gt;&lt;div class=&quot;demo&quot;&gt;กล่อง 2&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;col-12 col-md-6 col-lg-4&quot;&gt;&lt;div class=&quot;demo&quot;&gt;กล่อง 3&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;col-12 col-md-6 col-lg-4&quot;&gt;&lt;div class=&quot;demo&quot;&gt;กล่อง 4&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;col-12 col-md-6 col-lg-4&quot;&gt;&lt;div class=&quot;demo&quot;&gt;กล่อง 5&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;col-12 col-md-6 col-lg-4&quot;&gt;&lt;div class=&quot;demo&quot;&gt;กล่อง 6&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;h2 class=&quot;h5 mt-4&quot;&gt;2. เนื้อหาหลัก 8 ส่วน + แถบข้าง 4 ส่วน&lt;/h2&gt;
+    &lt;div class=&quot;row g-3&quot;&gt;
+      &lt;div class=&quot;col-12 col-lg-8&quot;&gt;&lt;div class=&quot;demo&quot;&gt;เนื้อหาหลัก col-lg-8&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;col-12 col-lg-4&quot;&gt;&lt;div class=&quot;demo&quot;&gt;แถบข้าง col-lg-4&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;h2 class=&quot;h5 mt-4&quot;&gt;3. คอลัมน์แบ่งเท่ากันอัตโนมัติ&lt;/h2&gt;
+    &lt;div class=&quot;row g-3&quot;&gt;
+      &lt;div class=&quot;col&quot;&gt;&lt;div class=&quot;demo&quot;&gt;col&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;col&quot;&gt;&lt;div class=&quot;demo&quot;&gt;col&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;col&quot;&gt;&lt;div class=&quot;demo&quot;&gt;col&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+  <div class="x-preview" id="pv1"><div class="x-pv-bar" role="group" aria-label="เลือกความกว้างจอ"><button type="button" data-w="375" aria-pressed="false">มือถือ 375px</button><button type="button" data-w="768" aria-pressed="false">แท็บเล็ต 768px</button><button type="button" data-w="1100" aria-pressed="true">คอมพิวเตอร์ 1100px</button><span class="pvw">1100px</span></div><div class="x-pv-stage"><iframe title="ตัวอย่างหน้าเว็บ grid" sandbox="allow-scripts allow-forms" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;title&gt;ทดลอง Bootstrap 5 Grid System&lt;/title&gt;
+  &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+  &lt;style&gt;
+    .demo { background-color: #e7f1ec; border: 1px solid #1f4d3a; padding: 12px; text-align: center; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class=&quot;container my-4&quot;&gt;
+    &lt;h1 class=&quot;h3&quot;&gt;ทดลอง Bootstrap 5 Grid System&lt;/h1&gt;
+    &lt;p&gt;ย่อและขยายหน้าต่างเบราว์เซอร์ แล้วสังเกตจำนวนกล่องต่อแถว&lt;/p&gt;
+
+    &lt;h2 class=&quot;h5 mt-4&quot;&gt;1. 1 / 2 / 3 คอลัมน์ ตามขนาดจอ&lt;/h2&gt;
+    &lt;div class=&quot;row g-3&quot;&gt;
+      &lt;div class=&quot;col-12 col-md-6 col-lg-4&quot;&gt;&lt;div class=&quot;demo&quot;&gt;กล่อง 1&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;col-12 col-md-6 col-lg-4&quot;&gt;&lt;div class=&quot;demo&quot;&gt;กล่อง 2&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;col-12 col-md-6 col-lg-4&quot;&gt;&lt;div class=&quot;demo&quot;&gt;กล่อง 3&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;col-12 col-md-6 col-lg-4&quot;&gt;&lt;div class=&quot;demo&quot;&gt;กล่อง 4&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;col-12 col-md-6 col-lg-4&quot;&gt;&lt;div class=&quot;demo&quot;&gt;กล่อง 5&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;col-12 col-md-6 col-lg-4&quot;&gt;&lt;div class=&quot;demo&quot;&gt;กล่อง 6&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;h2 class=&quot;h5 mt-4&quot;&gt;2. เนื้อหาหลัก 8 ส่วน + แถบข้าง 4 ส่วน&lt;/h2&gt;
+    &lt;div class=&quot;row g-3&quot;&gt;
+      &lt;div class=&quot;col-12 col-lg-8&quot;&gt;&lt;div class=&quot;demo&quot;&gt;เนื้อหาหลัก col-lg-8&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;col-12 col-lg-4&quot;&gt;&lt;div class=&quot;demo&quot;&gt;แถบข้าง col-lg-4&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;h2 class=&quot;h5 mt-4&quot;&gt;3. คอลัมน์แบ่งเท่ากันอัตโนมัติ&lt;/h2&gt;
+    &lt;div class=&quot;row g-3&quot;&gt;
+      &lt;div class=&quot;col&quot;&gt;&lt;div class=&quot;demo&quot;&gt;col&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;col&quot;&gt;&lt;div class=&quot;demo&quot;&gt;col&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;col&quot;&gt;&lt;div class=&quot;demo&quot;&gt;col&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+" style="width:1100px;height:620px" ></iframe></div></div>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>คลาส</th><th>ความหมาย</th><th>กล่องต่อแถว</th></tr></thead><tbody><tr><td><code>col-12</code></td><td>ทุกขนาดจอ กว้าง 12 จาก 12 ส่วน</td><td>1 (มือถือ)</td></tr><tr><td><code>col-md-6</code></td><td>ตั้งแต่ 768px ขึ้นไป กว้าง 6 ส่วน</td><td>2 (แท็บเล็ต)</td></tr><tr><td><code>col-lg-4</code></td><td>ตั้งแต่ 992px ขึ้นไป กว้าง 4 ส่วน</td><td>3 (คอมพิวเตอร์)</td></tr><tr><td><code>col</code></td><td>แบ่งพื้นที่เท่ากันอัตโนมัติตามจำนวนคอลัมน์ในแถว</td><td>เท่าจำนวน col</td></tr><tr><td><code>g-3</code></td><td>ช่องว่างระหว่างคอลัมน์และแถว (gutter) ระดับ 3</td><td>-</td></tr></tbody></table></div>
+  <p class="x-muted">จุดตัดของ Bootstrap 5: sm 576px · md 768px · lg 992px · xl 1200px · xxl 1400px คลาสที่มีขนาดกำกับจะมีผลตั้งแต่ขนาดนั้นขึ้นไป (Mobile-first) เหมือน <code>@media (min-width)</code> ในใบงานที่ 4</p>
+  <details class="x-trouble"><summary>ข้อผิดพลาดที่พบบ่อย</summary><dl><div><dt>คอลัมน์ไม่เรียงข้างกัน</dt><dd>ลูกโดยตรงของ .row ต้องเป็น .col-* และ .row ต้องอยู่ใน .container หรือ .container-fluid</dd></div><div><dt>ตัวเลขในแถวรวมเกิน 12</dt><dd>ส่วนที่เกินจะขึ้นแถวใหม่เอง ถ้าตั้งใจให้อยู่แถวเดียว ต้องรวมได้ไม่เกิน 12</dd></div><div><dt>ใส่ padding หรือ border ที่ div.col ตรง ๆ แล้วระยะเพี้ยน</dt><dd>ใส่สไตล์ที่ div ด้านในคอลัมน์แทน เหมือนกล่อง .demo ในตัวอย่าง</dd></div></dl></details>
+  <div class="x-shots"><b>ภาพหน้าจอที่ต้องแนบ</b><ul><li>grid.html บนจอมือถือ (1 คอลัมน์) แท็บเล็ต (2) และคอมพิวเตอร์ (3)</li></ul></div>
+</section>
+
+<section id="e2">
+  <div class="x-head"><span class="x-num">5.2</span><h2>Landing Page: Navbar, Hero, การ์ดสินค้า และ Modal</h2><span class="x-part">ส่วนที่ 2 · สัปดาห์ 8</span></div>
+  <div class="x-preview" id="pv2"><div class="x-pv-bar" role="group" aria-label="เลือกความกว้างจอ"><button type="button" data-w="375" aria-pressed="false">มือถือ 375px</button><button type="button" data-w="768" aria-pressed="true">แท็บเล็ต 768px</button><button type="button" data-w="1100" aria-pressed="false">คอมพิวเตอร์ 1100px</button><span class="pvw">768px</span></div><div class="x-pv-stage"><iframe title="ตัวอย่างหน้าเว็บ landing" sandbox="allow-scripts allow-forms" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;title&gt;ไร่ภูคำ Coffee Roasters&lt;/title&gt;
+  &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;!-- Navbar ยุบเป็นปุ่มเมนูเมื่อจอเล็กกว่า lg (992px) --&gt;
+  &lt;nav class=&quot;navbar navbar-expand-lg navbar-dark bg-success&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+      &lt;a class=&quot;navbar-brand fw-bold&quot; href=&quot;#&quot;&gt;ไร่ภูคำ&lt;/a&gt;
+      &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#mainNav&quot;
+              aria-controls=&quot;mainNav&quot; aria-expanded=&quot;false&quot; aria-label=&quot;เปิดหรือปิดเมนู&quot;&gt;
+        &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+      &lt;/button&gt;
+      &lt;div class=&quot;collapse navbar-collapse&quot; id=&quot;mainNav&quot;&gt;
+        &lt;ul class=&quot;navbar-nav ms-auto&quot;&gt;
+          &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link active&quot; aria-current=&quot;page&quot; href=&quot;#&quot;&gt;หน้าแรก&lt;/a&gt;&lt;/li&gt;
+          &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link&quot; href=&quot;#products&quot;&gt;สินค้า&lt;/a&gt;&lt;/li&gt;
+          &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link&quot; href=&quot;#contact&quot;&gt;ติดต่อเรา&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/nav&gt;
+
+  &lt;!-- Hero Banner --&gt;
+  &lt;header class=&quot;bg-light py-5 text-center&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+      &lt;h1 class=&quot;display-5 fw-bold&quot;&gt;กาแฟจากไร่บนดอย คั่วสดทุกสัปดาห์&lt;/h1&gt;
+      &lt;p class=&quot;lead&quot;&gt;เมล็ดอาราบิกาจากเชียงราย ส่งตรงถึงบ้านภายใน 48 ชั่วโมง&lt;/p&gt;
+      &lt;a href=&quot;#products&quot; class=&quot;btn btn-success btn-lg&quot;&gt;ดูสินค้า&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/header&gt;
+
+  &lt;!-- การ์ดสินค้า: 1 / 2 / 3 คอลัมน์ ด้วย .row และ .col-* --&gt;
+  &lt;main id=&quot;products&quot; class=&quot;container my-5&quot;&gt;
+    &lt;h2 class=&quot;mb-4&quot;&gt;สินค้าขายดี&lt;/h2&gt;
+    &lt;div class=&quot;row g-4&quot;&gt;
+      &lt;div class=&quot;col-12 col-md-6 col-lg-4&quot;&gt;
+        &lt;div class=&quot;card h-100&quot;&gt;
+          &lt;div class=&quot;card-body&quot;&gt;
+            &lt;h3 class=&quot;card-title h5&quot;&gt;ภูคำ Natural&lt;/h3&gt;
+            &lt;p class=&quot;card-text&quot;&gt;กลิ่นสตรอว์เบอร์รีและช็อกโกแลตนม&lt;/p&gt;
+            &lt;p class=&quot;fw-bold text-danger&quot;&gt;฿420&lt;/p&gt;
+            &lt;button type=&quot;button&quot; class=&quot;btn btn-outline-success&quot; data-bs-toggle=&quot;modal&quot; data-bs-target=&quot;#productModal&quot;
+                    data-name=&quot;ภูคำ Natural&quot; data-price=&quot;฿420&quot;
+                    data-detail=&quot;โพรเซส Natural คั่วระดับ Medium-Light ปลูกที่ความสูง 1,350 เมตร&quot;&gt;ดูรายละเอียด&lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;col-12 col-md-6 col-lg-4&quot;&gt;
+        &lt;div class=&quot;card h-100&quot;&gt;
+          &lt;div class=&quot;card-body&quot;&gt;
+            &lt;h3 class=&quot;card-title h5&quot;&gt;ภูคำ Honey&lt;/h3&gt;
+            &lt;p class=&quot;card-text&quot;&gt;หวานแบบน้ำผึ้ง มีกลิ่นส้ม&lt;/p&gt;
+            &lt;p class=&quot;fw-bold text-danger&quot;&gt;฿390&lt;/p&gt;
+            &lt;button type=&quot;button&quot; class=&quot;btn btn-outline-success&quot; data-bs-toggle=&quot;modal&quot; data-bs-target=&quot;#productModal&quot;
+                    data-name=&quot;ภูคำ Honey&quot; data-price=&quot;฿390&quot;
+                    data-detail=&quot;โพรเซส Honey คั่วระดับ Medium บอดี้กลมกล่อม&quot;&gt;ดูรายละเอียด&lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;col-12 col-md-6 col-lg-4&quot;&gt;
+        &lt;div class=&quot;card h-100&quot;&gt;
+          &lt;div class=&quot;card-body&quot;&gt;
+            &lt;h3 class=&quot;card-title h5&quot;&gt;House Blend&lt;/h3&gt;
+            &lt;p class=&quot;card-text&quot;&gt;คาราเมลและถั่ว ดื่มง่ายทุกวัน&lt;/p&gt;
+            &lt;p class=&quot;fw-bold text-danger&quot;&gt;฿320&lt;/p&gt;
+            &lt;button type=&quot;button&quot; class=&quot;btn btn-outline-success&quot; data-bs-toggle=&quot;modal&quot; data-bs-target=&quot;#productModal&quot;
+                    data-name=&quot;House Blend&quot; data-price=&quot;฿320&quot;
+                    data-detail=&quot;เบลนด์ 2 แหล่งปลูก คั่วระดับ Medium-Dark เหมาะกับนมและเอสเพรสโซ&quot;&gt;ดูรายละเอียด&lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/main&gt;
+
+  &lt;footer id=&quot;contact&quot; class=&quot;bg-dark text-white py-4 text-center&quot;&gt;
+    &lt;p class=&quot;mb-0&quot;&gt;ไร่ภูคำ Coffee Roasters · โทร 053-000-000&lt;/p&gt;
+  &lt;/footer&gt;
+
+  &lt;!-- Modal ตัวเดียว ใช้ร่วมกันทุกการ์ด --&gt;
+  &lt;div class=&quot;modal fade&quot; id=&quot;productModal&quot; tabindex=&quot;-1&quot; role=&quot;dialog&quot; aria-labelledby=&quot;productModalLabel&quot; aria-hidden=&quot;true&quot;&gt;
+    &lt;div class=&quot;modal-dialog modal-dialog-centered&quot;&gt;
+      &lt;div class=&quot;modal-content&quot;&gt;
+        &lt;div class=&quot;modal-header&quot;&gt;
+          &lt;h2 class=&quot;modal-title fs-5&quot; id=&quot;productModalLabel&quot;&gt;รายละเอียดสินค้า&lt;/h2&gt;
+          &lt;button type=&quot;button&quot; class=&quot;btn-close&quot; data-bs-dismiss=&quot;modal&quot; aria-label=&quot;ปิด&quot;&gt;&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;modal-body&quot;&gt;
+          &lt;p id=&quot;modalDetail&quot;&gt;&lt;/p&gt;
+          &lt;p class=&quot;fw-bold text-danger mb-0&quot; id=&quot;modalPrice&quot;&gt;&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;modal-footer&quot;&gt;
+          &lt;button type=&quot;button&quot; class=&quot;btn btn-secondary&quot; data-bs-dismiss=&quot;modal&quot;&gt;ปิด&lt;/button&gt;
+          &lt;button type=&quot;button&quot; class=&quot;btn btn-success&quot;&gt;เพิ่มลงตะกร้า&lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+  &lt;script&gt;
+    // เติมข้อมูลลง Modal จาก data-* ของปุ่มที่ถูกกด
+    const productModal = document.getElementById(&quot;productModal&quot;);
+    productModal.addEventListener(&quot;show.bs.modal&quot;, (event) =&gt; {
+      const button = event.relatedTarget;
+      document.getElementById(&quot;productModalLabel&quot;).textContent = button.dataset.name;
+      document.getElementById(&quot;modalDetail&quot;).textContent = button.dataset.detail;
+      document.getElementById(&quot;modalPrice&quot;).textContent = button.dataset.price;
+    });
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+" style="width:768px;height:620px" ></iframe></div></div>
+  <p class="x-muted">ลองที่ขนาด 768px: กดปุ่มเมนูขวาบนเพื่อยุบขยาย Navbar และกด "ดูรายละเอียด" เพื่อเปิด Modal</p>
+  <p class="x-file">landing.html</p><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;title&gt;ไร่ภูคำ Coffee Roasters&lt;/title&gt;
+  &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;!-- Navbar ยุบเป็นปุ่มเมนูเมื่อจอเล็กกว่า lg (992px) --&gt;
+  &lt;nav class=&quot;navbar navbar-expand-lg navbar-dark bg-success&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+      &lt;a class=&quot;navbar-brand fw-bold&quot; href=&quot;#&quot;&gt;ไร่ภูคำ&lt;/a&gt;
+      &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#mainNav&quot;
+              aria-controls=&quot;mainNav&quot; aria-expanded=&quot;false&quot; aria-label=&quot;เปิดหรือปิดเมนู&quot;&gt;
+        &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+      &lt;/button&gt;
+      &lt;div class=&quot;collapse navbar-collapse&quot; id=&quot;mainNav&quot;&gt;
+        &lt;ul class=&quot;navbar-nav ms-auto&quot;&gt;
+          &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link active&quot; aria-current=&quot;page&quot; href=&quot;#&quot;&gt;หน้าแรก&lt;/a&gt;&lt;/li&gt;
+          &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link&quot; href=&quot;#products&quot;&gt;สินค้า&lt;/a&gt;&lt;/li&gt;
+          &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link&quot; href=&quot;#contact&quot;&gt;ติดต่อเรา&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/nav&gt;
+
+  &lt;!-- Hero Banner --&gt;
+  &lt;header class=&quot;bg-light py-5 text-center&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+      &lt;h1 class=&quot;display-5 fw-bold&quot;&gt;กาแฟจากไร่บนดอย คั่วสดทุกสัปดาห์&lt;/h1&gt;
+      &lt;p class=&quot;lead&quot;&gt;เมล็ดอาราบิกาจากเชียงราย ส่งตรงถึงบ้านภายใน 48 ชั่วโมง&lt;/p&gt;
+      &lt;a href=&quot;#products&quot; class=&quot;btn btn-success btn-lg&quot;&gt;ดูสินค้า&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/header&gt;
+
+  &lt;!-- การ์ดสินค้า: 1 / 2 / 3 คอลัมน์ ด้วย .row และ .col-* --&gt;
+  &lt;main id=&quot;products&quot; class=&quot;container my-5&quot;&gt;
+    &lt;h2 class=&quot;mb-4&quot;&gt;สินค้าขายดี&lt;/h2&gt;
+    &lt;div class=&quot;row g-4&quot;&gt;
+      &lt;div class=&quot;col-12 col-md-6 col-lg-4&quot;&gt;
+        &lt;div class=&quot;card h-100&quot;&gt;
+          &lt;div class=&quot;card-body&quot;&gt;
+            &lt;h3 class=&quot;card-title h5&quot;&gt;ภูคำ Natural&lt;/h3&gt;
+            &lt;p class=&quot;card-text&quot;&gt;กลิ่นสตรอว์เบอร์รีและช็อกโกแลตนม&lt;/p&gt;
+            &lt;p class=&quot;fw-bold text-danger&quot;&gt;฿420&lt;/p&gt;
+            &lt;button type=&quot;button&quot; class=&quot;btn btn-outline-success&quot; data-bs-toggle=&quot;modal&quot; data-bs-target=&quot;#productModal&quot;
+                    data-name=&quot;ภูคำ Natural&quot; data-price=&quot;฿420&quot;
+                    data-detail=&quot;โพรเซส Natural คั่วระดับ Medium-Light ปลูกที่ความสูง 1,350 เมตร&quot;&gt;ดูรายละเอียด&lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;col-12 col-md-6 col-lg-4&quot;&gt;
+        &lt;div class=&quot;card h-100&quot;&gt;
+          &lt;div class=&quot;card-body&quot;&gt;
+            &lt;h3 class=&quot;card-title h5&quot;&gt;ภูคำ Honey&lt;/h3&gt;
+            &lt;p class=&quot;card-text&quot;&gt;หวานแบบน้ำผึ้ง มีกลิ่นส้ม&lt;/p&gt;
+            &lt;p class=&quot;fw-bold text-danger&quot;&gt;฿390&lt;/p&gt;
+            &lt;button type=&quot;button&quot; class=&quot;btn btn-outline-success&quot; data-bs-toggle=&quot;modal&quot; data-bs-target=&quot;#productModal&quot;
+                    data-name=&quot;ภูคำ Honey&quot; data-price=&quot;฿390&quot;
+                    data-detail=&quot;โพรเซส Honey คั่วระดับ Medium บอดี้กลมกล่อม&quot;&gt;ดูรายละเอียด&lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;col-12 col-md-6 col-lg-4&quot;&gt;
+        &lt;div class=&quot;card h-100&quot;&gt;
+          &lt;div class=&quot;card-body&quot;&gt;
+            &lt;h3 class=&quot;card-title h5&quot;&gt;House Blend&lt;/h3&gt;
+            &lt;p class=&quot;card-text&quot;&gt;คาราเมลและถั่ว ดื่มง่ายทุกวัน&lt;/p&gt;
+            &lt;p class=&quot;fw-bold text-danger&quot;&gt;฿320&lt;/p&gt;
+            &lt;button type=&quot;button&quot; class=&quot;btn btn-outline-success&quot; data-bs-toggle=&quot;modal&quot; data-bs-target=&quot;#productModal&quot;
+                    data-name=&quot;House Blend&quot; data-price=&quot;฿320&quot;
+                    data-detail=&quot;เบลนด์ 2 แหล่งปลูก คั่วระดับ Medium-Dark เหมาะกับนมและเอสเพรสโซ&quot;&gt;ดูรายละเอียด&lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/main&gt;
+
+  &lt;footer id=&quot;contact&quot; class=&quot;bg-dark text-white py-4 text-center&quot;&gt;
+    &lt;p class=&quot;mb-0&quot;&gt;ไร่ภูคำ Coffee Roasters · โทร 053-000-000&lt;/p&gt;
+  &lt;/footer&gt;
+
+  &lt;!-- Modal ตัวเดียว ใช้ร่วมกันทุกการ์ด --&gt;
+  &lt;div class=&quot;modal fade&quot; id=&quot;productModal&quot; tabindex=&quot;-1&quot; role=&quot;dialog&quot; aria-labelledby=&quot;productModalLabel&quot; aria-hidden=&quot;true&quot;&gt;
+    &lt;div class=&quot;modal-dialog modal-dialog-centered&quot;&gt;
+      &lt;div class=&quot;modal-content&quot;&gt;
+        &lt;div class=&quot;modal-header&quot;&gt;
+          &lt;h2 class=&quot;modal-title fs-5&quot; id=&quot;productModalLabel&quot;&gt;รายละเอียดสินค้า&lt;/h2&gt;
+          &lt;button type=&quot;button&quot; class=&quot;btn-close&quot; data-bs-dismiss=&quot;modal&quot; aria-label=&quot;ปิด&quot;&gt;&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;modal-body&quot;&gt;
+          &lt;p id=&quot;modalDetail&quot;&gt;&lt;/p&gt;
+          &lt;p class=&quot;fw-bold text-danger mb-0&quot; id=&quot;modalPrice&quot;&gt;&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;modal-footer&quot;&gt;
+          &lt;button type=&quot;button&quot; class=&quot;btn btn-secondary&quot; data-bs-dismiss=&quot;modal&quot;&gt;ปิด&lt;/button&gt;
+          &lt;button type=&quot;button&quot; class=&quot;btn btn-success&quot;&gt;เพิ่มลงตะกร้า&lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+  &lt;script&gt;
+    // เติมข้อมูลลง Modal จาก data-* ของปุ่มที่ถูกกด
+    const productModal = document.getElementById(&quot;productModal&quot;);
+    productModal.addEventListener(&quot;show.bs.modal&quot;, (event) =&gt; {
+      const button = event.relatedTarget;
+      document.getElementById(&quot;productModalLabel&quot;).textContent = button.dataset.name;
+      document.getElementById(&quot;modalDetail&quot;).textContent = button.dataset.detail;
+      document.getElementById(&quot;modalPrice&quot;).textContent = button.dataset.price;
+    });
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>คอมโพเนนต์</th><th>คลาส / attribute หลัก</th><th>หมายเหตุ</th></tr></thead><tbody><tr><td>Navbar ยุบขยายได้</td><td><code>navbar-expand-lg</code> <code>navbar-toggler</code> <code>data-bs-toggle=&quot;collapse&quot;</code></td><td>ต่ำกว่า 992px เมนูยุบเป็นปุ่ม ค่า data-bs-target ต้องตรงกับ id ของ div.collapse</td></tr><tr><td>Hero Banner</td><td><code>py-5</code> <code>display-5</code> <code>lead</code></td><td>ประกอบจาก Utility Classes ล้วน ตามหัวข้อ 5.8.5</td></tr><tr><td>การ์ดสินค้า</td><td><code>row g-4</code> › <code>col-12 col-md-6 col-lg-4</code> › <code>card h-100</code></td><td>Bootstrap 5 ไม่มี .card-deck แล้ว ใช้ Grid แทน h-100 ทำให้การ์ดในแถวสูงเท่ากัน</td></tr><tr><td>Modal</td><td><code>data-bs-toggle=&quot;modal&quot;</code> <code>data-bs-target=&quot;#productModal&quot;</code></td><td>ใช้ Modal ตัวเดียวร่วมกัน แล้วเติมข้อมูลจาก data-* ของปุ่มที่กดในเหตุการณ์ show.bs.modal</td></tr></tbody></table></div>
+  <div class="x-callout"><b>W3C Checker เจออะไร:</b> โค้ด Modal ที่คัดลอกจากเอกสารของ Bootstrap มี <code>aria-labelledby</code> บน div ที่ไม่มี role ทำให้ไม่ผ่านการตรวจ เพราะ Bootstrap จะเติม <code>role="dialog"</code> ให้ด้วย JavaScript ตอนเปิด Modal เท่านั้น ตัวอย่างนี้จึงใส่ <code>role="dialog"</code> ไว้ใน HTML เอง</div>
+  <details class="x-trouble"><summary>ข้อผิดพลาดที่พบบ่อย</summary><dl><div><dt>กดปุ่มเมนูหรือปุ่มเปิด Modal แล้วไม่มีอะไรเกิดขึ้น</dt><dd>ลืมโหลด bootstrap.bundle.min.js หรือโหลดไว้ใน head ก่อน HTML ให้วางไว้ก่อนปิด body ไฟล์ bundle รวม Popper ที่ Dropdown และ Tooltip ต้องใช้ไว้แล้ว</dd></div><div><dt>ใช้ data-toggle / data-target ตามตัวอย่างเก่า</dt><dd>เป็นรูปแบบของ Bootstrap 4 ใน Bootstrap 5 ต้องเติม bs เป็น data-bs-toggle / data-bs-target</dd></div><div><dt>การ์ดสูงไม่เท่ากัน</dt><dd>ใส่ h-100 ที่ div.card</dd></div></dl></details>
+  <div class="x-shots"><b>ภาพหน้าจอที่ต้องแนบ</b><ul><li>landing.html บนจอคอมพิวเตอร์</li><li>Navbar ที่ยุบบนจอแคบและตอนกดขยายเมนู</li><li>Modal ที่เปิดอยู่</li></ul></div>
+</section>
+
+<section id="e3">
+  <div class="x-head"><span class="x-num">5.3</span><h2>ฟอร์มลงทะเบียนพร้อม Validation</h2></div>
+  <div class="x-preview" id="pv3"><div class="x-pv-bar" role="group" aria-label="เลือกความกว้างจอ"><button type="button" data-w="375" aria-pressed="false">มือถือ 375px</button><button type="button" data-w="768" aria-pressed="true">768px ขึ้นไป</button><span class="pvw">768px</span></div><div class="x-pv-stage"><iframe title="ตัวอย่างหน้าเว็บ register" sandbox="allow-scripts allow-forms" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;title&gt;ลงทะเบียนเวิร์กช็อปดริปกาแฟ&lt;/title&gt;
+  &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+&lt;body class=&quot;bg-light&quot;&gt;
+  &lt;main class=&quot;container my-5&quot; style=&quot;max-width: 640px;&quot;&gt;
+    &lt;h1 class=&quot;h3 mb-4&quot;&gt;ลงทะเบียนเวิร์กช็อปดริปกาแฟ&lt;/h1&gt;
+
+    &lt;!-- novalidate ปิดข้อความเตือนของเบราว์เซอร์ ให้ Bootstrap แสดงแทน --&gt;
+    &lt;form id=&quot;registerForm&quot; class=&quot;needs-validation&quot; novalidate&gt;
+      &lt;div class=&quot;mb-3&quot;&gt;
+        &lt;label for=&quot;fullname&quot; class=&quot;form-label&quot;&gt;ชื่อ–นามสกุล&lt;/label&gt;
+        &lt;input type=&quot;text&quot; class=&quot;form-control&quot; id=&quot;fullname&quot; name=&quot;fullname&quot; required minlength=&quot;4&quot;&gt;
+        &lt;div class=&quot;valid-feedback&quot;&gt;ถูกต้อง&lt;/div&gt;
+        &lt;div class=&quot;invalid-feedback&quot;&gt;กรุณากรอกชื่อ–นามสกุล อย่างน้อย 4 ตัวอักษร&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;mb-3&quot;&gt;
+        &lt;label for=&quot;email&quot; class=&quot;form-label&quot;&gt;อีเมล&lt;/label&gt;
+        &lt;input type=&quot;email&quot; class=&quot;form-control&quot; id=&quot;email&quot; name=&quot;email&quot; required&gt;
+        &lt;div class=&quot;valid-feedback&quot;&gt;ถูกต้อง&lt;/div&gt;
+        &lt;div class=&quot;invalid-feedback&quot;&gt;กรุณากรอกอีเมลให้ถูกรูปแบบ เช่น name@example.com&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;mb-3&quot;&gt;
+        &lt;label for=&quot;phone&quot; class=&quot;form-label&quot;&gt;เบอร์โทรศัพท์มือถือ&lt;/label&gt;
+        &lt;input type=&quot;tel&quot; class=&quot;form-control&quot; id=&quot;phone&quot; name=&quot;phone&quot; required pattern=&quot;0[689][0-9]{8}&quot;&gt;
+        &lt;div class=&quot;valid-feedback&quot;&gt;ถูกต้อง&lt;/div&gt;
+        &lt;div class=&quot;invalid-feedback&quot;&gt;ตัวเลข 10 หลัก ขึ้นต้นด้วย 06, 08 หรือ 09&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;row g-3 mb-3&quot;&gt;
+        &lt;div class=&quot;col-12 col-md-6&quot;&gt;
+          &lt;label for=&quot;password&quot; class=&quot;form-label&quot;&gt;รหัสผ่าน&lt;/label&gt;
+          &lt;input type=&quot;password&quot; class=&quot;form-control&quot; id=&quot;password&quot; name=&quot;password&quot; required minlength=&quot;8&quot;&gt;
+          &lt;div class=&quot;invalid-feedback&quot;&gt;อย่างน้อย 8 ตัวอักษร&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;col-12 col-md-6&quot;&gt;
+          &lt;label for=&quot;confirm&quot; class=&quot;form-label&quot;&gt;ยืนยันรหัสผ่าน&lt;/label&gt;
+          &lt;input type=&quot;password&quot; class=&quot;form-control&quot; id=&quot;confirm&quot; name=&quot;confirm&quot; required&gt;
+          &lt;div class=&quot;invalid-feedback&quot;&gt;รหัสผ่านทั้งสองช่องไม่ตรงกัน&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;mb-3&quot;&gt;
+        &lt;label for=&quot;session&quot; class=&quot;form-label&quot;&gt;รอบที่ต้องการ&lt;/label&gt;
+        &lt;select class=&quot;form-select&quot; id=&quot;session&quot; name=&quot;session&quot; required&gt;
+          &lt;option value=&quot;&quot;&gt;-- เลือกรอบ --&lt;/option&gt;
+          &lt;option value=&quot;sat-am&quot;&gt;เสาร์ 09:00–12:00&lt;/option&gt;
+          &lt;option value=&quot;sat-pm&quot;&gt;เสาร์ 13:00–16:00&lt;/option&gt;
+          &lt;option value=&quot;sun-am&quot;&gt;อาทิตย์ 09:00–12:00&lt;/option&gt;
+        &lt;/select&gt;
+        &lt;div class=&quot;invalid-feedback&quot;&gt;กรุณาเลือกรอบ&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;form-check mb-4&quot;&gt;
+        &lt;input class=&quot;form-check-input&quot; type=&quot;checkbox&quot; id=&quot;agree&quot; name=&quot;agree&quot; required&gt;
+        &lt;label class=&quot;form-check-label&quot; for=&quot;agree&quot;&gt;ยอมรับเงื่อนไขการลงทะเบียน&lt;/label&gt;
+        &lt;div class=&quot;invalid-feedback&quot;&gt;กรุณายอมรับเงื่อนไขก่อนส่ง&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;button type=&quot;submit&quot; class=&quot;btn btn-success&quot;&gt;ลงทะเบียน&lt;/button&gt;
+    &lt;/form&gt;
+
+    &lt;div id=&quot;success&quot; class=&quot;alert alert-success mt-4 d-none&quot; role=&quot;status&quot;&gt;ลงทะเบียนเรียบร้อย ระบบจะส่งอีเมลยืนยันให้&lt;/div&gt;
+  &lt;/main&gt;
+
+  &lt;script&gt;
+    (() =&gt; {
+      &quot;use strict&quot;;
+      const form = document.getElementById(&quot;registerForm&quot;);
+      const password = document.getElementById(&quot;password&quot;);
+      const confirm = document.getElementById(&quot;confirm&quot;);
+
+      // ตรวจว่ารหัสผ่านสองช่องตรงกัน (HTML ตรวจเรื่องนี้เองไม่ได้)
+      const checkMatch = () =&gt; {
+        confirm.setCustomValidity(confirm.value === password.value ? &quot;&quot; : &quot;not-match&quot;);
+      };
+      password.addEventListener(&quot;input&quot;, checkMatch);
+      confirm.addEventListener(&quot;input&quot;, checkMatch);
+
+      form.addEventListener(&quot;submit&quot;, (event) =&gt; {
+        checkMatch();
+        event.preventDefault();               // ตัวอย่างนี้ยังไม่ส่งไปเซิร์ฟเวอร์ (ทำในบทที่ 7)
+        if (form.checkValidity()) {
+          document.getElementById(&quot;success&quot;).classList.remove(&quot;d-none&quot;);
+        }
+        form.classList.add(&quot;was-validated&quot;);  // สั่งให้ Bootstrap แสดง valid/invalid-feedback
+      });
+    })();
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+" style="width:768px;height:760px" ></iframe></div></div>
+  <p class="x-muted">ลองกด "ลงทะเบียน" ทันทีโดยไม่กรอกอะไร แล้วลองกรอกรหัสผ่านสองช่องไม่ตรงกัน</p>
+  <p class="x-file">register.html</p><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;title&gt;ลงทะเบียนเวิร์กช็อปดริปกาแฟ&lt;/title&gt;
+  &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+&lt;body class=&quot;bg-light&quot;&gt;
+  &lt;main class=&quot;container my-5&quot; style=&quot;max-width: 640px;&quot;&gt;
+    &lt;h1 class=&quot;h3 mb-4&quot;&gt;ลงทะเบียนเวิร์กช็อปดริปกาแฟ&lt;/h1&gt;
+
+    &lt;!-- novalidate ปิดข้อความเตือนของเบราว์เซอร์ ให้ Bootstrap แสดงแทน --&gt;
+    &lt;form id=&quot;registerForm&quot; class=&quot;needs-validation&quot; novalidate&gt;
+      &lt;div class=&quot;mb-3&quot;&gt;
+        &lt;label for=&quot;fullname&quot; class=&quot;form-label&quot;&gt;ชื่อ–นามสกุล&lt;/label&gt;
+        &lt;input type=&quot;text&quot; class=&quot;form-control&quot; id=&quot;fullname&quot; name=&quot;fullname&quot; required minlength=&quot;4&quot;&gt;
+        &lt;div class=&quot;valid-feedback&quot;&gt;ถูกต้อง&lt;/div&gt;
+        &lt;div class=&quot;invalid-feedback&quot;&gt;กรุณากรอกชื่อ–นามสกุล อย่างน้อย 4 ตัวอักษร&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;mb-3&quot;&gt;
+        &lt;label for=&quot;email&quot; class=&quot;form-label&quot;&gt;อีเมล&lt;/label&gt;
+        &lt;input type=&quot;email&quot; class=&quot;form-control&quot; id=&quot;email&quot; name=&quot;email&quot; required&gt;
+        &lt;div class=&quot;valid-feedback&quot;&gt;ถูกต้อง&lt;/div&gt;
+        &lt;div class=&quot;invalid-feedback&quot;&gt;กรุณากรอกอีเมลให้ถูกรูปแบบ เช่น name@example.com&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;mb-3&quot;&gt;
+        &lt;label for=&quot;phone&quot; class=&quot;form-label&quot;&gt;เบอร์โทรศัพท์มือถือ&lt;/label&gt;
+        &lt;input type=&quot;tel&quot; class=&quot;form-control&quot; id=&quot;phone&quot; name=&quot;phone&quot; required pattern=&quot;0[689][0-9]{8}&quot;&gt;
+        &lt;div class=&quot;valid-feedback&quot;&gt;ถูกต้อง&lt;/div&gt;
+        &lt;div class=&quot;invalid-feedback&quot;&gt;ตัวเลข 10 หลัก ขึ้นต้นด้วย 06, 08 หรือ 09&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;row g-3 mb-3&quot;&gt;
+        &lt;div class=&quot;col-12 col-md-6&quot;&gt;
+          &lt;label for=&quot;password&quot; class=&quot;form-label&quot;&gt;รหัสผ่าน&lt;/label&gt;
+          &lt;input type=&quot;password&quot; class=&quot;form-control&quot; id=&quot;password&quot; name=&quot;password&quot; required minlength=&quot;8&quot;&gt;
+          &lt;div class=&quot;invalid-feedback&quot;&gt;อย่างน้อย 8 ตัวอักษร&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;col-12 col-md-6&quot;&gt;
+          &lt;label for=&quot;confirm&quot; class=&quot;form-label&quot;&gt;ยืนยันรหัสผ่าน&lt;/label&gt;
+          &lt;input type=&quot;password&quot; class=&quot;form-control&quot; id=&quot;confirm&quot; name=&quot;confirm&quot; required&gt;
+          &lt;div class=&quot;invalid-feedback&quot;&gt;รหัสผ่านทั้งสองช่องไม่ตรงกัน&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;mb-3&quot;&gt;
+        &lt;label for=&quot;session&quot; class=&quot;form-label&quot;&gt;รอบที่ต้องการ&lt;/label&gt;
+        &lt;select class=&quot;form-select&quot; id=&quot;session&quot; name=&quot;session&quot; required&gt;
+          &lt;option value=&quot;&quot;&gt;-- เลือกรอบ --&lt;/option&gt;
+          &lt;option value=&quot;sat-am&quot;&gt;เสาร์ 09:00–12:00&lt;/option&gt;
+          &lt;option value=&quot;sat-pm&quot;&gt;เสาร์ 13:00–16:00&lt;/option&gt;
+          &lt;option value=&quot;sun-am&quot;&gt;อาทิตย์ 09:00–12:00&lt;/option&gt;
+        &lt;/select&gt;
+        &lt;div class=&quot;invalid-feedback&quot;&gt;กรุณาเลือกรอบ&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;form-check mb-4&quot;&gt;
+        &lt;input class=&quot;form-check-input&quot; type=&quot;checkbox&quot; id=&quot;agree&quot; name=&quot;agree&quot; required&gt;
+        &lt;label class=&quot;form-check-label&quot; for=&quot;agree&quot;&gt;ยอมรับเงื่อนไขการลงทะเบียน&lt;/label&gt;
+        &lt;div class=&quot;invalid-feedback&quot;&gt;กรุณายอมรับเงื่อนไขก่อนส่ง&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;button type=&quot;submit&quot; class=&quot;btn btn-success&quot;&gt;ลงทะเบียน&lt;/button&gt;
+    &lt;/form&gt;
+
+    &lt;div id=&quot;success&quot; class=&quot;alert alert-success mt-4 d-none&quot; role=&quot;status&quot;&gt;ลงทะเบียนเรียบร้อย ระบบจะส่งอีเมลยืนยันให้&lt;/div&gt;
+  &lt;/main&gt;
+
+  &lt;script&gt;
+    (() =&gt; {
+      &quot;use strict&quot;;
+      const form = document.getElementById(&quot;registerForm&quot;);
+      const password = document.getElementById(&quot;password&quot;);
+      const confirm = document.getElementById(&quot;confirm&quot;);
+
+      // ตรวจว่ารหัสผ่านสองช่องตรงกัน (HTML ตรวจเรื่องนี้เองไม่ได้)
+      const checkMatch = () =&gt; {
+        confirm.setCustomValidity(confirm.value === password.value ? &quot;&quot; : &quot;not-match&quot;);
+      };
+      password.addEventListener(&quot;input&quot;, checkMatch);
+      confirm.addEventListener(&quot;input&quot;, checkMatch);
+
+      form.addEventListener(&quot;submit&quot;, (event) =&gt; {
+        checkMatch();
+        event.preventDefault();               // ตัวอย่างนี้ยังไม่ส่งไปเซิร์ฟเวอร์ (ทำในบทที่ 7)
+        if (form.checkValidity()) {
+          document.getElementById(&quot;success&quot;).classList.remove(&quot;d-none&quot;);
+        }
+        form.classList.add(&quot;was-validated&quot;);  // สั่งให้ Bootstrap แสดง valid/invalid-feedback
+      });
+    })();
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+  <h3>สคริปต์ทำงานอย่างไร</h3>
+  <ol class="x-steps">
+    <li><code>novalidate</code> ที่ form ปิดกล่องเตือนของเบราว์เซอร์ เพื่อให้ Bootstrap แสดงข้อความใต้ช่องแทน</li>
+    <li>เมื่อกดส่ง สคริปต์เรียก <code>form.checkValidity()</code> ซึ่งตรวจ required, minlength, type="email" และ pattern ตามที่เขียนใน HTML</li>
+    <li>เติมคลาส <code>was-validated</code> ที่ form แล้ว Bootstrap จะใส่กรอบสีเขียวหรือแดง และแสดง <code>valid-feedback</code> หรือ <code>invalid-feedback</code> ที่อยู่ถัดจากช่องนั้น</li>
+    <li>เรื่องที่ HTML ตรวจเองไม่ได้ เช่น รหัสผ่านสองช่องตรงกันไหม ใช้ <code>setCustomValidity()</code> ถ้าส่งข้อความที่ไม่ว่างจะถือว่าช่องนั้นไม่ผ่าน ส่งข้อความว่างคือผ่าน</li>
+  </ol>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>ทดสอบ</th><th>ผลที่ควรได้</th></tr></thead><tbody><tr><td>กดส่งทันที</td><td>ทุกช่องกรอบแดง และแสดงข้อความ invalid-feedback</td></tr><tr><td>อีเมล <code>name@</code></td><td>กรอบแดง: ไม่ใช่รูปแบบอีเมล</td></tr><tr><td>โทร <code>0812345678</code></td><td>กรอบเขียว แสดง "ถูกต้อง"</td></tr><tr><td>รหัสผ่าน <code>coffee2569</code> ยืนยัน <code>coffee2568</code></td><td>ช่องยืนยันกรอบแดง: "รหัสผ่านทั้งสองช่องไม่ตรงกัน"</td></tr><tr><td>กรอกครบถูกต้อง</td><td>ทุกช่องเขียว และแสดงกล่อง "ลงทะเบียนเรียบร้อย"</td></tr></tbody></table></div>
+  <details class="x-trouble"><summary>ข้อผิดพลาดที่พบบ่อย</summary><dl><div><dt>ข้อความ invalid-feedback ไม่แสดง</dt><dd>div.invalid-feedback ต้องอยู่ถัดจาก input ในระดับเดียวกัน (sibling) และ form ต้องได้คลาส was-validated แล้ว</dd></div><div><dt>ฟอร์มส่งออกไปทั้งที่ยังกรอกไม่ครบ</dt><dd>ลืมเรียก event.preventDefault() เมื่อ checkValidity() เป็น false</dd></div><div><dt>กรอบเขียวขึ้นตั้งแต่เปิดหน้า</dt><dd>ใส่ was-validated ไว้ใน HTML ตั้งแต่แรก ให้เติมด้วยสคริปต์ตอนกดส่งแทน</dd></div></dl></details>
+  <div class="x-shots"><b>ภาพหน้าจอที่ต้องแนบ</b><ul><li>ฟอร์มที่กดส่งตอนยังว่าง (แสดง invalid-feedback)</li><li>ฟอร์มที่กรอกถูกต้องครบ (แสดง valid-feedback และข้อความสำเร็จ)</li><li>โค้ดสคริปต์ใน VS Code</li></ul></div>
+</section>
+
+<section id="e4">
+  <div class="x-head"><span class="x-num">5.4</span><h2>ใช้ AI ร่าง Dashboard แล้วปรับธีม</h2></div>
+  <ol class="x-steps">
+    <li>ส่ง Prompt ด้านล่างให้ AI (ขยายจากกรอบคำสั่งในหัวข้อ 5.8.3) บันทึกโค้ดที่ได้เป็น dashboard.html</li>
+    <li>ตรวจโค้ดของ AI ตามรายการตรวจด้านล่าง แก้จุดที่ผิด แล้วตรวจด้วย W3C Checker</li>
+    <li>สร้าง <code>css/theme.css</code> ปรับสีให้ตรงธีมของร้าน โดยไม่แก้ไฟล์ของ Bootstrap</li>
+  </ol>
+  <div class="x-wrap"><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>Role: Front-End Engineer.
+Task: Create an admin dashboard page for &quot;Phu Kham Coffee Roasters&quot; (a Thai coffee shop) using Bootstrap 5.3 from the jsDelivr CDN.
+Layout:
+- Top navbar with the shop name and a search form.
+- Left sidebar menu (Overview, Orders, Products, Customers) that sits above the content on mobile.
+- Main area: 4 KPI cards (sales today, new orders, new members, low-stock items) in a responsive grid (col-12 col-sm-6 col-xl-3).
+- A &quot;latest orders&quot; table using table-striped and table-hover inside table-responsive, with status badges.
+Constraints:
+- Bootstrap 5.3 classes only (ms-*/me-*, data-bs-*, visually-hidden). No jQuery. No Bootstrap 4 classes.
+- Semantic HTML (nav, aside, main), every form control has a label, table has caption and th scope.
+- All visible text in Thai.
+- Do not add custom CSS; I will theme it myself.</code></pre></div></div>
+  <h3>ตรวจโค้ดที่ AI ร่างมา</h3>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>สิ่งที่ AI มักทำผิด</th><th>ของ Bootstrap 5 ที่ถูกต้อง</th></tr></thead><tbody><tr><td><code>ml-2</code> <code>mr-2</code> <code>pl-3</code></td><td><code>ms-2</code> <code>me-2</code> <code>ps-3</code> (s = start, e = end)</td></tr><tr><td><code>data-toggle=&quot;collapse&quot;</code></td><td><code>data-bs-toggle=&quot;collapse&quot;</code></td></tr><tr><td><code>sr-only</code></td><td><code>visually-hidden</code></td></tr><tr><td><code>float-left</code> <code>text-left</code></td><td><code>float-start</code> <code>text-start</code></td></tr><tr><td>โหลด jQuery ก่อน Bootstrap</td><td>Bootstrap 5 ไม่ต้องใช้ jQuery โหลดแค่ bootstrap.bundle.min.js</td></tr><tr><td>ใช้ <code>.card-deck</code></td><td><code>.row</code> + <code>.col-*</code> (หัวข้อ 5.8.5)</td></tr><tr><td>ช่องค้นหาไม่มี label</td><td>เพิ่ม label คู่กับ id ซ่อนด้วย visually-hidden ได้ถ้าไม่ต้องการให้เห็น</td></tr></tbody></table></div>
+  <p class="x-file">dashboard.html (หลังตรวจและแก้แล้ว)</p><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;title&gt;แดชบอร์ดร้านไร่ภูคำ&lt;/title&gt;
+  &lt;link rel=&quot;preconnect&quot; href=&quot;https://fonts.googleapis.com&quot;&gt;
+  &lt;link rel=&quot;preconnect&quot; href=&quot;https://fonts.gstatic.com&quot; crossorigin&gt;
+  &lt;link href=&quot;https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+  &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+  &lt;link href=&quot;css/theme.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;nav class=&quot;navbar navbar-dark bg-primary&quot;&gt;
+    &lt;div class=&quot;container-fluid&quot;&gt;
+      &lt;a class=&quot;navbar-brand fw-bold&quot; href=&quot;#&quot;&gt;ไร่ภูคำ · ระบบหลังร้าน&lt;/a&gt;
+      &lt;form class=&quot;d-flex&quot; role=&quot;search&quot;&gt;
+        &lt;label for=&quot;search&quot; class=&quot;visually-hidden&quot;&gt;ค้นหาคำสั่งซื้อ&lt;/label&gt;
+        &lt;input class=&quot;form-control form-control-sm me-2&quot; type=&quot;search&quot; id=&quot;search&quot; placeholder=&quot;ค้นหาคำสั่งซื้อ&quot;&gt;
+        &lt;button class=&quot;btn btn-light btn-sm&quot; type=&quot;submit&quot;&gt;ค้นหา&lt;/button&gt;
+      &lt;/form&gt;
+    &lt;/div&gt;
+  &lt;/nav&gt;
+
+  &lt;div class=&quot;container-fluid&quot;&gt;
+    &lt;div class=&quot;row&quot;&gt;
+      &lt;aside class=&quot;col-12 col-md-3 col-lg-2 bg-white border-end py-3&quot;&gt;
+        &lt;nav aria-label=&quot;เมนูหลังร้าน&quot;&gt;
+          &lt;ul class=&quot;nav nav-pills flex-md-column gap-1&quot;&gt;
+            &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link active&quot; aria-current=&quot;page&quot; href=&quot;#&quot;&gt;ภาพรวม&lt;/a&gt;&lt;/li&gt;
+            &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link&quot; href=&quot;#&quot;&gt;คำสั่งซื้อ&lt;/a&gt;&lt;/li&gt;
+            &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link&quot; href=&quot;#&quot;&gt;สินค้า&lt;/a&gt;&lt;/li&gt;
+            &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link&quot; href=&quot;#&quot;&gt;ลูกค้า&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/nav&gt;
+      &lt;/aside&gt;
+
+      &lt;main class=&quot;col-12 col-md-9 col-lg-10 p-4&quot;&gt;
+        &lt;h1 class=&quot;h3 mb-4&quot;&gt;ภาพรวมวันนี้&lt;/h1&gt;
+
+        &lt;div class=&quot;row g-3 mb-4&quot;&gt;
+          &lt;div class=&quot;col-12 col-sm-6 col-xl-3&quot;&gt;
+            &lt;div class=&quot;card shadow-sm border-0&quot;&gt;&lt;div class=&quot;card-body&quot;&gt;
+              &lt;p class=&quot;text-body-secondary mb-1&quot;&gt;ยอดขายวันนี้&lt;/p&gt;
+              &lt;p class=&quot;fs-3 fw-bold text-primary mb-0&quot;&gt;฿18,420&lt;/p&gt;
+            &lt;/div&gt;&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;col-12 col-sm-6 col-xl-3&quot;&gt;
+            &lt;div class=&quot;card shadow-sm border-0&quot;&gt;&lt;div class=&quot;card-body&quot;&gt;
+              &lt;p class=&quot;text-body-secondary mb-1&quot;&gt;คำสั่งซื้อใหม่&lt;/p&gt;
+              &lt;p class=&quot;fs-3 fw-bold text-primary mb-0&quot;&gt;37&lt;/p&gt;
+            &lt;/div&gt;&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;col-12 col-sm-6 col-xl-3&quot;&gt;
+            &lt;div class=&quot;card shadow-sm border-0&quot;&gt;&lt;div class=&quot;card-body&quot;&gt;
+              &lt;p class=&quot;text-body-secondary mb-1&quot;&gt;สมาชิกใหม่&lt;/p&gt;
+              &lt;p class=&quot;fs-3 fw-bold text-primary mb-0&quot;&gt;12&lt;/p&gt;
+            &lt;/div&gt;&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;col-12 col-sm-6 col-xl-3&quot;&gt;
+            &lt;div class=&quot;card shadow-sm border-0&quot;&gt;&lt;div class=&quot;card-body&quot;&gt;
+              &lt;p class=&quot;text-body-secondary mb-1&quot;&gt;สินค้าใกล้หมด&lt;/p&gt;
+              &lt;p class=&quot;fs-3 fw-bold text-danger mb-0&quot;&gt;3&lt;/p&gt;
+            &lt;/div&gt;&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class=&quot;card shadow-sm border-0&quot;&gt;
+          &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;table-responsive&quot;&gt;
+              &lt;table class=&quot;table table-striped table-hover align-middle mb-0&quot;&gt;
+                &lt;caption class=&quot;caption-top&quot;&gt;คำสั่งซื้อล่าสุด&lt;/caption&gt;
+                &lt;thead&gt;
+                  &lt;tr&gt;&lt;th scope=&quot;col&quot;&gt;เลขที่&lt;/th&gt;&lt;th scope=&quot;col&quot;&gt;ลูกค้า&lt;/th&gt;&lt;th scope=&quot;col&quot;&gt;สินค้า&lt;/th&gt;&lt;th scope=&quot;col&quot; class=&quot;text-end&quot;&gt;ยอดรวม&lt;/th&gt;&lt;th scope=&quot;col&quot;&gt;สถานะ&lt;/th&gt;&lt;/tr&gt;
+                &lt;/thead&gt;
+                &lt;tbody&gt;
+                  &lt;tr&gt;&lt;td&gt;#1042&lt;/td&gt;&lt;td&gt;คุณนภา&lt;/td&gt;&lt;td&gt;ภูคำ Natural × 2&lt;/td&gt;&lt;td class=&quot;text-end&quot;&gt;฿840&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge text-bg-success&quot;&gt;ชำระแล้ว&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+                  &lt;tr&gt;&lt;td&gt;#1041&lt;/td&gt;&lt;td&gt;คุณกิตติ&lt;/td&gt;&lt;td&gt;ดริปแบ็ก 10 ซอง&lt;/td&gt;&lt;td class=&quot;text-end&quot;&gt;฿250&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge text-bg-warning&quot;&gt;รอชำระ&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+                  &lt;tr&gt;&lt;td&gt;#1040&lt;/td&gt;&lt;td&gt;คุณมานี&lt;/td&gt;&lt;td&gt;House Blend × 3&lt;/td&gt;&lt;td class=&quot;text-end&quot;&gt;฿960&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge text-bg-secondary&quot;&gt;จัดส่งแล้ว&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+                  &lt;tr&gt;&lt;td&gt;#1039&lt;/td&gt;&lt;td&gt;คุณสมชาย&lt;/td&gt;&lt;td&gt;ภูคำ Honey&lt;/td&gt;&lt;td class=&quot;text-end&quot;&gt;฿390&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge text-bg-success&quot;&gt;ชำระแล้ว&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+                &lt;/tbody&gt;
+              &lt;/table&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+  <h3>ปรับธีมให้เป็นสีของร้าน</h3>
+  <p>ใน Bootstrap 5.3 การเปลี่ยนแค่ <code>--bs-primary</code> <b>ไม่ได้</b>เปลี่ยนสีทุกอย่าง เมื่อเปิดดูไฟล์ bootstrap.css รุ่น 5.3.8 จะพบว่า <code>.text-primary</code> และ <code>.bg-primary</code> อ่านสีจาก <code>--bs-primary-rgb</code> แต่ <code>.btn-primary</code>, <code>.nav-pills</code> และกรอบตอนคลิกช่องกรอกเขียนรหัสสีไว้ตายตัว ต้องตั้งแยกทีละคอมโพเนนต์ คำตอบของ AI ที่บอกว่า "เปลี่ยน --bs-primary ตัวเดียวพอ" จึงไม่ถูกต้อง</p>
+  <p class="x-file">css/theme.css</p><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>/*
+  theme.css ธีมไร่ภูคำ ปรับทับ Bootstrap 5.3.8 โดยไม่แก้ไฟล์ของ Bootstrap
+  ต้องโหลดไฟล์นี้หลัง bootstrap.min.css เสมอ
+  ฟอนต์ Sarabun (Cadson Demak) จาก Google Fonts ใบอนุญาต SIL Open Font License 1.1
+*/
+
+/* 1) ตัวแปรระดับหน้า: มีผลกับ .text-primary .bg-primary ลิงก์ ฟอนต์ และขอบมน */
+:root {
+  --bs-primary: #1f4d3a;
+  --bs-primary-rgb: 31, 77, 58;       /* .bg-primary และ .text-primary ใช้ค่านี้ */
+  --bs-link-color: #1f4d3a;
+  --bs-link-color-rgb: 31, 77, 58;
+  --bs-link-hover-color: #173a2c;
+  --bs-link-hover-color-rgb: 23, 58, 44;
+  --bs-body-font-family: &quot;Sarabun&quot;, system-ui, sans-serif;
+  --bs-border-radius: 0.75rem;
+}
+
+/* พื้นหลังหน้า: ตั้งที่ body โดยตรง
+   ถ้าแก้ --bs-body-bg การ์ดจะเปลี่ยนสีตามไปด้วย เพราะ .card ใช้ --bs-body-bg เป็นพื้น */
+body {
+  background-color: #f3ede3;
+}
+
+/* 2) ปุ่ม: .btn-primary กำหนดสีของตัวเอง ไม่ได้อ่านจาก --bs-primary ต้องตั้งแยก */
+.btn-primary {
+  --bs-btn-bg: #1f4d3a;
+  --bs-btn-border-color: #1f4d3a;
+  --bs-btn-hover-bg: #173a2c;
+  --bs-btn-hover-border-color: #173a2c;
+  --bs-btn-active-bg: #122e23;
+  --bs-btn-active-border-color: #122e23;
+  --bs-btn-disabled-bg: #1f4d3a;
+  --bs-btn-disabled-border-color: #1f4d3a;
+  --bs-btn-focus-shadow-rgb: 31, 77, 58;
+}
+
+/* 3) เมนู nav-pills ที่เลือกอยู่ */
+.nav-pills {
+  --bs-nav-pills-link-active-bg: #1f4d3a;
+}
+
+/* 4) ตัวอักษรเมนูบน Navbar สีเข้ม: ค่าเดิมขาวโปร่ง 55% contrast ต่ำกว่า 4.5:1 บนพื้นเขียว */
+.navbar-dark {
+  --bs-navbar-color: rgba(255, 255, 255, 0.85);
+  --bs-navbar-hover-color: #ffffff;
+}
+
+/* 5) กรอบเรืองแสงตอนคลิกช่องกรอก */
+.form-control:focus,
+.form-select:focus {
+  border-color: #8fb3a3;
+  box-shadow: 0 0 0 0.25rem rgba(31, 77, 58, 0.25);
+}</code></pre></div>
+  <div class="x-preview" id="pv4"><div class="x-pv-bar" role="group" aria-label="เลือกความกว้างจอ"><button type="button" data-w="375" aria-pressed="false">มือถือ 375px</button><button type="button" data-w="768" aria-pressed="false">แท็บเล็ต 768px</button><button type="button" data-w="1100" aria-pressed="true">คอมพิวเตอร์ 1100px</button><span class="x-pv-sep"></span><button type="button" class="doc" data-doc="0" aria-pressed="true">หลังใส่ theme.css</button><button type="button" class="doc" data-doc="1" aria-pressed="false">ก่อนใส่ theme.css</button><span class="pvw">1100px</span></div><div class="x-pv-stage"><iframe title="ตัวอย่างหน้าเว็บ หลังใส่ theme.css" sandbox="allow-scripts allow-forms" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;title&gt;แดชบอร์ดร้านไร่ภูคำ&lt;/title&gt;
+  &lt;link rel=&quot;preconnect&quot; href=&quot;https://fonts.googleapis.com&quot;&gt;
+  &lt;link rel=&quot;preconnect&quot; href=&quot;https://fonts.gstatic.com&quot; crossorigin&gt;
+  &lt;link href=&quot;https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+  &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+  &lt;style&gt;
+/*
+  theme.css ธีมไร่ภูคำ ปรับทับ Bootstrap 5.3.8 โดยไม่แก้ไฟล์ของ Bootstrap
+  ต้องโหลดไฟล์นี้หลัง bootstrap.min.css เสมอ
+  ฟอนต์ Sarabun (Cadson Demak) จาก Google Fonts ใบอนุญาต SIL Open Font License 1.1
+*/
+
+/* 1) ตัวแปรระดับหน้า: มีผลกับ .text-primary .bg-primary ลิงก์ ฟอนต์ และขอบมน */
+:root {
+  --bs-primary: #1f4d3a;
+  --bs-primary-rgb: 31, 77, 58;       /* .bg-primary และ .text-primary ใช้ค่านี้ */
+  --bs-link-color: #1f4d3a;
+  --bs-link-color-rgb: 31, 77, 58;
+  --bs-link-hover-color: #173a2c;
+  --bs-link-hover-color-rgb: 23, 58, 44;
+  --bs-body-font-family: &quot;Sarabun&quot;, system-ui, sans-serif;
+  --bs-border-radius: 0.75rem;
+}
+
+/* พื้นหลังหน้า: ตั้งที่ body โดยตรง
+   ถ้าแก้ --bs-body-bg การ์ดจะเปลี่ยนสีตามไปด้วย เพราะ .card ใช้ --bs-body-bg เป็นพื้น */
+body {
+  background-color: #f3ede3;
+}
+
+/* 2) ปุ่ม: .btn-primary กำหนดสีของตัวเอง ไม่ได้อ่านจาก --bs-primary ต้องตั้งแยก */
+.btn-primary {
+  --bs-btn-bg: #1f4d3a;
+  --bs-btn-border-color: #1f4d3a;
+  --bs-btn-hover-bg: #173a2c;
+  --bs-btn-hover-border-color: #173a2c;
+  --bs-btn-active-bg: #122e23;
+  --bs-btn-active-border-color: #122e23;
+  --bs-btn-disabled-bg: #1f4d3a;
+  --bs-btn-disabled-border-color: #1f4d3a;
+  --bs-btn-focus-shadow-rgb: 31, 77, 58;
+}
+
+/* 3) เมนู nav-pills ที่เลือกอยู่ */
+.nav-pills {
+  --bs-nav-pills-link-active-bg: #1f4d3a;
+}
+
+/* 4) ตัวอักษรเมนูบน Navbar สีเข้ม: ค่าเดิมขาวโปร่ง 55% contrast ต่ำกว่า 4.5:1 บนพื้นเขียว */
+.navbar-dark {
+  --bs-navbar-color: rgba(255, 255, 255, 0.85);
+  --bs-navbar-hover-color: #ffffff;
+}
+
+/* 5) กรอบเรืองแสงตอนคลิกช่องกรอก */
+.form-control:focus,
+.form-select:focus {
+  border-color: #8fb3a3;
+  box-shadow: 0 0 0 0.25rem rgba(31, 77, 58, 0.25);
+}
+
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;nav class=&quot;navbar navbar-dark bg-primary&quot;&gt;
+    &lt;div class=&quot;container-fluid&quot;&gt;
+      &lt;a class=&quot;navbar-brand fw-bold&quot; href=&quot;#&quot;&gt;ไร่ภูคำ · ระบบหลังร้าน&lt;/a&gt;
+      &lt;form class=&quot;d-flex&quot; role=&quot;search&quot;&gt;
+        &lt;label for=&quot;search&quot; class=&quot;visually-hidden&quot;&gt;ค้นหาคำสั่งซื้อ&lt;/label&gt;
+        &lt;input class=&quot;form-control form-control-sm me-2&quot; type=&quot;search&quot; id=&quot;search&quot; placeholder=&quot;ค้นหาคำสั่งซื้อ&quot;&gt;
+        &lt;button class=&quot;btn btn-light btn-sm&quot; type=&quot;submit&quot;&gt;ค้นหา&lt;/button&gt;
+      &lt;/form&gt;
+    &lt;/div&gt;
+  &lt;/nav&gt;
+
+  &lt;div class=&quot;container-fluid&quot;&gt;
+    &lt;div class=&quot;row&quot;&gt;
+      &lt;aside class=&quot;col-12 col-md-3 col-lg-2 bg-white border-end py-3&quot;&gt;
+        &lt;nav aria-label=&quot;เมนูหลังร้าน&quot;&gt;
+          &lt;ul class=&quot;nav nav-pills flex-md-column gap-1&quot;&gt;
+            &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link active&quot; aria-current=&quot;page&quot; href=&quot;#&quot;&gt;ภาพรวม&lt;/a&gt;&lt;/li&gt;
+            &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link&quot; href=&quot;#&quot;&gt;คำสั่งซื้อ&lt;/a&gt;&lt;/li&gt;
+            &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link&quot; href=&quot;#&quot;&gt;สินค้า&lt;/a&gt;&lt;/li&gt;
+            &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link&quot; href=&quot;#&quot;&gt;ลูกค้า&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/nav&gt;
+      &lt;/aside&gt;
+
+      &lt;main class=&quot;col-12 col-md-9 col-lg-10 p-4&quot;&gt;
+        &lt;h1 class=&quot;h3 mb-4&quot;&gt;ภาพรวมวันนี้&lt;/h1&gt;
+
+        &lt;div class=&quot;row g-3 mb-4&quot;&gt;
+          &lt;div class=&quot;col-12 col-sm-6 col-xl-3&quot;&gt;
+            &lt;div class=&quot;card shadow-sm border-0&quot;&gt;&lt;div class=&quot;card-body&quot;&gt;
+              &lt;p class=&quot;text-body-secondary mb-1&quot;&gt;ยอดขายวันนี้&lt;/p&gt;
+              &lt;p class=&quot;fs-3 fw-bold text-primary mb-0&quot;&gt;฿18,420&lt;/p&gt;
+            &lt;/div&gt;&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;col-12 col-sm-6 col-xl-3&quot;&gt;
+            &lt;div class=&quot;card shadow-sm border-0&quot;&gt;&lt;div class=&quot;card-body&quot;&gt;
+              &lt;p class=&quot;text-body-secondary mb-1&quot;&gt;คำสั่งซื้อใหม่&lt;/p&gt;
+              &lt;p class=&quot;fs-3 fw-bold text-primary mb-0&quot;&gt;37&lt;/p&gt;
+            &lt;/div&gt;&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;col-12 col-sm-6 col-xl-3&quot;&gt;
+            &lt;div class=&quot;card shadow-sm border-0&quot;&gt;&lt;div class=&quot;card-body&quot;&gt;
+              &lt;p class=&quot;text-body-secondary mb-1&quot;&gt;สมาชิกใหม่&lt;/p&gt;
+              &lt;p class=&quot;fs-3 fw-bold text-primary mb-0&quot;&gt;12&lt;/p&gt;
+            &lt;/div&gt;&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;col-12 col-sm-6 col-xl-3&quot;&gt;
+            &lt;div class=&quot;card shadow-sm border-0&quot;&gt;&lt;div class=&quot;card-body&quot;&gt;
+              &lt;p class=&quot;text-body-secondary mb-1&quot;&gt;สินค้าใกล้หมด&lt;/p&gt;
+              &lt;p class=&quot;fs-3 fw-bold text-danger mb-0&quot;&gt;3&lt;/p&gt;
+            &lt;/div&gt;&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class=&quot;card shadow-sm border-0&quot;&gt;
+          &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;table-responsive&quot;&gt;
+              &lt;table class=&quot;table table-striped table-hover align-middle mb-0&quot;&gt;
+                &lt;caption class=&quot;caption-top&quot;&gt;คำสั่งซื้อล่าสุด&lt;/caption&gt;
+                &lt;thead&gt;
+                  &lt;tr&gt;&lt;th scope=&quot;col&quot;&gt;เลขที่&lt;/th&gt;&lt;th scope=&quot;col&quot;&gt;ลูกค้า&lt;/th&gt;&lt;th scope=&quot;col&quot;&gt;สินค้า&lt;/th&gt;&lt;th scope=&quot;col&quot; class=&quot;text-end&quot;&gt;ยอดรวม&lt;/th&gt;&lt;th scope=&quot;col&quot;&gt;สถานะ&lt;/th&gt;&lt;/tr&gt;
+                &lt;/thead&gt;
+                &lt;tbody&gt;
+                  &lt;tr&gt;&lt;td&gt;#1042&lt;/td&gt;&lt;td&gt;คุณนภา&lt;/td&gt;&lt;td&gt;ภูคำ Natural × 2&lt;/td&gt;&lt;td class=&quot;text-end&quot;&gt;฿840&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge text-bg-success&quot;&gt;ชำระแล้ว&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+                  &lt;tr&gt;&lt;td&gt;#1041&lt;/td&gt;&lt;td&gt;คุณกิตติ&lt;/td&gt;&lt;td&gt;ดริปแบ็ก 10 ซอง&lt;/td&gt;&lt;td class=&quot;text-end&quot;&gt;฿250&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge text-bg-warning&quot;&gt;รอชำระ&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+                  &lt;tr&gt;&lt;td&gt;#1040&lt;/td&gt;&lt;td&gt;คุณมานี&lt;/td&gt;&lt;td&gt;House Blend × 3&lt;/td&gt;&lt;td class=&quot;text-end&quot;&gt;฿960&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge text-bg-secondary&quot;&gt;จัดส่งแล้ว&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+                  &lt;tr&gt;&lt;td&gt;#1039&lt;/td&gt;&lt;td&gt;คุณสมชาย&lt;/td&gt;&lt;td&gt;ภูคำ Honey&lt;/td&gt;&lt;td class=&quot;text-end&quot;&gt;฿390&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge text-bg-success&quot;&gt;ชำระแล้ว&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+                &lt;/tbody&gt;
+              &lt;/table&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+" style="width:1100px;height:640px" ></iframe><iframe title="ตัวอย่างหน้าเว็บ ก่อนใส่ theme.css" sandbox="allow-scripts allow-forms" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;title&gt;แดชบอร์ดร้านไร่ภูคำ&lt;/title&gt;
+  &lt;link rel=&quot;preconnect&quot; href=&quot;https://fonts.googleapis.com&quot;&gt;
+  &lt;link rel=&quot;preconnect&quot; href=&quot;https://fonts.gstatic.com&quot; crossorigin&gt;
+  &lt;link href=&quot;https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+  &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;nav class=&quot;navbar navbar-dark bg-primary&quot;&gt;
+    &lt;div class=&quot;container-fluid&quot;&gt;
+      &lt;a class=&quot;navbar-brand fw-bold&quot; href=&quot;#&quot;&gt;ไร่ภูคำ · ระบบหลังร้าน&lt;/a&gt;
+      &lt;form class=&quot;d-flex&quot; role=&quot;search&quot;&gt;
+        &lt;label for=&quot;search&quot; class=&quot;visually-hidden&quot;&gt;ค้นหาคำสั่งซื้อ&lt;/label&gt;
+        &lt;input class=&quot;form-control form-control-sm me-2&quot; type=&quot;search&quot; id=&quot;search&quot; placeholder=&quot;ค้นหาคำสั่งซื้อ&quot;&gt;
+        &lt;button class=&quot;btn btn-light btn-sm&quot; type=&quot;submit&quot;&gt;ค้นหา&lt;/button&gt;
+      &lt;/form&gt;
+    &lt;/div&gt;
+  &lt;/nav&gt;
+
+  &lt;div class=&quot;container-fluid&quot;&gt;
+    &lt;div class=&quot;row&quot;&gt;
+      &lt;aside class=&quot;col-12 col-md-3 col-lg-2 bg-white border-end py-3&quot;&gt;
+        &lt;nav aria-label=&quot;เมนูหลังร้าน&quot;&gt;
+          &lt;ul class=&quot;nav nav-pills flex-md-column gap-1&quot;&gt;
+            &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link active&quot; aria-current=&quot;page&quot; href=&quot;#&quot;&gt;ภาพรวม&lt;/a&gt;&lt;/li&gt;
+            &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link&quot; href=&quot;#&quot;&gt;คำสั่งซื้อ&lt;/a&gt;&lt;/li&gt;
+            &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link&quot; href=&quot;#&quot;&gt;สินค้า&lt;/a&gt;&lt;/li&gt;
+            &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link&quot; href=&quot;#&quot;&gt;ลูกค้า&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/nav&gt;
+      &lt;/aside&gt;
+
+      &lt;main class=&quot;col-12 col-md-9 col-lg-10 p-4&quot;&gt;
+        &lt;h1 class=&quot;h3 mb-4&quot;&gt;ภาพรวมวันนี้&lt;/h1&gt;
+
+        &lt;div class=&quot;row g-3 mb-4&quot;&gt;
+          &lt;div class=&quot;col-12 col-sm-6 col-xl-3&quot;&gt;
+            &lt;div class=&quot;card shadow-sm border-0&quot;&gt;&lt;div class=&quot;card-body&quot;&gt;
+              &lt;p class=&quot;text-body-secondary mb-1&quot;&gt;ยอดขายวันนี้&lt;/p&gt;
+              &lt;p class=&quot;fs-3 fw-bold text-primary mb-0&quot;&gt;฿18,420&lt;/p&gt;
+            &lt;/div&gt;&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;col-12 col-sm-6 col-xl-3&quot;&gt;
+            &lt;div class=&quot;card shadow-sm border-0&quot;&gt;&lt;div class=&quot;card-body&quot;&gt;
+              &lt;p class=&quot;text-body-secondary mb-1&quot;&gt;คำสั่งซื้อใหม่&lt;/p&gt;
+              &lt;p class=&quot;fs-3 fw-bold text-primary mb-0&quot;&gt;37&lt;/p&gt;
+            &lt;/div&gt;&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;col-12 col-sm-6 col-xl-3&quot;&gt;
+            &lt;div class=&quot;card shadow-sm border-0&quot;&gt;&lt;div class=&quot;card-body&quot;&gt;
+              &lt;p class=&quot;text-body-secondary mb-1&quot;&gt;สมาชิกใหม่&lt;/p&gt;
+              &lt;p class=&quot;fs-3 fw-bold text-primary mb-0&quot;&gt;12&lt;/p&gt;
+            &lt;/div&gt;&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;col-12 col-sm-6 col-xl-3&quot;&gt;
+            &lt;div class=&quot;card shadow-sm border-0&quot;&gt;&lt;div class=&quot;card-body&quot;&gt;
+              &lt;p class=&quot;text-body-secondary mb-1&quot;&gt;สินค้าใกล้หมด&lt;/p&gt;
+              &lt;p class=&quot;fs-3 fw-bold text-danger mb-0&quot;&gt;3&lt;/p&gt;
+            &lt;/div&gt;&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class=&quot;card shadow-sm border-0&quot;&gt;
+          &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;table-responsive&quot;&gt;
+              &lt;table class=&quot;table table-striped table-hover align-middle mb-0&quot;&gt;
+                &lt;caption class=&quot;caption-top&quot;&gt;คำสั่งซื้อล่าสุด&lt;/caption&gt;
+                &lt;thead&gt;
+                  &lt;tr&gt;&lt;th scope=&quot;col&quot;&gt;เลขที่&lt;/th&gt;&lt;th scope=&quot;col&quot;&gt;ลูกค้า&lt;/th&gt;&lt;th scope=&quot;col&quot;&gt;สินค้า&lt;/th&gt;&lt;th scope=&quot;col&quot; class=&quot;text-end&quot;&gt;ยอดรวม&lt;/th&gt;&lt;th scope=&quot;col&quot;&gt;สถานะ&lt;/th&gt;&lt;/tr&gt;
+                &lt;/thead&gt;
+                &lt;tbody&gt;
+                  &lt;tr&gt;&lt;td&gt;#1042&lt;/td&gt;&lt;td&gt;คุณนภา&lt;/td&gt;&lt;td&gt;ภูคำ Natural × 2&lt;/td&gt;&lt;td class=&quot;text-end&quot;&gt;฿840&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge text-bg-success&quot;&gt;ชำระแล้ว&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+                  &lt;tr&gt;&lt;td&gt;#1041&lt;/td&gt;&lt;td&gt;คุณกิตติ&lt;/td&gt;&lt;td&gt;ดริปแบ็ก 10 ซอง&lt;/td&gt;&lt;td class=&quot;text-end&quot;&gt;฿250&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge text-bg-warning&quot;&gt;รอชำระ&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+                  &lt;tr&gt;&lt;td&gt;#1040&lt;/td&gt;&lt;td&gt;คุณมานี&lt;/td&gt;&lt;td&gt;House Blend × 3&lt;/td&gt;&lt;td class=&quot;text-end&quot;&gt;฿960&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge text-bg-secondary&quot;&gt;จัดส่งแล้ว&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+                  &lt;tr&gt;&lt;td&gt;#1039&lt;/td&gt;&lt;td&gt;คุณสมชาย&lt;/td&gt;&lt;td&gt;ภูคำ Honey&lt;/td&gt;&lt;td class=&quot;text-end&quot;&gt;฿390&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge text-bg-success&quot;&gt;ชำระแล้ว&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+                &lt;/tbody&gt;
+              &lt;/table&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+" style="width:1100px;height:640px" hidden></iframe></div></div>
+  <p class="x-muted">กดสลับ "ก่อน / หลังใส่ theme.css" เพื่อเทียบ สังเกตแถบบน เมนูที่เลือก ตัวเลขในการ์ด ฟอนต์ และพื้นหลัง</p>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>ส่วนที่เปลี่ยน</th><th>ตั้งค่าที่</th></tr></thead><tbody><tr><td>แถบบน <code>bg-primary</code> และตัวเลข <code>text-primary</code></td><td><code>--bs-primary-rgb</code> ใน :root</td></tr><tr><td>เมนูที่เลือกอยู่</td><td><code>--bs-nav-pills-link-active-bg</code> ใน .nav-pills</td></tr><tr><td>ปุ่ม <code>btn-primary</code></td><td><code>--bs-btn-*</code> ใน .btn-primary</td></tr><tr><td>ตัวอักษรเมนูบนแถบเข้ม</td><td><code>--bs-navbar-color</code> ค่าเดิมเป็นขาวโปร่ง 55% ซึ่ง contrast ต่ำกว่า 4.5:1 บนพื้นเขียว จึงปรับเป็น 85%</td></tr><tr><td>ฟอนต์และขอบมน</td><td><code>--bs-body-font-family</code> <code>--bs-border-radius</code></td></tr><tr><td>พื้นหลังหน้า</td><td><code>body { background-color }</code> ไม่ใช้ --bs-body-bg เพราะ .card ใช้ตัวแปรนี้เป็นสีพื้นของการ์ดด้วย การ์ดจะกลายเป็นสีเดียวกับพื้นหลัง</td></tr></tbody></table></div>
+  <div class="x-shots"><b>ภาพหน้าจอที่ต้องแนบ</b><ul><li>Prompt และคำตอบของ AI</li><li>จุดที่แก้จากโค้ดของ AI (เทียบก่อนและหลัง)</li><li>Dashboard ก่อนและหลังใส่ theme.css</li><li>ผล W3C Checker ของ dashboard.html</li></ul></div>
+</section>
+
+<section id="e5">
+  <div class="x-head"><span class="x-num">สรุป</span><h2>สิ่งที่ต้องส่ง</h2></div>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>ส่วน</th><th>ข้อ</th><th>ไฟล์ / หลักฐาน</th></tr></thead><tbody><tr><td>1 (สัปดาห์ 7)</td><td>5.1</td><td><code>grid.html</code> + ภาพ 3 ขนาดจอ</td></tr><tr><td>2 (สัปดาห์ 8)</td><td>5.2</td><td><code>landing.html</code> + ภาพหน้าเต็ม, Navbar ยุบ/ขยาย และ Modal</td></tr><tr><td></td><td>5.3</td><td><code>register.html</code> + ภาพ invalid และ valid</td></tr><tr><td></td><td>5.4</td><td><code>dashboard.html</code> <code>css/theme.css</code> + Prompt, คำตอบ AI, รายการสิ่งที่แก้ และภาพก่อน/หลังใส่ธีม</td></tr></tbody></table></div>
+  <p class="x-muted">บีบอัดโฟลเดอร์ ws5 เป็น .zip และรวมภาพหน้าจอเป็น PDF ไฟล์เดียว ส่งพร้อมกันทั้งสองส่วนภายในสัปดาห์ที่ 8 ตั้งชื่อตามรูปแบบ <code>รหัสนักศึกษา_ใบงานที่5</code></p>
+</section>
+
+</div>
+<div class="pager"><a class="pn" href="ws5.html"><small>กลับไปที่</small><b>ใบงานที่ 5</b></a><a class="pn next" href="ws6.html"><small>ถัดไป</small><b>ใบงานที่ 6</b></a></div></div>
+</main>
+<footer class="foot"><div class="wrap fgrid">
+<div><a class="brand" href="../index.html"><span class="logo" aria-hidden="true">&lt;/&gt;</span><span class="bt"><b>การเขียนโปรแกรมบนเว็บ</b><small>Web Programming</small></span></a>
+<p class="small">สื่อเสริมการเรียนรู้ ใช้ประกอบเอกสารประกอบการสอน ไม่มีระบบสมาชิกและไม่เก็บข้อมูลส่วนบุคคล ส่งงานผ่าน Google Classroom</p></div>
+<div><p class="fh">เรียนรู้</p><a href="../chapters.html">บทเรียน 10 บท</a><a href="../worksheets.html">ใบงานประจำบท</a><a href="../assessment.html">เกณฑ์การประเมินผล</a><a href="../clo.html">ผลลัพธ์การเรียนรู้ (CLO)</a><a href="../start.html">เริ่มต้นใช้งาน</a></div>
+<div><p class="fh">รายวิชา</p><a href="../about.html">เกี่ยวกับรายวิชา</a><span>ผู้สอน: ดร.สุรเชษฐ์ สังขพันธ์</span><span>พ.ศ. 2569</span></div>
+</div></footer>
+<script src="../assets/app.js"></script>
+<script>
+document.querySelectorAll(".x-preview").forEach(function(pv){
+  var frames=pv.querySelectorAll("iframe"), out=pv.querySelector(".pvw");
+  pv.querySelectorAll("button[data-w]").forEach(function(b,_,all){b.addEventListener("click",function(){
+    all.forEach(function(x){x.setAttribute("aria-pressed","false")});b.setAttribute("aria-pressed","true");
+    frames.forEach(function(f){f.style.width=b.dataset.w+"px"});out.textContent=b.dataset.w+"px";});});
+  pv.querySelectorAll("button[data-doc]").forEach(function(b,_,all){b.addEventListener("click",function(){
+    all.forEach(function(x){x.setAttribute("aria-pressed","false")});b.setAttribute("aria-pressed","true");
+    frames.forEach(function(f,k){f.hidden=(k!=b.dataset.doc)});});});
+});
+</script>
+</body>
+</html>
