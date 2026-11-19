@@ -118,6 +118,7 @@
 .wsx .x-pv-bar span{margin-left:auto;font-family:"JetBrains Mono",monospace;font-size:.85rem;color:var(--muted)}
 .wsx .x-pv-stage{overflow-x:auto;padding:12px}
 .wsx .x-pv-stage iframe{display:block;margin:0 auto;height:640px;border:1px solid var(--line);border-radius:8px;background:#fff;max-width:none;transition:width .25s}
+.wsx .x-os-h{margin:0;font-weight:700;font-size:1.18rem}
 </style>
 <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
 
@@ -141,7 +142,7 @@
 <header class="x-intro">
   <p>ตัวอย่างนี้ต่อยอดจากแบรนด์สมมติ "ไร่ภูคำ" ในตัวอย่างใบงานที่ 1 ส่วนที่ 1 เป็นหน้าทดลองแยกไฟล์ ส่วนที่ 2 เป็นหน้าเว็บร้านค้า 1 หน้าที่ใช้ไฟล์ <code>css/style.css</code> ไฟล์เดียวทำข้อ 4.1–4.4 ครบ โค้ด HTML ทุกไฟล์ผ่าน W3C Nu HTML Checker และ style.css ผ่าน <a href="https://jigsaw.w3.org/css-validator/" target="_blank" rel="noopener noreferrer">W3C CSS Validator</a> โดยไม่มี error</p>
   <div class="x-grid2">
-    <div class="x-os"><h3>แบ่งงานตามสัปดาห์</h3>
+    <div class="x-os"><p class="x-os-h">แบ่งงานตามสัปดาห์</p>
       <ul class="x-plain">
         <li><span class="x-wk">สัปดาห์ 5</span><span>ส่วนที่ 1 ข้อ 4.0 <code>box.html</code></span></li>
         <li><span class="x-wk">สัปดาห์ 6</span><span>ส่วนที่ 2 ข้อ 4.1–4.4 <code>index.html</code> <code>css/style.css</code></span></li>
@@ -220,7 +221,7 @@
 
   <h3>ดู Box Model ใน DevTools</h3>
   <div class="x-grid2">
-    <div class="x-box" aria-label="แผนภาพ Box Model ของ .box">
+    <div role="group" class="x-box" aria-label="แผนภาพ Box Model ของ .box">
       <div class="bm-m"><span>margin 24</span>
         <div class="bm-b"><span>border 4</span>
           <div class="bm-p"><span>padding 20</span>
@@ -484,7 +485,7 @@ main {
 <section id="e2">
   <div class="x-head"><span class="x-num">4.2</span><h2>เลย์เอาต์ด้วย Flexbox</h2></div>
   <div class="x-grid2">
-    <div class="x-flexdemo" aria-label="แผนภาพ Navbar และการ์ด 3 คอลัมน์">
+    <div role="group" class="x-flexdemo" aria-label="แผนภาพ Navbar และการ์ด 3 คอลัมน์">
       <div class="fd-nav"><span class="fd-logo">ไร่ภูคำ</span><span class="fd-gap">← space-between →</span><span class="fd-menu"><i>สินค้า</i><i>จุดเด่น</i><i>ติดต่อ</i></span></div>
       <div class="fd-cards"><div>flex: 1</div><div>flex: 1</div><div>flex: 1</div></div>
     </div>

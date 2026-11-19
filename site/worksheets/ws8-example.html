@@ -120,6 +120,7 @@
 .wsx .x-pv-bar .pvw{margin-left:auto;font-family:"JetBrains Mono",monospace;font-size:.85rem;color:var(--muted)}
 .wsx .x-pv-stage{overflow-x:auto;padding:12px}
 .wsx .x-pv-stage iframe{display:block;margin:0 auto;border:1px solid var(--line);border-radius:8px;background:#fff;max-width:none;transition:width .25s}
+.wsx .x-os-h{margin:0;font-weight:700;font-size:1.18rem}
 </style>
 <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
 
@@ -143,7 +144,7 @@
 <header class="x-intro">
   <p>ตัวอย่างนี้ทำระบบหลังร้านของ "ไร่ภูคำ" ต่อจากใบงานที่ 7 โดยย้ายข้อมูลสมาชิกจากไฟล์ JSON มาเก็บใน MySQL ทุกไฟล์ผ่านการรันจริงกับ MySQL 8.0 (รุ่นเดียวกับที่มากับ MAMP) และ PHP 8.5 แล้วทดสอบทุกเส้นทางด้วย curl กรอบ "ผลลัพธ์จริง" คือหน้าเว็บที่ PHP ส่งกลับมาจริง (กดไม่ได้) ซึ่งผ่าน W3C Nu HTML Checker ทุกหน้า</p>
   <div class="x-grid2">
-    <div class="x-os"><h3>แบ่งงานตามสัปดาห์</h3>
+    <div class="x-os"><p class="x-os-h">แบ่งงานตามสัปดาห์</p>
       <ul class="x-plain">
         <li><span class="x-wk">สัปดาห์ 14</span><span>ส่วนที่ 1 ข้อ 8.1–8.3 ฐานข้อมูล, CRUD, Prepared Statements</span></li>
         <li><span class="x-wk">สัปดาห์ 15</span><span>ส่วนที่ 2 ข้อ 8.4 อัปโหลดรูปและแบ่งหน้า</span></li>
@@ -166,7 +167,7 @@
 └── <b>uploads/products/</b>
     └── .htaccess     <span>← ห้ามรันสคริปต์</span></pre></div>
   </div>
-  <h3>เตรียมเครื่อง</h3>
+  <p class="x-os-h">เตรียมเครื่อง</p>
   <ol class="x-steps">
     <li>เปิด XAMPP Start ทั้ง Apache และ MySQL (MAMP: กด Start) วางโฟลเดอร์ <code>ws8</code> ใน htdocs</li>
     <li>เปิด phpMyAdmin (<code>http://localhost/phpmyadmin</code> · MAMP: <code>http://localhost:8888/phpMyAdmin5/</code> หรือกด WebStart › Tools) แล้วนำเข้าไฟล์ <code>sql/phukham_shop.sql</code> ตามข้อ 8.1</li>
@@ -184,7 +185,7 @@
 
 <section id="e1">
   <div class="x-head"><span class="x-num">8.1</span><h2>ออกแบบและสร้างฐานข้อมูลเชิงสัมพันธ์</h2><span class="x-part">ส่วนที่ 1 · สัปดาห์ 14</span></div>
-  <div class="x-er" aria-label="แผนภาพความสัมพันธ์ของตาราง">
+  <div role="group" class="x-er" aria-label="แผนภาพความสัมพันธ์ของตาราง">
     <div class="t"><b>categories</b><span class="pk">🔑 category_id</span><span>name</span></div>
     <div class="rel">1 ─── ∞</div>
     <div class="t"><b>products</b><span class="pk">🔑 product_id</span><span class="fk">🔗 category_id</span><span>name</span><span>price</span><span>stock</span><span>image</span><span>created_at</span></div>

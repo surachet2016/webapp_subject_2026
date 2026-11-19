@@ -111,6 +111,7 @@
 .wsx .x-pv-bar .pvw{margin-left:auto;font-family:"JetBrains Mono",monospace;font-size:.85rem;color:var(--muted)}
 .wsx .x-pv-stage{overflow-x:auto;padding:12px}
 .wsx .x-pv-stage iframe{display:block;margin:0 auto;border:1px solid var(--line);border-radius:8px;background:#fff;max-width:none;transition:width .25s}
+.wsx .x-os-h{margin:0;font-weight:700;font-size:1.18rem}
 </style>
 <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
 
@@ -134,7 +135,7 @@
 <header class="x-intro">
   <p>PHP ทำงานบนเซิร์ฟเวอร์ ตัวอย่างในหน้านี้จึงกดใช้งานไม่ได้เหมือนใบงานก่อนหน้า แต่ทุกไฟล์ผ่านการรันจริงบน PHP 8.5 ด้วย <code>php -S</code> และทดสอบทุกเส้นทางด้วยคำสั่ง curl กรอบ "ผลลัพธ์จริง" คือ HTML ที่ PHP ส่งกลับมาจริงในแต่ละกรณี (กดไม่ได้) และ HTML ที่ได้ทุกหน้าผ่าน W3C Nu HTML Checker โดยไม่มี error</p>
   <div class="x-grid2">
-    <div class="x-os"><h3>แบ่งงานตามสัปดาห์</h3>
+    <div class="x-os"><p class="x-os-h">แบ่งงานตามสัปดาห์</p>
       <ul class="x-plain">
         <li><span class="x-wk">สัปดาห์ 12</span><span>ส่วนที่ 1 ข้อ 7.0 และ 7.2 <code>basics.php</code> <code>discount.php</code></span></li>
         <li><span class="x-wk">สัปดาห์ 13</span><span>ส่วนที่ 2 ข้อ 7.1, 7.3, 7.4 <code>grade.php</code> และระบบสมาชิก</span></li>
@@ -736,7 +737,7 @@ nav a { margin-right: 12px; }
 <section id="e3">
   <div class="x-head"><span class="x-num">7.3–7.4</span><h2>ระบบสมาชิกด้วย Session และ password_hash()</h2><span class="x-part">ส่วนที่ 2 · สัปดาห์ 13</span></div>
   <p>ต่อยอดจากไฟล์เริ่มต้นใน <code>starter/week07/</code> และหัวข้อ 7.11.3 เดิมเขียนผู้ใช้ไว้ในโค้ด ตัวอย่างนี้เพิ่มหน้าสมัครสมาชิก และเก็บผู้ใช้ในไฟล์ <code>data/users.json</code> ชั่วคราว บทที่ 8 จะเปลี่ยนไปเก็บในฐานข้อมูล MySQL โดยแก้แค่ไฟล์ <code>includes/users.php</code></p>
-  <div class="x-flow" aria-label="ลำดับการทำงานของระบบสมาชิก">
+  <div role="group" class="x-flow" aria-label="ลำดับการทำงานของระบบสมาชิก">
     <div>register.php<small>password_hash()</small></div><span>→</span>
     <div>users.json<small>เก็บค่าแฮช</small></div><span>→</span>
     <div>login.php<small>password_verify()<br>$_SESSION['user']</small></div><span>→</span>

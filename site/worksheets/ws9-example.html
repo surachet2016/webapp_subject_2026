@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="ตัวอย่างการทำใบงานที่ 9: ติดตั้ง WordPress ภาษาไทยบน Localhost, ตั้งค่า Permalink, สร้างหน้าด้วย Block Editor, ธีมและปลั๊กอิน และใช้ AI ช่วยเขียนเนื้อหาและทำ SEO">
+<meta name="theme-color" content="#4338ca">
+<title>ตัวอย่างใบงานที่ 9 · การเขียนโปรแกรมบนเว็บ</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%234338ca'/%3E%3Cpath d='M26 20 14 32l12 12M38 20l12 12-12 12' fill='none' stroke='%23fff' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preload" href="../assets/fonts/Sarabun-400-thai.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css">
+<style>
+.wsx{display:grid;gap:52px;padding-block:28px 24px;font-size:1.05rem;line-height:1.75;
+  --term-bg:#0f1226;--term-ink:#e8eaf8;--term-dim:#7b84aa;--ok-bg:#1f7a4a}
+.wsx p{margin:0;max-width:74ch}
+.wsx section{display:grid;gap:18px;scroll-margin-top:84px;min-width:0}
+.wsx h2{margin:0;font-size:clamp(1.4rem,3vw,1.75rem)}
+.wsx h3{margin:8px 0 0;font-size:1.18rem}
+.wsx kbd{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:.82em;padding:1px 6px;border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;background:var(--surface)}
+.wsx .x-muted{color:var(--muted);font-size:.95rem}
+.wsx .x-intro{display:grid;gap:16px}
+.wsx .x-toc{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:0;padding:0}
+.wsx .x-toc a{display:inline-flex;gap:8px;align-items:baseline;padding:6px 14px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--ink);text-decoration:none;font-size:.95rem}
+.wsx .x-toc b{color:var(--brand);font-family:"JetBrains Mono",monospace;font-weight:600;font-size:.85em}
+.wsx .x-head{display:flex;align-items:center;gap:14px;border-top:2px solid var(--ink);padding-top:16px}
+.wsx .x-num{font-family:"JetBrains Mono",monospace;font-weight:600;color:var(--brand-ink);background:var(--brand);padding:2px 10px;border-radius:8px;font-size:.95rem}
+.wsx .x-steps{margin:0;padding-left:1.4em;display:grid;gap:6px}
+.wsx .x-grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:20px;align-items:start}
+.wsx .x-grid2>*{min-width:0}
+.wsx .x-os{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px;display:grid;gap:10px}
+.wsx .x-os h3{margin:0}
+.wsx .x-checks{display:grid;gap:8px}
+.wsx .x-checks ul{margin:0;padding-left:1.2em;display:grid;gap:6px}
+.wsx .x-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.wsx .x-table{min-width:640px;background:var(--surface);border:1px solid var(--line)}
+.wsx .x-table th,.wsx .x-table td{border:1px solid var(--line)}
+.wsx .x-table code{font-size:.85em;overflow-wrap:anywhere}
+.wsx .x-shots{background:var(--soft);border-radius:12px;padding:12px 18px;display:grid;gap:4px}
+.wsx .x-shots b{color:var(--brand)}
+.wsx .x-shots ul{margin:0;padding-left:1.2em}
+.wsx .x-trouble{border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.wsx .x-trouble summary{cursor:pointer;padding:12px 18px;font-weight:700}
+.wsx .x-trouble dl{margin:0;padding:0 18px 14px;display:grid;gap:12px}
+.wsx .x-trouble dt{font-family:"JetBrains Mono",monospace;font-size:.88rem;color:var(--ink);font-weight:600}
+.wsx .x-trouble dd{margin:2px 0 0;color:var(--muted)}
+.wsx .x-callout{background:var(--warn-bg);color:var(--warn-ink);border-left:4px solid var(--accent);border-radius:10px;padding:12px 16px}
+.wsx .x-callout code{background:none}
+/* terminal + tree (always dark, like a real terminal) */
+.wsx .x-term{background:var(--term-bg);color:var(--term-ink);border-radius:12px;overflow:hidden;min-width:0}
+.wsx .x-term-bar{display:flex;gap:6px;align-items:center;padding:8px 12px;background:#181c38;font-size:.8rem;color:var(--term-dim)}
+.wsx .x-term-bar i{width:10px;height:10px;border-radius:50%;background:#3a3f63;display:inline-block}
+.wsx .x-term-bar span{margin-left:8px}
+.wsx .x-term pre{color:var(--term-ink);font-size:13.5px;white-space:pre;overflow-x:auto}
+.wsx .x-term b{color:#8be9a8;font-weight:600}
+.wsx .x-term .c{color:var(--term-dim)}
+.wsx .x-tree{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow-x:auto}
+.wsx .x-tree pre{color:var(--ink);font-size:14px;white-space:pre}
+.wsx .x-tree b{color:var(--brand)}
+.wsx .x-tree span{color:var(--muted)}
+/* mock UIs */
+.wsx .x-mock{border-radius:12px;overflow:hidden;font-family:"Segoe UI",system-ui,sans-serif;font-size:13px}
+.wsx .x-vsc{background:#1f1f1f;color:#ccc;border:1px solid #333}
+.wsx .x-vsc-hd{padding:10px 14px;font-size:11px;letter-spacing:.06em;color:#9a9a9a}
+.wsx .x-ext{display:grid;grid-template-columns:40px 1fr auto;gap:10px;align-items:center;padding:8px 14px}
+.wsx .x-ext:nth-child(2){background:#04395e}
+.wsx .x-ext b{display:block;color:#eee;font-weight:600}
+.wsx .x-ext small{color:#9a9a9a}
+.wsx .x-ext em{font-style:normal;color:#73c991}
+.wsx .x-ico{width:40px;height:40px;border-radius:6px;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px}
+.wsx .x-vsc-status{display:flex;gap:16px;justify-content:flex-end;background:#007acc;color:#fff;padding:3px 12px;font-size:12px;margin-top:10px}
+.wsx .x-vsc-status span:first-child{margin-right:auto}
+.wsx .x-xampp{min-width:520px;background:#f3f3f3;color:#222;border:1px solid #c8c8c8}
+.wsx .x-xampp-hd{background:#fb7a24;color:#fff;font-weight:700;padding:8px 14px}
+.wsx .x-xampp table{width:100%;font-size:13px;background:#fff}
+.wsx .x-xampp th{background:#e8e8e8;color:#222;font-weight:600}
+.wsx .x-xampp th,.wsx .x-xampp td{border:1px solid #d6d6d6;padding:6px 10px}
+.wsx .x-xampp td{background:#fff;color:#222}
+.wsx .x-xampp tr.on td:first-child{background:#9be29b;font-weight:600}
+.wsx .x-xampp td span{display:inline-block;border:1px solid #aaa;border-radius:3px;padding:0 8px;margin-right:6px;background:#f7f7f7}
+.wsx .x-log{font-family:"JetBrains Mono",monospace;font-size:12px;padding:8px 14px;color:#1a5fb4;background:#fff;border-top:1px solid #d6d6d6}
+
+.wsx .x-head{flex-wrap:wrap}
+.wsx .x-part{margin-left:auto;font-size:.85rem;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:2px 12px}
+.wsx .x-file{margin:6px 0 -10px;font-family:"JetBrains Mono",monospace;font-size:.85rem;color:var(--brand);font-weight:600}
+.wsx .x-plain{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.wsx .x-plain li{display:grid;grid-template-columns:96px 1fr;gap:10px;align-items:baseline}
+.wsx .x-wk{font-size:.8rem;font-weight:700;color:var(--brand);background:var(--soft);border-radius:6px;padding:1px 8px;text-align:center}
+.wsx .x-plain-dots{margin:0;padding-left:1.2em;display:grid;gap:6px}
+.wsx .x-sem{display:grid;gap:6px;font-family:"JetBrains Mono",monospace;font-size:12.5px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px}
+.wsx .x-sem div{border:1.5px solid var(--line);border-radius:6px;padding:6px 8px;color:var(--ink)}
+.wsx .x-sem .s-hd,.wsx .x-sem .s-ft{background:var(--s1-soft);border-color:var(--s1)}
+.wsx .x-sem .s-nav{background:var(--s2-soft);border-color:var(--s2)}
+.wsx .x-sem .s-row{display:grid;grid-template-columns:2fr 1fr;gap:6px;border:0;padding:0}
+.wsx .x-sem .s-main{background:var(--s3-soft);border-color:var(--s3);display:grid;gap:6px}
+.wsx .x-sem .s-art{background:var(--surface);display:grid;gap:5px}
+.wsx .x-sem .s-sec,.wsx .x-sem .s-sub{border-style:dashed;font-size:11.5px}
+.wsx .x-sem .s-aside{background:var(--s4-soft);border-color:var(--s4)}
+
+
+.wsx .x-wrap pre{white-space:pre-wrap;overflow-wrap:anywhere}
+
+.wsx .x-wrap pre{white-space:pre-wrap;overflow-wrap:anywhere}
+.wsx .x-preview{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface2)}
+.wsx .x-pv-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 12px;border-bottom:1px solid var(--line);background:var(--surface)}
+.wsx .x-pv-bar button{font:inherit;font-size:.9rem;padding:4px 12px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.wsx .x-pv-bar button[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
+.wsx .x-pv-sep{width:1px;height:22px;background:var(--line);margin:0 4px}
+.wsx .x-pv-bar .pvw{margin-left:auto;font-family:"JetBrains Mono",monospace;font-size:.85rem;color:var(--muted)}
+.wsx .x-pv-stage{overflow-x:auto;padding:12px}
+.wsx .x-pv-stage iframe{display:block;margin:0 auto;border:1px solid var(--line);border-radius:8px;background:#fff;max-width:none;transition:width .25s}
+.wsx .x-os-h{margin:0;font-weight:700;font-size:1.18rem}
+</style>
+<script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+
+</head>
+<body class="ch-page">
+<a class="skip" href="#main">ข้ามไปยังเนื้อหา</a>
+<header class="top"><div class="wrap nav">
+<a class="brand" href="../index.html" aria-label="หน้าแรก การเขียนโปรแกรมบนเว็บ"><span class="logo" aria-hidden="true">&lt;/&gt;</span><span class="bt"><b>การเขียนโปรแกรมบนเว็บ</b><small>07-034-210</small></span></a>
+<button id="menuBtn" class="iconbtn menu-btn" type="button" aria-expanded="false" aria-controls="menu" aria-label="เปิดเมนู"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v2H3V6Zm0 5h18v2H3v-2Zm0 5h18v2H3v-2Z"/></svg></button>
+<nav id="menu" aria-label="เมนูหลัก">
+<a href="../chapters.html">บทเรียน</a><a href="../worksheets.html" aria-current="page">ใบงาน</a><a href="../assessment.html">เกณฑ์ประเมินผล</a><a href="../clo.html">ผลลัพธ์การเรียนรู้</a><a href="../start.html">เริ่มต้นใช้งาน</a><a href="../about.html">เกี่ยวกับรายวิชา</a>
+</nav>
+<button id="theme" class="iconbtn" type="button" aria-label="สลับโหมดมืดและสว่าง"><span class="i-moon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5Z"/></svg></span><span class="i-sun"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg></span></button>
+</div><div id="bar" class="bar" aria-hidden="true"></div></header>
+<main id="main">
+<div class="chead s4"><div class="wrap">
+<nav class="crumb" aria-label="เส้นทาง"><a href="../index.html">หน้าแรก</a><span>/</span><a href="../worksheets.html">ใบงาน</a><span>/</span><a href="ws9.html">ใบงานที่ 9</a><span>/</span><span aria-current="page">ตัวอย่าง</span></nav>
+<div class="chrow"><span class="badge b-s4 big" aria-hidden="true">CMS</span><div><p class="kicker">ตัวอย่างการทำใบงานที่ 9</p><h1>เว็บไซต์ร้านไร่ภูคำด้วย WordPress: ติดตั้ง สร้างหน้า ปลั๊กอิน และ SEO</h1></div></div></div></div>
+<div class="wrap narrow"><div class="wsx">
+
+<header class="x-intro">
+  <p>ตัวอย่างนี้สร้างเว็บไซต์ของร้านสมมติ "ไร่ภูคำ" ด้วย WordPress ภาษาไทยบนเครื่องของตนเอง ต่อจาก Sitemap ในใบงานที่ 1 หน้านี้เป็นขั้นตอนและค่าที่ต้องตั้ง <b>ยังไม่มีภาพหน้าจอจากการติดตั้งจริง</b> ชื่อเมนูภาษาไทยอาจต่างไปตามรุ่นของ WordPress และคำแปล จึงเขียนชื่อภาษาอังกฤษกำกับไว้</p>
+  <div class="x-grid2">
+    <div class="x-os"><p class="x-os-h">สิ่งที่ต้องมี</p>
+      <ul class="x-plain">
+        <li><span class="x-wk">เซิร์ฟเวอร์</span><span>XAMPP หรือ MAMP ที่ Start ทั้ง Apache และ MySQL (ใบงานที่ 2)</span></li>
+        <li><span class="x-wk">ฐานข้อมูล</span><span>phpMyAdmin (ใบงานที่ 8)</span></li>
+        <li><span class="x-wk">เนื้อหา</span><span>Sitemap และ CI จากใบงานที่ 1</span></li>
+      </ul></div>
+    <div class="x-tree"><pre><b>htdocs/phukham-wp/</b>
+├── wp-admin/
+├── wp-content/
+│   ├── <b>themes/</b>     <span>← ธีม (9.3)</span>
+│   ├── <b>plugins/</b>    <span>← ปลั๊กอิน (9.3)</span>
+│   └── <b>uploads/</b>    <span>← รูปที่อัปโหลด</span>
+├── wp-includes/
+├── .htaccess        <span>← สร้างเมื่อตั้ง Permalink</span>
+└── wp-config.php    <span>← ค่าฐานข้อมูล</span></pre></div>
+  </div>
+  <ul class="x-toc">
+    <li><a href="#e1"><b>9.1</b>ติดตั้ง + ตั้งค่า</a></li>
+    <li><a href="#e2"><b>9.2</b>Block Editor</a></li>
+    <li><a href="#e3"><b>9.3</b>ธีม + ปลั๊กอิน</a></li>
+    <li><a href="#e4"><b>9.4</b>AI + SEO</a></li>
+    <li><a href="#e5"><b>สรุป</b>สิ่งที่ต้องส่ง</a></li>
+  </ul>
+</header>
+
+<section id="e1">
+  <div class="x-head"><span class="x-num">9.1</span><h2>ติดตั้งและตั้งค่า WordPress</h2></div>
+  <h3>1. ดาวน์โหลดและสร้างฐานข้อมูล</h3>
+  <ol class="x-steps">
+    <li>ดาวน์โหลดรุ่นภาษาไทยจาก <a href="https://th.wordpress.org/download/" target="_blank" rel="noopener noreferrer">th.wordpress.org/download</a> (แหล่งทางการเท่านั้น) แตกไฟล์ แล้วเปลี่ยนชื่อโฟลเดอร์ wordpress เป็น <code>phukham-wp</code> วางใน htdocs</li>
+    <li>เปิด phpMyAdmin แท็บ Databases สร้างฐานข้อมูลชื่อ <code>phukham_wp</code> เลือก Collation <code>utf8mb4_unicode_ci</code> (ไม่ต้องสร้างตาราง WordPress สร้างให้เอง)</li>
+    <li>เปิด <code>http://localhost/phukham-wp</code> (MAMP: <code>http://localhost:8888/phukham-wp</code>) จะเข้าหน้าติดตั้ง กรอกค่าตามตาราง</li>
+  </ol>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>ช่องในหน้าติดตั้ง</th><th>ค่าที่กรอก</th><th>หมายเหตุ</th></tr></thead><tbody><tr><td>ชื่อฐานข้อมูล (Database Name)</td><td><code>phukham_wp</code></td><td>ตรงกับที่สร้างใน phpMyAdmin</td></tr><tr><td>ชื่อผู้ใช้ (Username)</td><td><code>root</code></td><td>ค่าเริ่มต้นของ XAMPP และ MAMP บนเครื่องตนเอง บนเซิร์ฟเวอร์จริงต้องใช้ผู้ใช้เฉพาะเว็บไซต์</td></tr><tr><td>รหัสผ่าน (Password)</td><td>XAMPP: เว้นว่าง · MAMP: <code>root</code></td><td>ตามภาคผนวก ค เหมือนใบงานที่ 8</td></tr><tr><td>โฮสต์ฐานข้อมูล (Database Host)</td><td><code>localhost</code></td><td>ไม่ต้องใส่พอร์ต</td></tr><tr><td>คำนำหน้าตาราง (Table Prefix)</td><td><code>pk_</code></td><td>เปลี่ยนจาก wp_ ค่าเริ่มต้น ทำให้เดาชื่อตารางยากขึ้นเล็กน้อย</td></tr><tr><td>ชื่อเว็บไซต์ / ชื่อผู้ใช้ผู้ดูแล</td><td>ไร่ภูคำ Coffee Roasters / ชื่อที่ไม่ใช่ admin</td><td>ห้ามใช้ admin เพราะเป็นชื่อแรกที่ผู้โจมตีลองเดา</td></tr><tr><td>รหัสผ่านผู้ดูแล</td><td>รหัสผ่านที่ WordPress สุ่มให้ หรือยาวอย่างน้อย 12 ตัว</td><td>จดไว้ในที่ปลอดภัย</td></tr></tbody></table></div>
+  <h3>2. ตั้งค่าทั่วไป (Settings › General)</h3>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>ช่อง</th><th>ค่าที่ตั้ง</th><th>เหตุผล</th></tr></thead><tbody><tr><td>ชื่อเว็บไซต์ (Site Title)</td><td>ไร่ภูคำ Coffee Roasters</td><td>แสดงในแท็บเบราว์เซอร์และผลการค้นหา</td></tr><tr><td>คำโปรย (Tagline)</td><td>กาแฟคั่วสดจากไร่บนดอยเชียงราย</td><td>บอกว่าเว็บไซต์เกี่ยวกับอะไร อย่าปล่อยเป็นค่าเริ่มต้น</td></tr><tr><td>ภาษาของเว็บไซต์ (Site Language)</td><td>ไทย</td><td>กำหนด lang="th" ให้หน้าเว็บ</td></tr><tr><td>เขตเวลา (Timezone)</td><td>กรุงเทพ (UTC+7)</td><td>เวลาเผยแพร่บทความถูกต้อง</td></tr><tr><td>รูปแบบวันที่</td><td>j F Y</td><td>แสดงเป็น 19 พฤศจิกายน 2026</td></tr><tr><td>อีเมลผู้ดูแล</td><td>อีเมลที่ใช้งานจริง</td><td>รับแจ้งเตือนความปลอดภัยและแบบฟอร์มติดต่อ</td></tr></tbody></table></div>
+  <p class="x-muted">ที่ Settings › Reading ช่อง "ขอให้เครื่องมือค้นหาไม่ทำดัชนีเว็บไซต์นี้" (Discourage search engines) ติ๊กไว้ได้ระหว่างพัฒนา แต่<b>ต้องเอาออกเมื่อเปิดเว็บจริง</b> ไม่อย่างนั้นเว็บจะไม่ขึ้นในผลการค้นหา</p>
+  <h3>3. ลิงก์ถาวร (Settings › Permalinks) ตามหัวข้อ 9.2.1</h3>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>รูปแบบ</th><th>ตัวอย่าง URL</th><th></th></tr></thead><tbody><tr><td>ค่าเริ่มต้น (Plain)</td><td><code>/phukham-wp/?page_id=7</code></td><td>อ่านไม่ออกว่าเป็นหน้าอะไร</td></tr><tr><td>ชื่อเรื่อง (Post name) ✅</td><td><code>/phukham-wp/workshop/</code></td><td>อ่านรู้เรื่อง มีคำสำคัญใน URL</td></tr></tbody></table></div>
+  <ol class="x-steps">
+    <li>เลือก <b>Post name</b> แล้วกดบันทึก WordPress จะเขียนไฟล์ .htaccess ให้เอง</li>
+    <li>ตั้งค่านี้<b>ก่อน</b>สร้างเนื้อหา เพราะเปลี่ยนภายหลังแล้วลิงก์เดิมที่แชร์ไปจะใช้ไม่ได้</li>
+    <li>ตั้ง slug ของหน้าเป็นภาษาอังกฤษสั้น ๆ เช่น <code>workshop</code> <code>contact</code> ถ้าใช้ชื่อภาษาไทย URL จะถูกแปลงเป็นรหัสยาว ๆ เช่น <code>%e0%b8%95%e0%b8%b4…</code> เมื่อคัดลอกไปแชร์</li>
+  </ol>
+  <details class="x-trouble"><summary>ข้อผิดพลาดที่พบบ่อย</summary><dl><div><dt>เปลี่ยนเป็น Post name แล้วทุกหน้ายกเว้นหน้าแรกขึ้น 404</dt><dd>Apache ปิด mod_rewrite อยู่ MAMP: แก้ /Applications/MAMP/conf/apache/httpd.conf เอา # หน้า LoadModule rewrite_module ออก แล้ว Stop/Start ใหม่ (ตามที่ผู้เขียนทดสอบในหัวข้อ 9.2.1) XAMPP: ตรวจบรรทัดเดียวกันใน apache/conf/httpd.conf และ AllowOverride ของ htdocs เป็น All</dd></div><div><dt>Error establishing a database connection</dt><dd>ชื่อฐานข้อมูล ผู้ใช้ หรือรหัสผ่านใน wp-config.php ไม่ตรง หรือ MySQL ยังไม่ได้ Start</dd></div><div><dt>ติดตั้งแล้วภาษาไทยเป็นเครื่องหมาย ?</dt><dd>ฐานข้อมูลไม่ได้เป็น utf8mb4</dd></div></dl></details>
+  <div class="x-shots"><b>ภาพหน้าจอที่ต้องแนบ</b><ul><li>หน้าติดตั้งที่กรอกค่าฐานข้อมูล</li><li>หน้า Settings › General</li><li>หน้า Settings › Permalinks ที่เลือก Post name</li><li>หน้าเว็บที่เปิดด้วย URL แบบชื่อเรื่องได้</li></ul></div>
+</section>
+
+<section id="e2">
+  <div class="x-head"><span class="x-num">9.2</span><h2>สร้างหน้าเว็บด้วย Block Editor</h2></div>
+  <p>สร้าง 3 หน้าที่ Pages › Add New Page แล้วตั้งหน้าหลักที่ Settings › Reading › "หน้าแรกแสดง" เลือก "หน้าคงที่" (A static page) เป็นหน้าหลัก</p>
+  <div class="x-grid2">
+    <div class="x-checks"><p><b>วิธีเพิ่มบล็อกที่ใช้บ่อย</b></p><ul>
+      <li>พิมพ์ <code>/</code> ในบรรทัดว่าง แล้วพิมพ์ชื่อบล็อก เช่น <code>/cover</code> <code>/columns</code></li>
+      <li>กดปุ่ม <b>+</b> มุมซ้ายบน แท็บ Blocks / Patterns / Media</li>
+      <li>เปิด <b>List View</b> (ไอคอนสามขีด) เพื่อดูว่าบล็อกไหนซ้อนอยู่ในบล็อกไหน</li>
+      <li>แถบด้านขวา (Settings) ใช้ตั้งสี ระยะห่าง และ Alt Text ของรูป</li>
+    </ul></div>
+    <div class="x-checks"><p><b>คำศัพท์</b></p><ul>
+      <li><b>Block</b> ชิ้นเนื้อหา 1 ชิ้น เช่น ย่อหน้า รูป ปุ่ม</li>
+      <li><b>Columns</b> แบ่งเนื้อหาเป็นคอลัมน์ บนมือถือเรียงลงเป็นแถวเดียวให้เอง (เมื่อเปิด Stack on mobile)</li>
+      <li><b>Cover</b> รูปหรือวิดีโอพื้นหลังพร้อมข้อความทับ ใช้ทำ Hero</li>
+      <li><b>Block Pattern</b> ชุดบล็อกสำเร็จรูปที่ธีมเตรียมไว้ เช่น Call to action, Pricing</li>
+    </ul></div>
+  </div>
+  <h3>หน้าหลัก (slug: <code>home</code>)</h3>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>ลำดับ</th><th>บล็อก</th><th>เนื้อหา / การตั้งค่า</th></tr></thead><tbody><tr><td>1</td><td>Cover</td><td>รูปเมล็ดกาแฟเต็มความกว้าง (Full width) ทับด้วยสีเขียว CI #1F4D3A ความทึบ 60% · Heading H1 "กาแฟจากไร่บนดอย คั่วสดทุกสัปดาห์" · Buttons 1 ปุ่ม "เลือกซื้อเมล็ดกาแฟ"</td></tr><tr><td>2</td><td>Columns (3 คอลัมน์)</td><td>แต่ละคอลัมน์: Heading H3 + Paragraph · คั่วสด / ตรงจากไร่ / ส่งฟรี 500 บาท</td></tr><tr><td>3</td><td>Block Pattern</td><td>เลือก Pattern ประเภท Call to action ของธีม แก้ข้อความเป็นชวนสมัครเวิร์กช็อป และลิงก์ไปหน้า workshop</td></tr><tr><td>4</td><td>Query Loop หรือ Latest Posts</td><td>แสดงบทความล่าสุด 3 เรื่อง (บทความจากข้อ 9.4)</td></tr></tbody></table></div>
+  <h3>หน้ารายละเอียดบริการ (slug: <code>workshop</code>)</h3>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>ลำดับ</th><th>บล็อก</th><th>เนื้อหา / การตั้งค่า</th></tr></thead><tbody><tr><td>1</td><td>Cover (ความสูงน้อยกว่าหน้าหลัก)</td><td>H1 "เวิร์กช็อปดริปกาแฟสำหรับมือใหม่"</td></tr><tr><td>2</td><td>Columns (2 คอลัมน์ 60/40)</td><td>ซ้าย: Paragraph และ List สิ่งที่จะได้เรียน · ขวา: Group พื้นสีทราย #F3EDE3 แสดงราคา 1,290 บาท เวลา 3 ชั่วโมง รับรอบละ 8 คน</td></tr><tr><td>3</td><td>Image</td><td>รูปบรรยากาศเวิร์กช็อป ใส่ Alt Text ตามข้อ 9.4</td></tr><tr><td>4</td><td>Details หรือ Heading + Paragraph</td><td>คำถามที่พบบ่อย</td></tr><tr><td>5</td><td>Buttons</td><td>"สมัครเวิร์กช็อป" ลิงก์ไปหน้า contact</td></tr></tbody></table></div>
+  <h3>หน้าติดต่อเรา (slug: <code>contact</code>)</h3>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>ลำดับ</th><th>บล็อก</th><th>เนื้อหา / การตั้งค่า</th></tr></thead><tbody><tr><td>1</td><td>Heading H1</td><td>ติดต่อเรา</td></tr><tr><td>2</td><td>Columns (2 คอลัมน์)</td><td>ซ้าย: ที่อยู่ เวลาทำการ เบอร์โทร (Paragraph) · ขวา: บล็อก Shortcode ของ Contact Form 7 (ข้อ 9.3)</td></tr><tr><td>3</td><td>Embed หรือ Custom HTML</td><td>แผนที่ร้านจาก Google Maps › Share › Embed a map (ไม่บังคับ)</td></tr></tbody></table></div>
+  <p class="x-muted">เพิ่มเมนูของเว็บไซต์ใน Appearance › Editor › Navigation (ธีมแบบ Block Theme) ให้มีครบ 3 หน้า และทดสอบหน้าเว็บบนมือถือด้วยโหมด Device Toolbar ของ DevTools (ใบงานที่ 4)</p>
+  <details class="x-trouble"><summary>ข้อผิดพลาดที่พบบ่อย</summary><dl><div><dt>Columns บนมือถือไม่เรียงลง</dt><dd>เลือกบล็อก Columns แล้วเปิด "Stack on mobile" ในแถบด้านขวา</dd></div><div><dt>ข้อความบน Cover อ่านยาก</dt><dd>เพิ่มความทึบของสีที่ทับ (Overlay opacity) หรือเลือกรูปที่ไม่ลายมาก ตรวจ contrast อย่างน้อย 4.5:1 (ใบงานที่ 3)</dd></div><div><dt>หน้าแรกยังแสดงรายการบทความ</dt><dd>ยังไม่ได้ตั้ง Settings › Reading เป็นหน้าคงที่</dd></div></dl></details>
+  <div class="x-shots"><b>ภาพหน้าจอที่ต้องแนบ</b><ul><li>หน้า Editor ของแต่ละหน้าที่เปิด List View ให้เห็นโครงสร้างบล็อก</li><li>หน้าเว็บจริงทั้ง 3 หน้าบนจอคอมพิวเตอร์และมือถือ</li></ul></div>
+</section>
+
+<section id="e3">
+  <div class="x-head"><span class="x-num">9.3</span><h2>ธีมและปลั๊กอิน</h2></div>
+  <h3>เลือกธีม (Appearance › Themes › Add New Theme)</h3>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>เกณฑ์</th><th>ตรวจที่ไหน</th></tr></thead><tbody><tr><td>มาจากคลังทางการ wordpress.org/themes</td><td>ติดตั้งผ่านหน้า Add New Theme เท่านั้น ห้ามใช้ธีมเสียเงินที่แจกฟรีจากเว็บอื่น (มักฝังโค้ดอันตราย และผิดเงื่อนไขของผู้ขาย)</td></tr><tr><td>Responsive และรองรับ Block Editor</td><td>ป้าย Block Editing / Full Site Editing ในรายละเอียดธีม หรือเปิด Live Preview แล้วย่อจอ</td></tr><tr><td>อัปเดตล่าสุดไม่เกิน 6 เดือน</td><td>Last updated ในหน้าธีม</td></tr><tr><td>ใช้งานจริงจำนวนมาก</td><td>Active installations</td></tr><tr><td>ใบอนุญาตเข้ากันได้กับ GPL</td><td>ทุกธีมในคลังทางการผ่านข้อนี้ (หัวข้อ 9.4.2)</td></tr></tbody></table></div>
+  <p>ตัวอย่างนี้ใช้ธีมเริ่มต้นของ WordPress ตระกูล Twenty Twenty-X รุ่นล่าสุดที่มากับการติดตั้ง ซึ่งเป็น Block Theme และ Responsive จึงแก้ Header, Footer และสีทั้งเว็บได้ใน Appearance › Editor › Styles ตามแนวคิด Full Site Editing ในหัวข้อ 9.3.2 ตั้งสีหลักเป็น #1F4D3A และสีปุ่มเป็น #B3362B ตาม CI</p>
+
+  <h3>ปลั๊กอินที่ติดตั้ง (Plugins › Add New Plugin)</h3>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>หน้าที่</th><th>ปลั๊กอิน</th><th>ทางเลือกอื่น</th></tr></thead><tbody><tr><td>แบบฟอร์มติดต่อ</td><td>Contact Form 7</td><td>WPForms Lite</td></tr><tr><td>ความปลอดภัย</td><td>Wordfence Security</td><td>Solid Security, Limit Login Attempts Reloaded</td></tr><tr><td>SEO (ใช้ในข้อ 9.4)</td><td>Yoast SEO</td><td>Rank Math SEO</td></tr></tbody></table></div>
+  <p class="x-muted">ติดตั้งเฉพาะที่จำเป็น ปลั๊กอินยิ่งมาก เว็บยิ่งช้าและมีจุดให้โจมตีมากขึ้น ลบปลั๊กอินที่ไม่ใช้ทิ้ง ไม่ใช่แค่ปิด (Deactivate)</p>
+
+  <h3>Contact Form 7</h3>
+  <ol class="x-steps">
+    <li>เปิดใช้งานแล้วไปที่เมนู Contact › Contact Forms จะมี "Contact form 1" ให้ แก้แท็บ Form เป็นข้อความด้านล่าง</li>
+    <li>แท็บ Mail ใส่ชื่อช่องให้ตรงกับในฟอร์ม (ชื่อในวงเล็บเหลี่ยม เช่น <code>[your-name]</code>)</li>
+    <li>บันทึก แล้วคัดลอก shortcode <code>[contact-form-7 id="…" title="…"]</code> ไปวางในบล็อก Shortcode ของหน้า contact</li>
+  </ol>
+  <p class="x-file">แท็บ Form</p><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;label&gt; ชื่อ–นามสกุล (จำเป็น)
+    [text* your-name autocomplete:name] &lt;/label&gt;
+
+&lt;label&gt; อีเมล (จำเป็น)
+    [email* your-email autocomplete:email] &lt;/label&gt;
+
+&lt;label&gt; เบอร์โทรศัพท์
+    [tel your-phone autocomplete:tel] &lt;/label&gt;
+
+&lt;label&gt; เรื่องที่ติดต่อ (จำเป็น)
+    [select* your-topic &quot;สั่งซื้อสินค้า&quot; &quot;สั่งซื้อจำนวนมาก&quot; &quot;จองเวิร์กช็อป&quot; &quot;อื่น ๆ&quot;] &lt;/label&gt;
+
+&lt;label&gt; ข้อความ
+    [textarea your-message maxlength:1000] &lt;/label&gt;
+
+[acceptance your-consent] ยินยอมให้ไร่ภูคำเก็บข้อมูลเพื่อติดต่อกลับตามนโยบายความเป็นส่วนตัว [/acceptance]
+
+[submit &quot;ส่งข้อความ&quot;]</code></pre></div>
+  <p class="x-file">แท็บ Mail</p><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>ถึง:        [_site_admin_email]
+จาก:       [_site_title] &lt;wordpress@phukham.local&gt;
+หัวเรื่อง:   [_site_title] &quot;[your-topic]&quot; จาก [your-name]
+Reply-To: [your-email]
+
+ข้อความ:
+ชื่อ: [your-name]
+อีเมล: [your-email]
+โทร: [your-phone]
+เรื่อง: [your-topic]
+
+[your-message]</code></pre></div>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>แท็กของ CF7</th><th>ความหมาย</th></tr></thead><tbody><tr><td><code>[text* your-name]</code></td><td>ช่องข้อความ เครื่องหมาย * คือจำเป็นต้องกรอก</td></tr><tr><td><code>[email* …]</code> <code>[tel …]</code></td><td>ตรวจรูปแบบอีเมลและเบอร์โทรให้เอง (เหมือน type ในใบงานที่ 3)</td></tr><tr><td><code>[select* your-topic &quot;…&quot; &quot;…&quot;]</code></td><td>ดรอปดาวน์ ตัวเลือกอยู่ในเครื่องหมายคำพูด</td></tr><tr><td><code>[acceptance …] … [/acceptance]</code></td><td>ช่องติ๊กยินยอม ต้องติ๊กก่อนส่ง ใช้ขอความยินยอมตาม PDPA</td></tr><tr><td><code>autocomplete:email</code></td><td>ให้เบราว์เซอร์เติมข้อมูลให้ผู้ใช้ได้</td></tr></tbody></table></div>
+  <p class="x-muted">ตามที่หนังสือหัวข้อ 9.2.2 บันทึกไว้ อีเมลจาก localhost มักส่งไม่ถึงผู้รับจริงจนกว่าจะตั้ง SMTP ถ้าหลังกดส่งแบบฟอร์มขึ้นว่าส่งสำเร็จ ถือว่าใบงานข้อนี้ผ่าน</p>
+
+  <h3>ความปลอดภัย</h3>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>ตั้งค่า</th><th>ทำอย่างไร</th></tr></thead><tbody><tr><td>จำกัดการล็อกอินผิด</td><td>ตั้งในปลั๊กอินความปลอดภัย เช่น ผิด 5 ครั้งล็อก 20 นาที</td></tr><tr><td>ยืนยันตัวตน 2 ขั้น (2FA)</td><td>เปิดในปลั๊กอินสำหรับบัญชีผู้ดูแล</td></tr><tr><td>อัปเดตอัตโนมัติ</td><td>Dashboard › Updates และหน้า Plugins กด Enable auto-updates</td></tr><tr><td>ปิดการแก้ไขไฟล์ผ่านหน้าเว็บ</td><td>wp-config.php ตามหัวข้อ 9.4.1 (โค้ดด้านล่าง)</td></tr><tr><td>กันการเปิดไฟล์ระบบ</td><td>ต่อท้าย .htaccess (โค้ดด้านล่าง)</td></tr><tr><td>สำรองข้อมูล</td><td>Export ฐานข้อมูลใน phpMyAdmin และคัดลอก wp-content เป็นประจำ</td></tr></tbody></table></div>
+  <p class="x-file">wp-config.php</p><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>// เพิ่มก่อนบรรทัด /* That&#x27;s all, stop editing! Happy publishing. */
+define( &#x27;DISALLOW_FILE_EDIT&#x27;, true );   // ปิดเมนูแก้ไขไฟล์ธีมและปลั๊กอินในหน้าผู้ดูแล
+
+// define( &#x27;FORCE_SSL_ADMIN&#x27;, true );   // เปิดเฉพาะบนเซิร์ฟเวอร์จริงที่มี HTTPS
+                                        // ถ้าเปิดบน localhost ที่ไม่มี HTTPS จะเข้าหน้าผู้ดูแลไม่ได้</code></pre></div>
+  <p class="x-file">.htaccess</p><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code># ต่อท้ายไฟล์ .htaccess ของ WordPress (Apache 2.4 ของ XAMPP/MAMP)
+&lt;Files wp-config.php&gt;
+  Require all denied
+&lt;/Files&gt;
+
+# ปิด XML-RPC ถ้าไม่ได้ใช้แอปมือถือหรือบริการที่ต้องเชื่อมต่อ
+&lt;Files xmlrpc.php&gt;
+  Require all denied
+&lt;/Files&gt;</code></pre></div>
+  <div class="x-callout"><b>ข้อสังเกต 2 เรื่องจากโค้ดในหัวข้อ 9.4.1:</b> (1) <code>FORCE_SSL_ADMIN</code> บังคับใช้ HTTPS ในหน้าผู้ดูแล ถ้าเปิดบน localhost ที่ไม่มี HTTPS จะเข้าหน้าผู้ดูแลไม่ได้ ตัวอย่างนี้จึงปิดไว้ (2) คำสั่ง <code>order allow,deny</code> / <code>deny from all</code> เป็นรูปแบบของ Apache 2.2 ใน Apache 2.4 ที่มากับ XAMPP และ MAMP รุ่นปัจจุบันใช้ <code>Require all denied</code> แทน (รูปแบบเดิมยังทำงานได้เมื่อเปิดโมดูล mod_access_compat)</div>
+  <div class="x-shots"><b>ภาพหน้าจอที่ต้องแนบ</b><ul><li>หน้า Appearance › Themes ที่เปิดใช้ธีม</li><li>หน้า Plugins ที่เห็นปลั๊กอินทั้ง 3 ตัวเปิดใช้งาน</li><li>แท็บ Form ของ Contact Form 7 และหน้า contact ที่ส่งแบบฟอร์มสำเร็จ</li><li>หน้าตั้งค่าของปลั๊กอินความปลอดภัย</li></ul></div>
+</section>
+
+<section id="e4">
+  <div class="x-head"><span class="x-num">9.4</span><h2>ใช้ AI ช่วยเขียนเนื้อหาและทำ SEO</h2></div>
+  <p>Prompt ด้านล่างดัดแปลงจากกรอบคำสั่งในหัวข้อ 9.5.3 จุดที่เพิ่มคือ<b>ให้ข้อมูลจริงของร้านไปด้วย และห้าม AI แต่งข้อมูลเพิ่ม</b> เพราะ AI มักเติมรางวัล ตัวเลข หรือคำรับรองจากลูกค้าที่ไม่มีจริงลงในบทความประชาสัมพันธ์</p>
+  <div class="x-wrap"><p class="x-file">Prompt 1: บทความประชาสัมพันธ์</p><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>Role: SEO Content Strategist ที่เขียนภาษาไทยเป็นธรรมชาติ
+Task: เขียนบทความประชาสัมพันธ์ภาษาไทย ยาวประมาณ 600 คำ สำหรับเว็บไซต์ร้าน &quot;ไร่ภูคำ Coffee Roasters&quot;
+หัวข้อ: เปิดรับสมัครเวิร์กช็อปดริปกาแฟสำหรับมือใหม่ รอบเดือนธันวาคม
+
+ข้อมูลจริงที่ต้องใช้ (ห้ามแต่งข้อมูลเพิ่ม):
+- เวิร์กช็อป 3 ชั่วโมง รอบเสาร์และอาทิตย์ 09:00–12:00 รับรอบละ 8 คน
+- ราคา 1,290 บาท รวมอุปกรณ์ เมล็ดกาแฟ 100 g กลับบ้าน
+- สอนเลือกเมล็ด บด ชั่ง และดริปด้วยดริปเปอร์เซรามิก
+- สมัครผ่านหน้า &quot;ติดต่อเรา&quot; ของเว็บไซต์
+
+Constraints:
+- กลุ่มผู้อ่าน: คนทำงานอายุ 22–40 ปีที่อยากชงกาแฟเองที่บ้าน
+- Focus Keyword: &quot;เวิร์กช็อปดริปกาแฟ&quot; ใช้ในย่อหน้าแรก และหัวข้อ H2 อย่างน้อย 1 หัวข้อ
+- โครงสร้างหัวข้อ H2/H3 ที่ชัดเจน ย่อหน้าสั้น ปิดท้ายด้วยข้อความชวนสมัคร
+- ห้ามอ้างรางวัล ใบรับรอง หรือคำรับรองจากลูกค้าที่ไม่มีในข้อมูลข้างต้น
+Output: บทความ + Meta Title (ไม่เกิน 60 ตัวอักษร) + Meta Description (ไม่เกิน 160 ตัวอักษร) + slug ภาษาอังกฤษ</code></pre></div></div>
+  <div class="x-wrap"><p class="x-file">Prompt 2: Alt Text (แนบรูปไปด้วย)</p><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>เขียนข้อความ Alt Text ภาษาไทยสำหรับรูปที่แนบมา ใช้ในหน้า &quot;เวิร์กช็อปดริปกาแฟ&quot; ของร้านกาแฟ
+- อธิบายสิ่งที่เห็นในรูปจริง ไม่เกิน 125 ตัวอักษร
+- ไม่ขึ้นต้นด้วย &quot;รูปภาพของ&quot; หรือ &quot;ภาพที่แสดง&quot;
+- ใส่ Focus Keyword ได้เฉพาะเมื่อตรงกับสิ่งที่อยู่ในรูป ห้ามยัดคำ
+- ถ้าเป็นภาพตกแต่งที่ไม่มีข้อมูล ให้ตอบว่า &quot;ควรเว้นว่าง (alt=&quot;&quot;)&quot;</code></pre></div></div>
+  <div class="x-wrap"><p class="x-file">Prompt 3: Meta Title / Description</p><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>ช่วยเขียน Meta Title และ Meta Description ภาษาไทยให้หน้าเว็บต่อไปนี้ อย่างละ 3 ตัวเลือก
+- Meta Title ไม่เกิน 60 ตัวอักษร ขึ้นต้นด้วยคำสำคัญ ปิดท้ายด้วย &quot;| ไร่ภูคำ&quot;
+- Meta Description 120–160 ตัวอักษร บอกว่าผู้อ่านจะได้อะไร และมีคำชวนให้คลิก
+- ใช้เฉพาะข้อมูลในเนื้อหาด้านล่าง ระบุจำนวนตัวอักษรของแต่ละตัวเลือก
+
+[วางเนื้อหาของหน้าเว็บตรงนี้]</code></pre></div></div>
+  <h3>ตัวอย่างผลลัพธ์หลังแก้ไขแล้ว</h3>
+  <p class="x-muted">ข้อความในตารางนี้เป็นตัวอย่างที่เขียนขึ้นเพื่อให้เห็นรูปแบบ ไม่ใช่คำตอบจริงของ AI ตัวใดตัวหนึ่ง ตัวเลขในวงเล็บคือจำนวนตัวอักษร Google ตัดข้อความตามความกว้างที่แสดงบนจอ ไม่ใช่จำนวนตัวอักษรพอดี จึงใช้ตัวเลขเป็นแนวทาง</p>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>หน้า</th><th>Meta Title</th><th>Meta Description</th></tr></thead><tbody><tr><td>home</td><td>ไร่ภูคำ กาแฟคั่วสดจากเชียงราย ส่งตรงถึงบ้าน (43)</td><td>เมล็ดกาแฟอาราบิกาจากไร่บนดอยในเชียงราย คั่วสดทุกสัปดาห์ ส่งภายใน 48 ชั่วโมง พร้อมเวิร์กช็อปดริปกาแฟสำหรับมือใหม่ (112)</td></tr><tr><td>workshop</td><td>เวิร์กช็อปดริปกาแฟ 3 ชั่วโมง สำหรับมือใหม่ | ไร่ภูคำ (52)</td><td>เรียนดริปกาแฟตั้งแต่เลือกเมล็ด บด ชั่ง จนชงได้เองที่บ้าน รอบเสาร์และอาทิตย์ รับ 8 คนต่อรอบ อุปกรณ์ครบ ราคา 1,290 บาท (116)</td></tr><tr><td>contact</td><td>ติดต่อไร่ภูคำ | สั่งซื้อและสอบถาม (33)</td><td>สอบถามเรื่องสินค้า การสั่งซื้อจำนวนมาก หรือจองเวิร์กช็อปกับไร่ภูคำ ตอบกลับภายใน 1 วันทำการ (90)</td></tr></tbody></table></div>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>รูป</th><th>Alt Text</th><th>เหตุผล</th></tr></thead><tbody><tr><td>ผู้เรียนกำลังรินน้ำร้อนลงดริปเปอร์</td><td>ผู้เรียนรินน้ำร้อนเป็นวงลงดริปเปอร์เซรามิกในเวิร์กช็อปดริปกาแฟ</td><td>บอกสิ่งที่เกิดขึ้นในรูป มี Focus Keyword เพราะตรงกับรูปจริง</td></tr><tr><td>ถุงกาแฟภูคำ Natural บนโต๊ะไม้</td><td>ถุงกาแฟภูคำ Natural ขนาด 250 กรัม สีเขียว วางบนโต๊ะไม้</td><td>ระบุชื่อสินค้าและขนาด ผู้ใช้โปรแกรมอ่านหน้าจอรู้ว่าเป็นสินค้าอะไร</td></tr><tr><td>ลายเส้นเมล็ดกาแฟตกแต่งพื้นหลัง</td><td>(เว้นว่าง alt="")</td><td>ภาพตกแต่งไม่มีข้อมูล ให้โปรแกรมอ่านหน้าจอข้าม (ใบงานที่ 3)</td></tr></tbody></table></div>
+  <h3>ใส่ค่า SEO ใน WordPress</h3>
+  <ol class="x-steps">
+    <li>เปิดหน้าใน Editor เลื่อนลงไปที่กล่อง <b>Yoast SEO</b> ใต้เนื้อหา (หรือไอคอน Yoast ที่แถบด้านขวา)</li>
+    <li>ใส่ Focus keyphrase, SEO title, Slug และ Meta description แล้วดูตัวอย่างการแสดงผลใน Google preview</li>
+    <li>ใส่ Alt Text ที่บล็อก Image › แถบด้านขวา › Alternative text</li>
+    <li>บันทึก เปิดหน้าเว็บ กด <kbd>Ctrl</kbd>+<kbd>U</kbd> (View Source) ค้นหา <code>&lt;title&gt;</code> และ <code>&lt;meta name="description"</code> เพื่อยืนยันว่าค่าที่ตั้งออกมาในหน้าเว็บจริง</li>
+  </ol>
+  <h3>ตรวจเนื้อหาจาก AI ก่อนเผยแพร่</h3>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>ตรวจ</th><th>ทำไม</th></tr></thead><tbody><tr><td>ตัวเลข ราคา วันเวลา ตรงกับข้อมูลจริง</td><td>AI อาจคำนวณหรือจำข้อมูลผิด (Hallucination) ตามหัวข้อ 9.5.2</td></tr><tr><td>ไม่มีรางวัล ใบรับรอง หรือคำรับรองจากลูกค้าที่แต่งขึ้น</td><td>เป็นการโฆษณาเกินจริงและทำลายความน่าเชื่อถือของร้าน</td></tr><tr><td>ภาษาไทยเป็นธรรมชาติ ไม่ใช่ภาษาแปล</td><td>อ่านออกเสียงดู ตัดคำฟุ่มเฟือย</td></tr><tr><td>Alt Text ตรงกับรูปจริง</td><td>ถ้าไม่ได้แนบรูปให้ AI ดู มันจะเดาเนื้อหาของรูปเอง</td></tr><tr><td>ไม่ยัด Keyword ซ้ำ ๆ</td><td>Search Engine ลดอันดับเนื้อหาที่เขียนเพื่อเครื่องมากกว่าเพื่อคน</td></tr></tbody></table></div>
+  <h3>ตารางบันทึกผล (ให้นักศึกษากรอก)</h3>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th></th><th>เขียนเอง</th><th>ใช้ AI ช่วยร่าง</th></tr></thead><tbody><tr><td>เวลาที่ใช้</td><td>…</td><td>… (รวมเวลาตรวจแก้)</td></tr><tr><td>จุดที่ต้องแก้</td><td>-</td><td>จำนวนจุดและตัวอย่าง …</td></tr><tr><td>ความยาว Meta Title / Description</td><td>…</td><td>…</td></tr></tbody></table></div>
+  <div class="x-shots"><b>ภาพหน้าจอที่ต้องแนบ</b><ul><li>Prompt และคำตอบของ AI</li><li>บทความที่เผยแพร่แล้ว พร้อมระบุจุดที่แก้จากคำตอบของ AI</li><li>กล่อง Yoast SEO ที่กรอก SEO title และ Meta description</li><li>View Source ที่เห็น title และ meta description</li><li>ช่อง Alternative text ของรูป</li></ul></div>
+</section>
+
+<section id="e5">
+  <div class="x-head"><span class="x-num">สรุป</span><h2>สิ่งที่ต้องส่ง</h2></div>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>ข้อ</th><th>หลักฐาน</th></tr></thead><tbody><tr><td>9.1</td><td>ภาพหน้าติดตั้ง, General Settings, Permalinks และ URL แบบชื่อเรื่อง</td></tr><tr><td>9.2</td><td>ภาพ Editor ที่เปิด List View และหน้าเว็บจริงทั้ง 3 หน้า (คอมพิวเตอร์และมือถือ)</td></tr><tr><td>9.3</td><td>ภาพธีม ปลั๊กอิน แบบฟอร์มติดต่อที่ส่งสำเร็จ และการตั้งค่าความปลอดภัย</td></tr><tr><td>9.4</td><td>Prompt คำตอบของ AI ฉบับที่แก้แล้ว ค่า SEO ใน Yoast และ View Source</td></tr></tbody></table></div>
+  <p class="x-muted">Export ฐานข้อมูล phukham_wp จาก phpMyAdmin เป็นไฟล์ .sql และรวมภาพหน้าจอเป็น PDF ไฟล์เดียว ส่งภายในกำหนด ตั้งชื่อตามรูปแบบ <code>รหัสนักศึกษา_ใบงานที่9</code> ไม่ต้องส่งโฟลเดอร์ WordPress ทั้งโฟลเดอร์ เพราะมีขนาดใหญ่</p>
+</section>
+
+</div>
+<div class="pager"><a class="pn" href="ws9.html"><small>กลับไปที่</small><b>ใบงานที่ 9</b></a><a class="pn next" href="ws7.html"><small>ถัดไป</small><b>ใบงานที่ 7</b></a></div></div>
+</main>
+<footer class="foot"><div class="wrap fgrid">
+<div><a class="brand" href="../index.html"><span class="logo" aria-hidden="true">&lt;/&gt;</span><span class="bt"><b>การเขียนโปรแกรมบนเว็บ</b><small>Web Programming</small></span></a>
+<p class="small">สื่อเสริมการเรียนรู้ ใช้ประกอบเอกสารประกอบการสอน ไม่มีระบบสมาชิกและไม่เก็บข้อมูลส่วนบุคคล ส่งงานผ่าน Google Classroom</p></div>
+<div><p class="fh">เรียนรู้</p><a href="../chapters.html">บทเรียน 10 บท</a><a href="../worksheets.html">ใบงานประจำบท</a><a href="../assessment.html">เกณฑ์การประเมินผล</a><a href="../clo.html">ผลลัพธ์การเรียนรู้ (CLO)</a><a href="../start.html">เริ่มต้นใช้งาน</a></div>
+<div><p class="fh">รายวิชา</p><a href="../about.html">เกี่ยวกับรายวิชา</a><span>ผู้สอน: ดร.สุรเชษฐ์ สังขพันธ์</span><span>พ.ศ. 2569</span></div>
+</div></footer>
+<script src="../assets/app.js"></script>
+<script>
+document.querySelectorAll(".x-preview").forEach(function(pv){
+  var frames=pv.querySelectorAll("iframe"), out=pv.querySelector(".pvw");
+  pv.querySelectorAll("button[data-w]").forEach(function(b,_,all){b.addEventListener("click",function(){
+    all.forEach(function(x){x.setAttribute("aria-pressed","false")});b.setAttribute("aria-pressed","true");
+    frames.forEach(function(f){f.style.width=b.dataset.w+"px"});out.textContent=b.dataset.w+"px";});});
+  pv.querySelectorAll("button[data-doc]").forEach(function(b,_,all){b.addEventListener("click",function(){
+    all.forEach(function(x){x.setAttribute("aria-pressed","false")});b.setAttribute("aria-pressed","true");
+    frames.forEach(function(f,k){f.hidden=(k!=b.dataset.doc)});});});
+});
+</script>
+</body>
+</html>

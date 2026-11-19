@@ -28,7 +28,7 @@
 .wsx h1{font-size:clamp(28px,4.4vw,40px);font-weight:700}
 .wsx h2{font-size:clamp(22px,3vw,28px);font-weight:700}
 .wsx h3{font-size:19px;font-weight:600}
-.wsx h4{font-size:16px;font-weight:600}
+.wsx h4,.wsx .x-h4{font-size:16px;font-weight:600}
 .wsx .muted{color:var(--muted)}
 .wsx .x-eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
 .wsx .sec-head{display:grid;gap:6px;border-top:2px solid var(--fg);padding-top:16px}
@@ -265,9 +265,9 @@
     <span><i style="border-style:dashed;border-color:var(--muted)"></i>L3 หน้ารายละเอียด / Utility</span>
   </div>
   <div class="x-notes">
-    <div class="x-note"><h4>เหตุผลการจัดกลุ่ม</h4><p>ตั้งชื่อเมนูตามสิ่งที่ลูกค้ามองหา เช่น "ร้านค้า" และ "เวิร์กช็อป" ไม่ใช้ศัพท์ภายในบริษัท</p></div>
-    <div class="x-note"><h4>ไม่เกิน 3 คลิก</h4><p>จากหน้าแรกไปถึงหน้ารายละเอียดสินค้าใช้ 2 คลิก (หน้าแรก → เมล็ดกาแฟคั่ว → สินค้า)</p></div>
-    <div class="x-note"><h4>เมนูหลัก 7 หมวด</h4><p>บนเดสก์ท็อปแสดง 5 หมวดแรกใน Navigation ส่วน "ติดต่อเรา" กับ "บัญชีของฉัน" อยู่ที่ไอคอนมุมขวาและ Footer</p></div>
+    <div class="x-note"><h3 class="x-h4">เหตุผลการจัดกลุ่ม</h3><p>ตั้งชื่อเมนูตามสิ่งที่ลูกค้ามองหา เช่น "ร้านค้า" และ "เวิร์กช็อป" ไม่ใช้ศัพท์ภายในบริษัท</p></div>
+    <div class="x-note"><h3 class="x-h4">ไม่เกิน 3 คลิก</h3><p>จากหน้าแรกไปถึงหน้ารายละเอียดสินค้าใช้ 2 คลิก (หน้าแรก → เมล็ดกาแฟคั่ว → สินค้า)</p></div>
+    <div class="x-note"><h3 class="x-h4">เมนูหลัก 7 หมวด</h3><p>บนเดสก์ท็อปแสดง 5 หมวดแรกใน Navigation ส่วน "ติดต่อเรา" กับ "บัญชีของฉัน" อยู่ที่ไอคอนมุมขวาและ Footer</p></div>
   </div>
 </section>
 
@@ -282,7 +282,7 @@
     <div class="wf-card">
       <h3>หน้าแรก (Homepage) ใช้ Z-Pattern</h3>
       <div class="scroll">
-        <div class="wf" aria-label="Wireframe หน้าแรก">
+        <div role="group" class="wf" aria-label="Wireframe หน้าแรก">
           <div class="ztarget">
             <div class="wf-row wf-hd"><div class="b t" style="width:70px">LOGO</div><div class="wf-nav"><span>ร้านค้า</span><span>เวิร์กช็อป</span><span>บทความ</span><span>รีวิว</span><span>เกี่ยวกับเรา</span></div><div style="display:flex;gap:6px"><div class="b">🔍</div><div class="b">👤</div><div class="b t">ตะกร้า (2)</div></div></div>
             <div class="wf-sec" style="grid-template-columns:1.1fr .9fr;align-items:center;padding:16px 10px">
@@ -312,7 +312,7 @@
     <div class="wf-card">
       <h3>หน้ารายละเอียดสินค้า ใช้ F-Pattern</h3>
       <div class="scroll">
-        <div class="wf" aria-label="Wireframe หน้ารายละเอียดสินค้า">
+        <div role="group" class="wf" aria-label="Wireframe หน้ารายละเอียดสินค้า">
           <div class="wf-row wf-hd"><div class="b t" style="width:70px">LOGO</div><div class="wf-nav"><span>ร้านค้า</span><span>เวิร์กช็อป</span><span>บทความ</span><span>รีวิว</span></div><div class="b t">ตะกร้า (2)</div></div>
           <div class="wf-row" style="padding-bottom:0">หน้าแรก › ร้านค้า › เมล็ดกาแฟคั่ว › ชื่อสินค้า</div>
           <div class="wf-sec" style="grid-template-columns:1fr 1fr;border-bottom:1px dashed var(--wf-stroke)">
@@ -342,10 +342,10 @@
     </div>
   </div>
   <div class="x-notes">
-    <div class="x-note"><h4>Header</h4><p>โลโก้ เมนูหลัก ค้นหา บัญชี ตะกร้า ใช้เหมือนกันทุกหน้า</p></div>
-    <div class="x-note"><h4>Navigation</h4><p>เมนูหลัก 5 รายการ และ Breadcrumb ในหน้าสินค้าเพื่อให้รู้ว่าอยู่ตรงไหน</p></div>
-    <div class="x-note"><h4>Body</h4><p>หน้าแรกมีเนื้อหาน้อย เน้นภาพ จึงใช้ Z-Pattern หน้าสินค้ามีข้อมูลมาก จึงใช้ F-Pattern</p></div>
-    <div class="x-note"><h4>Footer</h4><p>4 คอลัมน์: แบรนด์ ร้านค้า ช่วยเหลือ (การจัดส่ง, PDPA) และโซเชียล</p></div>
+    <div class="x-note"><h3 class="x-h4">Header</h3><p>โลโก้ เมนูหลัก ค้นหา บัญชี ตะกร้า ใช้เหมือนกันทุกหน้า</p></div>
+    <div class="x-note"><h3 class="x-h4">Navigation</h3><p>เมนูหลัก 5 รายการ และ Breadcrumb ในหน้าสินค้าเพื่อให้รู้ว่าอยู่ตรงไหน</p></div>
+    <div class="x-note"><h3 class="x-h4">Body</h3><p>หน้าแรกมีเนื้อหาน้อย เน้นภาพ จึงใช้ Z-Pattern หน้าสินค้ามีข้อมูลมาก จึงใช้ F-Pattern</p></div>
+    <div class="x-note"><h3 class="x-h4">Footer</h3><p>4 คอลัมน์: แบรนด์ ร้านค้า ช่วยเหลือ (การจัดส่ง, PDPA) และโซเชียล</p></div>
   </div>
 </section>
 
@@ -559,7 +559,7 @@ Use semantic HTML and accessible labels. Use placeholder images. No backend.</pr
   </div>
 
   <div class="x-callout">
-    <h4>ข้อสรุปของกลุ่มตัวอย่าง</h4>
+    <h3 class="x-h4">ข้อสรุปของกลุ่มตัวอย่าง</h3>
     <p>ใช้ AI ในช่วงหาไอเดีย เพื่อดูเลย์เอาต์หลายแบบได้เร็ว จากนั้นกลับมาตัดสินใจและเก็บรายละเอียดเองใน Figma โดยยึด Sitemap, Wireframe และ CI ของกลุ่มเป็นหลัก ส่วนที่ AI ช่วยได้มากที่สุดคือการเสนอการจัดวางที่กลุ่มไม่ได้คิดไว้ ส่วนที่ต้องแก้มากที่สุดคือข้อความภาษาไทย สี และความสม่ำเสมอของ Components</p>
   </div>
 </section>
