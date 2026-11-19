@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="ตัวอย่างการทำใบงานที่ 3: โครงสร้าง HTML5, Semantic Layout, ตาราง, แบบฟอร์มพร้อม required และ pattern และการใช้ AI ตรวจ Accessibility ตาม WCAG">
+<meta name="theme-color" content="#4338ca">
+<title>ตัวอย่างใบงานที่ 3 · การเขียนโปรแกรมบนเว็บ</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%234338ca'/%3E%3Cpath d='M26 20 14 32l12 12M38 20l12 12-12 12' fill='none' stroke='%23fff' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preload" href="../assets/fonts/Sarabun-400-thai.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css">
+<style>
+.wsx{display:grid;gap:52px;padding-block:28px 24px;font-size:1.05rem;line-height:1.75;
+  --term-bg:#0f1226;--term-ink:#e8eaf8;--term-dim:#7b84aa;--ok-bg:#1f7a4a}
+.wsx p{margin:0;max-width:74ch}
+.wsx section{display:grid;gap:18px;scroll-margin-top:84px;min-width:0}
+.wsx h2{margin:0;font-size:clamp(1.4rem,3vw,1.75rem)}
+.wsx h3{margin:8px 0 0;font-size:1.18rem}
+.wsx kbd{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:.82em;padding:1px 6px;border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;background:var(--surface)}
+.wsx .x-muted{color:var(--muted);font-size:.95rem}
+.wsx .x-intro{display:grid;gap:16px}
+.wsx .x-toc{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:0;padding:0}
+.wsx .x-toc a{display:inline-flex;gap:8px;align-items:baseline;padding:6px 14px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--ink);text-decoration:none;font-size:.95rem}
+.wsx .x-toc b{color:var(--brand);font-family:"JetBrains Mono",monospace;font-weight:600;font-size:.85em}
+.wsx .x-head{display:flex;align-items:center;gap:14px;border-top:2px solid var(--ink);padding-top:16px}
+.wsx .x-num{font-family:"JetBrains Mono",monospace;font-weight:600;color:var(--brand-ink);background:var(--brand);padding:2px 10px;border-radius:8px;font-size:.95rem}
+.wsx .x-steps{margin:0;padding-left:1.4em;display:grid;gap:6px}
+.wsx .x-grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:20px;align-items:start}
+.wsx .x-grid2>*{min-width:0}
+.wsx .x-os{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px;display:grid;gap:10px}
+.wsx .x-os h3{margin:0}
+.wsx .x-checks{display:grid;gap:8px}
+.wsx .x-checks ul{margin:0;padding-left:1.2em;display:grid;gap:6px}
+.wsx .x-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.wsx .x-table{min-width:640px;background:var(--surface);border:1px solid var(--line)}
+.wsx .x-table th,.wsx .x-table td{border:1px solid var(--line)}
+.wsx .x-table code{font-size:.85em;overflow-wrap:anywhere}
+.wsx .x-shots{background:var(--soft);border-radius:12px;padding:12px 18px;display:grid;gap:4px}
+.wsx .x-shots b{color:var(--brand)}
+.wsx .x-shots ul{margin:0;padding-left:1.2em}
+.wsx .x-trouble{border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.wsx .x-trouble summary{cursor:pointer;padding:12px 18px;font-weight:700}
+.wsx .x-trouble dl{margin:0;padding:0 18px 14px;display:grid;gap:12px}
+.wsx .x-trouble dt{font-family:"JetBrains Mono",monospace;font-size:.88rem;color:var(--ink);font-weight:600}
+.wsx .x-trouble dd{margin:2px 0 0;color:var(--muted)}
+.wsx .x-callout{background:var(--warn-bg);color:var(--warn-ink);border-left:4px solid var(--accent);border-radius:10px;padding:12px 16px}
+.wsx .x-callout code{background:none}
+/* terminal + tree (always dark, like a real terminal) */
+.wsx .x-term{background:var(--term-bg);color:var(--term-ink);border-radius:12px;overflow:hidden;min-width:0}
+.wsx .x-term-bar{display:flex;gap:6px;align-items:center;padding:8px 12px;background:#181c38;font-size:.8rem;color:var(--term-dim)}
+.wsx .x-term-bar i{width:10px;height:10px;border-radius:50%;background:#3a3f63;display:inline-block}
+.wsx .x-term-bar span{margin-left:8px}
+.wsx .x-term pre{color:var(--term-ink);font-size:13.5px;white-space:pre;overflow-x:auto}
+.wsx .x-term b{color:#8be9a8;font-weight:600}
+.wsx .x-term .c{color:var(--term-dim)}
+.wsx .x-tree{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow-x:auto}
+.wsx .x-tree pre{color:var(--ink);font-size:14px;white-space:pre}
+.wsx .x-tree b{color:var(--brand)}
+.wsx .x-tree span{color:var(--muted)}
+/* mock UIs */
+.wsx .x-mock{border-radius:12px;overflow:hidden;font-family:"Segoe UI",system-ui,sans-serif;font-size:13px}
+.wsx .x-vsc{background:#1f1f1f;color:#ccc;border:1px solid #333}
+.wsx .x-vsc-hd{padding:10px 14px;font-size:11px;letter-spacing:.06em;color:#9a9a9a}
+.wsx .x-ext{display:grid;grid-template-columns:40px 1fr auto;gap:10px;align-items:center;padding:8px 14px}
+.wsx .x-ext:nth-child(2){background:#04395e}
+.wsx .x-ext b{display:block;color:#eee;font-weight:600}
+.wsx .x-ext small{color:#9a9a9a}
+.wsx .x-ext em{font-style:normal;color:#73c991}
+.wsx .x-ico{width:40px;height:40px;border-radius:6px;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px}
+.wsx .x-vsc-status{display:flex;gap:16px;justify-content:flex-end;background:#007acc;color:#fff;padding:3px 12px;font-size:12px;margin-top:10px}
+.wsx .x-vsc-status span:first-child{margin-right:auto}
+.wsx .x-xampp{min-width:520px;background:#f3f3f3;color:#222;border:1px solid #c8c8c8}
+.wsx .x-xampp-hd{background:#fb7a24;color:#fff;font-weight:700;padding:8px 14px}
+.wsx .x-xampp table{width:100%;font-size:13px;background:#fff}
+.wsx .x-xampp th{background:#e8e8e8;color:#222;font-weight:600}
+.wsx .x-xampp th,.wsx .x-xampp td{border:1px solid #d6d6d6;padding:6px 10px}
+.wsx .x-xampp td{background:#fff;color:#222}
+.wsx .x-xampp tr.on td:first-child{background:#9be29b;font-weight:600}
+.wsx .x-xampp td span{display:inline-block;border:1px solid #aaa;border-radius:3px;padding:0 8px;margin-right:6px;background:#f7f7f7}
+.wsx .x-log{font-family:"JetBrains Mono",monospace;font-size:12px;padding:8px 14px;color:#1a5fb4;background:#fff;border-top:1px solid #d6d6d6}
+
+.wsx .x-head{flex-wrap:wrap}
+.wsx .x-part{margin-left:auto;font-size:.85rem;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:2px 12px}
+.wsx .x-file{margin:6px 0 -10px;font-family:"JetBrains Mono",monospace;font-size:.85rem;color:var(--brand);font-weight:600}
+.wsx .x-plain{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.wsx .x-plain li{display:grid;grid-template-columns:96px 1fr;gap:10px;align-items:baseline}
+.wsx .x-wk{font-size:.8rem;font-weight:700;color:var(--brand);background:var(--soft);border-radius:6px;padding:1px 8px;text-align:center}
+.wsx .x-plain-dots{margin:0;padding-left:1.2em;display:grid;gap:6px}
+.wsx .x-sem{display:grid;gap:6px;font-family:"JetBrains Mono",monospace;font-size:12.5px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px}
+.wsx .x-sem div{border:1.5px solid var(--line);border-radius:6px;padding:6px 8px;color:var(--ink)}
+.wsx .x-sem .s-hd,.wsx .x-sem .s-ft{background:var(--s1-soft);border-color:var(--s1)}
+.wsx .x-sem .s-nav{background:var(--s2-soft);border-color:var(--s2)}
+.wsx .x-sem .s-row{display:grid;grid-template-columns:2fr 1fr;gap:6px;border:0;padding:0}
+.wsx .x-sem .s-main{background:var(--s3-soft);border-color:var(--s3);display:grid;gap:6px}
+.wsx .x-sem .s-art{background:var(--surface);display:grid;gap:5px}
+.wsx .x-sem .s-sec,.wsx .x-sem .s-sub{border-style:dashed;font-size:11.5px}
+.wsx .x-sem .s-aside{background:var(--s4-soft);border-color:var(--s4)}
+</style>
+<script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+
+</head>
+<body class="ch-page">
+<a class="skip" href="#main">ข้ามไปยังเนื้อหา</a>
+<header class="top"><div class="wrap nav">
+<a class="brand" href="../index.html" aria-label="หน้าแรก การเขียนโปรแกรมบนเว็บ"><span class="logo" aria-hidden="true">&lt;/&gt;</span><span class="bt"><b>การเขียนโปรแกรมบนเว็บ</b><small>07-034-210</small></span></a>
+<button id="menuBtn" class="iconbtn menu-btn" type="button" aria-expanded="false" aria-controls="menu" aria-label="เปิดเมนู"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v2H3V6Zm0 5h18v2H3v-2Zm0 5h18v2H3v-2Z"/></svg></button>
+<nav id="menu" aria-label="เมนูหลัก">
+<a href="../chapters.html">บทเรียน</a><a href="../worksheets.html" aria-current="page">ใบงาน</a><a href="../assessment.html">เกณฑ์ประเมินผล</a><a href="../clo.html">ผลลัพธ์การเรียนรู้</a><a href="../start.html">เริ่มต้นใช้งาน</a><a href="../about.html">เกี่ยวกับรายวิชา</a>
+</nav>
+<button id="theme" class="iconbtn" type="button" aria-label="สลับโหมดมืดและสว่าง"><span class="i-moon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5Z"/></svg></span><span class="i-sun"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg></span></button>
+</div><div id="bar" class="bar" aria-hidden="true"></div></header>
+<main id="main">
+<div class="chead s2"><div class="wrap">
+<nav class="crumb" aria-label="เส้นทาง"><a href="../index.html">หน้าแรก</a><span>/</span><a href="../worksheets.html">ใบงาน</a><span>/</span><a href="ws3.html">ใบงานที่ 3</a><span>/</span><span aria-current="page">ตัวอย่าง</span></nav>
+<div class="chrow"><span class="badge b-s2 big" aria-hidden="true">HTML</span><div><p class="kicker">ตัวอย่างการทำใบงานที่ 3</p><h1>เว็บไซต์ 4 หน้าด้วย HTML5: แนะนำตนเอง ข่าว ตารางเรียน และใบสมัครงาน</h1></div></div></div></div>
+<div class="wrap narrow"><div class="wsx">
+
+<header class="x-intro">
+  <p>ตัวอย่างนี้สร้างเว็บไซต์เล็ก ๆ 4 หน้าในโฟลเดอร์เดียว ทุกหน้าลิงก์ถึงกัน โค้ดทุกไฟล์ในหน้านี้ผ่านการตรวจด้วย <a href="https://validator.w3.org/nu/" target="_blank" rel="noopener noreferrer">W3C Nu HTML Checker</a> แบบไม่มี error (ยกเว้นไฟล์ "ก่อนแก้" ในข้อ 3.4 ที่ตั้งใจเขียนให้ผิด) กด ▶ ลองรัน เพื่อดูผลในหน้านี้ได้ แต่รูปภาพจะไม่แสดงเพราะไม่มีไฟล์รูปจริง จะเห็นข้อความ alt แทน</p>
+  <div class="x-grid2">
+    <div class="x-os"><h3>แบ่งงานตามสัปดาห์</h3>
+      <ul class="x-plain">
+        <li><span class="x-wk">สัปดาห์ 3</span><span>ส่วนที่ 1 ข้อ 3.0 <code>index.html</code></span></li>
+        <li><span class="x-wk">สัปดาห์ 4</span><span>ส่วนที่ 2 ข้อ 3.1–3.4 <code>news.html</code> <code>schedule.html</code> <code>apply.html</code> และรายงาน Audit</span></li>
+        <li><span class="x-wk">ส่ง</span><span>ทั้งสองส่วนรวมกันภายในสัปดาห์ที่ 4</span></li>
+      </ul></div>
+    <div class="x-tree"><pre><b>ws3/</b>
+├── index.html     <span>← 3.0 แนะนำตนเอง</span>
+├── news.html      <span>← 3.1 Semantic Layout</span>
+├── schedule.html  <span>← 3.2 ตาราง</span>
+├── apply.html     <span>← 3.3 แบบฟอร์ม</span>
+├── <b>audit/</b>
+│   ├── before.html <span>← 3.4 ก่อนแก้</span>
+│   └── after.html  <span>← 3.4 หลังแก้</span>
+└── <b>images/</b>
+    ├── profile.jpg
+    └── award.jpg</pre></div>
+  </div>
+  <ul class="x-toc">
+    <li><a href="#e0"><b>3.0</b>HTML5 พื้นฐาน</a></li>
+    <li><a href="#e1"><b>3.1</b>Semantic Layout</a></li>
+    <li><a href="#e2"><b>3.2</b>ตาราง</a></li>
+    <li><a href="#e3"><b>3.3</b>แบบฟอร์ม</a></li>
+    <li><a href="#e4"><b>3.4</b>AI Accessibility Audit</a></li>
+    <li><a href="#e5"><b>สรุป</b>สิ่งที่ต้องส่ง</a></li>
+  </ul>
+</header>
+
+<section id="e0">
+  <div class="x-head"><span class="x-num">3.0</span><h2>โครงสร้างเอกสาร HTML5 พื้นฐาน</h2><span class="x-part">ส่วนที่ 1 · สัปดาห์ 3</span></div>
+  <p>หน้าแนะนำตนเอง ใช้หัวเรื่องครบ h1–h6 โดยเรียงระดับลงทีละขั้นไม่ข้ามระดับ ซึ่งเป็นข้อที่ W3C Checker ตรวจ</p>
+  <p class="x-file">index.html</p><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;title&gt;แนะนำตัว: สมหญิง ใจดี&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;สวัสดีครับ/ค่ะ ฉันชื่อสมหญิง ใจดี&lt;/h1&gt;
+  &lt;img src=&quot;images/profile.jpg&quot; alt=&quot;สมหญิงยิ้มอยู่หน้าอาคารคณะ สวมเสื้อสีฟ้า&quot; width=&quot;240&quot; height=&quot;240&quot;&gt;
+  &lt;p&gt;นักศึกษาชั้นปีที่ 2 สาขาเทคโนโลยีสารสนเทศ สนใจการพัฒนาเว็บและการออกแบบ UX/UI&lt;/p&gt;
+
+  &lt;h2&gt;ข้อมูลการศึกษา&lt;/h2&gt;
+  &lt;h3&gt;ระดับมหาวิทยาลัย&lt;/h3&gt;
+  &lt;p&gt;คณะวิทยาการจัดการ ปีการศึกษา 2568–ปัจจุบัน&lt;/p&gt;
+  &lt;h4&gt;รายวิชาที่ชอบ&lt;/h4&gt;
+  &lt;ul&gt;
+    &lt;li&gt;การเขียนโปรแกรมบนเว็บ&lt;/li&gt;
+    &lt;li&gt;ระบบฐานข้อมูล&lt;/li&gt;
+    &lt;li&gt;การออกแบบส่วนต่อประสานผู้ใช้&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;h5&gt;วิชาที่ชอบที่สุด&lt;/h5&gt;
+  &lt;p&gt;การเขียนโปรแกรมบนเว็บ เพราะเห็นผลงานบนเบราว์เซอร์ได้ทันที&lt;/p&gt;
+  &lt;h6&gt;สิ่งที่อยากทำได้เมื่อจบวิชา&lt;/h6&gt;
+  &lt;p&gt;สร้างเว็บร้านค้าที่มีระบบสมาชิกและตะกร้าสินค้าได้เอง&lt;/p&gt;
+
+  &lt;h2&gt;เป้าหมายในภาคเรียนนี้&lt;/h2&gt;
+  &lt;ol&gt;
+    &lt;li&gt;สร้างเว็บไซต์ส่วนตัวด้วย HTML และ CSS&lt;/li&gt;
+    &lt;li&gt;ฝึกใช้ Git ส่งงานทุกสัปดาห์&lt;/li&gt;
+    &lt;li&gt;ทำโครงงานเว็บร้านค้าออนไลน์กับกลุ่ม&lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;h2&gt;ลิงก์&lt;/h2&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&quot;news.html&quot;&gt;หน้าข่าวสารประจำสาขา (ข้อ 3.1)&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;schedule.html&quot;&gt;ตารางเรียนของฉัน (ข้อ 3.2)&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;https://developer.mozilla.org/th/docs/Web/HTML&quot;&gt;คู่มือ HTML ของ MDN&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h2&gt;ติดต่อ&lt;/h2&gt;
+  &lt;p&gt;อีเมล: somying.j@example.com&lt;/p&gt;
+  &lt;p&gt;&lt;small&gt;ปรับปรุงล่าสุด 19 พฤศจิกายน 2569&lt;/small&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+  <h3>ตรวจกับโจทย์ทีละข้อ</h3>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>สิ่งที่โจทย์กำหนด</th><th>อยู่ตรงไหนในโค้ด</th></tr></thead><tbody><tr><td><code>&lt;!DOCTYPE html&gt;</code></td><td>บรรทัดแรก บอกเบราว์เซอร์ว่าเป็น HTML5</td></tr><tr><td>lang และ charset UTF-8</td><td><code>&lt;html lang=&quot;th&quot;&gt;</code> และ <code>&lt;meta charset=&quot;UTF-8&quot;&gt;</code> ช่วยให้โปรแกรมอ่านหน้าจออ่านภาษาไทยถูกต้องและอักษรไทยไม่เพี้ยน</td></tr><tr><td><code>&lt;h1&gt;</code>–<code>&lt;h6&gt;</code></td><td>h1 ชื่อ › h2 ข้อมูลการศึกษา › h3 มหาวิทยาลัย › h4 รายวิชาที่ชอบ › h5 วิชาที่ชอบที่สุด › h6 สิ่งที่อยากทำได้ (มี h1 เพียงตัวเดียว)</td></tr><tr><td>ย่อหน้า</td><td><code>&lt;p&gt;</code> ทุกข้อความเนื้อหา</td></tr><tr><td><code>&lt;ul&gt;</code> / <code>&lt;ol&gt;</code></td><td>ul รายวิชาที่ชอบ (ไม่มีลำดับ) · ol เป้าหมาย (เรียงลำดับความสำคัญ)</td></tr><tr><td><code>&lt;a&gt;</code></td><td>ลิงก์สัมพัทธ์ <code>news.html</code> <code>schedule.html</code> และลิงก์สัมบูรณ์ไป MDN</td></tr><tr><td><code>&lt;img&gt;</code> + alt + เส้นทางสัมพัทธ์</td><td><code>src=&quot;images/profile.jpg&quot;</code> alt บอกว่าในภาพมีอะไร ไม่ใช่แค่คำว่า "รูปภาพ" ใส่ width/height กันหน้ากระตุกตอนโหลด</td></tr></tbody></table></div>
+  <details class="x-trouble"><summary>ข้อผิดพลาดที่พบบ่อย</summary><dl><div><dt>ใช้ / นำหน้า เช่น src="/images/profile.jpg"</dt><dd>/ นำหน้าคือเริ่มจากรากของเว็บไซต์ ไม่ใช่โฟลเดอร์ปัจจุบัน ถ้าเว็บอยู่ใน localhost/ws3/ รูปจะหาไม่เจอ ให้ใช้ images/profile.jpg</dd></div><div><dt>ใช้เส้นทางในเครื่อง เช่น C:\Users\...\profile.jpg</dt><dd>เปิดในเครื่องตัวเองได้ แต่เครื่องอื่นและเซิร์ฟเวอร์จะไม่เจอไฟล์</dd></div><div><dt>ชื่อไฟล์ Profile.JPG แต่เขียน profile.jpg</dt><dd>Windows ไม่สนตัวพิมพ์ใหญ่เล็ก แต่เซิร์ฟเวอร์ Linux สนใจ ให้ตั้งชื่อไฟล์เป็นตัวพิมพ์เล็กทั้งหมดและไม่มีช่องว่าง</dd></div><div><dt>เลือกหัวเรื่องตามขนาดตัวอักษร</dt><dd>h1–h6 บอกลำดับโครงสร้าง ไม่ใช่ขนาด ถ้าอยากได้ตัวเล็กลงให้ปรับด้วย CSS ภายหลัง</dd></div></dl></details>
+</section>
+
+<section id="e1">
+  <div class="x-head"><span class="x-num">3.1</span><h2>โครงสร้างเชิงความหมาย (Semantic Layout)</h2><span class="x-part">ส่วนที่ 2 · สัปดาห์ 4</span></div>
+  <div class="x-grid2">
+    <div class="x-sem" aria-label="แผนภาพโครงสร้างหน้า news.html">
+      <div class="s-hd">&lt;header&gt; ชื่อเว็บ</div>
+      <div class="s-nav">&lt;nav&gt; เมนูหลัก</div>
+      <div class="s-row">
+        <div class="s-main">&lt;main&gt;
+          <div class="s-art">&lt;article&gt; ข่าว 1 ชิ้น
+            <div class="s-sub">&lt;header&gt; หัวข่าว + วันที่</div>
+            <div class="s-sec">&lt;section&gt; รายละเอียด</div>
+            <div class="s-sec">&lt;section&gt; สิ่งที่กรรมการชื่นชม</div>
+            <div class="s-sub">&lt;figure&gt; ภาพ + คำบรรยาย</div>
+          </div>
+        </div>
+        <div class="s-aside">&lt;aside&gt; ข่าวที่เกี่ยวข้อง</div>
+      </div>
+      <div class="s-ft">&lt;footer&gt; ลิขสิทธิ์</div>
+    </div>
+    <div class="x-checks"><p><b>เลือกแท็กอย่างไร</b></p><ul>
+      <li><code>&lt;article&gt;</code> เนื้อหาที่ยกไปอ่านที่อื่นได้ครบในตัว เช่น ข่าว 1 ชิ้น โพสต์ 1 โพสต์</li>
+      <li><code>&lt;section&gt;</code> ส่วนย่อยที่มีหัวข้อของตัวเอง ถ้าไม่มีหัวข้อ มักควรเป็น <code>&lt;div&gt;</code></li>
+      <li><code>&lt;aside&gt;</code> เนื้อหาเสริมที่ตัดออกแล้วเรื่องหลักยังสมบูรณ์</li>
+      <li><code>&lt;main&gt;</code> มีได้ 1 ตัวต่อหน้า และไม่อยู่ใน header, nav, aside หรือ footer</li>
+      <li><code>&lt;header&gt;</code> ใช้ซ้ำได้ ทั้งส่วนหัวของหน้าและส่วนหัวของ article</li>
+      <li>โปรแกรมอ่านหน้าจอใช้แท็กเหล่านี้เป็นจุดกระโดด (landmark) ผู้ใช้กดข้ามไปที่ main หรือ nav ได้ทันที</li>
+    </ul></div>
+  </div>
+  <p class="x-file">news.html</p><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;title&gt;ข่าวสาขาเทคโนโลยีสารสนเทศ&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;header&gt;
+    &lt;h1&gt;ข่าวสาขาเทคโนโลยีสารสนเทศ&lt;/h1&gt;
+    &lt;p&gt;ข่าวกิจกรรมและประกาศสำหรับนักศึกษา&lt;/p&gt;
+  &lt;/header&gt;
+
+  &lt;nav aria-label=&quot;เมนูหลัก&quot;&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;index.html&quot;&gt;หน้าแรก&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;news.html&quot; aria-current=&quot;page&quot;&gt;ข่าวสาร&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;schedule.html&quot;&gt;ตารางเรียน&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;apply.html&quot;&gt;สมัครงาน&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/nav&gt;
+
+  &lt;main&gt;
+    &lt;article&gt;
+      &lt;header&gt;
+        &lt;h2&gt;นักศึกษา IT คว้ารางวัลชนะเลิศการแข่งขันพัฒนาเว็บไซต์&lt;/h2&gt;
+        &lt;p&gt;เผยแพร่ &lt;time datetime=&quot;2026-11-15&quot;&gt;15 พฤศจิกายน 2569&lt;/time&gt; โดยฝ่ายประชาสัมพันธ์&lt;/p&gt;
+      &lt;/header&gt;
+
+      &lt;section&gt;
+        &lt;h3&gt;รายละเอียดการแข่งขัน&lt;/h3&gt;
+        &lt;p&gt;ทีมนักศึกษาชั้นปีที่ 3 พัฒนาเว็บไซต์ร้านค้าชุมชนที่รองรับผู้พิการทางสายตา และได้คะแนนสูงสุดด้านการเข้าถึง&lt;/p&gt;
+      &lt;/section&gt;
+
+      &lt;section&gt;
+        &lt;h3&gt;สิ่งที่กรรมการชื่นชม&lt;/h3&gt;
+        &lt;ul&gt;
+          &lt;li&gt;ใช้แท็กเชิงความหมายครบถ้วน&lt;/li&gt;
+          &lt;li&gt;ทุกภาพมีคำอธิบาย alt&lt;/li&gt;
+          &lt;li&gt;ใช้งานด้วยแป้นพิมพ์ได้ทั้งหมด&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/section&gt;
+
+      &lt;figure&gt;
+        &lt;img src=&quot;images/award.jpg&quot; alt=&quot;ทีมนักศึกษา 4 คนถือโล่รางวัลบนเวที&quot; width=&quot;640&quot; height=&quot;360&quot;&gt;
+        &lt;figcaption&gt;ทีมผู้ชนะรับโล่รางวัลจากคณบดี&lt;/figcaption&gt;
+      &lt;/figure&gt;
+    &lt;/article&gt;
+  &lt;/main&gt;
+
+  &lt;aside aria-labelledby=&quot;related-title&quot;&gt;
+    &lt;h2 id=&quot;related-title&quot;&gt;ข่าวที่เกี่ยวข้อง&lt;/h2&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#&quot;&gt;เปิดรับสมัครอบรม Figma เบื้องต้น&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#&quot;&gt;ประกาศตารางสอบกลางภาค&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/aside&gt;
+
+  &lt;footer&gt;
+    &lt;p&gt;&amp;copy; 2569 สาขาเทคโนโลยีสารสนเทศ คณะวิทยาการจัดการ&lt;/p&gt;
+  &lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+  <p class="x-muted">ในตัวอย่างนี้ aside อยู่นอก main เพราะเป็นเนื้อหาเสริมของทั้งหน้า ถ้าเป็นเนื้อหาเสริมของข่าวชิ้นนี้โดยเฉพาะ วางไว้ใน article ก็ได้</p>
+  <div class="x-shots"><b>ภาพหน้าจอที่ต้องแนบ</b><ul><li>หน้า news.html บนเบราว์เซอร์</li><li>Chrome DevTools แท็บ Elements ที่ขยายให้เห็นโครงสร้าง header, nav, main, article, aside, footer</li></ul></div>
+</section>
+
+<section id="e2">
+  <div class="x-head"><span class="x-num">3.2</span><h2>ตารางข้อมูล (Table)</h2></div>
+  <p>ตารางเรียนที่มีทั้งหัวคอลัมน์ (เวลา) และหัวแถว (วัน) จึงใช้ <code>&lt;th&gt;</code> ทั้งสองแบบและระบุ <code>scope</code> ให้โปรแกรมอ่านหน้าจอรู้ว่าเซลล์ไหนเป็นหัวของอะไร มีการรวมเซลล์ด้วย <code>colspan</code> และ <code>rowspan</code></p>
+  <p class="x-file">schedule.html</p><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button><button class="run" type="button">▶ ลองรัน</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;title&gt;ตารางเรียน ภาคเรียนที่ 2/2569&lt;/title&gt;
+  &lt;style&gt;
+    table { border-collapse: collapse; }
+    th, td { border: 1px solid #666; padding: 6px 10px; text-align: center; }
+    caption { font-weight: bold; margin-bottom: 6px; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;table&gt;
+    &lt;caption&gt;ตารางเรียน ภาคเรียนที่ 2 ปีการศึกษา 2569 (สมหญิง ใจดี)&lt;/caption&gt;
+    &lt;thead&gt;
+      &lt;tr&gt;
+        &lt;th scope=&quot;col&quot;&gt;วัน&lt;/th&gt;
+        &lt;th scope=&quot;col&quot;&gt;08:30–10:30&lt;/th&gt;
+        &lt;th scope=&quot;col&quot;&gt;10:30–12:30&lt;/th&gt;
+        &lt;th scope=&quot;col&quot;&gt;12:30–13:30&lt;/th&gt;
+        &lt;th scope=&quot;col&quot;&gt;13:30–16:30&lt;/th&gt;
+      &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr&gt;
+        &lt;th scope=&quot;row&quot;&gt;จันทร์&lt;/th&gt;
+        &lt;td colspan=&quot;2&quot;&gt;การเขียนโปรแกรมบนเว็บ (ทฤษฎี)&lt;br&gt;ห้อง 3201&lt;/td&gt;
+        &lt;td rowspan=&quot;5&quot;&gt;พักกลางวัน&lt;/td&gt;
+        &lt;td&gt;การเขียนโปรแกรมบนเว็บ (ปฏิบัติ)&lt;br&gt;ห้องคอมพิวเตอร์ 2&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;th scope=&quot;row&quot;&gt;อังคาร&lt;/th&gt;
+        &lt;td&gt;ระบบฐานข้อมูล&lt;/td&gt;
+        &lt;td&gt;ภาษาอังกฤษเพื่อการสื่อสาร&lt;/td&gt;
+        &lt;td&gt;ว่าง&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;th scope=&quot;row&quot;&gt;พุธ&lt;/th&gt;
+        &lt;td colspan=&quot;2&quot;&gt;การออกแบบส่วนต่อประสานผู้ใช้&lt;/td&gt;
+        &lt;td&gt;กิจกรรมชมรม&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;th scope=&quot;row&quot;&gt;พฤหัสบดี&lt;/th&gt;
+        &lt;td&gt;สถิติเบื้องต้น&lt;/td&gt;
+        &lt;td&gt;ว่าง&lt;/td&gt;
+        &lt;td&gt;ระบบฐานข้อมูล (ปฏิบัติ)&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;th scope=&quot;row&quot;&gt;ศุกร์&lt;/th&gt;
+        &lt;td colspan=&quot;2&quot;&gt;ว่าง&lt;/td&gt;
+        &lt;td&gt;พบอาจารย์ที่ปรึกษา&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>แท็ก / Attribute</th><th>หน้าที่</th></tr></thead><tbody><tr><td><code>&lt;caption&gt;</code></td><td>ชื่อตาราง ต้องเป็นลูกตัวแรกของ table ทันที</td></tr><tr><td><code>&lt;thead&gt;</code> / <code>&lt;tbody&gt;</code></td><td>แยกส่วนหัวกับเนื้อหา เวลาพิมพ์ตารางยาวหลายหน้า เบราว์เซอร์จะพิมพ์ thead ซ้ำให้ทุกหน้า</td></tr><tr><td><code>&lt;th scope=&quot;col&quot;&gt;</code></td><td>หัวคอลัมน์ (เวลา)</td></tr><tr><td><code>&lt;th scope=&quot;row&quot;&gt;</code></td><td>หัวแถว (วัน) อ่านเป็น "จันทร์, 13:30–16:30: การเขียนโปรแกรมบนเว็บ (ปฏิบัติ)"</td></tr><tr><td><code>colspan=&quot;2&quot;</code></td><td>วิชา 4 ชั่วโมงกินพื้นที่ 2 ช่วงเวลา</td></tr><tr><td><code>rowspan=&quot;5&quot;</code></td><td>ช่วงพักกลางวันรวม 5 วันเป็นช่องเดียว แถวถัดไปจึงมี td น้อยลง 1 ช่อง</td></tr></tbody></table></div>
+  <details class="x-trouble"><summary>ข้อผิดพลาดที่พบบ่อย</summary><dl><div><dt>จำนวนช่องในแต่ละแถวไม่เท่ากัน</dt><dd>นับ colspan และเซลล์ที่ถูก rowspan จากแถวบนครอบไว้ด้วย ทุกแถวต้องรวมได้ 5 คอลัมน์ W3C Checker จะเตือนถ้าตารางไม่ครบ</dd></div><div><dt>ใช้ border="1" บนแท็ก table</dt><dd>เป็น attribute แบบเก่า ให้ใส่เส้นด้วย CSS แทน</dd></div><div><dt>ใช้ตารางจัดเลย์เอาต์หน้าเว็บ</dt><dd>ตารางใช้กับข้อมูลแบบแถวและคอลัมน์เท่านั้น การจัดหน้าใช้ CSS Flexbox หรือ Grid (บทที่ 4)</dd></div></dl></details>
+</section>
+
+<section id="e3">
+  <div class="x-head"><span class="x-num">3.3</span><h2>แบบฟอร์มสมัครงาน (Interactive Form)</h2></div>
+  <p>ทุกช่องมี <code>&lt;label for&gt;</code> ที่ตรงกับ <code>id</code> ของช่องนั้น กลุ่ม Radio และ Checkbox ครอบด้วย <code>&lt;fieldset&gt;</code> และ <code>&lt;legend&gt;</code> ให้รู้ว่าตัวเลือกเป็นคำตอบของคำถามอะไร</p>
+  <p class="x-file">apply.html</p><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;title&gt;สมัครงาน: นักพัฒนาเว็บฝึกหัด&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;แบบฟอร์มสมัครงาน&lt;/h1&gt;
+  &lt;p&gt;ช่องที่มีเครื่องหมาย * ต้องกรอก&lt;/p&gt;
+
+  &lt;form action=&quot;#&quot; method=&quot;post&quot;&gt;
+    &lt;p&gt;
+      &lt;label for=&quot;fullname&quot;&gt;ชื่อ–นามสกุล *&lt;/label&gt;&lt;br&gt;
+      &lt;input type=&quot;text&quot; id=&quot;fullname&quot; name=&quot;fullname&quot; required
+             pattern=&quot;[ก-๙A-Za-z ]{4,60}&quot; autocomplete=&quot;name&quot;
+             title=&quot;ภาษาไทยหรืออังกฤษ 4–60 ตัวอักษร&quot;&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+      &lt;label for=&quot;email&quot;&gt;อีเมล *&lt;/label&gt;&lt;br&gt;
+      &lt;input type=&quot;email&quot; id=&quot;email&quot; name=&quot;email&quot; required autocomplete=&quot;email&quot;&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+      &lt;label for=&quot;phone&quot;&gt;เบอร์โทรศัพท์มือถือ *&lt;/label&gt;&lt;br&gt;
+      &lt;input type=&quot;tel&quot; id=&quot;phone&quot; name=&quot;phone&quot; required
+             pattern=&quot;0[689][0-9]{8}&quot; placeholder=&quot;0812345678&quot; autocomplete=&quot;tel&quot;
+             aria-describedby=&quot;phone-hint&quot;&gt;
+      &lt;small id=&quot;phone-hint&quot;&gt;ตัวเลข 10 หลัก ขึ้นต้นด้วย 06, 08 หรือ 09 ไม่ต้องใส่ขีด&lt;/small&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+      &lt;label for=&quot;password&quot;&gt;ตั้งรหัสผ่านสำหรับติดตามผล *&lt;/label&gt;&lt;br&gt;
+      &lt;input type=&quot;password&quot; id=&quot;password&quot; name=&quot;password&quot; required minlength=&quot;8&quot;
+             pattern=&quot;(?=.*[A-Za-z])(?=.*[0-9]).{8,}&quot; autocomplete=&quot;new-password&quot;
+             aria-describedby=&quot;pw-hint&quot;&gt;
+      &lt;small id=&quot;pw-hint&quot;&gt;อย่างน้อย 8 ตัว มีทั้งตัวอักษรอังกฤษและตัวเลข&lt;/small&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+      &lt;label for=&quot;position&quot;&gt;ตำแหน่งที่สมัคร *&lt;/label&gt;&lt;br&gt;
+      &lt;select id=&quot;position&quot; name=&quot;position&quot; required&gt;
+        &lt;option value=&quot;&quot;&gt;-- เลือกตำแหน่ง --&lt;/option&gt;
+        &lt;option value=&quot;frontend&quot;&gt;Front-end Developer ฝึกหัด&lt;/option&gt;
+        &lt;option value=&quot;backend&quot;&gt;Back-end Developer (PHP) ฝึกหัด&lt;/option&gt;
+        &lt;option value=&quot;uxui&quot;&gt;UX/UI Designer ฝึกหัด&lt;/option&gt;
+      &lt;/select&gt;
+    &lt;/p&gt;
+    &lt;fieldset&gt;
+      &lt;legend&gt;รูปแบบการทำงาน *&lt;/legend&gt;
+      &lt;input type=&quot;radio&quot; id=&quot;type-full&quot; name=&quot;worktype&quot; value=&quot;fulltime&quot; required&gt;
+      &lt;label for=&quot;type-full&quot;&gt;เต็มเวลา&lt;/label&gt;
+      &lt;input type=&quot;radio&quot; id=&quot;type-part&quot; name=&quot;worktype&quot; value=&quot;parttime&quot;&gt;
+      &lt;label for=&quot;type-part&quot;&gt;ไม่เต็มเวลา&lt;/label&gt;
+      &lt;input type=&quot;radio&quot; id=&quot;type-intern&quot; name=&quot;worktype&quot; value=&quot;intern&quot;&gt;
+      &lt;label for=&quot;type-intern&quot;&gt;ฝึกงาน / สหกิจศึกษา&lt;/label&gt;
+    &lt;/fieldset&gt;
+    &lt;fieldset&gt;
+      &lt;legend&gt;ทักษะที่มี (เลือกได้หลายข้อ)&lt;/legend&gt;
+      &lt;input type=&quot;checkbox&quot; id=&quot;sk-html&quot; name=&quot;skills&quot; value=&quot;html&quot;&gt;
+      &lt;label for=&quot;sk-html&quot;&gt;HTML/CSS&lt;/label&gt;
+      &lt;input type=&quot;checkbox&quot; id=&quot;sk-js&quot; name=&quot;skills&quot; value=&quot;js&quot;&gt;
+      &lt;label for=&quot;sk-js&quot;&gt;JavaScript&lt;/label&gt;
+      &lt;input type=&quot;checkbox&quot; id=&quot;sk-php&quot; name=&quot;skills&quot; value=&quot;php&quot;&gt;
+      &lt;label for=&quot;sk-php&quot;&gt;PHP/MySQL&lt;/label&gt;
+      &lt;input type=&quot;checkbox&quot; id=&quot;sk-figma&quot; name=&quot;skills&quot; value=&quot;figma&quot;&gt;
+      &lt;label for=&quot;sk-figma&quot;&gt;Figma&lt;/label&gt;
+    &lt;/fieldset&gt;
+    &lt;p&gt;
+      &lt;label for=&quot;about&quot;&gt;แนะนำตัวและผลงานที่เคยทำ&lt;/label&gt;&lt;br&gt;
+      &lt;textarea id=&quot;about&quot; name=&quot;about&quot; rows=&quot;5&quot; cols=&quot;50&quot; maxlength=&quot;500&quot;&gt;&lt;/textarea&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+      &lt;input type=&quot;checkbox&quot; id=&quot;consent&quot; name=&quot;consent&quot; required&gt;
+      &lt;label for=&quot;consent&quot;&gt;ยินยอมให้บริษัทเก็บข้อมูลเพื่อพิจารณาการสมัครงานตาม พ.ร.บ. คุ้มครองข้อมูลส่วนบุคคล *&lt;/label&gt;
+    &lt;/p&gt;
+    &lt;button type=&quot;submit&quot;&gt;ส่งใบสมัคร&lt;/button&gt;
+  &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+  <p class="x-muted">ทดสอบแบบฟอร์มด้วย Live Server ปุ่มลองรันในหน้านี้ส่งฟอร์มไม่ได้ จึงไม่เห็นข้อความเตือนของเบราว์เซอร์</p>
+  <h3>Regex ที่ใช้ใน pattern</h3>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>ช่อง</th><th>pattern</th><th>ความหมาย</th></tr></thead><tbody><tr><td>ชื่อ–นามสกุล</td><td><code>[ก-๙A-Za-z ]{4,60}</code></td><td>อักษรไทย อังกฤษ หรือเว้นวรรค 4–60 ตัว</td></tr><tr><td>โทรศัพท์</td><td><code>0[689][0-9]{8}</code></td><td>ขึ้นต้น 0 ตัวที่สองเป็น 6, 8 หรือ 9 ตามด้วยตัวเลข 8 ตัว รวม 10 หลัก</td></tr><tr><td>รหัสผ่าน</td><td><code>(?=.*[A-Za-z])(?=.*[0-9]).{8,}</code></td><td>ต้องมีตัวอักษรอังกฤษอย่างน้อย 1 ตัว ตัวเลขอย่างน้อย 1 ตัว และยาวอย่างน้อย 8 ตัว</td></tr></tbody></table></div>
+  <p class="x-muted">pattern ใน HTML ตรวจทั้งข้อความเสมอ ไม่ต้องใส่ ^ และ $ เอง และเบราว์เซอร์รุ่นใหม่ตีความ pattern แบบเข้มงวด (โหมด v) ถ้าต้องการขีด - เป็นตัวอักษรในวงเล็บ [ ] ต้องเขียน \- เสมอ</p>
+  <h3>ผลการทดสอบที่ควรได้</h3>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>กรอก</th><th>ผลที่ควรได้</th></tr></thead><tbody><tr><td>เว้นชื่อว่างแล้วกดส่ง</td><td>ส่งไม่ได้ เบราว์เซอร์ชี้ไปที่ช่องแรกที่ว่าง (required)</td></tr><tr><td>ชื่อ <code>Tom123</code></td><td>ไม่ผ่าน มีตัวเลข เบราว์เซอร์แสดงข้อความจาก title</td></tr><tr><td>อีเมล <code>somying.example.com</code></td><td>ไม่ผ่าน ไม่มี @ (type="email" ตรวจเอง)</td></tr><tr><td>โทรศัพท์ <code>021234567</code></td><td>ไม่ผ่าน มี 9 หลักและขึ้นต้น 02</td></tr><tr><td>โทรศัพท์ <code>0812345678</code></td><td>ผ่าน</td></tr><tr><td>รหัสผ่าน <code>abcdefgh</code></td><td>ไม่ผ่าน ไม่มีตัวเลข</td></tr><tr><td>รหัสผ่าน <code>web2569ok</code></td><td>ผ่าน</td></tr><tr><td>ไม่เลือกรูปแบบการทำงาน</td><td>ไม่ผ่าน ใส่ required ที่ radio ตัวใดตัวหนึ่งในกลุ่มก็พอ</td></tr><tr><td>ไม่ติ๊กยินยอม</td><td>ไม่ผ่าน checkbox ที่มี required ต้องติ๊กก่อนส่ง</td></tr></tbody></table></div>
+  <div class="x-callout"><b>ข้อควรรู้:</b> การตรวจด้วย required และ pattern ช่วยผู้ใช้กรอกถูกต้อง แต่ไม่ใช่การป้องกันความปลอดภัย ผู้ใช้ปิดการตรวจฝั่งเบราว์เซอร์ได้ ฝั่งเซิร์ฟเวอร์ต้องตรวจซ้ำเสมอ (บทที่ 7)</div>
+  <div class="x-shots"><b>ภาพหน้าจอที่ต้องแนบ</b><ul><li>แบบฟอร์มที่กรอกครบ</li><li>ข้อความเตือนของเบราว์เซอร์เมื่อกรอกเบอร์โทรผิดรูปแบบ</li><li>ข้อความเตือนเมื่อเว้นช่องที่ required</li></ul></div>
+</section>
+
+<section id="e4">
+  <div class="x-head"><span class="x-num">3.4</span><h2>AI-Assisted Accessibility Audit</h2></div>
+  <ol class="x-steps">
+    <li>ตรวจโค้ด "ก่อนแก้" ด้วย W3C Nu HTML Checker และบันทึกผล</li>
+    <li>ส่งโค้ดให้ AI ตรวจด้วย Prompt ด้านล่าง (ดัดแปลงจากหัวข้อ 3.13.4)</li>
+    <li>ตรวจคำตอบของ AI ทีละข้อ แล้วแก้โค้ดเอง</li>
+    <li>ตรวจซ้ำด้วย W3C Checker, Lighthouse ใน Chrome DevTools และการกด Tab ไล่ทั้งหน้า</li>
+  </ol>
+  <p class="x-file">audit/before.html (ตั้งใจเขียนให้ผิด)</p><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;สมัครสมาชิก&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class=&quot;header&quot;&gt;
+    &lt;img src=&quot;images/logo.png&quot;&gt;
+    &lt;div class=&quot;menu&quot;&gt;&lt;a href=&quot;index.html&quot;&gt;หน้าแรก&lt;/a&gt; | &lt;a href=&quot;news.html&quot;&gt;ข่าว&lt;/a&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;content&quot;&gt;
+    &lt;h1&gt;สมัครรับข่าวสาร&lt;/h1&gt;
+    &lt;h4&gt;กรอกข้อมูลด้านล่าง&lt;/h4&gt;
+    &lt;img src=&quot;images/banner.jpg&quot;&gt;
+    &lt;input type=&quot;text&quot; placeholder=&quot;ชื่อ&quot;&gt;
+    &lt;input type=&quot;email&quot; placeholder=&quot;อีเมล&quot;&gt;
+    &lt;input type=&quot;checkbox&quot;&gt; รับข่าวทางอีเมล
+    &lt;div onclick=&quot;send()&quot; style=&quot;background:#ccc;color:#fff&quot;&gt;ส่ง&lt;/div&gt;
+    &lt;p&gt;อ่านเงื่อนไข &lt;a href=&quot;terms.html&quot;&gt;คลิกที่นี่&lt;/a&gt;&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+  <div class="x-callout"><b>ผลจาก W3C Nu HTML Checker (รันจริง):</b> พบ 4 errors คือ ไม่มี DOCTYPE, img ไม่มี alt 2 จุด และหัวเรื่องข้ามจาก h1 ไป h4 พร้อมคำแนะนำให้ใส่ lang สังเกตว่า Checker <b>ไม่</b>พบปัญหาช่องกรอกไม่มี label, ปุ่มที่ทำจาก div, ลิงก์ "คลิกที่นี่" และสีตัวอักษรจาง ต้องใช้ AI, Lighthouse และการทดสอบด้วยตนเองช่วย</div>
+  <h3>Prompt ที่ใช้</h3>
+  <div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>Role: Accessibility Specialist (WCAG 2.2).
+Task: Audit the following HTML code. Identify missing alt attributes, non-semantic div containers, and form inputs missing associated &lt;label&gt; elements.
+Also check: page language, heading order, link text that does not describe its target, controls that cannot be reached by keyboard, and text colour contrast.
+Output: a table with columns: line, problem, WCAG success criterion (number and name), how to fix.
+Constraints: Rewrite the code into fully compliant Semantic HTML5 with zero validation errors on W3C Nu HTML Checker. Keep all Thai text unchanged.
+
+[วางโค้ด HTML ที่ต้องการตรวจตรงนี้]</code></pre></div>
+  <h3>ตัวอย่างการสรุปผล Audit (หลังตรวจคำตอบของ AI แล้ว)</h3>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>บรรทัด</th><th>ปัญหา</th><th>WCAG 2.2</th><th>วิธีแก้</th></tr></thead><tbody><tr><td>1</td><td>ไม่มี DOCTYPE และ lang</td><td>3.1.1 Language of Page</td><td><code>&lt;!DOCTYPE html&gt;</code> และ <code>&lt;html lang=&quot;th&quot;&gt;</code></td></tr><tr><td>7</td><td>โลโก้ไม่มี alt</td><td>1.1.1 Non-text Content</td><td>alt เป็นชื่อหน่วยงาน</td></tr><tr><td>13</td><td>แบนเนอร์ไม่มี alt</td><td>1.1.1 Non-text Content</td><td>เป็นภาพตกแต่ง ใส่ <code>alt=&quot;&quot;</code> ให้โปรแกรมอ่านหน้าจอข้าม</td></tr><tr><td>6, 8, 11</td><td>ใช้ div แทนแท็กเชิงความหมาย</td><td>1.3.1 Info and Relationships</td><td>header, nav, main</td></tr><tr><td>12</td><td>หัวเรื่องข้ามจาก h1 ไป h4</td><td>1.3.1 Info and Relationships</td><td>เปลี่ยนเป็น h2</td></tr><tr><td>14–16</td><td>ช่องกรอกไม่มี label ใช้ placeholder แทน</td><td>1.3.1 · 3.3.2 Labels or Instructions · 4.1.2 Name, Role, Value</td><td><code>&lt;label for&gt;</code> คู่กับ id ทุกช่อง</td></tr><tr><td>17</td><td>ปุ่มทำจาก div กด Tab ไปไม่ถึง</td><td>2.1.1 Keyboard · 4.1.2 Name, Role, Value</td><td><code>&lt;button type=&quot;submit&quot;&gt;</code> ใน form</td></tr><tr><td>17</td><td>ตัวอักษรขาวบนเทา #ccc contrast 1.6:1</td><td>1.4.3 Contrast (Minimum) ต้องได้ 4.5:1</td><td>พื้น #1d4ed8 contrast 6.7:1</td></tr><tr><td>18</td><td>ลิงก์ "คลิกที่นี่" ไม่บอกปลายทาง</td><td>2.4.4 Link Purpose (In Context)</td><td>ข้อความลิงก์บอกว่าไปที่ไหน</td></tr></tbody></table></div>
+  <p class="x-file">audit/after.html (W3C Checker: 0 errors)</p><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;title&gt;สมัครรับข่าวสาร · สาขาเทคโนโลยีสารสนเทศ&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;header&gt;
+    &lt;img src=&quot;images/logo.png&quot; alt=&quot;สาขาเทคโนโลยีสารสนเทศ&quot; width=&quot;160&quot; height=&quot;48&quot;&gt;
+    &lt;nav aria-label=&quot;เมนูหลัก&quot;&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&quot;index.html&quot;&gt;หน้าแรก&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;news.html&quot;&gt;ข่าว&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/nav&gt;
+  &lt;/header&gt;
+  &lt;main&gt;
+    &lt;h1&gt;สมัครรับข่าวสาร&lt;/h1&gt;
+    &lt;h2&gt;กรอกข้อมูลด้านล่าง&lt;/h2&gt;
+    &lt;img src=&quot;images/banner.jpg&quot; alt=&quot;&quot; width=&quot;800&quot; height=&quot;200&quot;&gt;
+    &lt;form action=&quot;#&quot; method=&quot;post&quot;&gt;
+      &lt;p&gt;
+        &lt;label for=&quot;name&quot;&gt;ชื่อ&lt;/label&gt;
+        &lt;input type=&quot;text&quot; id=&quot;name&quot; name=&quot;name&quot; autocomplete=&quot;name&quot; required&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        &lt;label for=&quot;mail&quot;&gt;อีเมล&lt;/label&gt;
+        &lt;input type=&quot;email&quot; id=&quot;mail&quot; name=&quot;mail&quot; autocomplete=&quot;email&quot; required&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        &lt;input type=&quot;checkbox&quot; id=&quot;optin&quot; name=&quot;optin&quot;&gt;
+        &lt;label for=&quot;optin&quot;&gt;รับข่าวทางอีเมล&lt;/label&gt;
+      &lt;/p&gt;
+      &lt;button type=&quot;submit&quot; style=&quot;background:#1d4ed8;color:#fff&quot;&gt;ส่ง&lt;/button&gt;
+    &lt;/form&gt;
+    &lt;p&gt;&lt;a href=&quot;terms.html&quot;&gt;อ่านเงื่อนไขการรับข่าวสาร&lt;/a&gt;&lt;/p&gt;
+  &lt;/main&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+  <h3>ตรวจคำตอบของ AI ก่อนเชื่อ</h3>
+  <ul class="x-plain-dots">
+    <li>AI อาจอ้างเลข WCAG ผิด ตรวจกับ <a href="https://www.w3.org/WAI/WCAG22/quickref/" target="_blank" rel="noopener noreferrer">WCAG 2.2 Quick Reference</a> ทุกข้อ</li>
+    <li>AI มักใส่ alt ให้ทุกภาพ แม้ภาพตกแต่งที่ควรใช้ alt="" คนที่รู้ว่าภาพมีหน้าที่อะไรต้องตัดสินใจเอง</li>
+    <li>AI อาจแก้ข้อความภาษาไทยหรือเพิ่ม ARIA เกินจำเป็น ใช้แท็ก HTML ที่ถูกต้องก่อน ARIA เสมอ</li>
+    <li>คะแนน Lighthouse 100 ไม่ได้แปลว่าเข้าถึงได้ครบ ต้องลองใช้งานด้วยแป้นพิมพ์เองด้วย</li>
+  </ul>
+  <div class="x-shots"><b>ภาพหน้าจอที่ต้องแนบ</b><ul><li>ผล W3C Checker ของ before.html (มี error) และ after.html (ไม่มี error)</li><li>Prompt และคำตอบของ AI</li><li>คะแนน Accessibility ใน Lighthouse ของ after.html</li></ul></div>
+</section>
+
+<section id="e5">
+  <div class="x-head"><span class="x-num">สรุป</span><h2>สิ่งที่ต้องส่ง</h2></div>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>ส่วน</th><th>ข้อ</th><th>ไฟล์ / หลักฐาน</th></tr></thead><tbody><tr><td>1 (สัปดาห์ 3)</td><td>3.0</td><td><code>index.html</code> + รูปใน images/ + ภาพหน้าจอบนเบราว์เซอร์</td></tr><tr><td>2 (สัปดาห์ 4)</td><td>3.1</td><td><code>news.html</code> + ภาพหน้าจอเบราว์เซอร์และ DevTools</td></tr><tr><td></td><td>3.2</td><td><code>schedule.html</code> + ภาพหน้าจอ</td></tr><tr><td></td><td>3.3</td><td><code>apply.html</code> + ภาพหน้าจอข้อความเตือน 2 แบบ</td></tr><tr><td></td><td>3.4</td><td><code>audit/before.html</code> <code>audit/after.html</code> + ตารางสรุปผล Audit + ภาพผล W3C Checker และ Lighthouse</td></tr></tbody></table></div>
+  <p class="x-muted">บีบอัดโฟลเดอร์ ws3 เป็น .zip และรวมภาพหน้าจอเป็น PDF ไฟล์เดียว ส่งพร้อมกันทั้งสองส่วนภายในสัปดาห์ที่ 4 ตั้งชื่อตามรูปแบบ <code>รหัสนักศึกษา_ใบงานที่3</code></p>
+</section>
+
+</div>
+<div class="pager"><a class="pn" href="ws3.html"><small>กลับไปที่</small><b>ใบงานที่ 3</b></a><a class="pn next" href="ws4.html"><small>ถัดไป</small><b>ใบงานที่ 4</b></a></div></div>
+</main>
+<footer class="foot"><div class="wrap fgrid">
+<div><a class="brand" href="../index.html"><span class="logo" aria-hidden="true">&lt;/&gt;</span><span class="bt"><b>การเขียนโปรแกรมบนเว็บ</b><small>Web Programming</small></span></a>
+<p class="small">สื่อเสริมการเรียนรู้ ใช้ประกอบเอกสารประกอบการสอน ไม่มีระบบสมาชิกและไม่เก็บข้อมูลส่วนบุคคล ส่งงานผ่าน Google Classroom</p></div>
+<div><p class="fh">เรียนรู้</p><a href="../chapters.html">บทเรียน 10 บท</a><a href="../worksheets.html">ใบงานประจำบท</a><a href="../assessment.html">เกณฑ์การประเมินผล</a><a href="../clo.html">ผลลัพธ์การเรียนรู้ (CLO)</a><a href="../start.html">เริ่มต้นใช้งาน</a></div>
+<div><p class="fh">รายวิชา</p><a href="../about.html">เกี่ยวกับรายวิชา</a><span>ผู้สอน: ดร.สุรเชษฐ์ สังขพันธ์</span><span>พ.ศ. 2569</span></div>
+</div></footer>
+<script src="../assets/app.js"></script>
+</body>
+</html>
