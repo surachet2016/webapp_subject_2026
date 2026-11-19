@@ -1,0 +1,590 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="ตัวอย่างการทำใบงานที่ 1: Sitemap, Wireframe, High-Fidelity Prototype และการใช้ AI ช่วยออกแบบ กรณีศึกษาร้านกาแฟคั่วออนไลน์">
+<meta name="theme-color" content="#4338ca">
+<title>ตัวอย่างใบงานที่ 1 · การเขียนโปรแกรมบนเว็บ</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%234338ca'/%3E%3Cpath d='M26 20 14 32l12 12M38 20l12 12-12 12' fill='none' stroke='%23fff' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preload" href="../assets/fonts/Sarabun-400-thai.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Thai:wght@500;700&display=swap">
+<style>
+.wsx{--fg:var(--ink);--accent:var(--brand);--accent-soft:var(--soft);
+  --wf-bg:#FFFFFF;--wf-fill:#E6E6E6;--wf-stroke:#8E8E8E;--wf-ink:#2E2E2E;--wf-overlay:#4338ca;
+  --ci-green:#1F4D3A;--ci-cherry:#B3362B;--ci-sand:#F3EDE3;--ci-ink:#1E1A17;--ci-gold:#C99A3B;
+  --f-head:"Sarabun",system-ui,sans-serif;--f-body:"Sarabun",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;--f-brand:"Noto Serif Thai",Georgia,serif;
+  display:grid;gap:56px;padding-block:28px 24px;font-size:1.02rem;line-height:1.75}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .wsx{--wf-bg:#1D1D1D;--wf-fill:#303030;--wf-stroke:#6E6E6E;--wf-ink:#D2D2D2;--wf-overlay:#9d92ff}}
+:root[data-theme="dark"] .wsx{--wf-bg:#1D1D1D;--wf-fill:#303030;--wf-stroke:#6E6E6E;--wf-ink:#D2D2D2;--wf-overlay:#9d92ff}
+.wsx p{margin:0;max-width:72ch}
+.wsx section{display:grid;gap:20px;scroll-margin-top:84px}
+.wsx .x-steps li::before{content:none}
+.wsx pre{background:none}
+.wsx th,.wsx td{border:1px solid var(--line)}
+.wsx h1,.wsx h2,.wsx h3,.wsx h4{font-family:var(--f-head);text-wrap:balance;line-height:1.3;margin:0}
+.wsx h1{font-size:clamp(28px,4.4vw,40px);font-weight:700}
+.wsx h2{font-size:clamp(22px,3vw,28px);font-weight:700}
+.wsx h3{font-size:19px;font-weight:600}
+.wsx h4{font-size:16px;font-weight:600}
+.wsx .muted{color:var(--muted)}
+.wsx .x-eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.wsx .sec-head{display:grid;gap:6px;border-top:2px solid var(--fg);padding-top:16px}
+.wsx .stack{display:grid;gap:12px}
+.wsx a:focus-visible,.wsx button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wsx .mast{display:grid;gap:18px}
+.wsx .toc{display:flex;flex-wrap:wrap;gap:8px;padding:0;margin:0;list-style:none}
+.wsx .toc a{display:inline-flex;gap:8px;align-items:baseline;padding:6px 12px;border:1px solid var(--line);border-radius:999px;text-decoration:none;color:var(--fg);background:var(--surface);font-size:14px}
+.wsx .toc a b{font-family:var(--f-mono);font-weight:500;color:var(--accent)}
+.wsx .brief{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.wsx .brief>div{background:var(--surface);padding:14px 16px;display:grid;gap:4px;min-width:0}
+.wsx .brief dt{font-size:12px;color:var(--muted);letter-spacing:.04em}
+.wsx .brief dd{margin:0;font-weight:500}
+.wsx .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.wsx .sitemap{min-width:880px;background:var(--surface);border:1px solid var(--line);padding:24px;display:grid;gap:22px}
+.wsx .sm-root{justify-self:center;position:relative}
+.wsx .node{border:1.5px solid var(--fg);padding:6px 10px;font-size:13.5px;line-height:1.35;background:var(--surface);text-align:center}
+.wsx .node small{display:block;font-family:var(--f-mono);font-size:10.5px;color:var(--muted)}
+.wsx .n0{background:var(--accent);color:var(--surface);border-color:var(--accent);font-weight:600;padding:10px 22px;font-size:15px}
+.wsx .n0 small{color:inherit;opacity:.8}
+.wsx .n1{border-color:var(--accent);border-width:2px;font-weight:600}
+.wsx .n2{border-color:var(--line);border-width:1.5px}
+.wsx .n3{border-style:dashed;border-color:var(--muted);color:var(--muted)}
+.wsx .sm-cols{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;position:relative;padding-top:20px;border-top:1.5px solid var(--fg)}
+.wsx .sm-col{display:grid;gap:8px;align-content:start;position:relative}
+.wsx .sm-col::before{content:"";position:absolute;top:-20px;left:50%;height:20px;border-left:1.5px solid var(--fg)}
+.wsx .sm-col .n2,.wsx .sm-col .n3{margin-left:10px;position:relative}
+.wsx .sm-col .n2::before,.wsx .sm-col .n3::before{content:"";position:absolute;left:-10px;top:50%;width:10px;border-top:1px solid var(--muted)}
+.wsx .sm-col .kids{display:grid;gap:8px;border-left:1px solid var(--muted);margin-left:6px;padding-top:4px}
+.wsx .sm-root::after{content:"";position:absolute;left:50%;bottom:-22px;height:22px;border-left:1.5px solid var(--fg)}
+.wsx .sm-flow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding-top:14px;border-top:1px dashed var(--line)}
+.wsx .sm-flow .arrow{color:var(--muted);font-family:var(--f-mono)}
+.wsx .sm-tag{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-right:6px}
+.wsx .legend{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--muted)}
+.wsx .legend span{display:inline-flex;align-items:center;gap:6px}
+.wsx .legend i{display:inline-block;width:22px;height:12px;border:1.5px solid var(--fg)}
+.wsx .x-notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.wsx .x-note{background:var(--surface);border:1px solid var(--line);padding:16px;display:grid;gap:6px;align-content:start;min-width:0}
+.wsx .x-note ul,.wsx .x-note ol{margin:0;padding-left:20px}
+.wsx .wf-pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));gap:24px}
+.wsx .wf-card{display:grid;gap:12px;min-width:0}
+.wsx .wf{min-width:440px;background:var(--wf-bg);border:1.5px solid var(--wf-stroke);color:var(--wf-ink);font-size:11.5px;line-height:1.35;font-family:var(--f-mono)}
+.wsx .wf .b{background:var(--wf-fill);border:1px solid var(--wf-stroke);display:flex;align-items:center;justify-content:center;text-align:center;padding:6px;position:relative}
+.wsx .wf .x{background:linear-gradient(to top right,transparent calc(50% - .6px),var(--wf-stroke) 50%,transparent calc(50% + .6px)),linear-gradient(to top left,transparent calc(50% - .6px),var(--wf-stroke) 50%,transparent calc(50% + .6px)),var(--wf-fill)}
+.wsx .wf .ln{height:7px;background:var(--wf-stroke);opacity:.55;border-radius:2px}
+.wsx .wf .t{font-weight:500}
+.wsx .wf-row{display:flex;gap:8px;padding:8px 10px;align-items:center}
+.wsx .wf-hd{border-bottom:1.5px solid var(--wf-stroke);justify-content:space-between}
+.wsx .wf-nav{display:flex;gap:8px}
+.wsx .wf-nav span{border-bottom:1px solid var(--wf-ink)}
+.wsx .wf-sec{padding:10px;display:grid;gap:8px;border-bottom:1px dashed var(--wf-stroke)}
+.wsx .g3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.wsx .g4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.wsx .wf-ft{background:var(--wf-ink);color:var(--wf-bg);padding:10px;display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.wsx .wf-ft div{display:grid;gap:4px}
+.wsx .wf-ft .ln{background:var(--wf-bg);opacity:.5}
+.wsx .ztarget{position:relative}
+.wsx .overlay{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.wsx .overlay path,.wsx .overlay polyline{fill:none;stroke:var(--wf-overlay);stroke-width:2.5;stroke-dasharray:6 5}
+.wsx .pin{position:absolute;width:20px;height:20px;border-radius:50%;background:var(--wf-overlay);color:var(--wf-bg);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;transform:translate(-50%,-50%);font-family:var(--f-mono)}
+.wsx .ann{counter-reset:a;list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:14px}
+.wsx .ann li{display:grid;grid-template-columns:22px 1fr;gap:8px}
+.wsx .ann li::before{counter-increment:a;content:counter(a);width:20px;height:20px;border-radius:50%;background:var(--accent);color:var(--surface);font-size:11px;display:flex;align-items:center;justify-content:center;margin-top:3px;font-family:var(--f-mono)}
+.wsx .ci{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.wsx .sw{border:1px solid var(--line);background:var(--surface);display:grid;min-width:0}
+.wsx .sw .x-chip{height:72px}
+.wsx .sw div:last-child{padding:10px 12px;display:grid;gap:2px;font-size:13.5px}
+.wsx .sw code{font-family:var(--f-mono);font-size:12.5px}
+.wsx .type-spec{display:grid;gap:0;border:1px solid var(--line);background:var(--surface)}
+.wsx .type-spec>div{display:grid;grid-template-columns:150px 1fr;gap:16px;padding:12px 16px;border-top:1px solid var(--line);align-items:baseline}
+.wsx .type-spec>div:first-child{border-top:0}
+.wsx .type-spec .lbl{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.wsx .browser{min-width:640px;border:1px solid var(--line);background:var(--ci-sand);color:var(--ci-ink);overflow:hidden;border-radius:10px}
+.wsx .bbar{background:#E5DED2;padding:8px 12px;display:flex;align-items:center;gap:6px;font-family:var(--f-mono);font-size:11px;color:#6B6258}
+.wsx .bbar i{width:10px;height:10px;border-radius:50%;background:#CFC6B8;display:inline-block}
+.wsx .bbar span{margin-left:10px;background:#F6F2EA;padding:2px 10px;border-radius:4px;flex:1}
+.wsx .hf-hd{display:flex;align-items:center;justify-content:space-between;padding:14px 28px;background:var(--ci-sand);border-bottom:1px solid #E1D8C9}
+.wsx .x-logo{font-family:var(--f-brand);font-weight:700;font-size:19px;color:var(--ci-green);display:flex;align-items:center;gap:8px}
+.wsx .x-logo b{display:inline-block;width:22px;height:22px;border-radius:50% 50% 50% 0;background:var(--ci-cherry);transform:rotate(-45deg)}
+.wsx .hf-nav{display:flex;gap:18px;font-size:13.5px}
+.wsx .cart{font-size:13px;background:var(--ci-green);color:#fff;padding:5px 12px;border-radius:999px}
+.wsx .x-hero{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;padding:36px 28px;background:var(--ci-green);color:var(--ci-sand);align-items:center}
+.wsx .x-hero h3{font-family:var(--f-brand);font-size:30px;line-height:1.3;font-weight:700;color:#fff}
+.wsx .x-hero p{font-size:14px;opacity:.85;margin-top:10px}
+.wsx .x-btn{display:inline-block;padding:9px 18px;border-radius:999px;font-size:14px;font-weight:600;margin-top:16px}
+.wsx .btn-p{background:var(--ci-cherry);color:#fff}
+.wsx .btn-g{border:1px solid currentColor;margin-left:8px}
+.wsx .bag{width:120px;height:160px;margin:0 auto;background:#163829;border-radius:14px 14px 6px 6px;position:relative;box-shadow:0 18px 30px rgba(0,0,0,.25)}
+.wsx .bag::before{content:"";position:absolute;top:-10px;left:12px;right:12px;height:18px;background:#0F2A1F;border-radius:4px}
+.wsx .bag .lab{position:absolute;left:14px;right:14px;top:42px;bottom:28px;background:var(--ci-sand);border-radius:4px;display:grid;place-content:center;text-align:center;color:var(--ci-green);font-family:var(--f-brand);font-size:12px;line-height:1.25;gap:4px}
+.wsx .bag .lab em{font-style:normal;font-family:var(--f-body);font-size:9px;color:var(--ci-cherry)}
+.wsx .bag.sm{width:72px;height:96px;border-radius:10px 10px 4px 4px}
+.wsx .bag.sm::before{top:-6px;height:11px}
+.wsx .bag.sm .lab{left:9px;right:9px;top:26px;bottom:16px;font-size:8.5px}
+.wsx .bag.red{background:#7D2620}
+.wsx .bag.red::before{background:#5E1C18}
+.wsx .bag.gold{background:#8A6A2A}
+.wsx .bag.gold::before{background:#6A5020}
+.wsx .hf-sec{padding:26px 28px;display:grid;gap:14px}
+.wsx .hf-sec h4{font-family:var(--f-brand);font-size:20px;color:var(--ci-green)}
+.wsx .pcards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.wsx .pc{background:#fff;border-radius:10px;padding:16px;display:grid;gap:6px;font-size:13px}
+.wsx .pc .img{background:#EFE7DA;border-radius:6px;padding:14px 0 10px}
+.wsx .pc b{font-size:14px}
+.wsx .pc .price{color:var(--ci-cherry);font-weight:600}
+.wsx .notes-tag{display:flex;gap:4px;flex-wrap:wrap}
+.wsx .notes-tag span{background:#F3EDE3;color:#5B4A3A;font-size:11px;padding:1px 8px;border-radius:999px}
+.wsx .pd{display:grid;grid-template-columns:1fr 1fr;gap:28px;padding:22px 28px 30px;font-size:13.5px}
+.wsx .x-crumb{font-size:12px;color:#7A6E60;padding:12px 28px 0}
+.wsx .gal{display:grid;gap:8px}
+.wsx .gal .main{background:#EFE7DA;border-radius:10px;padding:34px 0}
+.wsx .gal .thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.wsx .gal .thumbs div{background:#E7DECF;border-radius:6px;height:44px}
+.wsx .gal .thumbs div:first-child{outline:2px solid var(--ci-green)}
+.wsx .info{display:grid;gap:10px;align-content:start}
+.wsx .info h3{font-family:var(--f-brand);font-size:24px;color:var(--ci-green);line-height:1.3}
+.wsx .info .price{font-size:22px;color:var(--ci-cherry);font-weight:600}
+.wsx .spec{display:grid;grid-template-columns:repeat(2,1fr);gap:6px 14px;font-size:12.5px;border-top:1px solid #E1D8C9;border-bottom:1px solid #E1D8C9;padding:10px 0}
+.wsx .spec span{color:#7A6E60}
+.wsx .opt{display:flex;gap:6px;flex-wrap:wrap}
+.wsx .opt span{border:1px solid #CFC4B3;padding:4px 12px;border-radius:999px;font-size:12.5px;background:#fff}
+.wsx .opt span.x-on{border-color:var(--ci-green);background:var(--ci-green);color:#fff}
+.wsx .buy{display:flex;gap:8px;align-items:center}
+.wsx .qty{border:1px solid #CFC4B3;border-radius:999px;padding:6px 14px;background:#fff;font-family:var(--f-mono)}
+.wsx .buy .x-btn{margin-top:0;flex:1;text-align:center}
+.wsx table{border-collapse:collapse;width:100%;font-size:14px;background:var(--surface)}
+.wsx th,.wsx td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top}
+.wsx th{font-family:var(--f-head);font-weight:600;background:var(--accent-soft)}
+.wsx td code{font-family:var(--f-mono);font-size:12.5px}
+.wsx .tbl{min-width:720px}
+.wsx .x-steps{list-style:none;margin:0;padding:0;display:grid;gap:0;border:1px solid var(--line);background:var(--surface)}
+.wsx .x-steps li{display:grid;grid-template-columns:44px 1fr;gap:12px;padding:12px 16px;border-top:1px solid var(--line)}
+.wsx .x-steps li:first-child{border-top:0}
+.wsx .x-steps .n{font-family:var(--f-mono);color:var(--accent);font-weight:500}
+.wsx .prompt{background:var(--surface);border:1px solid var(--line);display:grid;min-width:0}
+.wsx .prompt-hd{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.wsx .prompt-hd h3{font-size:17px}
+.wsx .prompt pre{margin:0;padding:14px;font-family:var(--f-mono);font-size:13px;line-height:1.6;white-space:pre-wrap;word-break:break-word;color:var(--fg)}
+.wsx .prompt .follow{border-top:1px dashed var(--line)}
+.wsx .prompt .follow h4{padding:10px 14px 0;font-size:13.5px;color:var(--muted);font-weight:500}
+.wsx .copy{font:inherit;font-size:13px;padding:5px 12px;border:1px solid var(--accent);color:var(--accent);background:transparent;border-radius:6px;cursor:pointer}
+.wsx .copy:hover{background:var(--accent-soft)}
+.wsx .anatomy{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.wsx .anatomy>div{background:var(--surface);padding:12px 14px;display:grid;gap:4px;font-size:14px}
+.wsx .anatomy b{font-family:var(--f-head)}
+.wsx .pill{display:inline-block;font-size:12px;padding:1px 8px;border-radius:999px;font-weight:500}
+.wsx .pill.good{background:#DCEFE3;color:#1D5A36}
+.wsx .pill.warn{background:#F7E7CF;color:#7A4E10}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .wsx .pill.good{background:#1E3A2A;color:#9FDBB5}
+:root:not([data-theme="light"]) .wsx .pill.warn{background:#3D2E17;color:#F0C98A}}
+:root[data-theme="dark"] .wsx .pill.good{background:#1E3A2A;color:#9FDBB5}
+:root[data-theme="dark"] .wsx .pill.warn{background:#3D2E17;color:#F0C98A}
+.wsx .x-callout{border-left:3px solid var(--accent);background:var(--surface);padding:14px 18px;display:grid;gap:6px}
+@media (max-width:560px){.wsx .type-spec>div{grid-template-columns:1fr;gap:4px}}</style>
+<script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+
+</head>
+<body class="ch-page">
+<a class="skip" href="#main">ข้ามไปยังเนื้อหา</a>
+<header class="top"><div class="wrap nav">
+<a class="brand" href="../index.html" aria-label="หน้าแรก การเขียนโปรแกรมบนเว็บ"><span class="logo" aria-hidden="true">&lt;/&gt;</span><span class="bt"><b>การเขียนโปรแกรมบนเว็บ</b><small>07-034-210</small></span></a>
+<button id="menuBtn" class="iconbtn menu-btn" type="button" aria-expanded="false" aria-controls="menu" aria-label="เปิดเมนู"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v2H3V6Zm0 5h18v2H3v-2Zm0 5h18v2H3v-2Z"/></svg></button>
+<nav id="menu" aria-label="เมนูหลัก">
+<a href="../chapters.html">บทเรียน</a><a href="../worksheets.html" aria-current="page">ใบงาน</a><a href="../assessment.html">เกณฑ์ประเมินผล</a><a href="../clo.html">ผลลัพธ์การเรียนรู้</a><a href="../start.html">เริ่มต้นใช้งาน</a><a href="../about.html">เกี่ยวกับรายวิชา</a>
+</nav>
+<button id="theme" class="iconbtn" type="button" aria-label="สลับโหมดมืดและสว่าง"><span class="i-moon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5Z"/></svg></span><span class="i-sun"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg></span></button>
+</div><div id="bar" class="bar" aria-hidden="true"></div></header>
+<main id="main">
+<div class="chead s1"><div class="wrap">
+<nav class="crumb" aria-label="เส้นทาง"><a href="../index.html">หน้าแรก</a><span>/</span><a href="../worksheets.html">ใบงาน</a><span>/</span><a href="ws1.html">ใบงานที่ 1</a><span>/</span><span aria-current="page">ตัวอย่าง</span></nav>
+<div class="chrow"><span class="badge b-s1 big" aria-hidden="true">UX</span><div><p class="kicker">ตัวอย่างการทำใบงานที่ 1</p><h1>ไร่ภูคำ Coffee Roasters: ร้านกาแฟคั่วออนไลน์จากไร่เชียงราย</h1></div></div></div></div>
+<div class="wrap"><div class="wsx">
+
+<header class="mast">
+  <p class="muted">ตัวอย่างการทำใบงานครบ 4 ขั้น ตั้งแต่ Sitemap ไปจนถึงการใช้ AI ช่วยร่างเลย์เอาต์ แบรนด์นี้สมมติขึ้นเพื่อใช้สอน ข้อมูลสินค้าและราคาไม่ใช่ข้อมูลจริง</p>
+  <dl class="brief">
+    <div><dt>ธุรกิจ</dt><dd>ขายเมล็ดกาแฟคั่ว ดริปแบ็ก อุปกรณ์ชง และเวิร์กช็อป</dd></div>
+    <div><dt>กลุ่มเป้าหมาย</dt><dd>คนชอบกาแฟอายุ 22–40 ปี ที่ชงดื่มเองที่บ้าน</dd></div>
+    <div><dt>เป้าหมายของเว็บ</dt><dd>เพิ่มยอดขายออนไลน์และสมาชิกรายเดือน</dd></div>
+    <div><dt>บทบาทในกลุ่ม (4 คน)</dt><dd>UX/Sitemap · Wireframe · UI/CI · Prototype & AI</dd></div>
+  </dl>
+  <ul class="toc">
+    <li><a href="#s1"><b>1.1</b>Sitemap</a></li>
+    <li><a href="#s2"><b>1.2</b>Wireframe</a></li>
+    <li><a href="#s3"><b>1.3</b>Hi-Fi Prototype</a></li>
+    <li><a href="#s4"><b>1.4</b>AI-Assisted</a></li>
+  </ul>
+</header>
+
+<!-- 1.1 -->
+<section id="s1">
+  <div class="sec-head">
+    <div class="x-eyebrow">ขั้นที่ 1.1</div>
+    <h2>ผังเว็บไซต์ (Sitemap)</h2>
+    <p class="muted">แบ่งเป็น 4 ระดับ หน้าแรกอยู่บนสุด เมนูหลัก 7 หมวดอยู่ระดับ 1 หน้าย่อยอยู่ระดับ 2 และหน้ารายละเอียดอยู่ระดับ 3 กระบวนการซื้อแยกเป็นเส้นทางของตัวเองเพราะเข้าถึงได้จากทุกหน้าผ่านไอคอนตะกร้า</p>
+  </div>
+  <div class="scroll">
+    <div class="sitemap" role="img" aria-label="แผนผังเว็บไซต์ไร่ภูคำ">
+      <div class="node n0 sm-root">หน้าแรก<small>Home · L0</small></div>
+      <div class="sm-cols">
+        <div class="sm-col"><div class="node n1">เกี่ยวกับเรา<small>About</small></div>
+          <div class="kids"><div class="node n2">เรื่องราวไร่ภูคำ</div><div class="node n2">กระบวนการปลูก–คั่ว</div><div class="node n2">ทีมงาน</div></div></div>
+        <div class="sm-col"><div class="node n1">ร้านค้า<small>Shop</small></div>
+          <div class="kids"><div class="node n2">เมล็ดกาแฟคั่ว</div><div class="node n2">ดริปแบ็ก</div><div class="node n2">อุปกรณ์ชง</div><div class="node n2">สมาชิกรายเดือน</div><div class="node n3">รายละเอียดสินค้า<small>L3</small></div></div></div>
+        <div class="sm-col"><div class="node n1">เวิร์กช็อป<small>Services</small></div>
+          <div class="kids"><div class="node n2">คลาสดริปเบื้องต้น</div><div class="node n2">ทัวร์ไร่กาแฟ</div><div class="node n3">รายละเอียด & จองคลาส<small>L3</small></div></div></div>
+        <div class="sm-col"><div class="node n1">บทความ<small>Journal</small></div>
+          <div class="kids"><div class="node n2">วิธีชงกาแฟ</div><div class="node n2">ความรู้เรื่องกาแฟ</div><div class="node n3">หน้าบทความ<small>L3</small></div></div></div>
+        <div class="sm-col"><div class="node n1">รีวิว<small>Reviews</small></div>
+          <div class="kids"><div class="node n2">รีวิวจากลูกค้า</div><div class="node n2">เขียนรีวิว</div></div></div>
+        <div class="sm-col"><div class="node n1">ติดต่อเรา<small>Contact</small></div>
+          <div class="kids"><div class="node n2">ฟอร์มติดต่อ</div><div class="node n2">แผนที่หน้าร้าน</div><div class="node n2">คำถามที่พบบ่อย</div></div></div>
+        <div class="sm-col"><div class="node n1">บัญชีของฉัน<small>Account</small></div>
+          <div class="kids"><div class="node n2">เข้าสู่ระบบ / สมัคร</div><div class="node n2">ประวัติคำสั่งซื้อ</div><div class="node n2">ที่อยู่จัดส่ง</div></div></div>
+      </div>
+      <div class="sm-flow">
+        <span class="sm-tag">เส้นทางการซื้อ</span>
+        <div class="node n2">ตะกร้าสินค้า</div><span class="arrow">→</span>
+        <div class="node n2">ชำระเงิน</div><span class="arrow">→</span>
+        <div class="node n2">ยืนยันคำสั่งซื้อ</div>
+      </div>
+      <div class="sm-flow">
+        <span class="sm-tag">ลิงก์ใน Footer</span>
+        <div class="node n3">นโยบายความเป็นส่วนตัว (PDPA)</div>
+        <div class="node n3">เงื่อนไขการใช้งาน</div>
+        <div class="node n3">การจัดส่งและคืนสินค้า</div>
+      </div>
+    </div>
+  </div>
+  <div class="legend">
+    <span><i style="background:var(--accent);border-color:var(--accent)"></i>L0 หน้าแรก</span>
+    <span><i style="border-color:var(--accent);border-width:2px"></i>L1 เมนูหลัก</span>
+    <span><i style="border-color:var(--line)"></i>L2 หน้าย่อย</span>
+    <span><i style="border-style:dashed;border-color:var(--muted)"></i>L3 หน้ารายละเอียด / Utility</span>
+  </div>
+  <div class="x-notes">
+    <div class="x-note"><h4>เหตุผลการจัดกลุ่ม</h4><p>ตั้งชื่อเมนูตามสิ่งที่ลูกค้ามองหา เช่น "ร้านค้า" และ "เวิร์กช็อป" ไม่ใช้ศัพท์ภายในบริษัท</p></div>
+    <div class="x-note"><h4>ไม่เกิน 3 คลิก</h4><p>จากหน้าแรกไปถึงหน้ารายละเอียดสินค้าใช้ 2 คลิก (หน้าแรก → เมล็ดกาแฟคั่ว → สินค้า)</p></div>
+    <div class="x-note"><h4>เมนูหลัก 7 หมวด</h4><p>บนเดสก์ท็อปแสดง 5 หมวดแรกใน Navigation ส่วน "ติดต่อเรา" กับ "บัญชีของฉัน" อยู่ที่ไอคอนมุมขวาและ Footer</p></div>
+  </div>
+</section>
+
+<!-- 1.2 -->
+<section id="s2">
+  <div class="sec-head">
+    <div class="x-eyebrow">ขั้นที่ 1.2</div>
+    <h2>Low-Fidelity Wireframe</h2>
+    <p class="muted">ใช้แค่สีเทา กล่อง และเส้นแทนข้อความ ยังไม่ใส่สีหรือรูปจริง เพื่อให้กลุ่มตัดสินใจเรื่องตำแหน่งและลำดับความสำคัญก่อน เส้นประสีน้ำเงินแสดงทิศทางการกวาดสายตา</p>
+  </div>
+  <div class="wf-pair">
+    <div class="wf-card">
+      <h3>หน้าแรก (Homepage) ใช้ Z-Pattern</h3>
+      <div class="scroll">
+        <div class="wf" aria-label="Wireframe หน้าแรก">
+          <div class="ztarget">
+            <div class="wf-row wf-hd"><div class="b t" style="width:70px">LOGO</div><div class="wf-nav"><span>ร้านค้า</span><span>เวิร์กช็อป</span><span>บทความ</span><span>รีวิว</span><span>เกี่ยวกับเรา</span></div><div style="display:flex;gap:6px"><div class="b">🔍</div><div class="b">👤</div><div class="b t">ตะกร้า (2)</div></div></div>
+            <div class="wf-sec" style="grid-template-columns:1.1fr .9fr;align-items:center;padding:16px 10px">
+              <div style="display:grid;gap:8px"><div class="t" style="font-size:14px">H1 พาดหัว: กาแฟจากไร่ ส่งตรงถึงบ้าน</div><div class="ln" style="width:90%"></div><div class="ln" style="width:70%"></div><div style="display:flex;gap:6px;margin-top:4px"><div class="b t">[ ปุ่มหลัก: เลือกซื้อ ]</div><div class="b">ปุ่มรอง</div></div></div>
+              <div class="b x" style="height:130px">ภาพสินค้า</div>
+            </div>
+            <svg class="overlay" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><polyline points="4,9 96,9 8,72 92,72" vector-effect="non-scaling-stroke"/></svg>
+            <span class="pin" style="left:4%;top:9%">1</span><span class="pin" style="left:96%;top:9%">2</span><span class="pin" style="left:8%;top:72%">3</span><span class="pin" style="left:92%;top:72%">4</span>
+          </div>
+          <div class="wf-sec g3"><div class="b">ไอคอน + คั่วสดทุกสัปดาห์</div><div class="b">ไอคอน + ส่งฟรี 500฿</div><div class="b">ไอคอน + ตรงจากไร่</div></div>
+          <div class="wf-sec"><div class="t">H2 สินค้าขายดี</div><div class="g4"><div class="b x" style="height:60px"></div><div class="b x" style="height:60px"></div><div class="b x" style="height:60px"></div><div class="b x" style="height:60px"></div></div><div class="g4"><div class="ln"></div><div class="ln"></div><div class="ln"></div><div class="ln"></div></div></div>
+          <div class="wf-sec"><div class="b" style="height:44px">แบนเนอร์สมาชิกรายเดือน + ปุ่มสมัคร</div></div>
+          <div class="wf-sec"><div class="t">H2 รีวิวลูกค้า</div><div class="g3"><div class="b" style="height:40px">★★★★★</div><div class="b" style="height:40px">★★★★★</div><div class="b" style="height:40px">★★★★☆</div></div></div>
+          <div class="wf-sec"><div class="t">H2 บทความล่าสุด</div><div class="g3"><div class="b x" style="height:40px"></div><div class="b x" style="height:40px"></div><div class="b x" style="height:40px"></div></div></div>
+          <div class="wf-sec" style="grid-template-columns:1fr auto;align-items:center"><div class="ln"></div><div class="b">[ อีเมล ] [ สมัครรับข่าว ]</div></div>
+          <div class="wf-ft"><div><b>LOGO</b><div class="ln"></div></div><div><b>ร้านค้า</b><div class="ln"></div><div class="ln"></div></div><div><b>ช่วยเหลือ</b><div class="ln"></div><div class="ln"></div></div><div><b>โซเชียล</b><div class="ln"></div></div></div>
+        </div>
+      </div>
+      <ol class="ann">
+        <li>โลโก้มุมซ้ายบน สายตาเริ่มที่นี่และจดจำแบรนด์</li>
+        <li>ตะกร้าและบัญชีอยู่ปลายแถวบน ตำแหน่งที่ผู้ใช้คุ้นเคย</li>
+        <li>สายตาเลื่อนทแยงลงมาที่พาดหัวและปุ่มหลัก</li>
+        <li>จบที่ภาพสินค้า ซึ่งยืนยันข้อความในพาดหัว</li>
+      </ol>
+    </div>
+
+    <div class="wf-card">
+      <h3>หน้ารายละเอียดสินค้า ใช้ F-Pattern</h3>
+      <div class="scroll">
+        <div class="wf" aria-label="Wireframe หน้ารายละเอียดสินค้า">
+          <div class="wf-row wf-hd"><div class="b t" style="width:70px">LOGO</div><div class="wf-nav"><span>ร้านค้า</span><span>เวิร์กช็อป</span><span>บทความ</span><span>รีวิว</span></div><div class="b t">ตะกร้า (2)</div></div>
+          <div class="wf-row" style="padding-bottom:0">หน้าแรก › ร้านค้า › เมล็ดกาแฟคั่ว › ชื่อสินค้า</div>
+          <div class="wf-sec" style="grid-template-columns:1fr 1fr;border-bottom:1px dashed var(--wf-stroke)">
+            <div style="display:grid;gap:6px;align-content:start"><div class="b x" style="height:150px">ภาพสินค้าหลัก</div><div class="g4"><div class="b x" style="height:28px"></div><div class="b x" style="height:28px"></div><div class="b x" style="height:28px"></div><div class="b x" style="height:28px"></div></div></div>
+            <div class="ztarget" style="display:grid;gap:7px;align-content:start;padding-left:6px">
+              <div class="t" style="font-size:14px">H1 ชื่อสินค้า</div>
+              <div class="t">฿ ราคา · ★ 4.8 (126 รีวิว)</div>
+              <div class="ln" style="width:85%"></div>
+              <div class="b" style="justify-content:flex-start">ตาราง: แหล่งปลูก / โพรเซส / ระดับคั่ว / ความสูง</div>
+              <div class="ln" style="width:60%"></div>
+              <div style="display:flex;gap:4px"><div class="b">250 g</div><div class="b">500 g</div></div>
+              <div style="display:flex;gap:4px"><div class="b">เมล็ด</div><div class="b">บดดริป</div><div class="b">บดเอสเพรสโซ</div></div>
+              <div style="display:flex;gap:4px"><div class="b">− 1 +</div><div class="b t" style="flex:1">[ เพิ่มลงตะกร้า ]</div></div>
+              <svg class="overlay" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M6,5 H96 M6,24 H70 M6,5 V96" vector-effect="non-scaling-stroke"/></svg>
+            </div>
+          </div>
+          <div class="wf-sec"><div style="display:flex;gap:6px"><div class="b t">รายละเอียด</div><div class="b">วิธีชง</div><div class="b">รีวิว (126)</div></div><div class="ln"></div><div class="ln" style="width:80%"></div><div class="ln" style="width:65%"></div></div>
+          <div class="wf-sec"><div class="t">H2 สินค้าที่เกี่ยวข้อง</div><div class="g4"><div class="b x" style="height:50px"></div><div class="b x" style="height:50px"></div><div class="b x" style="height:50px"></div><div class="b x" style="height:50px"></div></div></div>
+          <div class="wf-ft"><div><b>LOGO</b><div class="ln"></div></div><div><b>ร้านค้า</b><div class="ln"></div><div class="ln"></div></div><div><b>ช่วยเหลือ</b><div class="ln"></div><div class="ln"></div></div><div><b>โซเชียล</b><div class="ln"></div></div></div>
+        </div>
+      </div>
+      <ol class="ann">
+        <li>แถวบนของ F: ชื่อสินค้า อ่านเต็มบรรทัด</li>
+        <li>แถวที่สอง: ราคาและคะแนนรีวิว สั้นกว่าแถวแรก</li>
+        <li>แนวตั้งด้านซ้าย: ผู้ใช้กวาดตาลงเลือกตัวเลือกจนถึงปุ่มเพิ่มลงตะกร้า จึงจัดทุกอย่างชิดซ้าย</li>
+      </ol>
+    </div>
+  </div>
+  <div class="x-notes">
+    <div class="x-note"><h4>Header</h4><p>โลโก้ เมนูหลัก ค้นหา บัญชี ตะกร้า ใช้เหมือนกันทุกหน้า</p></div>
+    <div class="x-note"><h4>Navigation</h4><p>เมนูหลัก 5 รายการ และ Breadcrumb ในหน้าสินค้าเพื่อให้รู้ว่าอยู่ตรงไหน</p></div>
+    <div class="x-note"><h4>Body</h4><p>หน้าแรกมีเนื้อหาน้อย เน้นภาพ จึงใช้ Z-Pattern หน้าสินค้ามีข้อมูลมาก จึงใช้ F-Pattern</p></div>
+    <div class="x-note"><h4>Footer</h4><p>4 คอลัมน์: แบรนด์ ร้านค้า ช่วยเหลือ (การจัดส่ง, PDPA) และโซเชียล</p></div>
+  </div>
+</section>
+
+<!-- 1.3 -->
+<section id="s3">
+  <div class="sec-head">
+    <div class="x-eyebrow">ขั้นที่ 1.3</div>
+    <h2>High-Fidelity Interactive Prototype ใน Figma</h2>
+    <p class="muted">นำ Wireframe มาใส่สี ฟอนต์ และภาพตาม Corporate Identity แล้วเชื่อมหน้าด้วยแท็บ Prototype ใน Figma</p>
+  </div>
+
+  <div class="stack">
+    <h3>Corporate Identity (CI)</h3>
+    <div class="ci">
+      <div class="sw"><div class="x-chip" style="background:var(--ci-green)"></div><div><b>เขียวใบกาแฟ</b><code>#1F4D3A</code><span class="muted">สีหลัก: Header, Hero, หัวข้อ</span></div></div>
+      <div class="sw"><div class="x-chip" style="background:var(--ci-cherry)"></div><div><b>แดงเชอร์รีกาแฟ</b><code>#B3362B</code><span class="muted">ปุ่มหลัก (CTA), ราคา</span></div></div>
+      <div class="sw"><div class="x-chip" style="background:var(--ci-sand);border-bottom:1px solid var(--line)"></div><div><b>ทรายดิน</b><code>#F3EDE3</code><span class="muted">พื้นหลังหน้าเว็บ</span></div></div>
+      <div class="sw"><div class="x-chip" style="background:var(--ci-ink)"></div><div><b>หมึกคั่วเข้ม</b><code>#1E1A17</code><span class="muted">ตัวอักษรเนื้อหา</span></div></div>
+      <div class="sw"><div class="x-chip" style="background:var(--ci-gold)"></div><div><b>ทองฟางข้าว</b><code>#C99A3B</code><span class="muted">ดาวรีวิว, ป้าย "ขายดี"</span></div></div>
+    </div>
+    <div class="type-spec">
+      <div><span class="lbl">H1 · 48/56</span><span style="font-family:var(--f-brand);font-size:clamp(22px,3.4vw,32px);font-weight:700;color:var(--fg)">Noto Serif Thai SemiBold</span></div>
+      <div><span class="lbl">H2 · 32/40</span><span style="font-family:var(--f-brand);font-size:22px;font-weight:500">หัวข้อส่วน: สินค้าขายดี</span></div>
+      <div><span class="lbl">Body · 16/26</span><span>IBM Plex Sans Thai Regular ใช้กับเนื้อหาและปุ่ม อ่านง่ายทั้งไทยและอังกฤษ</span></div>
+      <div><span class="lbl">Caption · 13/20</span><span style="font-size:13px" class="muted">ใช้กับป้ายกำกับ ราคาเก่า และข้อความเล็ก</span></div>
+    </div>
+    <p class="muted" style="font-size:14px">ตรวจ Contrast แล้ว: ตัวอักษรเขียว #1F4D3A บนพื้นทราย ≈ 8.3:1 · ตัวอักษรขาวบนปุ่มแดง ≈ 6.0:1 · ผ่านเกณฑ์ WCAG AA (4.5:1) ทั้งคู่</p>
+  </div>
+
+  <div class="stack">
+    <h3>Mockup หน้าแรก</h3>
+    <div class="scroll">
+      <div class="browser">
+        <div class="bbar"><i></i><i></i><i></i><span>phukham.coffee</span></div>
+        <div class="hf-hd"><div class="x-logo"><b></b>ไร่ภูคำ</div><div class="hf-nav"><span>ร้านค้า</span><span>เวิร์กช็อป</span><span>บทความ</span><span>รีวิว</span><span>เกี่ยวกับเรา</span></div><span class="cart">ตะกร้า · 2</span></div>
+        <div class="x-hero">
+          <div><h3>กาแฟจากไร่บนดอย<br>คั่วสด ส่งตรงถึงบ้าน</h3><p>เมล็ดอาราบิกาจากดอยในเชียงราย คั่วทุกวันจันทร์ ส่งภายใน 48 ชั่วโมง</p><span class="x-btn btn-p">เลือกซื้อเมล็ดกาแฟ</span><span class="x-btn btn-g">สมัครสมาชิกรายเดือน</span></div>
+          <div class="bag"><div class="lab">ภูคำ<br>Natural<em>MEDIUM-LIGHT</em></div></div>
+        </div>
+        <div class="hf-sec">
+          <h4>สินค้าขายดี</h4>
+          <div class="pcards">
+            <div class="pc"><div class="img"><div class="bag sm"><div class="lab">ภูคำ<br>Natural</div></div></div><b>ภูคำ Natural</b><div class="notes-tag"><span>สตรอว์เบอร์รี</span><span>ช็อกโกแลต</span></div><span class="price">฿420 / 250 g</span></div>
+            <div class="pc"><div class="img"><div class="bag sm red"><div class="lab">ภูคำ<br>Honey</div></div></div><b>ภูคำ Honey</b><div class="notes-tag"><span>น้ำผึ้ง</span><span>ส้ม</span></div><span class="price">฿390 / 250 g</span></div>
+            <div class="pc"><div class="img"><div class="bag sm gold"><div class="lab">ภูคำ<br>House Blend</div></div></div><b>House Blend</b><div class="notes-tag"><span>คาราเมล</span><span>ถั่ว</span></div><span class="price">฿320 / 250 g</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stack">
+    <h3>Mockup หน้ารายละเอียดสินค้า</h3>
+    <div class="scroll">
+      <div class="browser">
+        <div class="bbar"><i></i><i></i><i></i><span>phukham.coffee/shop/natural</span></div>
+        <div class="hf-hd"><div class="x-logo"><b></b>ไร่ภูคำ</div><div class="hf-nav"><span>ร้านค้า</span><span>เวิร์กช็อป</span><span>บทความ</span><span>รีวิว</span><span>เกี่ยวกับเรา</span></div><span class="cart">ตะกร้า · 2</span></div>
+        <div class="x-crumb">หน้าแรก › ร้านค้า › เมล็ดกาแฟคั่ว › ภูคำ Natural</div>
+        <div class="pd">
+          <div class="gal"><div class="main"><div class="bag"><div class="lab">ภูคำ<br>Natural<em>MEDIUM-LIGHT</em></div></div></div><div class="thumbs"><div></div><div></div><div></div><div></div></div></div>
+          <div class="info">
+            <h3>ภูคำ Natural · ดอยในเชียงราย</h3>
+            <div><span class="price">฿420</span> <span style="color:#7A6E60">· <span style="color:var(--ci-gold)">★★★★★</span> 4.8 (126 รีวิว)</span></div>
+            <p>รสหวานแบบผลไม้สุก กลิ่นสตรอว์เบอร์รีและช็อกโกแลตนม จบด้วยความเปรี้ยวแบบไวน์แดง</p>
+            <div class="spec"><div><span>โพรเซส</span><br>Natural</div><div><span>ระดับคั่ว</span><br>Medium-Light</div><div><span>ความสูง</span><br>1,350 ม. จากระดับน้ำทะเล</div><div><span>วันที่คั่ว</span><br>ทุกวันจันทร์</div></div>
+            <div class="opt"><span class="x-on">250 g</span><span>500 g</span></div>
+            <div class="opt"><span>เมล็ด</span><span class="x-on">บดดริป</span><span>บดเอสเพรสโซ</span></div>
+            <div class="buy"><span class="qty">−  1  +</span><span class="x-btn btn-p">เพิ่มลงตะกร้า</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stack">
+    <h3>การเชื่อมหน้า (Prototype Connections)</h3>
+    <p class="muted">Flow starting point ชื่อ "Flow 1 – ซื้อสินค้า" เริ่มที่ Frame หน้าแรก</p>
+    <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>จุดที่กด (Hotspot)</th><th>Trigger</th><th>Action → ปลายทาง</th><th>Animation</th></tr></thead>
+        <tbody>
+          <tr><td>หน้าแรก: ปุ่ม "เลือกซื้อเมล็ดกาแฟ"</td><td>On click</td><td>Navigate to → ร้านค้า</td><td>Smart animate · Ease out 300ms</td></tr>
+          <tr><td>หน้าแรก / ร้านค้า: การ์ดสินค้า</td><td>On click</td><td>Navigate to → รายละเอียดสินค้า</td><td>Smart animate · 300ms</td></tr>
+          <tr><td>การ์ดสินค้า (Component)</td><td>While hovering</td><td>Change to → variant Hover (ยกเงา)</td><td>Dissolve 150ms</td></tr>
+          <tr><td>ปุ่มเลือก 250 g / 500 g</td><td>On click</td><td>Change to → variant Selected (ราคาเปลี่ยนเป็น ฿790)</td><td>Instant</td></tr>
+          <tr><td>ปุ่ม "เพิ่มลงตะกร้า"</td><td>On click</td><td>Open overlay → Cart Drawer (ชิดขวา, ปิดเมื่อคลิกด้านนอก)</td><td>Move in จากขวา 250ms</td></tr>
+          <tr><td>Cart Drawer: ปุ่ม "ชำระเงิน"</td><td>On click</td><td>Navigate to → ชำระเงิน</td><td>Instant</td></tr>
+          <tr><td>หน้าชำระเงิน: ปุ่ม "ยืนยันการสั่งซื้อ"</td><td>On click</td><td>Navigate to → ยืนยันคำสั่งซื้อ</td><td>Dissolve 200ms</td></tr>
+          <tr><td>โลโก้ใน Header (ทุกหน้า)</td><td>On click</td><td>Navigate to → หน้าแรก</td><td>Instant</td></tr>
+          <tr><td>Breadcrumb / ปุ่มย้อนกลับ</td><td>On click</td><td>Back</td><td>Instant</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="stack">
+    <h3>ขั้นตอนใน Figma</h3>
+    <ol class="x-steps">
+      <li><span class="n">01</span><span>สร้าง Frame Desktop 1440 × 1024 (และ Mobile 390 × 844 ถ้ามีเวลา) ตั้ง Layout grid 12 คอลัมน์ margin 80 gutter 24</span></li>
+      <li><span class="n">02</span><span>สร้าง Color variables และ Text styles ตาม CI ด้านบน ห้ามพิมพ์ค่าสีตรง ๆ ในแต่ละชิ้น</span></li>
+      <li><span class="n">03</span><span>สร้าง Components: Header, Footer, Button (Primary/Secondary × Default/Hover), Product card, Option chip (Default/Selected)</span></li>
+      <li><span class="n">04</span><span>วาง Mockup ตาม Wireframe โดยใช้ Auto layout เพื่อให้ระยะห่างเท่ากันทุกส่วน</span></li>
+      <li><span class="n">05</span><span>ไปที่แท็บ Prototype เชื่อม Hotspot ตามตารางด้านบน และตั้ง Flow starting point</span></li>
+      <li><span class="n">06</span><span>กด Present ทดสอบเส้นทางซื้อครบ แล้ว Share prototype แบบ "Anyone with the link can view" ส่งลิงก์ในใบงาน</span></li>
+    </ol>
+  </div>
+</section>
+
+<!-- 1.4 -->
+<section id="s4">
+  <div class="sec-head">
+    <div class="x-eyebrow">ขั้นที่ 1.4</div>
+    <h2>AI-Assisted Challenge</h2>
+    <p class="muted">ใช้ Prompt ชุดเดียวกันที่ปรับให้เหมาะกับแต่ละเครื่องมือ แล้วเปรียบเทียบผลกับงานที่ออกแบบเองในขั้น 1.2–1.3</p>
+  </div>
+
+  <div class="stack">
+    <h3>โครงสร้าง Prompt ที่ดี</h3>
+    <div class="anatomy">
+      <div><b>บริบท</b><span>ธุรกิจอะไร ขายอะไร</span></div>
+      <div><b>กลุ่มเป้าหมาย</b><span>ใคร อายุ พฤติกรรม</span></div>
+      <div><b>โครงสร้าง</b><span>ส่วนต่าง ๆ เรียงตามลำดับ และ Pattern</span></div>
+      <div><b>สไตล์ / CI</b><span>รหัสสี ฟอนต์ อารมณ์ของแบรนด์</span></div>
+      <div><b>ข้อจำกัด</b><span>ภาษาไทย อุปกรณ์ Accessibility</span></div>
+      <div><b>รูปแบบผลลัพธ์</b><span>หน้าเดียว, Prototype หรือโค้ด</span></div>
+    </div>
+    <p class="muted" style="font-size:14px">เขียน Prompt เป็นภาษาอังกฤษแต่สั่งให้ข้อความบนหน้าเป็นภาษาไทย นักศึกษาลองสั่งเป็นภาษาไทยทั้งหมดเปรียบเทียบได้ แล้วบันทึกว่าแบบไหนได้ผลดีกว่า</p>
+  </div>
+
+  <div class="prompt">
+    <div class="prompt-hd"><h3>Google Stitch: สำรวจไอเดียเลย์เอาต์หน้าแรก</h3><button class="copy" id="c1" type="button" data-for="p1">คัดลอก</button></div>
+    <pre id="p1">Design a desktop homepage for "Phu Kham Coffee Roasters", an online specialty coffee shop that sells beans from its own farm in Chiang Rai, Thailand.
+
+Audience: Thai coffee lovers aged 22–40 who brew at home.
+Goal: sell roasted beans and grow a monthly subscription.
+
+Layout (Z-pattern, top to bottom):
+1. Header: logo left; nav "Shop, Workshops, Journal, Reviews, About"; search, account and cart icons right.
+2. Hero: headline left with primary CTA "Shop beans" and secondary CTA "Subscribe"; product photo of a coffee bag right.
+3. Three benefit columns: roasted fresh weekly, free shipping over 500 THB, direct from the farm.
+4. Best sellers: 4 product cards with name, tasting-note tags and price in THB.
+5. Monthly subscription banner.
+6. Customer reviews (3 cards with star ratings).
+7. Latest journal articles (3 cards).
+8. Newsletter signup.
+9. Footer with 4 columns.
+
+Brand: primary forest green #1F4D3A, CTA coffee-cherry red #B3362B, background sand #F3EDE3, text #1E1A17, accent gold #C99A3B. Serif Thai font for headings, clean sans-serif for body.
+Mood: calm, natural, premium, lots of whitespace.
+Constraints: all on-screen text in Thai; text contrast must meet WCAG AA.</pre>
+    <div class="follow"><h4>Prompt ต่อเนื่อง (ปรับแก้รอบที่ 2)</h4><pre>Now create the product detail page in the same style. Use an F-pattern: image gallery on the left; on the right the product name, price, rating, a spec table (process, roast level, altitude, roast date), weight options 250 g / 500 g, grind options, quantity stepper and an "Add to cart" button. Below: tabs for Description, Brew guide, Reviews, then related products.</pre></div>
+  </div>
+
+  <div class="prompt">
+    <div class="prompt-hd"><h3>Figma Make: ต้นแบบที่กดใช้งานได้</h3><button class="copy" id="c2" type="button" data-for="p2">คัดลอก</button></div>
+    <pre id="p2">Build an interactive prototype of a coffee shop purchase flow for "Phu Kham Coffee Roasters" (Thai specialty coffee, all UI text in Thai).
+
+Screens and behaviour:
+- Home: hero with "Shop beans" button and a grid of 3 best-selling products. Clicking a product opens its detail page.
+- Product detail: gallery left, info right. Weight selector 250 g / 500 g updates the price (420 THB / 790 THB). Grind selector (whole bean, drip, espresso). Quantity stepper.
+- "Add to cart" opens a cart drawer that slides in from the right and shows the item, subtotal and a "Checkout" button.
+- Checkout: shipping address form and order summary; "Confirm order" leads to a confirmation screen with an order number.
+- The logo returns to Home on every screen.
+
+Style: forest green #1F4D3A, CTA red #B3362B, sand background #F3EDE3, text #1E1A17. Rounded pill buttons, soft shadows on cards. Desktop width 1440 px.</pre>
+  </div>
+
+  <div class="prompt">
+    <div class="prompt-hd"><h3>v0.app: ร่างเป็นโค้ดหน้าเว็บจริง</h3><button class="copy" id="c3" type="button" data-for="p3">คัดลอก</button></div>
+    <pre id="p3">Create a responsive product detail page with Next.js, Tailwind CSS and shadcn/ui for "Phu Kham Coffee Roasters", a Thai specialty coffee shop. All visible text in Thai.
+
+Content: breadcrumb (Home › Shop › Roasted beans › Phu Kham Natural); image gallery with 4 thumbnails; product name "ภูคำ Natural"; price 420 THB; 4.8 stars from 126 reviews; spec list (process Natural, roast Medium-Light, altitude 1,350 m, roasted every Monday); weight toggle 250 g / 500 g (790 THB); grind select; quantity stepper; "เพิ่มลงตะกร้า" button; tabs for description, brew guide and reviews; related products row.
+
+Design tokens: primary #1F4D3A, cta #B3362B, background #F3EDE3, text #1E1A17, accent #C99A3B. Headings in "Noto Serif Thai", body in "IBM Plex Sans Thai".
+
+Desktop: two columns (F-pattern). Mobile: one column with a sticky add-to-cart bar at the bottom.
+Use semantic HTML and accessible labels. Use placeholder images. No backend.</pre>
+  </div>
+
+  <div class="stack">
+    <h3>เปรียบเทียบ: ออกแบบเอง vs ใช้ AI ช่วยร่าง</h3>
+    <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th style="width:20%">ประเด็น</th><th>ออกแบบเอง (Wireframe → Figma)</th><th>ใช้ AI ช่วยร่าง (Stitch / Figma Make / v0)</th></tr></thead>
+        <tbody>
+          <tr><td>ความเร็ว</td><td><span class="pill warn">ช้า</span> ใช้เวลาหลายชั่วโมงถึงหลายวัน</td><td><span class="pill good">เร็ว</span> ได้ร่างแรกในไม่กี่นาที ลองได้หลายแบบ</td></tr>
+          <tr><td>ความเข้าใจผู้ใช้และโจทย์</td><td><span class="pill good">ดี</span> ออกแบบจาก Sitemap และกลุ่มเป้าหมายจริง</td><td><span class="pill warn">จำกัด</span> เดาจากข้อความใน Prompt มักได้เลย์เอาต์แบบที่พบบ่อยทั่วไป</td></tr>
+          <tr><td>ความตรงกับ CI</td><td><span class="pill good">ควบคุมได้ทุกค่า</span> สี ฟอนต์ ระยะห่าง</td><td><span class="pill warn">ต้องตรวจ</span> สีและฟอนต์อาจคลาดเคลื่อน หรือมีสีที่ไม่ได้สั่งเพิ่มมา</td></tr>
+          <tr><td>ภาษาไทย</td><td><span class="pill good">ถูกต้อง</span> เลือกฟอนต์ไทยและตัดบรรทัดเองได้</td><td><span class="pill warn">ต้องตรวจ</span> อาจได้ข้อความแปลกหรือฟอนต์ที่ไม่รองรับไทย</td></tr>
+          <tr><td>ความสม่ำเสมอ</td><td><span class="pill good">สูง</span> ใช้ Components และ Styles ร่วมกัน</td><td><span class="pill warn">ไม่แน่นอน</span> สั่งซ้ำด้วย Prompt เดิมอาจได้ผลต่างกัน</td></tr>
+          <tr><td>การนำไปใช้ต่อ</td><td>ไฟล์ Figma ส่งต่อให้นักพัฒนาได้ทันที</td><td>Stitch ส่งออกไป Figma หรือโค้ดได้, v0 ได้โค้ด React ที่ต้องรีวิวก่อนใช้</td></tr>
+          <tr><td>Accessibility</td><td>ตรวจ Contrast และขนาดตัวอักษรเองได้</td><td>ต้องตรวจซ้ำทุกครั้ง แม้จะสั่งไว้ใน Prompt</td></tr>
+          <tr><td>ทักษะที่ได้ฝึก</td><td>การคิดเชิงออกแบบ การจัดลำดับข้อมูล</td><td>การเขียนโจทย์ให้ชัด และการวิจารณ์/คัดเลือกงาน</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="stack">
+    <h3>แบบบันทึกผลการทดลอง (ให้นักศึกษากรอกจากผลจริง)</h3>
+    <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>เครื่องมือ</th><th>Prompt รอบที่</th><th>สิ่งที่ได้ดีกว่าแบบที่ออกแบบเอง</th><th>ปัญหาที่พบ</th><th>นำไปปรับใน Figma อย่างไร</th></tr></thead>
+        <tbody>
+          <tr><td>Google Stitch</td><td class="muted">1, 2</td><td></td><td></td><td></td></tr>
+          <tr><td>Figma Make</td><td class="muted">1</td><td></td><td></td><td></td></tr>
+          <tr><td>v0.app</td><td class="muted">1</td><td></td><td></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="x-callout">
+    <h4>ข้อสรุปของกลุ่มตัวอย่าง</h4>
+    <p>ใช้ AI ในช่วงหาไอเดีย เพื่อดูเลย์เอาต์หลายแบบได้เร็ว จากนั้นกลับมาตัดสินใจและเก็บรายละเอียดเองใน Figma โดยยึด Sitemap, Wireframe และ CI ของกลุ่มเป็นหลัก ส่วนที่ AI ช่วยได้มากที่สุดคือการเสนอการจัดวางที่กลุ่มไม่ได้คิดไว้ ส่วนที่ต้องแก้มากที่สุดคือข้อความภาษาไทย สี และความสม่ำเสมอของ Components</p>
+  </div>
+</section>
+
+
+</div>
+<div class="pager"><a class="pn" href="ws1.html"><small>กลับไปที่</small><b>ใบงานที่ 1</b></a><a class="pn next" href="ws2.html"><small>ถัดไป</small><b>ใบงานที่ 2</b></a></div></div>
+</main>
+<footer class="foot"><div class="wrap fgrid">
+<div><a class="brand" href="../index.html"><span class="logo" aria-hidden="true">&lt;/&gt;</span><span class="bt"><b>การเขียนโปรแกรมบนเว็บ</b><small>Web Programming</small></span></a>
+<p class="small">สื่อเสริมการเรียนรู้ ใช้ประกอบเอกสารประกอบการสอน ไม่มีระบบสมาชิกและไม่เก็บข้อมูลส่วนบุคคล ส่งงานผ่าน Google Classroom</p></div>
+<div><p class="fh">เรียนรู้</p><a href="../chapters.html">บทเรียน 10 บท</a><a href="../worksheets.html">ใบงานประจำบท</a><a href="../assessment.html">เกณฑ์การประเมินผล</a><a href="../clo.html">ผลลัพธ์การเรียนรู้ (CLO)</a><a href="../start.html">เริ่มต้นใช้งาน</a></div>
+<div><p class="fh">รายวิชา</p><a href="../about.html">เกี่ยวกับรายวิชา</a><span>ผู้สอน: ดร.สุรเชษฐ์ สังขพันธ์</span><span>พ.ศ. 2569</span></div>
+</div></footer>
+<script src="../assets/app.js"></script>
+<script>
+document.querySelectorAll('.copy').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    var pre=document.getElementById(btn.dataset.for);
+    var text=pre.textContent;
+    var done=function(){btn.textContent='คัดลอกแล้ว';setTimeout(function(){btn.textContent='คัดลอก'},1600)};
+    var fallback=function(){var r=document.createRange();r.selectNodeContents(pre);var s=window.getSelection();s.removeAllRanges();s.addRange(r);btn.textContent='เลือกข้อความแล้ว กด Ctrl/Cmd+C'};
+    try{navigator.clipboard.writeText(text).then(done,fallback)}catch(e){fallback()}
+  });
+});
+</script>
+</body>
+</html>
