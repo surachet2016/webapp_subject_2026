@@ -1,0 +1,1560 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="ตัวอย่างการทำใบงานที่ 8: ออกแบบฐานข้อมูล MySQL พร้อม Foreign Key, ระบบ CRUD ด้วย PHP MySQLi, Prepared Statements, อัปโหลดรูปและแบ่งหน้า">
+<meta name="theme-color" content="#4338ca">
+<title>ตัวอย่างใบงานที่ 8 · การเขียนโปรแกรมบนเว็บ</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%234338ca'/%3E%3Cpath d='M26 20 14 32l12 12M38 20l12 12-12 12' fill='none' stroke='%23fff' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preload" href="../assets/fonts/Sarabun-400-thai.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css">
+<style>
+.wsx{display:grid;gap:52px;padding-block:28px 24px;font-size:1.05rem;line-height:1.75;
+  --term-bg:#0f1226;--term-ink:#e8eaf8;--term-dim:#7b84aa;--ok-bg:#1f7a4a}
+.wsx p{margin:0;max-width:74ch}
+.wsx section{display:grid;gap:18px;scroll-margin-top:84px;min-width:0}
+.wsx h2{margin:0;font-size:clamp(1.4rem,3vw,1.75rem)}
+.wsx h3{margin:8px 0 0;font-size:1.18rem}
+.wsx kbd{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:.82em;padding:1px 6px;border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;background:var(--surface)}
+.wsx .x-muted{color:var(--muted);font-size:.95rem}
+.wsx .x-intro{display:grid;gap:16px}
+.wsx .x-toc{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:0;padding:0}
+.wsx .x-toc a{display:inline-flex;gap:8px;align-items:baseline;padding:6px 14px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--ink);text-decoration:none;font-size:.95rem}
+.wsx .x-toc b{color:var(--brand);font-family:"JetBrains Mono",monospace;font-weight:600;font-size:.85em}
+.wsx .x-head{display:flex;align-items:center;gap:14px;border-top:2px solid var(--ink);padding-top:16px}
+.wsx .x-num{font-family:"JetBrains Mono",monospace;font-weight:600;color:var(--brand-ink);background:var(--brand);padding:2px 10px;border-radius:8px;font-size:.95rem}
+.wsx .x-steps{margin:0;padding-left:1.4em;display:grid;gap:6px}
+.wsx .x-grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:20px;align-items:start}
+.wsx .x-grid2>*{min-width:0}
+.wsx .x-os{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px;display:grid;gap:10px}
+.wsx .x-os h3{margin:0}
+.wsx .x-checks{display:grid;gap:8px}
+.wsx .x-checks ul{margin:0;padding-left:1.2em;display:grid;gap:6px}
+.wsx .x-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.wsx .x-table{min-width:640px;background:var(--surface);border:1px solid var(--line)}
+.wsx .x-table th,.wsx .x-table td{border:1px solid var(--line)}
+.wsx .x-table code{font-size:.85em;overflow-wrap:anywhere}
+.wsx .x-shots{background:var(--soft);border-radius:12px;padding:12px 18px;display:grid;gap:4px}
+.wsx .x-shots b{color:var(--brand)}
+.wsx .x-shots ul{margin:0;padding-left:1.2em}
+.wsx .x-trouble{border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.wsx .x-trouble summary{cursor:pointer;padding:12px 18px;font-weight:700}
+.wsx .x-trouble dl{margin:0;padding:0 18px 14px;display:grid;gap:12px}
+.wsx .x-trouble dt{font-family:"JetBrains Mono",monospace;font-size:.88rem;color:var(--ink);font-weight:600}
+.wsx .x-trouble dd{margin:2px 0 0;color:var(--muted)}
+.wsx .x-callout{background:var(--warn-bg);color:var(--warn-ink);border-left:4px solid var(--accent);border-radius:10px;padding:12px 16px}
+.wsx .x-callout code{background:none}
+/* terminal + tree (always dark, like a real terminal) */
+.wsx .x-term{background:var(--term-bg);color:var(--term-ink);border-radius:12px;overflow:hidden;min-width:0}
+.wsx .x-term-bar{display:flex;gap:6px;align-items:center;padding:8px 12px;background:#181c38;font-size:.8rem;color:var(--term-dim)}
+.wsx .x-term-bar i{width:10px;height:10px;border-radius:50%;background:#3a3f63;display:inline-block}
+.wsx .x-term-bar span{margin-left:8px}
+.wsx .x-term pre{color:var(--term-ink);font-size:13.5px;white-space:pre;overflow-x:auto}
+.wsx .x-term b{color:#8be9a8;font-weight:600}
+.wsx .x-term .c{color:var(--term-dim)}
+.wsx .x-tree{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow-x:auto}
+.wsx .x-tree pre{color:var(--ink);font-size:14px;white-space:pre}
+.wsx .x-tree b{color:var(--brand)}
+.wsx .x-tree span{color:var(--muted)}
+/* mock UIs */
+.wsx .x-mock{border-radius:12px;overflow:hidden;font-family:"Segoe UI",system-ui,sans-serif;font-size:13px}
+.wsx .x-vsc{background:#1f1f1f;color:#ccc;border:1px solid #333}
+.wsx .x-vsc-hd{padding:10px 14px;font-size:11px;letter-spacing:.06em;color:#9a9a9a}
+.wsx .x-ext{display:grid;grid-template-columns:40px 1fr auto;gap:10px;align-items:center;padding:8px 14px}
+.wsx .x-ext:nth-child(2){background:#04395e}
+.wsx .x-ext b{display:block;color:#eee;font-weight:600}
+.wsx .x-ext small{color:#9a9a9a}
+.wsx .x-ext em{font-style:normal;color:#73c991}
+.wsx .x-ico{width:40px;height:40px;border-radius:6px;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px}
+.wsx .x-vsc-status{display:flex;gap:16px;justify-content:flex-end;background:#007acc;color:#fff;padding:3px 12px;font-size:12px;margin-top:10px}
+.wsx .x-vsc-status span:first-child{margin-right:auto}
+.wsx .x-xampp{min-width:520px;background:#f3f3f3;color:#222;border:1px solid #c8c8c8}
+.wsx .x-xampp-hd{background:#fb7a24;color:#fff;font-weight:700;padding:8px 14px}
+.wsx .x-xampp table{width:100%;font-size:13px;background:#fff}
+.wsx .x-xampp th{background:#e8e8e8;color:#222;font-weight:600}
+.wsx .x-xampp th,.wsx .x-xampp td{border:1px solid #d6d6d6;padding:6px 10px}
+.wsx .x-xampp td{background:#fff;color:#222}
+.wsx .x-xampp tr.on td:first-child{background:#9be29b;font-weight:600}
+.wsx .x-xampp td span{display:inline-block;border:1px solid #aaa;border-radius:3px;padding:0 8px;margin-right:6px;background:#f7f7f7}
+.wsx .x-log{font-family:"JetBrains Mono",monospace;font-size:12px;padding:8px 14px;color:#1a5fb4;background:#fff;border-top:1px solid #d6d6d6}
+
+.wsx .x-head{flex-wrap:wrap}
+.wsx .x-part{margin-left:auto;font-size:.85rem;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:2px 12px}
+.wsx .x-file{margin:6px 0 -10px;font-family:"JetBrains Mono",monospace;font-size:.85rem;color:var(--brand);font-weight:600}
+.wsx .x-plain{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.wsx .x-plain li{display:grid;grid-template-columns:96px 1fr;gap:10px;align-items:baseline}
+.wsx .x-wk{font-size:.8rem;font-weight:700;color:var(--brand);background:var(--soft);border-radius:6px;padding:1px 8px;text-align:center}
+.wsx .x-plain-dots{margin:0;padding-left:1.2em;display:grid;gap:6px}
+.wsx .x-sem{display:grid;gap:6px;font-family:"JetBrains Mono",monospace;font-size:12.5px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px}
+.wsx .x-sem div{border:1.5px solid var(--line);border-radius:6px;padding:6px 8px;color:var(--ink)}
+.wsx .x-sem .s-hd,.wsx .x-sem .s-ft{background:var(--s1-soft);border-color:var(--s1)}
+.wsx .x-sem .s-nav{background:var(--s2-soft);border-color:var(--s2)}
+.wsx .x-sem .s-row{display:grid;grid-template-columns:2fr 1fr;gap:6px;border:0;padding:0}
+.wsx .x-sem .s-main{background:var(--s3-soft);border-color:var(--s3);display:grid;gap:6px}
+.wsx .x-sem .s-art{background:var(--surface);display:grid;gap:5px}
+.wsx .x-sem .s-sec,.wsx .x-sem .s-sub{border-style:dashed;font-size:11.5px}
+.wsx .x-sem .s-aside{background:var(--s4-soft);border-color:var(--s4)}
+
+
+.wsx .x-er{display:grid;grid-template-columns:1fr auto 1fr;gap:10px 8px;align-items:center}
+.wsx .x-er .t{background:var(--surface);border:1.5px solid var(--line);border-radius:10px;overflow:hidden;display:grid;font-family:"JetBrains Mono",monospace;font-size:.82rem}
+.wsx .x-er .t b{background:var(--soft);color:var(--brand);padding:6px 10px}
+.wsx .x-er .t span{padding:3px 10px;border-top:1px solid var(--line);color:var(--ink)}
+.wsx .x-er .pk{font-weight:700}
+.wsx .x-er .fk{color:var(--brand)!important}
+.wsx .x-er .rel{font-family:"JetBrains Mono",monospace;color:var(--muted);font-size:.8rem;text-align:center}
+@media (max-width:640px){.wsx .x-er{grid-template-columns:1fr}.wsx .x-er .rel{transform:rotate(90deg)}}
+
+.wsx .x-flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.wsx .x-flow div{background:var(--surface);border:1.5px solid var(--brand);border-radius:10px;padding:8px 12px;font-family:"JetBrains Mono",monospace;font-size:.85rem;font-weight:600;color:var(--ink);display:grid;gap:2px}
+.wsx .x-flow small{font-weight:400;color:var(--muted);font-size:.78rem}
+.wsx .x-flow span{color:var(--muted)}
+
+.wsx .x-wrap pre{white-space:pre-wrap;overflow-wrap:anywhere}
+.wsx .x-preview{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface2)}
+.wsx .x-pv-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 12px;border-bottom:1px solid var(--line);background:var(--surface)}
+.wsx .x-pv-bar button{font:inherit;font-size:.9rem;padding:4px 12px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.wsx .x-pv-bar button[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
+.wsx .x-pv-sep{width:1px;height:22px;background:var(--line);margin:0 4px}
+.wsx .x-pv-bar .pvw{margin-left:auto;font-family:"JetBrains Mono",monospace;font-size:.85rem;color:var(--muted)}
+.wsx .x-pv-stage{overflow-x:auto;padding:12px}
+.wsx .x-pv-stage iframe{display:block;margin:0 auto;border:1px solid var(--line);border-radius:8px;background:#fff;max-width:none;transition:width .25s}
+</style>
+<script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+
+</head>
+<body class="ch-page">
+<a class="skip" href="#main">ข้ามไปยังเนื้อหา</a>
+<header class="top"><div class="wrap nav">
+<a class="brand" href="../index.html" aria-label="หน้าแรก การเขียนโปรแกรมบนเว็บ"><span class="logo" aria-hidden="true">&lt;/&gt;</span><span class="bt"><b>การเขียนโปรแกรมบนเว็บ</b><small>07-034-210</small></span></a>
+<button id="menuBtn" class="iconbtn menu-btn" type="button" aria-expanded="false" aria-controls="menu" aria-label="เปิดเมนู"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v2H3V6Zm0 5h18v2H3v-2Zm0 5h18v2H3v-2Z"/></svg></button>
+<nav id="menu" aria-label="เมนูหลัก">
+<a href="../chapters.html">บทเรียน</a><a href="../worksheets.html" aria-current="page">ใบงาน</a><a href="../assessment.html">เกณฑ์ประเมินผล</a><a href="../clo.html">ผลลัพธ์การเรียนรู้</a><a href="../start.html">เริ่มต้นใช้งาน</a><a href="../about.html">เกี่ยวกับรายวิชา</a>
+</nav>
+<button id="theme" class="iconbtn" type="button" aria-label="สลับโหมดมืดและสว่าง"><span class="i-moon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5Z"/></svg></span><span class="i-sun"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg></span></button>
+</div><div id="bar" class="bar" aria-hidden="true"></div></header>
+<main id="main">
+<div class="chead s3"><div class="wrap">
+<nav class="crumb" aria-label="เส้นทาง"><a href="../index.html">หน้าแรก</a><span>/</span><a href="../worksheets.html">ใบงาน</a><span>/</span><a href="ws8.html">ใบงานที่ 8</a><span>/</span><span aria-current="page">ตัวอย่าง</span></nav>
+<div class="chrow"><span class="badge b-s3 big" aria-hidden="true">SQL</span><div><p class="kicker">ตัวอย่างการทำใบงานที่ 8</p><h1>ระบบจัดการสินค้าร้านไร่ภูคำ: MySQL, CRUD, Prepared Statements และอัปโหลดรูป</h1></div></div></div></div>
+<div class="wrap narrow"><div class="wsx">
+
+<header class="x-intro">
+  <p>ตัวอย่างนี้ทำระบบหลังร้านของ "ไร่ภูคำ" ต่อจากใบงานที่ 7 โดยย้ายข้อมูลสมาชิกจากไฟล์ JSON มาเก็บใน MySQL ทุกไฟล์ผ่านการรันจริงกับ MySQL 8.0 (รุ่นเดียวกับที่มากับ MAMP) และ PHP 8.5 แล้วทดสอบทุกเส้นทางด้วย curl กรอบ "ผลลัพธ์จริง" คือหน้าเว็บที่ PHP ส่งกลับมาจริง (กดไม่ได้) ซึ่งผ่าน W3C Nu HTML Checker ทุกหน้า</p>
+  <div class="x-grid2">
+    <div class="x-os"><h3>แบ่งงานตามสัปดาห์</h3>
+      <ul class="x-plain">
+        <li><span class="x-wk">สัปดาห์ 14</span><span>ส่วนที่ 1 ข้อ 8.1–8.3 ฐานข้อมูล, CRUD, Prepared Statements</span></li>
+        <li><span class="x-wk">สัปดาห์ 15</span><span>ส่วนที่ 2 ข้อ 8.4 อัปโหลดรูปและแบ่งหน้า</span></li>
+        <li><span class="x-wk">ส่ง</span><span>ทั้งสองส่วนรวมกันภายในสัปดาห์ที่ 15</span></li>
+      </ul></div>
+    <div class="x-tree"><pre><b>htdocs/ws8/</b>
+├── login.php         <span>← 8.3</span>
+├── logout.php
+├── products.php      <span>← 8.2 Read, 8.3 ค้นหา, 8.4 แบ่งหน้า</span>
+├── product_form.php  <span>← 8.2 Create/Update, 8.4 อัปโหลด</span>
+├── product_delete.php<span>← 8.2 Delete</span>
+├── <b>includes/</b>
+│   ├── db.php        <span>← เชื่อมต่อฐานข้อมูล</span>
+│   ├── auth.php      <span>← ตรวจการล็อกอิน</span>
+│   ├── upload.php    <span>← 8.4 ตรวจและบันทึกรูป</span>
+│   ├── header.php
+│   └── footer.php
+├── <b>sql/</b>phukham_shop.sql <span>← 8.1</span>
+├── <b>css/</b>style.css
+└── <b>uploads/products/</b>
+    └── .htaccess     <span>← ห้ามรันสคริปต์</span></pre></div>
+  </div>
+  <h3>เตรียมเครื่อง</h3>
+  <ol class="x-steps">
+    <li>เปิด XAMPP Start ทั้ง Apache และ MySQL (MAMP: กด Start) วางโฟลเดอร์ <code>ws8</code> ใน htdocs</li>
+    <li>เปิด phpMyAdmin (<code>http://localhost/phpmyadmin</code> · MAMP: <code>http://localhost:8888/phpMyAdmin5/</code> หรือกด WebStart › Tools) แล้วนำเข้าไฟล์ <code>sql/phukham_shop.sql</code> ตามข้อ 8.1</li>
+    <li>แก้รหัสผ่านใน <code>includes/db.php</code>: XAMPP ใช้ <code>''</code> (ว่าง) ส่วน MAMP ใช้ <code>'root'</code> ตามภาคผนวก ค</li>
+    <li>เปิด <code>http://localhost/ws8/login.php</code> เข้าด้วยชื่อผู้ใช้ <code>admin</code> รหัสผ่าน <code>coffee2569</code> (บัญชีตัวอย่างในไฟล์ SQL)</li>
+  </ol>
+  <ul class="x-toc">
+    <li><a href="#e1"><b>8.1</b>ฐานข้อมูล + FK</a></li>
+    <li><a href="#e2"><b>8.2</b>CRUD</a></li>
+    <li><a href="#e3"><b>8.3</b>Prepared Statements</a></li>
+    <li><a href="#e4"><b>8.4</b>อัปโหลด + แบ่งหน้า</a></li>
+    <li><a href="#e5"><b>สรุป</b>สิ่งที่ต้องส่ง</a></li>
+  </ul>
+</header>
+
+<section id="e1">
+  <div class="x-head"><span class="x-num">8.1</span><h2>ออกแบบและสร้างฐานข้อมูลเชิงสัมพันธ์</h2><span class="x-part">ส่วนที่ 1 · สัปดาห์ 14</span></div>
+  <div class="x-er" aria-label="แผนภาพความสัมพันธ์ของตาราง">
+    <div class="t"><b>categories</b><span class="pk">🔑 category_id</span><span>name</span></div>
+    <div class="rel">1 ─── ∞</div>
+    <div class="t"><b>products</b><span class="pk">🔑 product_id</span><span class="fk">🔗 category_id</span><span>name</span><span>price</span><span>stock</span><span>image</span><span>created_at</span></div>
+    <div class="t"><b>members</b><span class="pk">🔑 member_id</span><span>username (UNIQUE)</span><span>password_hash</span><span>full_name</span><span>email (UNIQUE)</span><span>created_at</span></div>
+    <div class="rel">1 ─── ∞</div>
+    <div class="t"><b>orders</b><span class="pk">🔑 order_id</span><span class="fk">🔗 member_id</span><span>total</span><span>created_at</span></div>
+  </div>
+  <p class="x-muted">🔑 Primary Key · 🔗 Foreign Key · หมวด 1 หมวดมีสินค้าได้หลายรายการ และสมาชิก 1 คนมีคำสั่งซื้อได้หลายรายการ</p>
+  <p class="x-file">sql/phukham_shop.sql</p><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>-- ฐานข้อมูลร้านไร่ภูคำ (ใบงานที่ 8)
+-- นำเข้าใน phpMyAdmin: แท็บ Import เลือกไฟล์นี้ แล้วกด Go (หรือคัดลอกไปวางในแท็บ SQL)
+
+CREATE DATABASE IF NOT EXISTS phukham_shop
+  DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE phukham_shop;
+
+-- หมวดสินค้า
+CREATE TABLE categories (
+  category_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  name        VARCHAR(50)  NOT NULL,
+  PRIMARY KEY (category_id),
+  UNIQUE KEY uq_categories_name (name)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- สินค้า: category_id อ้างอิง categories
+CREATE TABLE products (
+  product_id  INT UNSIGNED  NOT NULL AUTO_INCREMENT,
+  category_id INT UNSIGNED  NOT NULL,
+  name        VARCHAR(100)  NOT NULL,
+  price       DECIMAL(10,2) NOT NULL,
+  stock       INT UNSIGNED  NOT NULL DEFAULT 0,
+  image       VARCHAR(255)  NULL,                 -- เก็บเฉพาะชื่อไฟล์ ไฟล์จริงอยู่ใน uploads/products
+  created_at  TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (product_id),
+  KEY fk_products_category (category_id),
+  CONSTRAINT fk_products_category FOREIGN KEY (category_id)
+    REFERENCES categories (category_id)
+    ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- สมาชิก
+CREATE TABLE members (
+  member_id     INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  username      VARCHAR(30)  NOT NULL,
+  password_hash VARCHAR(255) NOT NULL,              -- ค่าจาก password_hash() (ใบงานที่ 7)
+  full_name     VARCHAR(100) NOT NULL,
+  email         VARCHAR(100) NOT NULL,
+  created_at    TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (member_id),
+  UNIQUE KEY uq_members_username (username),
+  UNIQUE KEY uq_members_email (email)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- คำสั่งซื้อ: member_id อ้างอิง members
+CREATE TABLE orders (
+  order_id   INT UNSIGNED  NOT NULL AUTO_INCREMENT,
+  member_id  INT UNSIGNED  NOT NULL,
+  total      DECIMAL(10,2) NOT NULL,
+  created_at TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (order_id),
+  KEY fk_orders_member (member_id),
+  CONSTRAINT fk_orders_member FOREIGN KEY (member_id)
+    REFERENCES members (member_id)
+    ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ข้อมูลตัวอย่าง
+INSERT INTO categories (name) VALUES (&#x27;เมล็ดกาแฟคั่ว&#x27;), (&#x27;ดริปแบ็ก&#x27;), (&#x27;อุปกรณ์ชง&#x27;);
+
+INSERT INTO products (category_id, name, price, stock) VALUES
+  (1, &#x27;ภูคำ Natural 250 g&#x27;, 420.00, 12),
+  (1, &#x27;ภูคำ Honey 250 g&#x27;, 390.00, 3),
+  (1, &#x27;ภูคำ Washed 250 g&#x27;, 360.00, 20),
+  (1, &#x27;House Blend 250 g&#x27;, 320.00, 0),
+  (1, &#x27;ภูคำ Natural 500 g&#x27;, 790.00, 6),
+  (1, &#x27;Espresso Blend 250 g&#x27;, 340.00, 15),
+  (2, &#x27;ดริปแบ็ก Natural 10 ซอง&#x27;, 250.00, 30),
+  (2, &#x27;ดริปแบ็ก House Blend 10 ซอง&#x27;, 220.00, 25),
+  (2, &#x27;ดริปแบ็กรวมรส 20 ซอง&#x27;, 450.00, 8),
+  (3, &#x27;ดริปเปอร์เซรามิก&#x27;, 590.00, 5),
+  (3, &#x27;กระดาษกรอง 100 แผ่น&#x27;, 120.00, 40),
+  (3, &#x27;กาน้ำคอห่าน 600 ml&#x27;, 890.00, 4);
+
+-- สมาชิกตัวอย่าง: ชื่อผู้ใช้ admin รหัสผ่าน coffee2569
+INSERT INTO members (username, password_hash, full_name, email) VALUES
+  (&#x27;admin&#x27;, &#x27;$2y$12$YtM2cmUJRLif5eaawVAfs.xsEkWstPrQfryG4Wo9fHySzB61JkozW&#x27;, &#x27;ผู้ดูแลร้าน&#x27;, &#x27;admin@example.com&#x27;);
+
+INSERT INTO orders (member_id, total) VALUES (1, 840.00);</code></pre></div>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>คอลัมน์</th><th>ชนิดข้อมูล</th><th>เหตุผล</th></tr></thead><tbody><tr><td>รหัส (…_id)</td><td><code>INT UNSIGNED AUTO_INCREMENT</code></td><td>ไม่ติดลบ และ MySQL รันเลขให้เอง คอลัมน์ FK ต้องเป็นชนิดเดียวกับ PK ที่อ้างถึง (INT UNSIGNED เหมือนกัน)</td></tr><tr><td>price, total</td><td><code>DECIMAL(10,2)</code></td><td>เก็บเงินได้ตรงทุกสตางค์ FLOAT และ DOUBLE เก็บทศนิยมแบบประมาณ เช่น 0.1 + 0.2 อาจไม่เท่ากับ 0.3 พอดี</td></tr><tr><td>stock</td><td><code>INT UNSIGNED DEFAULT 0</code></td><td>จำนวนเต็ม ไม่ติดลบ</td></tr><tr><td>image</td><td><code>VARCHAR(255) NULL</code></td><td>เก็บแค่ชื่อไฟล์ ตัวไฟล์อยู่ในโฟลเดอร์ NULL หมายถึงยังไม่มีรูป</td></tr><tr><td>password_hash</td><td><code>VARCHAR(255)</code></td><td>ความยาวที่ PHP แนะนำสำหรับค่าจาก password_hash() เผื่ออัลกอริทึมในอนาคต</td></tr><tr><td>username, email</td><td><code>UNIQUE KEY</code></td><td>กันสมัครชื่อหรืออีเมลซ้ำที่ระดับฐานข้อมูล</td></tr><tr><td>ทุกตาราง</td><td><code>ENGINE=InnoDB</code> <code>utf8mb4</code></td><td>InnoDB จำเป็นสำหรับ Foreign Key และ utf8mb4 เก็บภาษาไทยและอีโมจิได้ครบ</td></tr></tbody></table></div>
+  <h3>สร้างใน phpMyAdmin</h3>
+  <ol class="x-steps">
+    <li><b>วิธีที่ 1 (นำเข้าไฟล์):</b> แท็บ <b>Import</b> › Choose File เลือก phukham_shop.sql › กด <b>Go</b> (หรือ Import ใน phpMyAdmin รุ่นใหม่)</li>
+    <li><b>วิธีที่ 2 (สร้างผ่านหน้าจอ):</b> แท็บ Databases สร้าง phukham_shop เลือก Collation utf8mb4_unicode_ci แล้วสร้างตารางทีละตาราง กำหนด A_I ที่คอลัมน์รหัส</li>
+    <li>กำหนด Foreign Key ผ่านหน้าจอตามหัวข้อ 8.1.1: เปิดตาราง products › แท็บ <b>Structure</b> › <b>Relation view</b> › เลือกคอลัมน์ category_id อ้างถึง categories.category_id ตั้ง ON DELETE เป็น RESTRICT</li>
+    <li>ตรวจความสัมพันธ์ด้วยแท็บ <b>Designer</b> ของฐานข้อมูล จะเห็นเส้นเชื่อมระหว่างตาราง</li>
+  </ol>
+  <h3>ทดสอบ Foreign Key (รันจริงบน MySQL 8.0.44)</h3>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>คำสั่ง</th><th>ผลที่ได้</th></tr></thead><tbody><tr><td><code>INSERT INTO products (category_id, name, price) VALUES (99, &#x27;ทดสอบ&#x27;, 1);</code></td><td><code>ERROR 1452</code> Cannot add or update a child row: a foreign key constraint fails ไม่มีหมวด 99</td></tr><tr><td><code>DELETE FROM categories WHERE category_id = 1;</code></td><td><code>ERROR 1451</code> Cannot delete or update a parent row ยังมีสินค้าในหมวดนี้</td></tr><tr><td><code>DELETE FROM members WHERE member_id = 1;</code></td><td><code>ERROR 1451</code> ยังมีคำสั่งซื้อของสมาชิกคนนี้</td></tr><tr><td><code>INSERT INTO members (username, …) VALUES (&#x27;admin&#x27;, …);</code></td><td><code>ERROR 1062</code> Duplicate entry 'admin' for key 'members.uq_members_username'</td></tr></tbody></table></div>
+  <details class="x-trouble"><summary>ข้อผิดพลาดที่พบบ่อย</summary><dl><div><dt>#1005 Can't create table (errno: 150 "Foreign key constraint is incorrectly formed")</dt><dd>ชนิดข้อมูลของ FK กับ PK ไม่ตรงกัน เช่น INT กับ INT UNSIGNED หรือสร้างตารางลูกก่อนตารางแม่</dd></div><div><dt>ภาษาไทยกลายเป็น ???</dt><dd>ฐานข้อมูลหรือตารางไม่ใช่ utf8mb4 หรือลืม mysqli_set_charset($conn, 'utf8mb4')</dd></div><div><dt>ไม่มีเมนู Relation view</dt><dd>ตารางเป็น MyISAM ให้เปลี่ยน Storage Engine เป็น InnoDB ในแท็บ Operations</dd></div></dl></details>
+  <div class="x-shots"><b>ภาพหน้าจอที่ต้องแนบ</b><ul><li>phpMyAdmin แท็บ Structure ของตาราง products ที่เห็นชนิดข้อมูลและ Primary Key</li><li>Relation view หรือ Designer ที่เห็น Foreign Key</li><li>ข้อความ error 1451 หรือ 1452 เมื่อทดสอบ</li></ul></div>
+</section>
+
+<section id="e2">
+  <div class="x-head"><span class="x-num">8.2</span><h2>ระบบจัดการสินค้า (CRUD)</h2><span class="x-part">ส่วนที่ 1 · สัปดาห์ 14</span></div>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>งาน</th><th>SQL</th><th>ไฟล์</th></tr></thead><tbody><tr><td>Create เพิ่ม</td><td><code>INSERT INTO products …</code></td><td>product_form.php (ไม่มี ?id)</td></tr><tr><td>Read แสดง</td><td><code>SELECT … JOIN categories …</code></td><td>products.php</td></tr><tr><td>Update แก้ไข</td><td><code>UPDATE products SET … WHERE product_id = ?</code></td><td>product_form.php?id=…</td></tr><tr><td>Delete ลบ</td><td><code>DELETE FROM products WHERE product_id = ?</code></td><td>product_delete.php (รับเฉพาะ POST)</td></tr></tbody></table></div>
+  <p class="x-file">includes/db.php</p><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;?php
+// เชื่อมต่อฐานข้อมูล ใช้ร่วมกันทุกหน้าด้วย require_once
+// XAMPP (Windows): รหัสผ่าน root ว่าง &quot;&quot;   |   MAMP (macOS): รหัสผ่าน root คือ &quot;root&quot; (ภาคผนวก ค)
+$dbHost = &#x27;localhost&#x27;;
+$dbUser = &#x27;root&#x27;;
+$dbPass = &#x27;&#x27;;
+$dbName = &#x27;phukham_shop&#x27;;
+
+// PHP 8.1 ขึ้นไป: ถ้าคำสั่ง SQL ผิดพลาด mysqli จะโยน mysqli_sql_exception ให้ดักด้วย try/catch ได้
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+
+try {
+    $conn = mysqli_connect($dbHost, $dbUser, $dbPass, $dbName);
+    mysqli_set_charset($conn, &#x27;utf8mb4&#x27;);      // ภาษาไทยไม่เพี้ยน
+} catch (mysqli_sql_exception $e) {
+    http_response_code(500);
+    // ไม่แสดงรายละเอียด error ให้ผู้ใช้เห็น เพราะอาจเปิดเผยชื่อผู้ใช้หรือโครงสร้างฐานข้อมูล
+    exit(&#x27;เชื่อมต่อฐานข้อมูลไม่ได้ กรุณาตรวจว่าเปิด MySQL แล้ว และค่าใน includes/db.php ถูกต้อง&#x27;);
+}</code></pre></div>
+  <p class="x-file">includes/auth.php</p><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;?php
+// ใส่ไว้บนสุดของหน้าที่ต้องล็อกอินก่อน (เหมือน dashboard.php ในใบงานที่ 7)
+session_start();
+if (!isset($_SESSION[&#x27;member_id&#x27;])) {
+    header(&#x27;Location: login.php&#x27;);
+    exit;
+}</code></pre></div>
+  <p class="x-file">products.php</p><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;?php
+// 8.2 แสดงรายการ (Read) + 8.3 ค้นหาด้วย Prepared Statement + 8.4 แบ่งหน้าด้วย LIMIT/OFFSET
+declare(strict_types=1);
+require_once &#x27;includes/auth.php&#x27;;
+require_once &#x27;includes/db.php&#x27;;
+
+$perPage = 5;
+$q = trim($_GET[&#x27;q&#x27;] ?? &#x27;&#x27;);
+$like = &#x27;%&#x27; . $q . &#x27;%&#x27;;                      // เครื่องหมาย % ใส่ในค่า ไม่ใช่ในคำสั่ง SQL
+
+// นับจำนวนทั้งหมดที่ตรงกับคำค้น เพื่อคำนวณจำนวนหน้า
+$stmt = mysqli_prepare($conn, &#x27;SELECT COUNT(*) AS total FROM products WHERE name LIKE ?&#x27;);
+mysqli_stmt_bind_param($stmt, &#x27;s&#x27;, $like);
+mysqli_stmt_execute($stmt);
+$total = (int) mysqli_fetch_assoc(mysqli_stmt_get_result($stmt))[&#x27;total&#x27;];
+mysqli_stmt_close($stmt);
+
+$totalPages = max(1, (int) ceil($total / $perPage));
+$page = max(1, min($totalPages, (int) ($_GET[&#x27;page&#x27;] ?? 1)));   // บังคับให้อยู่ระหว่าง 1 ถึงหน้าสุดท้าย
+$offset = ($page - 1) * $perPage;
+
+$sql = &#x27;SELECT p.product_id, p.name, p.price, p.stock, p.image, c.name AS category
+        FROM products p
+        JOIN categories c ON c.category_id = p.category_id
+        WHERE p.name LIKE ?
+        ORDER BY p.product_id
+        LIMIT ? OFFSET ?&#x27;;
+$stmt = mysqli_prepare($conn, $sql);
+mysqli_stmt_bind_param($stmt, &#x27;sii&#x27;, $like, $perPage, $offset);   // s = string, i = integer
+mysqli_stmt_execute($stmt);
+$products = mysqli_fetch_all(mysqli_stmt_get_result($stmt), MYSQLI_ASSOC);
+mysqli_stmt_close($stmt);
+
+/** สร้างลิงก์ไปหน้าอื่น โดยคงคำค้นไว้ */
+function pageUrl(int $p, string $q): string
+{
+    return &#x27;products.php?&#x27; . http_build_query([&#x27;q&#x27; =&gt; $q, &#x27;page&#x27; =&gt; $p]);
+}
+
+$title = &#x27;จัดการสินค้า&#x27;;
+require_once &#x27;includes/header.php&#x27;;
+?&gt;
+&lt;h1&gt;จัดการสินค้า&lt;/h1&gt;
+&lt;?php
+// แสดงข้อความตามรหัสที่กำหนดไว้เท่านั้น ไม่แสดงข้อความจาก URL ตรง ๆ
+$messages = [&#x27;added&#x27; =&gt; &#x27;เพิ่มสินค้าแล้ว&#x27;, &#x27;updated&#x27; =&gt; &#x27;แก้ไขสินค้าแล้ว&#x27;, &#x27;deleted&#x27; =&gt; &#x27;ลบสินค้าแล้ว&#x27;, &#x27;notfound&#x27; =&gt; &#x27;ไม่พบสินค้าที่จะลบ&#x27;];
+$msg = $messages[$_GET[&#x27;msg&#x27;] ?? &#x27;&#x27;] ?? &#x27;&#x27;;
+?&gt;
+&lt;?php if ($msg !== &#x27;&#x27;): ?&gt;
+  &lt;p class=&quot;ok&quot;&gt;&lt;?= $msg ?&gt;&lt;/p&gt;
+&lt;?php endif; ?&gt;
+
+&lt;div class=&quot;toolbar&quot;&gt;
+  &lt;form method=&quot;get&quot; role=&quot;search&quot;&gt;
+    &lt;label for=&quot;q&quot; class=&quot;inline&quot;&gt;ค้นหาชื่อสินค้า&lt;/label&gt;
+    &lt;input type=&quot;search&quot; id=&quot;q&quot; name=&quot;q&quot; value=&quot;&lt;?= htmlspecialchars($q) ?&gt;&quot;&gt;
+    &lt;button type=&quot;submit&quot;&gt;ค้นหา&lt;/button&gt;
+  &lt;/form&gt;
+  &lt;a href=&quot;product_form.php&quot;&gt;+ เพิ่มสินค้า&lt;/a&gt;
+&lt;/div&gt;
+
+&lt;p&gt;พบ &lt;?= $total ?&gt; รายการ · หน้า &lt;?= $page ?&gt; จาก &lt;?= $totalPages ?&gt;&lt;/p&gt;
+&lt;table&gt;
+  &lt;tr&gt;&lt;th scope=&quot;col&quot;&gt;รูป&lt;/th&gt;&lt;th scope=&quot;col&quot;&gt;ชื่อสินค้า&lt;/th&gt;&lt;th scope=&quot;col&quot;&gt;หมวด&lt;/th&gt;&lt;th scope=&quot;col&quot;&gt;ราคา&lt;/th&gt;&lt;th scope=&quot;col&quot;&gt;คงเหลือ&lt;/th&gt;&lt;th scope=&quot;col&quot;&gt;จัดการ&lt;/th&gt;&lt;/tr&gt;
+  &lt;?php foreach ($products as $p): ?&gt;
+    &lt;tr&gt;
+      &lt;td&gt;
+        &lt;?php if ($p[&#x27;image&#x27;]): ?&gt;
+          &lt;img class=&quot;thumb&quot; src=&quot;uploads/products/&lt;?= htmlspecialchars($p[&#x27;image&#x27;]) ?&gt;&quot; alt=&quot;&lt;?= htmlspecialchars($p[&#x27;name&#x27;]) ?&gt;&quot;&gt;
+        &lt;?php else: ?&gt;
+          &lt;span class=&quot;thumb&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
+        &lt;?php endif; ?&gt;
+      &lt;/td&gt;
+      &lt;td&gt;&lt;?= htmlspecialchars($p[&#x27;name&#x27;]) ?&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;?= htmlspecialchars($p[&#x27;category&#x27;]) ?&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;?= number_format((float) $p[&#x27;price&#x27;], 2) ?&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;?= (int) $p[&#x27;stock&#x27;] ?&gt;&lt;/td&gt;
+      &lt;td&gt;
+        &lt;a href=&quot;product_form.php?id=&lt;?= (int) $p[&#x27;product_id&#x27;] ?&gt;&quot;&gt;แก้ไข&lt;/a&gt;
+        &lt;!-- ลบด้วย POST ไม่ใช้ลิงก์ GET เพื่อไม่ให้ลบโดยไม่ตั้งใจ และถามยืนยันก่อน --&gt;
+        &lt;form class=&quot;inline&quot; method=&quot;post&quot; action=&quot;product_delete.php&quot;
+              onsubmit=&quot;return confirm(&#x27;ยืนยันลบสินค้านี้หรือไม่ ลบแล้วกู้คืนไม่ได้&#x27;);&quot;&gt;
+          &lt;input type=&quot;hidden&quot; name=&quot;id&quot; value=&quot;&lt;?= (int) $p[&#x27;product_id&#x27;] ?&gt;&quot;&gt;
+          &lt;button type=&quot;submit&quot; class=&quot;link-btn&quot;&gt;ลบ&lt;/button&gt;
+        &lt;/form&gt;
+      &lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;?php endforeach; ?&gt;
+&lt;/table&gt;
+
+&lt;nav class=&quot;pagination&quot; aria-label=&quot;เลือกหน้า&quot;&gt;
+  &lt;?php if ($page &gt; 1): ?&gt;&lt;a href=&quot;&lt;?= htmlspecialchars(pageUrl($page - 1, $q)) ?&gt;&quot;&gt;‹ ก่อนหน้า&lt;/a&gt;&lt;?php endif; ?&gt;
+  &lt;?php for ($i = 1; $i &lt;= $totalPages; $i++): ?&gt;
+    &lt;?php if ($i === $page): ?&gt;
+      &lt;span class=&quot;current&quot; aria-current=&quot;page&quot;&gt;&lt;?= $i ?&gt;&lt;/span&gt;
+    &lt;?php else: ?&gt;
+      &lt;a href=&quot;&lt;?= htmlspecialchars(pageUrl($i, $q)) ?&gt;&quot;&gt;&lt;?= $i ?&gt;&lt;/a&gt;
+    &lt;?php endif; ?&gt;
+  &lt;?php endfor; ?&gt;
+  &lt;?php if ($page &lt; $totalPages): ?&gt;&lt;a href=&quot;&lt;?= htmlspecialchars(pageUrl($page + 1, $q)) ?&gt;&quot;&gt;ถัดไป ›&lt;/a&gt;&lt;?php endif; ?&gt;
+&lt;/nav&gt;
+&lt;?php require_once &#x27;includes/footer.php&#x27;; ?&gt;</code></pre></div>
+  <p class="x-file">product_form.php</p><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;?php
+// 8.2 เพิ่ม (Create) และแก้ไข (Update) ในหน้าเดียว + 8.4 อัปโหลดรูป
+declare(strict_types=1);
+require_once &#x27;includes/auth.php&#x27;;
+require_once &#x27;includes/db.php&#x27;;
+require_once &#x27;includes/upload.php&#x27;;
+
+$id = (int) ($_GET[&#x27;id&#x27;] ?? 0);           // มี id = แก้ไข, ไม่มี = เพิ่มใหม่
+$product = [&#x27;category_id&#x27; =&gt; 1, &#x27;name&#x27; =&gt; &#x27;&#x27;, &#x27;price&#x27; =&gt; &#x27;&#x27;, &#x27;stock&#x27; =&gt; 0, &#x27;image&#x27; =&gt; null];
+$error = &#x27;&#x27;;
+
+if ($id &gt; 0) {
+    $stmt = mysqli_prepare($conn, &#x27;SELECT category_id, name, price, stock, image FROM products WHERE product_id = ?&#x27;);
+    mysqli_stmt_bind_param($stmt, &#x27;i&#x27;, $id);
+    mysqli_stmt_execute($stmt);
+    $product = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
+    mysqli_stmt_close($stmt);
+    if (!$product) {
+        http_response_code(404);
+        exit(&#x27;ไม่พบสินค้า&#x27;);
+    }
+}
+
+$categories = mysqli_fetch_all(mysqli_query($conn, &#x27;SELECT category_id, name FROM categories ORDER BY category_id&#x27;), MYSQLI_ASSOC);
+
+if ($_SERVER[&#x27;REQUEST_METHOD&#x27;] === &#x27;POST&#x27;) {
+    $product[&#x27;category_id&#x27;] = (int) ($_POST[&#x27;category_id&#x27;] ?? 0);
+    $product[&#x27;name&#x27;] = trim($_POST[&#x27;name&#x27;] ?? &#x27;&#x27;);
+    $product[&#x27;price&#x27;] = $_POST[&#x27;price&#x27;] ?? &#x27;&#x27;;
+    $product[&#x27;stock&#x27;] = $_POST[&#x27;stock&#x27;] ?? &#x27;&#x27;;
+
+    if ($product[&#x27;name&#x27;] === &#x27;&#x27; || mb_strlen($product[&#x27;name&#x27;]) &gt; 100) {
+        $error = &#x27;กรุณากรอกชื่อสินค้า ไม่เกิน 100 ตัวอักษร&#x27;;
+    } elseif (!is_numeric($product[&#x27;price&#x27;]) || $product[&#x27;price&#x27;] &lt; 0) {
+        $error = &#x27;ราคาต้องเป็นตัวเลขตั้งแต่ 0 ขึ้นไป&#x27;;
+    } elseif (filter_var($product[&#x27;stock&#x27;], FILTER_VALIDATE_INT, [&#x27;options&#x27; =&gt; [&#x27;min_range&#x27; =&gt; 0]]) === false) {
+        $error = &#x27;จำนวนคงเหลือต้องเป็นจำนวนเต็มตั้งแต่ 0 ขึ้นไป&#x27;;
+    } elseif (!in_array($product[&#x27;category_id&#x27;], array_column($categories, &#x27;category_id&#x27;), false)) {
+        $error = &#x27;กรุณาเลือกหมวดสินค้า&#x27;;
+    }
+
+    $oldImage = $product[&#x27;image&#x27;];
+    $newImage = null;
+    if ($error === &#x27;&#x27; &amp;&amp; ($_FILES[&#x27;image&#x27;][&#x27;error&#x27;] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_NO_FILE) {
+        try {
+            $newImage = saveProductImage($_FILES[&#x27;image&#x27;]);
+        } catch (RuntimeException $e) {
+            $error = $e-&gt;getMessage();
+        }
+    }
+
+    if ($error === &#x27;&#x27;) {
+        $image = $newImage ?? $oldImage;
+        $price = (float) $product[&#x27;price&#x27;];
+        $stock = (int) $product[&#x27;stock&#x27;];
+        if ($id &gt; 0) {
+            $stmt = mysqli_prepare($conn, &#x27;UPDATE products SET category_id = ?, name = ?, price = ?, stock = ?, image = ? WHERE product_id = ?&#x27;);
+            mysqli_stmt_bind_param($stmt, &#x27;isdisi&#x27;, $product[&#x27;category_id&#x27;], $product[&#x27;name&#x27;], $price, $stock, $image, $id);
+        } else {
+            $stmt = mysqli_prepare($conn, &#x27;INSERT INTO products (category_id, name, price, stock, image) VALUES (?, ?, ?, ?, ?)&#x27;);
+            mysqli_stmt_bind_param($stmt, &#x27;isdis&#x27;, $product[&#x27;category_id&#x27;], $product[&#x27;name&#x27;], $price, $stock, $image);
+        }
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_close($stmt);
+        if ($newImage !== null) {
+            deleteProductImage($oldImage);       // เปลี่ยนรูปแล้ว ลบรูปเก่าทิ้ง
+        }
+        header(&#x27;Location: products.php?msg=&#x27; . ($id &gt; 0 ? &#x27;updated&#x27; : &#x27;added&#x27;));
+        exit;
+    }
+}
+
+$title = $id &gt; 0 ? &#x27;แก้ไขสินค้า&#x27; : &#x27;เพิ่มสินค้า&#x27;;
+require_once &#x27;includes/header.php&#x27;;
+?&gt;
+&lt;h1&gt;&lt;?= $title ?&gt;&lt;/h1&gt;
+&lt;?php if ($error !== &#x27;&#x27;): ?&gt;
+  &lt;p class=&quot;error&quot;&gt;&lt;?= htmlspecialchars($error) ?&gt;&lt;/p&gt;
+&lt;?php endif; ?&gt;
+&lt;!-- enctype=&quot;multipart/form-data&quot; จำเป็นเมื่อฟอร์มมีการส่งไฟล์ --&gt;
+&lt;form method=&quot;post&quot; enctype=&quot;multipart/form-data&quot;&gt;
+  &lt;label for=&quot;category_id&quot;&gt;หมวดสินค้า&lt;/label&gt;
+  &lt;select id=&quot;category_id&quot; name=&quot;category_id&quot;&gt;
+    &lt;?php foreach ($categories as $c): ?&gt;
+      &lt;option value=&quot;&lt;?= (int) $c[&#x27;category_id&#x27;] ?&gt;&quot; &lt;?= (int) $c[&#x27;category_id&#x27;] === (int) $product[&#x27;category_id&#x27;] ? &#x27;selected&#x27; : &#x27;&#x27; ?&gt;&gt;&lt;?= htmlspecialchars($c[&#x27;name&#x27;]) ?&gt;&lt;/option&gt;
+    &lt;?php endforeach; ?&gt;
+  &lt;/select&gt;
+  &lt;label for=&quot;name&quot;&gt;ชื่อสินค้า&lt;/label&gt;
+  &lt;input type=&quot;text&quot; id=&quot;name&quot; name=&quot;name&quot; maxlength=&quot;100&quot; value=&quot;&lt;?= htmlspecialchars((string) $product[&#x27;name&#x27;]) ?&gt;&quot; required&gt;
+  &lt;label for=&quot;price&quot;&gt;ราคา (บาท)&lt;/label&gt;
+  &lt;input type=&quot;number&quot; id=&quot;price&quot; name=&quot;price&quot; min=&quot;0&quot; step=&quot;0.01&quot; value=&quot;&lt;?= htmlspecialchars((string) $product[&#x27;price&#x27;]) ?&gt;&quot; required&gt;
+  &lt;label for=&quot;stock&quot;&gt;จำนวนคงเหลือ&lt;/label&gt;
+  &lt;input type=&quot;number&quot; id=&quot;stock&quot; name=&quot;stock&quot; min=&quot;0&quot; step=&quot;1&quot; value=&quot;&lt;?= htmlspecialchars((string) $product[&#x27;stock&#x27;]) ?&gt;&quot; required&gt;
+  &lt;label for=&quot;image&quot;&gt;รูปสินค้า (JPG, PNG, WebP ไม่เกิน 2 MB)&lt;?= $id &gt; 0 ? &#x27; เว้นว่างถ้าไม่เปลี่ยนรูป&#x27; : &#x27;&#x27; ?&gt;&lt;/label&gt;
+  &lt;?php if ($product[&#x27;image&#x27;]): ?&gt;
+    &lt;img class=&quot;thumb&quot; src=&quot;uploads/products/&lt;?= htmlspecialchars($product[&#x27;image&#x27;]) ?&gt;&quot; alt=&quot;รูปปัจจุบัน&quot;&gt;
+  &lt;?php endif; ?&gt;
+  &lt;input type=&quot;file&quot; id=&quot;image&quot; name=&quot;image&quot; accept=&quot;image/jpeg,image/png,image/webp&quot;&gt;
+  &lt;button type=&quot;submit&quot;&gt;บันทึก&lt;/button&gt;
+  &lt;a href=&quot;products.php&quot;&gt;ยกเลิก&lt;/a&gt;
+&lt;/form&gt;
+&lt;?php require_once &#x27;includes/footer.php&#x27;; ?&gt;</code></pre></div>
+  <p class="x-file">product_delete.php</p><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;?php
+// 8.2 ลบ (Delete): รับเฉพาะ POST จากฟอร์มที่ถามยืนยันแล้ว
+declare(strict_types=1);
+require_once &#x27;includes/auth.php&#x27;;
+require_once &#x27;includes/db.php&#x27;;
+require_once &#x27;includes/upload.php&#x27;;
+
+if ($_SERVER[&#x27;REQUEST_METHOD&#x27;] !== &#x27;POST&#x27;) {
+    http_response_code(405);
+    exit(&#x27;ต้องลบผ่านปุ่มลบในหน้ารายการสินค้า&#x27;);
+}
+$id = (int) ($_POST[&#x27;id&#x27;] ?? 0);
+
+// อ่านชื่อรูปก่อนลบ เพื่อลบไฟล์รูปด้วย
+$stmt = mysqli_prepare($conn, &#x27;SELECT image FROM products WHERE product_id = ?&#x27;);
+mysqli_stmt_bind_param($stmt, &#x27;i&#x27;, $id);
+mysqli_stmt_execute($stmt);
+$row = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
+mysqli_stmt_close($stmt);
+
+if ($row) {
+    $stmt = mysqli_prepare($conn, &#x27;DELETE FROM products WHERE product_id = ?&#x27;);
+    mysqli_stmt_bind_param($stmt, &#x27;i&#x27;, $id);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+    deleteProductImage($row[&#x27;image&#x27;]);
+}
+header(&#x27;Location: products.php?msg=&#x27; . ($row ? &#x27;deleted&#x27; : &#x27;notfound&#x27;));
+exit;</code></pre></div>
+  <div class="x-preview" id="pv2"><div class="x-pv-bar" role="group" aria-label="เลือกความกว้างจอ"><button type="button" data-w="720" aria-pressed="true">ผลลัพธ์จริง</button><span class="x-pv-sep"></span><button type="button" class="doc" data-doc="0" aria-pressed="true">รายการสินค้า หน้า 1</button><button type="button" class="doc" data-doc="1" aria-pressed="false">ฟอร์มแก้ไข</button><button type="button" class="doc" data-doc="2" aria-pressed="false">ค้นหา "ดริป"</button><span class="pvw">720px</span></div><div class="x-pv-stage"><iframe title="ตัวอย่างหน้าเว็บ รายการสินค้า หน้า 1" sandbox="allow-scripts allow-forms" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;title&gt;จัดการสินค้า&lt;/title&gt;
+  &lt;style&gt;body { font-family: Tahoma, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 16px; line-height: 1.6; color: #1e1a17; background: #f7f5f0; }
+h1 { color: #1f4d3a; }
+table { border-collapse: collapse; margin: 12px 0; }
+th, td { border: 1px solid #bbb; padding: 4px 10px; text-align: left; }
+th { background: #e7efe9; }
+label { display: block; margin-top: 10px; font-weight: bold; }
+input, select { padding: 6px; font: inherit; }
+button { margin-top: 12px; padding: 8px 18px; font: inherit; background: #1f4d3a; color: #fff; border: 0; border-radius: 6px; }
+.box { background: #fff; border-radius: 8px; padding: 12px 16px; margin: 12px 0; }
+.ok { color: #1f7a4a; font-weight: bold; }
+.error { color: #b3261e; font-weight: bold; }
+nav a { margin-right: 12px; }
+.toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+.thumb { width: 64px; height: 48px; object-fit: cover; border-radius: 4px; background: #e5ddcf; display: block; }
+.pagination { display: flex; gap: 6px; flex-wrap: wrap; margin: 12px 0; }
+.pagination a, .pagination span { padding: 4px 10px; border: 1px solid #bbb; border-radius: 4px; text-decoration: none; }
+.pagination .current { background: #1f4d3a; color: #fff; border-color: #1f4d3a; }
+.inline { display: inline; }
+.link-btn { background: none; border: 0; padding: 0; margin: 0; color: #b3261e; text-decoration: underline; cursor: pointer; font: inherit; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;nav class=&quot;toolbar&quot;&gt;
+    &lt;span&gt;ระบบหลังร้านไร่ภูคำ · ผู้ดูแลร้าน&lt;/span&gt;
+    &lt;span&gt;&lt;a href=&quot;products.php&quot;&gt;สินค้า&lt;/a&gt; &lt;a href=&quot;logout.php&quot;&gt;ออกจากระบบ&lt;/a&gt;&lt;/span&gt;
+  &lt;/nav&gt;
+&lt;h1&gt;จัดการสินค้า&lt;/h1&gt;
+  &lt;p class=&quot;ok&quot;&gt;แก้ไขสินค้าแล้ว&lt;/p&gt;
+
+&lt;div class=&quot;toolbar&quot;&gt;
+  &lt;form method=&quot;get&quot; role=&quot;search&quot;&gt;
+    &lt;label for=&quot;q&quot; class=&quot;inline&quot;&gt;ค้นหาชื่อสินค้า&lt;/label&gt;
+    &lt;input type=&quot;search&quot; id=&quot;q&quot; name=&quot;q&quot; value=&quot;&quot;&gt;
+    &lt;button type=&quot;submit&quot;&gt;ค้นหา&lt;/button&gt;
+  &lt;/form&gt;
+  &lt;a href=&quot;product_form.php&quot;&gt;+ เพิ่มสินค้า&lt;/a&gt;
+&lt;/div&gt;
+
+&lt;p&gt;พบ 12 รายการ · หน้า 1 จาก 3&lt;/p&gt;
+&lt;table&gt;
+  &lt;tr&gt;&lt;th scope=&quot;col&quot;&gt;รูป&lt;/th&gt;&lt;th scope=&quot;col&quot;&gt;ชื่อสินค้า&lt;/th&gt;&lt;th scope=&quot;col&quot;&gt;หมวด&lt;/th&gt;&lt;th scope=&quot;col&quot;&gt;ราคา&lt;/th&gt;&lt;th scope=&quot;col&quot;&gt;คงเหลือ&lt;/th&gt;&lt;th scope=&quot;col&quot;&gt;จัดการ&lt;/th&gt;&lt;/tr&gt;
+      &lt;tr&gt;
+      &lt;td&gt;
+                  &lt;img class=&quot;thumb&quot; src=&quot;data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAEsAZADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD6LooormNgooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKK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&quot; alt=&quot;ภูคำ Natural 250 g&quot;&gt;
+              &lt;/td&gt;
+      &lt;td&gt;ภูคำ Natural 250 g&lt;/td&gt;
+      &lt;td&gt;เมล็ดกาแฟคั่ว&lt;/td&gt;
+      &lt;td&gt;420.00&lt;/td&gt;
+      &lt;td&gt;12&lt;/td&gt;
+      &lt;td&gt;
+        &lt;a href=&quot;product_form.php?id=1&quot;&gt;แก้ไข&lt;/a&gt;
+        &lt;!-- ลบด้วย POST ไม่ใช้ลิงก์ GET เพื่อไม่ให้ลบโดยไม่ตั้งใจ และถามยืนยันก่อน --&gt;
+        &lt;form class=&quot;inline&quot; method=&quot;post&quot; action=&quot;product_delete.php&quot;
+              onsubmit=&quot;return confirm(&#x27;ยืนยันลบสินค้านี้หรือไม่ ลบแล้วกู้คืนไม่ได้&#x27;);&quot;&gt;
+          &lt;input type=&quot;hidden&quot; name=&quot;id&quot; value=&quot;1&quot;&gt;
+          &lt;button type=&quot;submit&quot; class=&quot;link-btn&quot;&gt;ลบ&lt;/button&gt;
+        &lt;/form&gt;
+      &lt;/td&gt;
+    &lt;/tr&gt;
+      &lt;tr&gt;
+      &lt;td&gt;
+                  &lt;img class=&quot;thumb&quot; src=&quot;data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAEsAZADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD6LooormNgooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKK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X/43R/wo7xL/AM/2j/8Af6X/AON19G0UvZxK/tCsfOX/AAo7xL/z/aP/AN/pf/jdH/CjvEv/AD/aP/3+l/8AjdfRtFHs4h/aFY+cv+FHeJf+f7R/+/0v/wAbo/4Ud4l/5/tH/wC/0v8A8br6Noo9nEP7QrHzl/wo7xL/AM/2j/8Af6X/AON0f8KO8S/8/wBo/wD3+l/+N19G0UeziH9oVj5y/wCFHeJf+f7R/wDv9L/8bo/4Ud4l/wCf7R/+/wBL/wDG6+jaKPZxD+0Kx85f8KO8S/8AP9o//f6X/wCN1q+HvgXcm6LeItThS2XolgSzvwf4nUBcHb2bPPTrXvFFP2cRPMKzVrlTStOtNJ06Cx06BLe0gXbHGnQD+pJySTySSTVuiirOJu+rCiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD//2Q==&quot; alt=&quot;ภูคำ Honey 250 g&quot;&gt;
+              &lt;/td&gt;
+      &lt;td&gt;ภูคำ Honey 250 g&lt;/td&gt;
+      &lt;td&gt;เมล็ดกาแฟคั่ว&lt;/td&gt;
+      &lt;td&gt;390.00&lt;/td&gt;
+      &lt;td&gt;3&lt;/td&gt;
+      &lt;td&gt;
+        &lt;a href=&quot;product_form.php?id=2&quot;&gt;แก้ไข&lt;/a&gt;
+        &lt;!-- ลบด้วย POST ไม่ใช้ลิงก์ GET เพื่อไม่ให้ลบโดยไม่ตั้งใจ และถามยืนยันก่อน --&gt;
+        &lt;form class=&quot;inline&quot; method=&quot;post&quot; action=&quot;product_delete.php&quot;
+              onsubmit=&quot;return confirm(&#x27;ยืนยันลบสินค้านี้หรือไม่ ลบแล้วกู้คืนไม่ได้&#x27;);&quot;&gt;
+          &lt;input type=&quot;hidden&quot; name=&quot;id&quot; value=&quot;2&quot;&gt;
+          &lt;button type=&quot;submit&quot; class=&quot;link-btn&quot;&gt;ลบ&lt;/button&gt;
+        &lt;/form&gt;
+      &lt;/td&gt;
+    &lt;/tr&gt;
+      &lt;tr&gt;
+      &lt;td&gt;
+                  &lt;span class=&quot;thumb&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
+              &lt;/td&gt;
+      &lt;td&gt;ภูคำ Washed 250 g&lt;/td&gt;
+      &lt;td&gt;เมล็ดกาแฟคั่ว&lt;/td&gt;
+      &lt;td&gt;360.00&lt;/td&gt;
+      &lt;td&gt;20&lt;/td&gt;
+      &lt;td&gt;
+        &lt;a href=&quot;product_form.php?id=3&quot;&gt;แก้ไข&lt;/a&gt;
+        &lt;!-- ลบด้วย POST ไม่ใช้ลิงก์ GET เพื่อไม่ให้ลบโดยไม่ตั้งใจ และถามยืนยันก่อน --&gt;
+        &lt;form class=&quot;inline&quot; method=&quot;post&quot; action=&quot;product_delete.php&quot;
+              onsubmit=&quot;return confirm(&#x27;ยืนยันลบสินค้านี้หรือไม่ ลบแล้วกู้คืนไม่ได้&#x27;);&quot;&gt;
+          &lt;input type=&quot;hidden&quot; name=&quot;id&quot; value=&quot;3&quot;&gt;
+          &lt;button type=&quot;submit&quot; class=&quot;link-btn&quot;&gt;ลบ&lt;/button&gt;
+        &lt;/form&gt;
+      &lt;/td&gt;
+    &lt;/tr&gt;
+      &lt;tr&gt;
+      &lt;td&gt;
+                  &lt;span class=&quot;thumb&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
+              &lt;/td&gt;
+      &lt;td&gt;House Blend 250 g&lt;/td&gt;
+      &lt;td&gt;เมล็ดกาแฟคั่ว&lt;/td&gt;
+      &lt;td&gt;320.00&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;
+        &lt;a href=&quot;product_form.php?id=4&quot;&gt;แก้ไข&lt;/a&gt;
+        &lt;!-- ลบด้วย POST ไม่ใช้ลิงก์ GET เพื่อไม่ให้ลบโดยไม่ตั้งใจ และถามยืนยันก่อน --&gt;
+        &lt;form class=&quot;inline&quot; method=&quot;post&quot; action=&quot;product_delete.php&quot;
+              onsubmit=&quot;return confirm(&#x27;ยืนยันลบสินค้านี้หรือไม่ ลบแล้วกู้คืนไม่ได้&#x27;);&quot;&gt;
+          &lt;input type=&quot;hidden&quot; name=&quot;id&quot; value=&quot;4&quot;&gt;
+          &lt;button type=&quot;submit&quot; class=&quot;link-btn&quot;&gt;ลบ&lt;/button&gt;
+        &lt;/form&gt;
+      &lt;/td&gt;
+    &lt;/tr&gt;
+      &lt;tr&gt;
+      &lt;td&gt;
+                  &lt;span class=&quot;thumb&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
+              &lt;/td&gt;
+      &lt;td&gt;ภูคำ Natural 500 g&lt;/td&gt;
+      &lt;td&gt;เมล็ดกาแฟคั่ว&lt;/td&gt;
+      &lt;td&gt;790.00&lt;/td&gt;
+      &lt;td&gt;6&lt;/td&gt;
+      &lt;td&gt;
+        &lt;a href=&quot;product_form.php?id=5&quot;&gt;แก้ไข&lt;/a&gt;
+        &lt;!-- ลบด้วย POST ไม่ใช้ลิงก์ GET เพื่อไม่ให้ลบโดยไม่ตั้งใจ และถามยืนยันก่อน --&gt;
+        &lt;form class=&quot;inline&quot; method=&quot;post&quot; action=&quot;product_delete.php&quot;
+              onsubmit=&quot;return confirm(&#x27;ยืนยันลบสินค้านี้หรือไม่ ลบแล้วกู้คืนไม่ได้&#x27;);&quot;&gt;
+          &lt;input type=&quot;hidden&quot; name=&quot;id&quot; value=&quot;5&quot;&gt;
+          &lt;button type=&quot;submit&quot; class=&quot;link-btn&quot;&gt;ลบ&lt;/button&gt;
+        &lt;/form&gt;
+      &lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/table&gt;
+
+&lt;nav class=&quot;pagination&quot; aria-label=&quot;เลือกหน้า&quot;&gt;
+              &lt;span class=&quot;current&quot; aria-current=&quot;page&quot;&gt;1&lt;/span&gt;
+                &lt;a href=&quot;products.php?q=&amp;amp;page=2&quot;&gt;2&lt;/a&gt;
+                &lt;a href=&quot;products.php?q=&amp;amp;page=3&quot;&gt;3&lt;/a&gt;
+        &lt;a href=&quot;products.php?q=&amp;amp;page=2&quot;&gt;ถัดไป ›&lt;/a&gt;&lt;/nav&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;small&gt;ไร่ภูคำ Coffee Roasters · ใบงานที่ 8&lt;/small&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+" style="width:720px;height:640px" ></iframe><iframe title="ตัวอย่างหน้าเว็บ ฟอร์มแก้ไข" sandbox="allow-scripts allow-forms" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;title&gt;แก้ไขสินค้า&lt;/title&gt;
+  &lt;style&gt;body { font-family: Tahoma, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 16px; line-height: 1.6; color: #1e1a17; background: #f7f5f0; }
+h1 { color: #1f4d3a; }
+table { border-collapse: collapse; margin: 12px 0; }
+th, td { border: 1px solid #bbb; padding: 4px 10px; text-align: left; }
+th { background: #e7efe9; }
+label { display: block; margin-top: 10px; font-weight: bold; }
+input, select { padding: 6px; font: inherit; }
+button { margin-top: 12px; padding: 8px 18px; font: inherit; background: #1f4d3a; color: #fff; border: 0; border-radius: 6px; }
+.box { background: #fff; border-radius: 8px; padding: 12px 16px; margin: 12px 0; }
+.ok { color: #1f7a4a; font-weight: bold; }
+.error { color: #b3261e; font-weight: bold; }
+nav a { margin-right: 12px; }
+.toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+.thumb { width: 64px; height: 48px; object-fit: cover; border-radius: 4px; background: #e5ddcf; display: block; }
+.pagination { display: flex; gap: 6px; flex-wrap: wrap; margin: 12px 0; }
+.pagination a, .pagination span { padding: 4px 10px; border: 1px solid #bbb; border-radius: 4px; text-decoration: none; }
+.pagination .current { background: #1f4d3a; color: #fff; border-color: #1f4d3a; }
+.inline { display: inline; }
+.link-btn { background: none; border: 0; padding: 0; margin: 0; color: #b3261e; text-decoration: underline; cursor: pointer; font: inherit; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;nav class=&quot;toolbar&quot;&gt;
+    &lt;span&gt;ระบบหลังร้านไร่ภูคำ · ผู้ดูแลร้าน&lt;/span&gt;
+    &lt;span&gt;&lt;a href=&quot;products.php&quot;&gt;สินค้า&lt;/a&gt; &lt;a href=&quot;logout.php&quot;&gt;ออกจากระบบ&lt;/a&gt;&lt;/span&gt;
+  &lt;/nav&gt;
+&lt;h1&gt;แก้ไขสินค้า&lt;/h1&gt;
+&lt;!-- enctype=&quot;multipart/form-data&quot; จำเป็นเมื่อฟอร์มมีการส่งไฟล์ --&gt;
+&lt;form method=&quot;post&quot; enctype=&quot;multipart/form-data&quot;&gt;
+  &lt;label for=&quot;category_id&quot;&gt;หมวดสินค้า&lt;/label&gt;
+  &lt;select id=&quot;category_id&quot; name=&quot;category_id&quot;&gt;
+          &lt;option value=&quot;1&quot; selected&gt;เมล็ดกาแฟคั่ว&lt;/option&gt;
+          &lt;option value=&quot;2&quot; &gt;ดริปแบ็ก&lt;/option&gt;
+          &lt;option value=&quot;3&quot; &gt;อุปกรณ์ชง&lt;/option&gt;
+      &lt;/select&gt;
+  &lt;label for=&quot;name&quot;&gt;ชื่อสินค้า&lt;/label&gt;
+  &lt;input type=&quot;text&quot; id=&quot;name&quot; name=&quot;name&quot; maxlength=&quot;100&quot; value=&quot;ภูคำ Natural 250 g&quot; required&gt;
+  &lt;label for=&quot;price&quot;&gt;ราคา (บาท)&lt;/label&gt;
+  &lt;input type=&quot;number&quot; id=&quot;price&quot; name=&quot;price&quot; min=&quot;0&quot; step=&quot;0.01&quot; value=&quot;420.00&quot; required&gt;
+  &lt;label for=&quot;stock&quot;&gt;จำนวนคงเหลือ&lt;/label&gt;
+  &lt;input type=&quot;number&quot; id=&quot;stock&quot; name=&quot;stock&quot; min=&quot;0&quot; step=&quot;1&quot; value=&quot;12&quot; required&gt;
+  &lt;label for=&quot;image&quot;&gt;รูปสินค้า (JPG, PNG, WebP ไม่เกิน 2 MB) เว้นว่างถ้าไม่เปลี่ยนรูป&lt;/label&gt;
+      &lt;img class=&quot;thumb&quot; src=&quot;data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAEsAZADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD6LooormNgooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKK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&quot; alt=&quot;รูปปัจจุบัน&quot;&gt;
+    &lt;input type=&quot;file&quot; id=&quot;image&quot; name=&quot;image&quot; accept=&quot;image/jpeg,image/png,image/webp&quot;&gt;
+  &lt;button type=&quot;submit&quot;&gt;บันทึก&lt;/button&gt;
+  &lt;a href=&quot;products.php&quot;&gt;ยกเลิก&lt;/a&gt;
+&lt;/form&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;small&gt;ไร่ภูคำ Coffee Roasters · ใบงานที่ 8&lt;/small&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+" style="width:720px;height:640px" hidden></iframe><iframe title="ตัวอย่างหน้าเว็บ ค้นหา &quot;ดริป&quot;" sandbox="allow-scripts allow-forms" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;title&gt;จัดการสินค้า&lt;/title&gt;
+  &lt;style&gt;body { font-family: Tahoma, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 16px; line-height: 1.6; color: #1e1a17; background: #f7f5f0; }
+h1 { color: #1f4d3a; }
+table { border-collapse: collapse; margin: 12px 0; }
+th, td { border: 1px solid #bbb; padding: 4px 10px; text-align: left; }
+th { background: #e7efe9; }
+label { display: block; margin-top: 10px; font-weight: bold; }
+input, select { padding: 6px; font: inherit; }
+button { margin-top: 12px; padding: 8px 18px; font: inherit; background: #1f4d3a; color: #fff; border: 0; border-radius: 6px; }
+.box { background: #fff; border-radius: 8px; padding: 12px 16px; margin: 12px 0; }
+.ok { color: #1f7a4a; font-weight: bold; }
+.error { color: #b3261e; font-weight: bold; }
+nav a { margin-right: 12px; }
+.toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+.thumb { width: 64px; height: 48px; object-fit: cover; border-radius: 4px; background: #e5ddcf; display: block; }
+.pagination { display: flex; gap: 6px; flex-wrap: wrap; margin: 12px 0; }
+.pagination a, .pagination span { padding: 4px 10px; border: 1px solid #bbb; border-radius: 4px; text-decoration: none; }
+.pagination .current { background: #1f4d3a; color: #fff; border-color: #1f4d3a; }
+.inline { display: inline; }
+.link-btn { background: none; border: 0; padding: 0; margin: 0; color: #b3261e; text-decoration: underline; cursor: pointer; font: inherit; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;nav class=&quot;toolbar&quot;&gt;
+    &lt;span&gt;ระบบหลังร้านไร่ภูคำ · ผู้ดูแลร้าน&lt;/span&gt;
+    &lt;span&gt;&lt;a href=&quot;products.php&quot;&gt;สินค้า&lt;/a&gt; &lt;a href=&quot;logout.php&quot;&gt;ออกจากระบบ&lt;/a&gt;&lt;/span&gt;
+  &lt;/nav&gt;
+&lt;h1&gt;จัดการสินค้า&lt;/h1&gt;
+
+&lt;div class=&quot;toolbar&quot;&gt;
+  &lt;form method=&quot;get&quot; role=&quot;search&quot;&gt;
+    &lt;label for=&quot;q&quot; class=&quot;inline&quot;&gt;ค้นหาชื่อสินค้า&lt;/label&gt;
+    &lt;input type=&quot;search&quot; id=&quot;q&quot; name=&quot;q&quot; value=&quot;ดริป&quot;&gt;
+    &lt;button type=&quot;submit&quot;&gt;ค้นหา&lt;/button&gt;
+  &lt;/form&gt;
+  &lt;a href=&quot;product_form.php&quot;&gt;+ เพิ่มสินค้า&lt;/a&gt;
+&lt;/div&gt;
+
+&lt;p&gt;พบ 4 รายการ · หน้า 1 จาก 1&lt;/p&gt;
+&lt;table&gt;
+  &lt;tr&gt;&lt;th scope=&quot;col&quot;&gt;รูป&lt;/th&gt;&lt;th scope=&quot;col&quot;&gt;ชื่อสินค้า&lt;/th&gt;&lt;th scope=&quot;col&quot;&gt;หมวด&lt;/th&gt;&lt;th scope=&quot;col&quot;&gt;ราคา&lt;/th&gt;&lt;th scope=&quot;col&quot;&gt;คงเหลือ&lt;/th&gt;&lt;th scope=&quot;col&quot;&gt;จัดการ&lt;/th&gt;&lt;/tr&gt;
+      &lt;tr&gt;
+      &lt;td&gt;
+                  &lt;img class=&quot;thumb&quot; src=&quot;data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAEsAZADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD6LooormNgooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKK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8F/+Rpuv+vN//Q0r2ivF/gv/AMjTdf8AXm//AKGle0V6uD/hHHX+MKKKK6zIKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAK8s+OH/MF/7b/wDtOvU68s+OH/MF/wC2/wD7Trnxf8J/11NKPxo8sooorxjuCiiigAooooAKKKKACiiigAooooAKKKKAO++C/wDyNN1/15v/AOhpXtFeL/Bf/kabr/rzf/0NK9or1sH/AAjir/GFFFFdZkFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFeWfHD/mC/9t//AGnXqdeWfHD/AJgv/bf/ANp1z4v+E/66mlH40eWUUUV4x3BRRRQAUUUUAFFFFABRRRQAUUUUAFFFFAHffBf/AJGm6/683/8AQ0r2ivF/gv8A8jTdf9eb/wDoaV7RXrYP+EcVf4wooorrMgooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAryz44f8wX/ALb/APtOvU688+M2mS3Oj2moRHKWbssi8fdfaN2c9iFGOfve1c+KTdJ2NKTtNHjlFFFeMdwUUUUAFFFFABRRRQAUUUUAFFFFABRRRQB33wX/AORpuv8Arzf/ANDSvaK8n+CumSm6vtVY4hVPsqjj5mJVj3yMAL253e1esV6+DTVJXOKs/fCiiiuoyCiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACmSxpNE8UyLJG6lWRhkMD1BHcU+igDy/X/haHlMuhXaxqzcwXJOFHP3WAJx0ABB781j/wDCrNb/AOfrTf8Av4//AMRXtFFczwlJu9jVVpo8X/4VZrf/AD9ab/38f/4ij/hVmt/8/Wm/9/H/APiK9ooqfqdIPbzPF/8AhVmt/wDP1pv/AH8f/wCIo/4VZrf/AD9ab/38f/4ivaKKPqdIPbzPF/8AhVmt/wDP1pv/AH8f/wCIo/4VZrf/AD9ab/38f/4ivaKKPqdIPbzPF/8AhVmt/wDP1pv/AH8f/wCIo/4VZrf/AD9ab/38f/4ivaKKPqdIPbzPF/8AhVmt/wDP1pv/AH8f/wCIo/4VZrf/AD9ab/38f/4ivaKKPqdIPbzPF/8AhVmt/wDP1pv/AH8f/wCIrQ0f4VTmcnWb6NYR0S0yWbg/xMAFwcdjnnpXrFFNYOknewOtMr2Fnb6fZxWllEsNvEu1EXoB/U9896sUUV0pW0RkFFFFMAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD//2Q==&quot; alt=&quot;ดริปแบ็ก Natural 10 ซอง&quot;&gt;
+              &lt;/td&gt;
+      &lt;td&gt;ดริปแบ็ก Natural 10 ซอง&lt;/td&gt;
+      &lt;td&gt;ดริปแบ็ก&lt;/td&gt;
+      &lt;td&gt;250.00&lt;/td&gt;
+      &lt;td&gt;30&lt;/td&gt;
+      &lt;td&gt;
+        &lt;a href=&quot;product_form.php?id=7&quot;&gt;แก้ไข&lt;/a&gt;
+        &lt;!-- ลบด้วย POST ไม่ใช้ลิงก์ GET เพื่อไม่ให้ลบโดยไม่ตั้งใจ และถามยืนยันก่อน --&gt;
+        &lt;form class=&quot;inline&quot; method=&quot;post&quot; action=&quot;product_delete.php&quot;
+              onsubmit=&quot;return confirm(&#x27;ยืนยันลบสินค้านี้หรือไม่ ลบแล้วกู้คืนไม่ได้&#x27;);&quot;&gt;
+          &lt;input type=&quot;hidden&quot; name=&quot;id&quot; value=&quot;7&quot;&gt;
+          &lt;button type=&quot;submit&quot; class=&quot;link-btn&quot;&gt;ลบ&lt;/button&gt;
+        &lt;/form&gt;
+      &lt;/td&gt;
+    &lt;/tr&gt;
+      &lt;tr&gt;
+      &lt;td&gt;
+                  &lt;span class=&quot;thumb&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
+              &lt;/td&gt;
+      &lt;td&gt;ดริปแบ็ก House Blend 10 ซอง&lt;/td&gt;
+      &lt;td&gt;ดริปแบ็ก&lt;/td&gt;
+      &lt;td&gt;220.00&lt;/td&gt;
+      &lt;td&gt;25&lt;/td&gt;
+      &lt;td&gt;
+        &lt;a href=&quot;product_form.php?id=8&quot;&gt;แก้ไข&lt;/a&gt;
+        &lt;!-- ลบด้วย POST ไม่ใช้ลิงก์ GET เพื่อไม่ให้ลบโดยไม่ตั้งใจ และถามยืนยันก่อน --&gt;
+        &lt;form class=&quot;inline&quot; method=&quot;post&quot; action=&quot;product_delete.php&quot;
+              onsubmit=&quot;return confirm(&#x27;ยืนยันลบสินค้านี้หรือไม่ ลบแล้วกู้คืนไม่ได้&#x27;);&quot;&gt;
+          &lt;input type=&quot;hidden&quot; name=&quot;id&quot; value=&quot;8&quot;&gt;
+          &lt;button type=&quot;submit&quot; class=&quot;link-btn&quot;&gt;ลบ&lt;/button&gt;
+        &lt;/form&gt;
+      &lt;/td&gt;
+    &lt;/tr&gt;
+      &lt;tr&gt;
+      &lt;td&gt;
+                  &lt;span class=&quot;thumb&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
+              &lt;/td&gt;
+      &lt;td&gt;ดริปแบ็กรวมรส 20 ซอง&lt;/td&gt;
+      &lt;td&gt;ดริปแบ็ก&lt;/td&gt;
+      &lt;td&gt;450.00&lt;/td&gt;
+      &lt;td&gt;8&lt;/td&gt;
+      &lt;td&gt;
+        &lt;a href=&quot;product_form.php?id=9&quot;&gt;แก้ไข&lt;/a&gt;
+        &lt;!-- ลบด้วย POST ไม่ใช้ลิงก์ GET เพื่อไม่ให้ลบโดยไม่ตั้งใจ และถามยืนยันก่อน --&gt;
+        &lt;form class=&quot;inline&quot; method=&quot;post&quot; action=&quot;product_delete.php&quot;
+              onsubmit=&quot;return confirm(&#x27;ยืนยันลบสินค้านี้หรือไม่ ลบแล้วกู้คืนไม่ได้&#x27;);&quot;&gt;
+          &lt;input type=&quot;hidden&quot; name=&quot;id&quot; value=&quot;9&quot;&gt;
+          &lt;button type=&quot;submit&quot; class=&quot;link-btn&quot;&gt;ลบ&lt;/button&gt;
+        &lt;/form&gt;
+      &lt;/td&gt;
+    &lt;/tr&gt;
+      &lt;tr&gt;
+      &lt;td&gt;
+                  &lt;img class=&quot;thumb&quot; src=&quot;data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAEsAZADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD6LooormNgooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKSlpr00rsTdhC3pRuNJRWlkZ3Yu40bjSUUWQXYu40bjSUUWQXYu40bjSUUWQXYu40bjSUUWQXYu40bjSUUWQXYu40BjSUUWQXY8HNLTE60+s2rM0TugooopDCiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACmv2p1NftTjuTLYbRRRWpmFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAKnWn0xOtPrOW5pHYKKKKkoKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKa/anU1+1OO5MthtFFFamYUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAqdafTE60+s5bmkdgoooqSgooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigApr9qdTX7U47ky2G0UUVqZhRT/Kf0/Wjyn9P1pXHZjKKf5T+n60eU/p+tFwsxlFP8p/T9aPKf0/Wi4WYyin+U/p+tHlP6frRcLMZRT/Kf0/Wjyn9P1ouFmMooIwcGimIVOtPpidafWctzSOwUUUVJQUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAU1+1Opr9qcdyZbDaKKK1My5RRRWZqFFFFABRRRQAUUUUAFFFFAFR/vt9aSlf77fWkqzIVOtPpidafUS3NI7BRRRUlBRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABTX7U6mv2px3JlsNooorUzLlFFFZmoUUUUAFFFFABRRRQAUUUUAVH++31pKV/vt9aSrMhU60+mJ1p9RLc0jsFFFFSUFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFNftTqa/anHcmWw2iiitTMuUUUVmahRRRQAUUUUAFFFFABRRRQBUf77fWkpX++31pKsyFTrT6YnWn1EtzSOwUUUVJQUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAU1+1Opr9qcdyZbDaKKK1My5RRRWZqFFFFABRRRQAUUUUAFFFFAFR/vt9aSlf77fWkqzIVOtPpidafUS3NI7BRRRUlBRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABTX7U6mv2px3JlsNooorUzLlFFFZmoUUUUAFFFFABRRRQAUUUUAVH++31pKV/vt9aSrMhU60+mJ1p9RLc0jsFFFFSUFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFNftTqa/anHcmWw2iiitTMuUVU3t/eP50b2/vH86nlL5i3RVTe394/nRvb+8fzo5Q5i3RVTe394/nRvb+8fzo5Q5i3RVTe394/nRvb+8fzo5Q5i3RVTe394/nRvb+8fzo5Q5gf77fWkoopkCp1p9MTrT6iW5pHYKKKKkoKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKa/anU1+1OO5MthtFFFamYUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAqdafTE60+s5bmkdgoooqSgooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigApr9qdTX7U47ky2G0UUVqZhRRRQAUUUUAFFFFABRRRQAUUUUAFFFFACp1p9MTrT6zluaR2CiiipKCiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACmv2p1NbpTjuTLYbRRRWpmFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAKnWn01PWnVlLc0jsFFFFIoKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAGlfSk2mn0U+Zk8qGbTRtNPop8zDlQzaaNpp9FHMw5UM2mjaafRRzMOVDNpo2mn0UczDlQzaaNpp9FHMw5UM2mlC+tOoo5mHKhKWiipKCiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD/9k=&quot; alt=&quot;ดริปเปอร์เซรามิก&quot;&gt;
+              &lt;/td&gt;
+      &lt;td&gt;ดริปเปอร์เซรามิก&lt;/td&gt;
+      &lt;td&gt;อุปกรณ์ชง&lt;/td&gt;
+      &lt;td&gt;590.00&lt;/td&gt;
+      &lt;td&gt;5&lt;/td&gt;
+      &lt;td&gt;
+        &lt;a href=&quot;product_form.php?id=10&quot;&gt;แก้ไข&lt;/a&gt;
+        &lt;!-- ลบด้วย POST ไม่ใช้ลิงก์ GET เพื่อไม่ให้ลบโดยไม่ตั้งใจ และถามยืนยันก่อน --&gt;
+        &lt;form class=&quot;inline&quot; method=&quot;post&quot; action=&quot;product_delete.php&quot;
+              onsubmit=&quot;return confirm(&#x27;ยืนยันลบสินค้านี้หรือไม่ ลบแล้วกู้คืนไม่ได้&#x27;);&quot;&gt;
+          &lt;input type=&quot;hidden&quot; name=&quot;id&quot; value=&quot;10&quot;&gt;
+          &lt;button type=&quot;submit&quot; class=&quot;link-btn&quot;&gt;ลบ&lt;/button&gt;
+        &lt;/form&gt;
+      &lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/table&gt;
+
+&lt;nav class=&quot;pagination&quot; aria-label=&quot;เลือกหน้า&quot;&gt;
+              &lt;span class=&quot;current&quot; aria-current=&quot;page&quot;&gt;1&lt;/span&gt;
+        &lt;/nav&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;small&gt;ไร่ภูคำ Coffee Roasters · ใบงานที่ 8&lt;/small&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+" style="width:720px;height:640px" hidden></iframe></div></div>
+  <div class="x-callout"><b>หน้าต่างยืนยันก่อนลบ:</b> ปุ่มลบอยู่ในฟอร์ม POST ที่มี <code>onsubmit="return confirm(…)"</code> เบราว์เซอร์จะถามก่อนส่ง ถ้ากด Cancel ฟอร์มจะไม่ถูกส่ง (ภาพในกรอบด้านบนกดไม่ได้ จึงไม่เห็นกล่องยืนยัน) ที่ไม่ใช้ลิงก์ <code>product_delete.php?id=5</code> เพราะลิงก์ GET อาจถูกเปิดโดยไม่ตั้งใจ เช่น เบราว์เซอร์โหลดลิงก์ล่วงหน้า ไฟล์ลบจึงตอบ 405 เมื่อเรียกด้วย GET</div>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>ทดสอบ (รันจริง)</th><th>ผลที่ได้</th></tr></thead><tbody><tr><td>เปิด products.php โดยไม่ล็อกอิน</td><td>302 ไป login.php</td></tr><tr><td>เพิ่มสินค้า ราคา -5</td><td>"ราคาต้องเป็นตัวเลขตั้งแต่ 0 ขึ้นไป"</td></tr><tr><td>เพิ่มสินค้าถูกต้อง</td><td>302 ไป products.php?msg=added และมีแถวใหม่ในตาราง</td></tr><tr><td>แก้ไขราคาและหมวดโดยไม่เลือกรูปใหม่</td><td>บันทึกค่าใหม่ รูปเดิมยังอยู่</td></tr><tr><td>เรียก product_delete.php?id=14 ด้วย GET</td><td>405 "ต้องลบผ่านปุ่มลบในหน้ารายการสินค้า"</td></tr><tr><td>ลบผ่านปุ่ม (POST)</td><td>ลบแถวในฐานข้อมูลและลบไฟล์รูปออกจากโฟลเดอร์</td></tr><tr><td>ใส่ ?msg=&lt;b&gt;fake&lt;/b&gt; ใน URL</td><td>ไม่แสดงอะไร เพราะแสดงเฉพาะข้อความที่กำหนดไว้ในโค้ด</td></tr></tbody></table></div>
+  <details class="x-trouble"><summary>ข้อผิดพลาดที่พบบ่อย</summary><dl><div><dt>Fatal error: Uncaught mysqli_sql_exception: Access denied for user 'root'@'localhost'</dt><dd>รหัสผ่านใน db.php ไม่ตรง XAMPP ใช้ว่าง MAMP ใช้ root</dd></div><div><dt>Unknown database 'phukham_shop'</dt><dd>ยังไม่ได้นำเข้าไฟล์ SQL หรือสะกดชื่อฐานข้อมูลผิด</dd></div><div><dt>แก้ไขแล้วข้อมูลทุกแถวเปลี่ยนเหมือนกันหมด</dt><dd>ลืม WHERE product_id = ? ใน UPDATE ทำแบบนี้กับ DELETE จะลบทั้งตาราง</dd></div></dl></details>
+  <div class="x-shots"><b>ภาพหน้าจอที่ต้องแนบ</b><ul><li>หน้ารายการสินค้า</li><li>ฟอร์มเพิ่มและฟอร์มแก้ไข</li><li>กล่องยืนยันก่อนลบ</li><li>ตารางใน phpMyAdmin ก่อนและหลังเพิ่ม แก้ไข ลบ</li></ul></div>
+</section>
+
+<section id="e3">
+  <div class="x-head"><span class="x-num">8.3</span><h2>ป้องกัน SQL Injection ด้วย Prepared Statements</h2><span class="x-part">ส่วนที่ 1 · สัปดาห์ 14</span></div>
+  <div class="x-grid2">
+    <div><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>// ❌ ห้ามเขียนแบบนี้: นำค่าจากผู้ใช้ต่อเข้าไปในคำสั่ง SQL ตรง ๆ
+$q = $_GET[&#x27;q&#x27;];
+$sql = &quot;SELECT product_id, name, price FROM products WHERE name LIKE &#x27;%&quot; . $q . &quot;%&#x27;&quot;;
+$result = mysqli_query($conn, $sql);</code></pre></div></div>
+    <div><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>// ✅ Prepared Statement: คำสั่ง SQL กับข้อมูลส่งแยกกัน
+$like = &#x27;%&#x27; . $_GET[&#x27;q&#x27;] . &#x27;%&#x27;;
+$stmt = mysqli_prepare($conn, &#x27;SELECT product_id, name, price FROM products WHERE name LIKE ?&#x27;);
+mysqli_stmt_bind_param($stmt, &#x27;s&#x27;, $like);
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);</code></pre></div></div>
+  </div>
+  <h3>ทดลองโจมตีด้วยคำค้นเดียวกัน (รันจริงบนฐานข้อมูลทดสอบ)</h3>
+  <p>ค้นหาด้วยข้อความ:</p>
+  <div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>x&#x27; UNION SELECT member_id, username, password_hash FROM members -- </code></pre></div>
+  <p>โค้ดแบบต่อข้อความจะได้คำสั่ง SQL นี้ ส่วนหลัง <code>--</code> กลายเป็นคอมเมนต์ และ <code>UNION</code> ดึงข้อมูลจากตาราง members มาด้วย:</p>
+  <div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>SELECT product_id, name, price FROM products WHERE name LIKE &#x27;%x&#x27; UNION SELECT member_id, username, password_hash FROM members -- %&#x27;</code></pre></div>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th></th><th>ผลที่ได้</th></tr></thead><tbody><tr><td>โค้ดแบบต่อข้อความ (❌)</td><td>ได้แถว <code>1 | admin | $2y$12$YtM2cmUJRL…</code> ชื่อผู้ใช้และค่าแฮชรหัสผ่านของผู้ดูแลหลุดออกมาในหน้าค้นหาสินค้า</td></tr><tr><td>products.php ที่ใช้ Prepared Statement (✅)</td><td>"พบ 0 รายการ" MySQL ค้นหาสินค้าที่ชื่อมีข้อความนี้ทั้งก้อน ซึ่งไม่มี</td></tr><tr><td>ล็อกอินด้วยชื่อผู้ใช้ <code>admin&#x27; -- </code> รหัสผ่านอะไรก็ได้</td><td>"ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง" เพราะชื่อผู้ใช้ถูกส่งเป็นข้อมูล ไม่ใช่คำสั่ง</td></tr></tbody></table></div>
+  <div class="x-preview" id="pv3"><div class="x-pv-bar" role="group" aria-label="เลือกความกว้างจอ"><button type="button" data-w="720" aria-pressed="true">ผลลัพธ์จริง</button><span class="x-pv-sep"></span><button type="button" class="doc" data-doc="0" aria-pressed="true">ค้นหาด้วยคำโจมตี</button><button type="button" class="doc" data-doc="1" aria-pressed="false">ล็อกอินรหัสผิด</button><span class="pvw">720px</span></div><div class="x-pv-stage"><iframe title="ตัวอย่างหน้าเว็บ ค้นหาด้วยคำโจมตี" sandbox="allow-scripts allow-forms" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;title&gt;จัดการสินค้า&lt;/title&gt;
+  &lt;style&gt;body { font-family: Tahoma, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 16px; line-height: 1.6; color: #1e1a17; background: #f7f5f0; }
+h1 { color: #1f4d3a; }
+table { border-collapse: collapse; margin: 12px 0; }
+th, td { border: 1px solid #bbb; padding: 4px 10px; text-align: left; }
+th { background: #e7efe9; }
+label { display: block; margin-top: 10px; font-weight: bold; }
+input, select { padding: 6px; font: inherit; }
+button { margin-top: 12px; padding: 8px 18px; font: inherit; background: #1f4d3a; color: #fff; border: 0; border-radius: 6px; }
+.box { background: #fff; border-radius: 8px; padding: 12px 16px; margin: 12px 0; }
+.ok { color: #1f7a4a; font-weight: bold; }
+.error { color: #b3261e; font-weight: bold; }
+nav a { margin-right: 12px; }
+.toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+.thumb { width: 64px; height: 48px; object-fit: cover; border-radius: 4px; background: #e5ddcf; display: block; }
+.pagination { display: flex; gap: 6px; flex-wrap: wrap; margin: 12px 0; }
+.pagination a, .pagination span { padding: 4px 10px; border: 1px solid #bbb; border-radius: 4px; text-decoration: none; }
+.pagination .current { background: #1f4d3a; color: #fff; border-color: #1f4d3a; }
+.inline { display: inline; }
+.link-btn { background: none; border: 0; padding: 0; margin: 0; color: #b3261e; text-decoration: underline; cursor: pointer; font: inherit; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;nav class=&quot;toolbar&quot;&gt;
+    &lt;span&gt;ระบบหลังร้านไร่ภูคำ · ผู้ดูแลร้าน&lt;/span&gt;
+    &lt;span&gt;&lt;a href=&quot;products.php&quot;&gt;สินค้า&lt;/a&gt; &lt;a href=&quot;logout.php&quot;&gt;ออกจากระบบ&lt;/a&gt;&lt;/span&gt;
+  &lt;/nav&gt;
+&lt;h1&gt;จัดการสินค้า&lt;/h1&gt;
+
+&lt;div class=&quot;toolbar&quot;&gt;
+  &lt;form method=&quot;get&quot; role=&quot;search&quot;&gt;
+    &lt;label for=&quot;q&quot; class=&quot;inline&quot;&gt;ค้นหาชื่อสินค้า&lt;/label&gt;
+    &lt;input type=&quot;search&quot; id=&quot;q&quot; name=&quot;q&quot; value=&quot;x&amp;#039; UNION SELECT member_id, username, password_hash, 1, 1, 1 FROM members --&quot;&gt;
+    &lt;button type=&quot;submit&quot;&gt;ค้นหา&lt;/button&gt;
+  &lt;/form&gt;
+  &lt;a href=&quot;product_form.php&quot;&gt;+ เพิ่มสินค้า&lt;/a&gt;
+&lt;/div&gt;
+
+&lt;p&gt;พบ 0 รายการ · หน้า 1 จาก 1&lt;/p&gt;
+&lt;table&gt;
+  &lt;tr&gt;&lt;th scope=&quot;col&quot;&gt;รูป&lt;/th&gt;&lt;th scope=&quot;col&quot;&gt;ชื่อสินค้า&lt;/th&gt;&lt;th scope=&quot;col&quot;&gt;หมวด&lt;/th&gt;&lt;th scope=&quot;col&quot;&gt;ราคา&lt;/th&gt;&lt;th scope=&quot;col&quot;&gt;คงเหลือ&lt;/th&gt;&lt;th scope=&quot;col&quot;&gt;จัดการ&lt;/th&gt;&lt;/tr&gt;
+  &lt;/table&gt;
+
+&lt;nav class=&quot;pagination&quot; aria-label=&quot;เลือกหน้า&quot;&gt;
+              &lt;span class=&quot;current&quot; aria-current=&quot;page&quot;&gt;1&lt;/span&gt;
+        &lt;/nav&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;small&gt;ไร่ภูคำ Coffee Roasters · ใบงานที่ 8&lt;/small&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+" style="width:720px;height:420px" ></iframe><iframe title="ตัวอย่างหน้าเว็บ ล็อกอินรหัสผิด" sandbox="allow-scripts allow-forms" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;title&gt;เข้าสู่ระบบหลังร้าน&lt;/title&gt;
+  &lt;style&gt;body { font-family: Tahoma, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 16px; line-height: 1.6; color: #1e1a17; background: #f7f5f0; }
+h1 { color: #1f4d3a; }
+table { border-collapse: collapse; margin: 12px 0; }
+th, td { border: 1px solid #bbb; padding: 4px 10px; text-align: left; }
+th { background: #e7efe9; }
+label { display: block; margin-top: 10px; font-weight: bold; }
+input, select { padding: 6px; font: inherit; }
+button { margin-top: 12px; padding: 8px 18px; font: inherit; background: #1f4d3a; color: #fff; border: 0; border-radius: 6px; }
+.box { background: #fff; border-radius: 8px; padding: 12px 16px; margin: 12px 0; }
+.ok { color: #1f7a4a; font-weight: bold; }
+.error { color: #b3261e; font-weight: bold; }
+nav a { margin-right: 12px; }
+.toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+.thumb { width: 64px; height: 48px; object-fit: cover; border-radius: 4px; background: #e5ddcf; display: block; }
+.pagination { display: flex; gap: 6px; flex-wrap: wrap; margin: 12px 0; }
+.pagination a, .pagination span { padding: 4px 10px; border: 1px solid #bbb; border-radius: 4px; text-decoration: none; }
+.pagination .current { background: #1f4d3a; color: #fff; border-color: #1f4d3a; }
+.inline { display: inline; }
+.link-btn { background: none; border: 0; padding: 0; margin: 0; color: #b3261e; text-decoration: underline; cursor: pointer; font: inherit; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;เข้าสู่ระบบหลังร้าน&lt;/h1&gt;
+  &lt;p class=&quot;error&quot;&gt;ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง&lt;/p&gt;
+&lt;form method=&quot;post&quot;&gt;
+  &lt;label for=&quot;username&quot;&gt;ชื่อผู้ใช้&lt;/label&gt;
+  &lt;input type=&quot;text&quot; id=&quot;username&quot; name=&quot;username&quot; value=&quot;admin&quot; required&gt;
+  &lt;label for=&quot;password&quot;&gt;รหัสผ่าน&lt;/label&gt;
+  &lt;input type=&quot;password&quot; id=&quot;password&quot; name=&quot;password&quot; required&gt;
+  &lt;button type=&quot;submit&quot;&gt;เข้าสู่ระบบ&lt;/button&gt;
+&lt;/form&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;small&gt;ไร่ภูคำ Coffee Roasters · ใบงานที่ 8&lt;/small&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+" style="width:720px;height:420px" hidden></iframe></div></div>
+  <div class="x-callout"><b>ห้ามทดลองกับระบบของผู้อื่น:</b> การทดลองโจมตีทำได้เฉพาะกับเครื่องและฐานข้อมูลของตนเอง การลองกับเว็บไซต์ที่ไม่ได้รับอนุญาตเป็นความผิดตาม พ.ร.บ. คอมพิวเตอร์ ไฟล์โค้ดแบบต่อข้อความไม่ได้อยู่ในชุดตัวอย่าง</div>
+  <p class="x-file">login.php</p><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;?php
+// 8.3 ล็อกอินด้วย Prepared Statement + password_verify()
+declare(strict_types=1);
+session_start();
+require_once &#x27;includes/db.php&#x27;;
+
+$error = &#x27;&#x27;;
+$username = &#x27;&#x27;;
+if ($_SERVER[&#x27;REQUEST_METHOD&#x27;] === &#x27;POST&#x27;) {
+    $username = trim($_POST[&#x27;username&#x27;] ?? &#x27;&#x27;);
+    $password = $_POST[&#x27;password&#x27;] ?? &#x27;&#x27;;
+
+    // 1) prepare: ส่งโครงคำสั่งที่มี ? แทนค่าไปให้ MySQL ก่อน
+    $stmt = mysqli_prepare($conn, &#x27;SELECT member_id, full_name, password_hash FROM members WHERE username = ?&#x27;);
+    // 2) bind_param: ผูกค่า &quot;s&quot; = string ค่านี้จะไม่ถูกตีความเป็นคำสั่ง SQL
+    mysqli_stmt_bind_param($stmt, &#x27;s&#x27;, $username);
+    // 3) execute แล้วอ่านผลลัพธ์
+    mysqli_stmt_execute($stmt);
+    $member = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
+    mysqli_stmt_close($stmt);
+
+    if ($member &amp;&amp; password_verify($password, $member[&#x27;password_hash&#x27;])) {
+        session_regenerate_id(true);
+        $_SESSION[&#x27;member_id&#x27;] = $member[&#x27;member_id&#x27;];
+        $_SESSION[&#x27;full_name&#x27;] = $member[&#x27;full_name&#x27;];
+        header(&#x27;Location: products.php&#x27;);
+        exit;
+    }
+    $error = &#x27;ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง&#x27;;
+}
+
+$title = &#x27;เข้าสู่ระบบหลังร้าน&#x27;;
+require_once &#x27;includes/header.php&#x27;;
+?&gt;
+&lt;h1&gt;เข้าสู่ระบบหลังร้าน&lt;/h1&gt;
+&lt;?php if ($error !== &#x27;&#x27;): ?&gt;
+  &lt;p class=&quot;error&quot;&gt;&lt;?= htmlspecialchars($error) ?&gt;&lt;/p&gt;
+&lt;?php endif; ?&gt;
+&lt;form method=&quot;post&quot;&gt;
+  &lt;label for=&quot;username&quot;&gt;ชื่อผู้ใช้&lt;/label&gt;
+  &lt;input type=&quot;text&quot; id=&quot;username&quot; name=&quot;username&quot; value=&quot;&lt;?= htmlspecialchars($username) ?&gt;&quot; required&gt;
+  &lt;label for=&quot;password&quot;&gt;รหัสผ่าน&lt;/label&gt;
+  &lt;input type=&quot;password&quot; id=&quot;password&quot; name=&quot;password&quot; required&gt;
+  &lt;button type=&quot;submit&quot;&gt;เข้าสู่ระบบ&lt;/button&gt;
+&lt;/form&gt;
+&lt;?php require_once &#x27;includes/footer.php&#x27;; ?&gt;</code></pre></div>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>รูปแบบฟังก์ชัน (บทที่ 8 หัวข้อ 8.3–8.8)</th><th>รูปแบบออบเจกต์ (หัวข้อ 8.12.1)</th></tr></thead><tbody><tr><td><code>$stmt = mysqli_prepare($conn, $sql);</code></td><td><code>$stmt = $conn-&gt;prepare($sql);</code></td></tr><tr><td><code>mysqli_stmt_bind_param($stmt, &#x27;si&#x27;, $a, $b);</code></td><td><code>$stmt-&gt;bind_param(&#x27;si&#x27;, $a, $b);</code></td></tr><tr><td><code>mysqli_stmt_execute($stmt);</code></td><td><code>$stmt-&gt;execute();</code></td></tr><tr><td><code>mysqli_stmt_get_result($stmt)</code></td><td><code>$stmt-&gt;get_result()</code></td></tr></tbody></table></div>
+  <p class="x-muted">ทั้งสองแบบทำงานเหมือนกัน ตัวอย่างนี้ใช้แบบฟังก์ชันตามบทที่ 8 ตัวอักษรใน bind_param: <code>s</code> string, <code>i</code> integer, <code>d</code> double (ทศนิยม), <code>b</code> blob จำนวนตัวอักษรต้องเท่ากับจำนวน ? และเรียงตามลำดับ</p>
+  <h3>ตรวจว่าใช้ Prepared Statement ครบ 100%</h3>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>ไฟล์</th><th>คำสั่ง SQL</th><th>ค่าจากผู้ใช้</th><th>วิธี</th></tr></thead><tbody><tr><td>login.php</td><td>SELECT … WHERE username = ?</td><td>username</td><td>prepare ✅</td></tr><tr><td>products.php</td><td>SELECT COUNT(*) … LIKE ?</td><td>คำค้น</td><td>prepare ✅</td></tr><tr><td>products.php</td><td>SELECT … LIKE ? LIMIT ? OFFSET ?</td><td>คำค้น, หน้า</td><td>prepare ✅</td></tr><tr><td>product_form.php</td><td>SELECT … WHERE product_id = ?</td><td>id</td><td>prepare ✅</td></tr><tr><td>product_form.php</td><td>INSERT / UPDATE</td><td>ทุกช่องในฟอร์ม</td><td>prepare ✅</td></tr><tr><td>product_delete.php</td><td>SELECT image / DELETE … WHERE product_id = ?</td><td>id</td><td>prepare ✅</td></tr><tr><td>product_form.php</td><td>SELECT … FROM categories</td><td>ไม่มี</td><td>mysqli_query ได้ เพราะไม่มีค่าจากภายนอกในคำสั่ง</td></tr></tbody></table></div>
+  <details class="x-trouble"><summary>ข้อผิดพลาดที่พบบ่อย</summary><dl><div><dt>ArgumentCountError: The number of elements in the type definition string must match the number of bind variables</dt><dd>จำนวนตัวอักษรใน 'sii' ไม่เท่ากับจำนวนตัวแปรที่ส่ง</dd></div><div><dt>ใส่เครื่องหมายคำพูดรอบ ? เช่น WHERE name = '?'</dt><dd>ห้ามใส่ ? ต้องอยู่เปล่า ๆ MySQL จัดการเรื่องเครื่องหมายคำพูดให้เอง</dd></div><div><dt>ใช้ ? แทนชื่อตารางหรือชื่อคอลัมน์ใน ORDER BY</dt><dd>? ใช้แทนได้เฉพาะค่าข้อมูล ถ้าต้องให้ผู้ใช้เลือกคอลัมน์เรียง ให้ตรวจกับรายชื่อที่อนุญาต (whitelist)</dd></div></dl></details>
+  <div class="x-shots"><b>ภาพหน้าจอที่ต้องแนบ</b><ul><li>โค้ด login.php และ products.php ส่วน prepare/bind_param/execute</li><li>ผลการค้นหาด้วยข้อความโจมตีที่ได้ 0 รายการ</li><li>ผลการล็อกอินด้วย admin' -- ที่ไม่ผ่าน</li></ul></div>
+</section>
+
+<section id="e4">
+  <div class="x-head"><span class="x-num">8.4</span><h2>อัปโหลดรูปสินค้าและแบ่งหน้า</h2><span class="x-part">ส่วนที่ 2 · สัปดาห์ 15</span></div>
+  <h3>อัปโหลดรูป</h3>
+  <ol class="x-steps">
+    <li>ฟอร์มต้องมี <code>method="post"</code> และ <code>enctype="multipart/form-data"</code> ไม่อย่างนั้น <code>$_FILES</code> จะว่าง</li>
+    <li><code>saveProductImage()</code> ตรวจ error, ขนาด และชนิดไฟล์จากเนื้อไฟล์ด้วย finfo ตามหัวข้อ 7.12.3</li>
+    <li>ตั้งชื่อใหม่แบบสุ่มแล้ว <code>move_uploaded_file()</code> ไปที่ uploads/products</li>
+    <li>บันทึก<b>เฉพาะชื่อไฟล์</b>ลงคอลัมน์ image ไม่เก็บตัวรูปในฐานข้อมูล</li>
+    <li>ถ้าแก้ไขแล้วเปลี่ยนรูป ลบไฟล์เก่าทิ้ง และเมื่อลบสินค้า ลบไฟล์รูปด้วย</li>
+  </ol>
+  <p class="x-file">includes/upload.php</p><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;?php
+// 8.4 ตรวจและบันทึกรูปสินค้า คืนชื่อไฟล์ใหม่ หรือ throw RuntimeException พร้อมข้อความภาษาไทย
+declare(strict_types=1);
+
+const UPLOAD_DIR = __DIR__ . &#x27;/../uploads/products/&#x27;;
+const MAX_SIZE = 2 * 1024 * 1024;   // 2 MB
+const ALLOWED_TYPES = [&#x27;image/jpeg&#x27; =&gt; &#x27;jpg&#x27;, &#x27;image/png&#x27; =&gt; &#x27;png&#x27;, &#x27;image/webp&#x27; =&gt; &#x27;webp&#x27;];
+
+function saveProductImage(array $file): string
+{
+    if ($file[&#x27;error&#x27;] !== UPLOAD_ERR_OK) {
+        throw new RuntimeException($file[&#x27;error&#x27;] === UPLOAD_ERR_INI_SIZE || $file[&#x27;error&#x27;] === UPLOAD_ERR_FORM_SIZE
+            ? &#x27;ไฟล์ใหญ่เกินกำหนด&#x27; : &#x27;อัปโหลดไม่สำเร็จ (รหัส &#x27; . $file[&#x27;error&#x27;] . &#x27;)&#x27;);
+    }
+    if ($file[&#x27;size&#x27;] &gt; MAX_SIZE) {
+        throw new RuntimeException(&#x27;ไฟล์ใหญ่เกิน 2 MB&#x27;);
+    }
+    // ตรวจชนิดไฟล์จากเนื้อไฟล์จริง ไม่เชื่อนามสกุลหรือชนิดที่เบราว์เซอร์ส่งมา
+    $mime = (new finfo(FILEINFO_MIME_TYPE))-&gt;file($file[&#x27;tmp_name&#x27;]);
+    if (!isset(ALLOWED_TYPES[$mime])) {
+        throw new RuntimeException(&#x27;อนุญาตเฉพาะรูป JPG, PNG หรือ WebP&#x27;);
+    }
+    // ตั้งชื่อใหม่แบบสุ่ม กันชื่อซ้ำและกันชื่อไฟล์แปลก ๆ จากผู้ใช้
+    $newName = bin2hex(random_bytes(16)) . &#x27;.&#x27; . ALLOWED_TYPES[$mime];
+    if (!move_uploaded_file($file[&#x27;tmp_name&#x27;], UPLOAD_DIR . $newName)) {
+        throw new RuntimeException(&#x27;บันทึกไฟล์ไม่สำเร็จ ตรวจสิทธิ์การเขียนโฟลเดอร์ uploads/products&#x27;);
+    }
+    return $newName;
+}
+
+function deleteProductImage(?string $name): void
+{
+    // basename กันชื่อไฟล์ที่มี ../ เพื่อไม่ให้ลบไฟล์นอกโฟลเดอร์
+    if ($name &amp;&amp; is_file(UPLOAD_DIR . basename($name))) {
+        unlink(UPLOAD_DIR . basename($name));
+    }
+}</code></pre></div>
+  <p class="x-file">uploads/products/.htaccess</p><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code># ห้ามรันสคริปต์ในโฟลเดอร์รูปภาพ แม้มีคนอัปโหลดไฟล์ .php เข้ามาได้
+&lt;FilesMatch &quot;\.(php|phtml|phar|cgi|pl)$&quot;&gt;
+  Require all denied
+&lt;/FilesMatch&gt;</code></pre></div>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>ทดสอบ (รันจริง)</th><th>ผลที่ได้</th></tr></thead><tbody><tr><td>อัปโหลด JPG 400×300</td><td>บันทึกเป็น <code>45e1996…4b9e9d.jpg</code> และคอลัมน์ image เก็บชื่อนี้</td></tr><tr><td>ไฟล์ข้อความ PHP ที่ตั้งชื่อเป็น fake.jpg</td><td>"อนุญาตเฉพาะรูป JPG, PNG หรือ WebP" เพราะ finfo อ่านได้ว่าเป็น text/x-php</td></tr><tr><td>ไฟล์ขนาด 2.2 MB</td><td>"ไฟล์ใหญ่เกินกำหนด" (PHP ปฏิเสธก่อนถึงโค้ด เพราะ upload_max_filesize ค่าเริ่มต้นคือ 2M)</td></tr><tr><td>แก้ไขสินค้าแล้วเปลี่ยนเป็นรูป PNG</td><td>มีไฟล์ .png ใหม่ และไฟล์ .jpg เดิมถูกลบ</td></tr><tr><td>ลบสินค้า</td><td>ไฟล์รูปในโฟลเดอร์ถูกลบด้วย</td></tr></tbody></table></div>
+  <div class="x-preview" id="pv4a"><div class="x-pv-bar" role="group" aria-label="เลือกความกว้างจอ"><button type="button" data-w="720" aria-pressed="true">ผลลัพธ์จริง</button><span class="x-pv-sep"></span><button type="button" class="doc" data-doc="0" aria-pressed="true">อัปโหลดไฟล์ปลอม</button><button type="button" class="doc" data-doc="1" aria-pressed="false">ฟอร์มเพิ่มสินค้า</button><span class="pvw">720px</span></div><div class="x-pv-stage"><iframe title="ตัวอย่างหน้าเว็บ อัปโหลดไฟล์ปลอม" sandbox="allow-scripts allow-forms" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;title&gt;เพิ่มสินค้า&lt;/title&gt;
+  &lt;style&gt;body { font-family: Tahoma, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 16px; line-height: 1.6; color: #1e1a17; background: #f7f5f0; }
+h1 { color: #1f4d3a; }
+table { border-collapse: collapse; margin: 12px 0; }
+th, td { border: 1px solid #bbb; padding: 4px 10px; text-align: left; }
+th { background: #e7efe9; }
+label { display: block; margin-top: 10px; font-weight: bold; }
+input, select { padding: 6px; font: inherit; }
+button { margin-top: 12px; padding: 8px 18px; font: inherit; background: #1f4d3a; color: #fff; border: 0; border-radius: 6px; }
+.box { background: #fff; border-radius: 8px; padding: 12px 16px; margin: 12px 0; }
+.ok { color: #1f7a4a; font-weight: bold; }
+.error { color: #b3261e; font-weight: bold; }
+nav a { margin-right: 12px; }
+.toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+.thumb { width: 64px; height: 48px; object-fit: cover; border-radius: 4px; background: #e5ddcf; display: block; }
+.pagination { display: flex; gap: 6px; flex-wrap: wrap; margin: 12px 0; }
+.pagination a, .pagination span { padding: 4px 10px; border: 1px solid #bbb; border-radius: 4px; text-decoration: none; }
+.pagination .current { background: #1f4d3a; color: #fff; border-color: #1f4d3a; }
+.inline { display: inline; }
+.link-btn { background: none; border: 0; padding: 0; margin: 0; color: #b3261e; text-decoration: underline; cursor: pointer; font: inherit; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;nav class=&quot;toolbar&quot;&gt;
+    &lt;span&gt;ระบบหลังร้านไร่ภูคำ · ผู้ดูแลร้าน&lt;/span&gt;
+    &lt;span&gt;&lt;a href=&quot;products.php&quot;&gt;สินค้า&lt;/a&gt; &lt;a href=&quot;logout.php&quot;&gt;ออกจากระบบ&lt;/a&gt;&lt;/span&gt;
+  &lt;/nav&gt;
+&lt;h1&gt;เพิ่มสินค้า&lt;/h1&gt;
+  &lt;p class=&quot;error&quot;&gt;อนุญาตเฉพาะรูป JPG, PNG หรือ WebP&lt;/p&gt;
+&lt;!-- enctype=&quot;multipart/form-data&quot; จำเป็นเมื่อฟอร์มมีการส่งไฟล์ --&gt;
+&lt;form method=&quot;post&quot; enctype=&quot;multipart/form-data&quot;&gt;
+  &lt;label for=&quot;category_id&quot;&gt;หมวดสินค้า&lt;/label&gt;
+  &lt;select id=&quot;category_id&quot; name=&quot;category_id&quot;&gt;
+          &lt;option value=&quot;1&quot; selected&gt;เมล็ดกาแฟคั่ว&lt;/option&gt;
+          &lt;option value=&quot;2&quot; &gt;ดริปแบ็ก&lt;/option&gt;
+          &lt;option value=&quot;3&quot; &gt;อุปกรณ์ชง&lt;/option&gt;
+      &lt;/select&gt;
+  &lt;label for=&quot;name&quot;&gt;ชื่อสินค้า&lt;/label&gt;
+  &lt;input type=&quot;text&quot; id=&quot;name&quot; name=&quot;name&quot; maxlength=&quot;100&quot; value=&quot;ทดสอบ&quot; required&gt;
+  &lt;label for=&quot;price&quot;&gt;ราคา (บาท)&lt;/label&gt;
+  &lt;input type=&quot;number&quot; id=&quot;price&quot; name=&quot;price&quot; min=&quot;0&quot; step=&quot;0.01&quot; value=&quot;1&quot; required&gt;
+  &lt;label for=&quot;stock&quot;&gt;จำนวนคงเหลือ&lt;/label&gt;
+  &lt;input type=&quot;number&quot; id=&quot;stock&quot; name=&quot;stock&quot; min=&quot;0&quot; step=&quot;1&quot; value=&quot;1&quot; required&gt;
+  &lt;label for=&quot;image&quot;&gt;รูปสินค้า (JPG, PNG, WebP ไม่เกิน 2 MB)&lt;/label&gt;
+    &lt;input type=&quot;file&quot; id=&quot;image&quot; name=&quot;image&quot; accept=&quot;image/jpeg,image/png,image/webp&quot;&gt;
+  &lt;button type=&quot;submit&quot;&gt;บันทึก&lt;/button&gt;
+  &lt;a href=&quot;products.php&quot;&gt;ยกเลิก&lt;/a&gt;
+&lt;/form&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;small&gt;ไร่ภูคำ Coffee Roasters · ใบงานที่ 8&lt;/small&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+" style="width:720px;height:520px" ></iframe><iframe title="ตัวอย่างหน้าเว็บ ฟอร์มเพิ่มสินค้า" sandbox="allow-scripts allow-forms" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;title&gt;เพิ่มสินค้า&lt;/title&gt;
+  &lt;style&gt;body { font-family: Tahoma, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 16px; line-height: 1.6; color: #1e1a17; background: #f7f5f0; }
+h1 { color: #1f4d3a; }
+table { border-collapse: collapse; margin: 12px 0; }
+th, td { border: 1px solid #bbb; padding: 4px 10px; text-align: left; }
+th { background: #e7efe9; }
+label { display: block; margin-top: 10px; font-weight: bold; }
+input, select { padding: 6px; font: inherit; }
+button { margin-top: 12px; padding: 8px 18px; font: inherit; background: #1f4d3a; color: #fff; border: 0; border-radius: 6px; }
+.box { background: #fff; border-radius: 8px; padding: 12px 16px; margin: 12px 0; }
+.ok { color: #1f7a4a; font-weight: bold; }
+.error { color: #b3261e; font-weight: bold; }
+nav a { margin-right: 12px; }
+.toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+.thumb { width: 64px; height: 48px; object-fit: cover; border-radius: 4px; background: #e5ddcf; display: block; }
+.pagination { display: flex; gap: 6px; flex-wrap: wrap; margin: 12px 0; }
+.pagination a, .pagination span { padding: 4px 10px; border: 1px solid #bbb; border-radius: 4px; text-decoration: none; }
+.pagination .current { background: #1f4d3a; color: #fff; border-color: #1f4d3a; }
+.inline { display: inline; }
+.link-btn { background: none; border: 0; padding: 0; margin: 0; color: #b3261e; text-decoration: underline; cursor: pointer; font: inherit; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;nav class=&quot;toolbar&quot;&gt;
+    &lt;span&gt;ระบบหลังร้านไร่ภูคำ · ผู้ดูแลร้าน&lt;/span&gt;
+    &lt;span&gt;&lt;a href=&quot;products.php&quot;&gt;สินค้า&lt;/a&gt; &lt;a href=&quot;logout.php&quot;&gt;ออกจากระบบ&lt;/a&gt;&lt;/span&gt;
+  &lt;/nav&gt;
+&lt;h1&gt;เพิ่มสินค้า&lt;/h1&gt;
+&lt;!-- enctype=&quot;multipart/form-data&quot; จำเป็นเมื่อฟอร์มมีการส่งไฟล์ --&gt;
+&lt;form method=&quot;post&quot; enctype=&quot;multipart/form-data&quot;&gt;
+  &lt;label for=&quot;category_id&quot;&gt;หมวดสินค้า&lt;/label&gt;
+  &lt;select id=&quot;category_id&quot; name=&quot;category_id&quot;&gt;
+          &lt;option value=&quot;1&quot; selected&gt;เมล็ดกาแฟคั่ว&lt;/option&gt;
+          &lt;option value=&quot;2&quot; &gt;ดริปแบ็ก&lt;/option&gt;
+          &lt;option value=&quot;3&quot; &gt;อุปกรณ์ชง&lt;/option&gt;
+      &lt;/select&gt;
+  &lt;label for=&quot;name&quot;&gt;ชื่อสินค้า&lt;/label&gt;
+  &lt;input type=&quot;text&quot; id=&quot;name&quot; name=&quot;name&quot; maxlength=&quot;100&quot; value=&quot;&quot; required&gt;
+  &lt;label for=&quot;price&quot;&gt;ราคา (บาท)&lt;/label&gt;
+  &lt;input type=&quot;number&quot; id=&quot;price&quot; name=&quot;price&quot; min=&quot;0&quot; step=&quot;0.01&quot; value=&quot;&quot; required&gt;
+  &lt;label for=&quot;stock&quot;&gt;จำนวนคงเหลือ&lt;/label&gt;
+  &lt;input type=&quot;number&quot; id=&quot;stock&quot; name=&quot;stock&quot; min=&quot;0&quot; step=&quot;1&quot; value=&quot;0&quot; required&gt;
+  &lt;label for=&quot;image&quot;&gt;รูปสินค้า (JPG, PNG, WebP ไม่เกิน 2 MB)&lt;/label&gt;
+    &lt;input type=&quot;file&quot; id=&quot;image&quot; name=&quot;image&quot; accept=&quot;image/jpeg,image/png,image/webp&quot;&gt;
+  &lt;button type=&quot;submit&quot;&gt;บันทึก&lt;/button&gt;
+  &lt;a href=&quot;products.php&quot;&gt;ยกเลิก&lt;/a&gt;
+&lt;/form&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;small&gt;ไร่ภูคำ Coffee Roasters · ใบงานที่ 8&lt;/small&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+" style="width:720px;height:520px" hidden></iframe></div></div>
+
+  <h3>แบ่งหน้าด้วย LIMIT / OFFSET</h3>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>ค่า</th><th>สูตร</th><th>ตัวอย่าง (12 รายการ, หน้าละ 5)</th></tr></thead><tbody><tr><td>จำนวนหน้า</td><td><code>ceil($total / $perPage)</code></td><td>ceil(12 / 5) = 3</td></tr><tr><td>หน้าที่ขอ</td><td><code>max(1, min($totalPages, (int) $_GET[&#x27;page&#x27;]))</code></td><td>?page=99 → 3 · ?page=-5 → 1 · ?page=abc → 1</td></tr><tr><td>OFFSET</td><td><code>($page - 1) * $perPage</code></td><td>หน้า 1 → 0 · หน้า 2 → 5 · หน้า 3 → 10</td></tr><tr><td>SQL</td><td><code>LIMIT 5 OFFSET 10</code></td><td>ข้ามไป 10 แถว แล้วเอา 5 แถว หน้า 3 จึงได้ 2 แถว (แถวที่ 11–12)</td></tr></tbody></table></div>
+  <p class="x-muted"><code>LIMIT ? OFFSET ?</code> เขียนแบบเดียวกับ <code>LIMIT ?, ?</code> ในหัวข้อ 8.8 (แบบหลังใส่ OFFSET ก่อน) ลิงก์เปลี่ยนหน้าสร้างด้วย <code>http_build_query()</code> เพื่อคงคำค้นไว้ เช่น ค้นหา "ดริป" แล้วกดหน้า 2 ยังเป็นผลของ "ดริป"</p>
+  <div class="x-preview" id="pv4b"><div class="x-pv-bar" role="group" aria-label="เลือกความกว้างจอ"><button type="button" data-w="720" aria-pressed="true">ผลลัพธ์จริง</button><span class="x-pv-sep"></span><button type="button" class="doc" data-doc="0" aria-pressed="true">หน้า 1</button><button type="button" class="doc" data-doc="1" aria-pressed="false">หน้า 2</button><span class="pvw">720px</span></div><div class="x-pv-stage"><iframe title="ตัวอย่างหน้าเว็บ หน้า 1" sandbox="allow-scripts allow-forms" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;title&gt;จัดการสินค้า&lt;/title&gt;
+  &lt;style&gt;body { font-family: Tahoma, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 16px; line-height: 1.6; color: #1e1a17; background: #f7f5f0; }
+h1 { color: #1f4d3a; }
+table { border-collapse: collapse; margin: 12px 0; }
+th, td { border: 1px solid #bbb; padding: 4px 10px; text-align: left; }
+th { background: #e7efe9; }
+label { display: block; margin-top: 10px; font-weight: bold; }
+input, select { padding: 6px; font: inherit; }
+button { margin-top: 12px; padding: 8px 18px; font: inherit; background: #1f4d3a; color: #fff; border: 0; border-radius: 6px; }
+.box { background: #fff; border-radius: 8px; padding: 12px 16px; margin: 12px 0; }
+.ok { color: #1f7a4a; font-weight: bold; }
+.error { color: #b3261e; font-weight: bold; }
+nav a { margin-right: 12px; }
+.toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+.thumb { width: 64px; height: 48px; object-fit: cover; border-radius: 4px; background: #e5ddcf; display: block; }
+.pagination { display: flex; gap: 6px; flex-wrap: wrap; margin: 12px 0; }
+.pagination a, .pagination span { padding: 4px 10px; border: 1px solid #bbb; border-radius: 4px; text-decoration: none; }
+.pagination .current { background: #1f4d3a; color: #fff; border-color: #1f4d3a; }
+.inline { display: inline; }
+.link-btn { background: none; border: 0; padding: 0; margin: 0; color: #b3261e; text-decoration: underline; cursor: pointer; font: inherit; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;nav class=&quot;toolbar&quot;&gt;
+    &lt;span&gt;ระบบหลังร้านไร่ภูคำ · ผู้ดูแลร้าน&lt;/span&gt;
+    &lt;span&gt;&lt;a href=&quot;products.php&quot;&gt;สินค้า&lt;/a&gt; &lt;a href=&quot;logout.php&quot;&gt;ออกจากระบบ&lt;/a&gt;&lt;/span&gt;
+  &lt;/nav&gt;
+&lt;h1&gt;จัดการสินค้า&lt;/h1&gt;
+  &lt;p class=&quot;ok&quot;&gt;แก้ไขสินค้าแล้ว&lt;/p&gt;
+
+&lt;div class=&quot;toolbar&quot;&gt;
+  &lt;form method=&quot;get&quot; role=&quot;search&quot;&gt;
+    &lt;label for=&quot;q&quot; class=&quot;inline&quot;&gt;ค้นหาชื่อสินค้า&lt;/label&gt;
+    &lt;input type=&quot;search&quot; id=&quot;q&quot; name=&quot;q&quot; value=&quot;&quot;&gt;
+    &lt;button type=&quot;submit&quot;&gt;ค้นหา&lt;/button&gt;
+  &lt;/form&gt;
+  &lt;a href=&quot;product_form.php&quot;&gt;+ เพิ่มสินค้า&lt;/a&gt;
+&lt;/div&gt;
+
+&lt;p&gt;พบ 12 รายการ · หน้า 1 จาก 3&lt;/p&gt;
+&lt;table&gt;
+  &lt;tr&gt;&lt;th scope=&quot;col&quot;&gt;รูป&lt;/th&gt;&lt;th scope=&quot;col&quot;&gt;ชื่อสินค้า&lt;/th&gt;&lt;th scope=&quot;col&quot;&gt;หมวด&lt;/th&gt;&lt;th scope=&quot;col&quot;&gt;ราคา&lt;/th&gt;&lt;th scope=&quot;col&quot;&gt;คงเหลือ&lt;/th&gt;&lt;th scope=&quot;col&quot;&gt;จัดการ&lt;/th&gt;&lt;/tr&gt;
+      &lt;tr&gt;
+      &lt;td&gt;
+                  &lt;img class=&quot;thumb&quot; src=&quot;data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAEsAZADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD6LooormNgooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKqarqNppOnT3+pTpb2kC75JH6Af1JOAAOSSAOat143+0lqlzbaPpGmwtttrySSSbBILeXt2qecFcvnBHVVPamldmdWfJByOY8V/GvWL6cx+HYk0y1VsiR1WWaQAnrkFVBBU4AJBH3iK5/8A4Wx41/6DX/krB/8AEVw1Fa2R5TrVG73O5/4Wx41/6DX/AJKwf/EUf8LY8a/9Br/yVg/+IrhqKLIXtZ/zP7zuf+FseNf+g1/5Kwf/ABFH/C2PGv8A0Gv/ACVg/wDiK4aiiyD2s/5n953P/C2PGv8A0Gv/ACVg/wDiKP8AhbHjX/oNf+SsH/xFcNRRZB7Wf8z+87n/AIWx41/6DX/krB/8RR/wtjxr/wBBr/yVg/8AiK4aiiyD2s/5n953P/C2PGv/AEGv/JWD/wCIo/4Wx41/6DX/AJKwf/EVw1FFkHtZ/wAz+87n/hbHjX/oNf8AkrB/8RWr4e+M/iSwui2r+Tq1s3VHRYXXg/dZFwOSM5DdOMda8xoosgVaonfmZ9neGNf0/wAS6PDqWlTeZBJwynh42HVGHZhn+RGQQa1q+fv2bdUuV1zU9J3Zs5Lb7VtJPyurKuVGcDIfnjJ2r6V9A1k1Znq0antIKQUUUUjUKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAK8N/ab/5lv8A7ef/AGlXuVeG/tN/8y3/ANvP/tKqjuc+K/hP+up4bRRRWp5IUUUUAFFFFABRRRQAUUUUAFFFFABRRRQB6r+zh/yPF9/2Dn/9GxV9H184fs4f8jxff9g5/wD0bFX0fWU9z1MJ/DCiiipOoKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAK8N/ab/AOZb/wC3n/2lXuVeG/tN/wDMt/8Abz/7Sqo7nPiv4T/rqeG0UUVqeSFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAeq/s4f8jxff9g5/wD0bFX0fXzh+zh/yPF9/wBg5/8A0bFX0fWU9z1MJ/DCiiipOoKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAK8N/ab/wCZb/7ef/aVe5V4b+03/wAy3/28/wDtKqjuc+K/hP8ArqeG0UUVqeSFFd3/AMKk8b/9AT/ybg/+Lo/4VJ43/wCgJ/5Nwf8AxdK6NPZT/lZwlFd3/wAKk8b/APQE/wDJuD/4uj/hUnjf/oCf+TcH/wAXRdB7Kf8AKzhKK7v/AIVJ43/6An/k3B/8XR/wqTxv/wBAT/ybg/8Ai6LoPZT/AJWcJRXd/wDCpPG//QE/8m4P/i6P+FSeN/8AoCf+TcH/AMXRdB7Kf8rOEoru/wDhUnjf/oCf+TcH/wAXR/wqTxv/ANAT/wAm4P8A4ui6D2U/5WcJRU9/aT6ffXNndp5dzbyNDKmQdrqSCMjg8g9KgpmZ6r+zh/yPF9/2Dn/9GxV9H184fs4f8jxff9g5/wD0bFX0fWU9z1MJ/DCiiipOoKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAK8N/ab/AOZb/wC3n/2lXuVeG/tN/wDMt/8Abz/7Sqo7nPiv4T/rqeG0UUVqeSfdlFFFZHuhRRRQAUUUUAFFFFABRRRQB8YePf8AkevEf/YSuf8A0a1YVbvj3/kevEf/AGErn/0a1YVaHiS+Jnqv7OH/ACPF9/2Dn/8ARsVfR9fOH7OH/I8X3/YOf/0bFX0fWc9z0sJ/DCiiipOoKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAK8N/ab/5lv8A7ef/AGlXuVeG/tN/8y3/ANvP/tKqjuc+K/hP+up4bRRRWp5J92UUUVke6FFFFABRRRQAUUUUAFFFFAHxh49/5HrxH/2Ern/0a1YVbvj3/kevEf8A2Ern/wBGtWFWh4kviZ6r+zh/yPF9/wBg5/8A0bFX0fXzh+zh/wAjxff9g5//AEbFX0fWc9z0sJ/DCiiipOoKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAK8N/ab/5lv/t5/wDaVe5V4b+03/zLf/bz/wC0qqO5z4r+E/66nhtFFFankn3ZRRRWR7oUUUUAFFFFABRRRQAUUUUAfGHj3/kevEf/AGErn/0a1YVbvj3/AJHrxH/2Ern/ANGtWFWh4kviZ6r+zh/yPF9/2Dn/APRsVfR9fOH7OH/I8X3/AGDn/wDRsVfR9Zz3PSwn8MKKKKk6gooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigArw39pv/AJlv/t5/9pV7lXhv7Tf/ADLf/bz/AO0qqO5z4r+E/wCup4bRRRWp5J92UUUVke6FFFFABRRRQAUUUUAFFFFAHxh49/5HrxH/ANhK5/8ARrVhVu+Pf+R68R/9hK5/9GtWFWh4kviZ6r+zh/yPF9/2Dn/9GxV9H184fs4f8jxff9g5/wD0bFX0fWc9z0sJ/DCiiipOoKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAK8N/ab/AOZb/wC3n/2lXuVeG/tN/wDMt/8Abz/7Sqo7nPiv4T/rqeG0UUVqeSfdlFFFZHuhRRRQAUUUUAFFFFABRRRQB8YePf8AkevEf/YSuf8A0a1YVbvj3/kevEf/AGErn/0a1YVaHiS+Jnqv7OH/ACPF9/2Dn/8ARsVfR9fOH7OH/I8X3/YOf/0bFX0fWc9z0sJ/DCiiipOoKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAK8N/ab/5lv8A7ef/AGlXuVeG/tN/8y3/ANvP/tKqjuc+K/hP+up4bRRRWp5J92UV8Yf8Jj4n/wChj1n/AMDpf/iqP+Ex8T/9DHrP/gdL/wDFVHKeh9cj2Ps+ivjD/hMfE/8A0Mes/wDgdL/8VR/wmPif/oY9Z/8AA6X/AOKo5Q+uR7H2fRXxh/wmPif/AKGPWf8AwOl/+Ko/4THxP/0Mes/+B0v/AMVRyh9cj2Ps+ivjD/hMfE//AEMes/8AgdL/APFUf8Jj4n/6GPWf/A6X/wCKo5Q+uR7H2fRXxh/wmPif/oY9Z/8AA6X/AOKo/wCEx8T/APQx6z/4HS//ABVHKH1yPYPHv/I9eI/+wlc/+jWrCp9xNLczyT3EjyzSsXeR2LM7E5JJPJJPemVZwN3dz1X9nD/keL7/ALBz/wDo2Kvo+vnD9nD/AJHi+/7Bz/8Ao2Kvo+sp7np4T+GFFFFSdQUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAV4b+03/wAy3/28/wDtKvcq8N/ab/5lv/t5/wDaVVHc58V/Cf8AXU8NooorU8kKKKKACiiigAooooAKKKKACiiigAooooA9V/Zw/wCR4vv+wc//AKNir6Pr5w/Zw/5Hi+/7Bz/+jYq+j6ynuephP4YUUUVJ1BRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABXhv7Tf/Mt/9vP/ALSr3KvDf2m/+Zb/AO3n/wBpVUdznxX8J/11PDaKKK1PJCiiigAooooAKKKKACiiigAooooAKKKKAPVf2cP+R4vv+wc//o2Kvo+vnD9nD/keL7/sHP8A+jYq+j6ynuephP4YUUUVJ1BRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABXhv7Tf/Mt/wDbz/7Sr3KvIv2jdFnvfDthq0JzHp0jLKmB92XaN2c9mVRgA/ezxinHcwxKbpOx88UUUVseQFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAeq/s4f8jxff9g5//RsVfR9eDfs26LOb7U9dY7bZY/sSDAO9iVdu+RtAXtzv68GveayluerhU1TQUUUVJ0hRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABUc8MVxBJDcRpLDIpR43UMrKRggg9QR2qSigDxDxX8DVlnM3ha/SFGbJtr0kqgJJ+VwCcD5QAQT1Jauf8A+FGeJf8An+0f/v8AS/8Axuvo+iq5mczwtNu9j5w/4UZ4l/5/tH/7/S//ABuj/hRniX/n+0f/AL/S/wDxuvo+ijnYvqlM+cP+FGeJf+f7R/8Av9L/APG6P+FGeJf+f7R/+/0v/wAbr6Poo52H1SmfOH/CjPEv/P8AaP8A9/pf/jdH/CjPEv8Az/aP/wB/pf8A43X0fRRzsPqlM+cP+FGeJf8An+0f/v8AS/8Axuj/AIUZ4l/5/tH/AO/0v/xuvo+ijnYfVKZ84f8ACjPEv/P9o/8A3+l/+N0f8KM8S/8AP9o//f6X/wCN19H0Uc7D6pTPnD/hRniX/n+0f/v9L/8AG61vD3wKuTdFvEepwpbL0SwJZ34P8TqAuDt7Nnnp1r3mijmY1haaexU0rTrTSdOgsNNgS3tIF2Rxp0A/qSckk8kkk81booqToSsFFFFAwooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD//Z&quot; alt=&quot;ภูคำ Natural 250 g&quot;&gt;
+              &lt;/td&gt;
+      &lt;td&gt;ภูคำ Natural 250 g&lt;/td&gt;
+      &lt;td&gt;เมล็ดกาแฟคั่ว&lt;/td&gt;
+      &lt;td&gt;420.00&lt;/td&gt;
+      &lt;td&gt;12&lt;/td&gt;
+      &lt;td&gt;
+        &lt;a href=&quot;product_form.php?id=1&quot;&gt;แก้ไข&lt;/a&gt;
+        &lt;!-- ลบด้วย POST ไม่ใช้ลิงก์ GET เพื่อไม่ให้ลบโดยไม่ตั้งใจ และถามยืนยันก่อน --&gt;
+        &lt;form class=&quot;inline&quot; method=&quot;post&quot; action=&quot;product_delete.php&quot;
+              onsubmit=&quot;return confirm(&#x27;ยืนยันลบสินค้านี้หรือไม่ ลบแล้วกู้คืนไม่ได้&#x27;);&quot;&gt;
+          &lt;input type=&quot;hidden&quot; name=&quot;id&quot; value=&quot;1&quot;&gt;
+          &lt;button type=&quot;submit&quot; class=&quot;link-btn&quot;&gt;ลบ&lt;/button&gt;
+        &lt;/form&gt;
+      &lt;/td&gt;
+    &lt;/tr&gt;
+      &lt;tr&gt;
+      &lt;td&gt;
+                  &lt;img class=&quot;thumb&quot; src=&quot;data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAEsAZADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD6LooormNgooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKK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X/43R/wo7xL/AM/2j/8Af6X/AON19G0UvZxK/tCsfOX/AAo7xL/z/aP/AN/pf/jdH/CjvEv/AD/aP/3+l/8AjdfRtFHs4h/aFY+cv+FHeJf+f7R/+/0v/wAbo/4Ud4l/5/tH/wC/0v8A8br6Noo9nEP7QrHzl/wo7xL/AM/2j/8Af6X/AON0f8KO8S/8/wBo/wD3+l/+N19G0UeziH9oVj5y/wCFHeJf+f7R/wDv9L/8bo/4Ud4l/wCf7R/+/wBL/wDG6+jaKPZxD+0Kx85f8KO8S/8AP9o//f6X/wCN1q+HvgXcm6LeItThS2XolgSzvwf4nUBcHb2bPPTrXvFFP2cRPMKzVrlTStOtNJ06Cx06BLe0gXbHGnQD+pJySTySSTVuiirOJu+rCiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD//2Q==&quot; alt=&quot;ภูคำ Honey 250 g&quot;&gt;
+              &lt;/td&gt;
+      &lt;td&gt;ภูคำ Honey 250 g&lt;/td&gt;
+      &lt;td&gt;เมล็ดกาแฟคั่ว&lt;/td&gt;
+      &lt;td&gt;390.00&lt;/td&gt;
+      &lt;td&gt;3&lt;/td&gt;
+      &lt;td&gt;
+        &lt;a href=&quot;product_form.php?id=2&quot;&gt;แก้ไข&lt;/a&gt;
+        &lt;!-- ลบด้วย POST ไม่ใช้ลิงก์ GET เพื่อไม่ให้ลบโดยไม่ตั้งใจ และถามยืนยันก่อน --&gt;
+        &lt;form class=&quot;inline&quot; method=&quot;post&quot; action=&quot;product_delete.php&quot;
+              onsubmit=&quot;return confirm(&#x27;ยืนยันลบสินค้านี้หรือไม่ ลบแล้วกู้คืนไม่ได้&#x27;);&quot;&gt;
+          &lt;input type=&quot;hidden&quot; name=&quot;id&quot; value=&quot;2&quot;&gt;
+          &lt;button type=&quot;submit&quot; class=&quot;link-btn&quot;&gt;ลบ&lt;/button&gt;
+        &lt;/form&gt;
+      &lt;/td&gt;
+    &lt;/tr&gt;
+      &lt;tr&gt;
+      &lt;td&gt;
+                  &lt;span class=&quot;thumb&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
+              &lt;/td&gt;
+      &lt;td&gt;ภูคำ Washed 250 g&lt;/td&gt;
+      &lt;td&gt;เมล็ดกาแฟคั่ว&lt;/td&gt;
+      &lt;td&gt;360.00&lt;/td&gt;
+      &lt;td&gt;20&lt;/td&gt;
+      &lt;td&gt;
+        &lt;a href=&quot;product_form.php?id=3&quot;&gt;แก้ไข&lt;/a&gt;
+        &lt;!-- ลบด้วย POST ไม่ใช้ลิงก์ GET เพื่อไม่ให้ลบโดยไม่ตั้งใจ และถามยืนยันก่อน --&gt;
+        &lt;form class=&quot;inline&quot; method=&quot;post&quot; action=&quot;product_delete.php&quot;
+              onsubmit=&quot;return confirm(&#x27;ยืนยันลบสินค้านี้หรือไม่ ลบแล้วกู้คืนไม่ได้&#x27;);&quot;&gt;
+          &lt;input type=&quot;hidden&quot; name=&quot;id&quot; value=&quot;3&quot;&gt;
+          &lt;button type=&quot;submit&quot; class=&quot;link-btn&quot;&gt;ลบ&lt;/button&gt;
+        &lt;/form&gt;
+      &lt;/td&gt;
+    &lt;/tr&gt;
+      &lt;tr&gt;
+      &lt;td&gt;
+                  &lt;span class=&quot;thumb&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
+              &lt;/td&gt;
+      &lt;td&gt;House Blend 250 g&lt;/td&gt;
+      &lt;td&gt;เมล็ดกาแฟคั่ว&lt;/td&gt;
+      &lt;td&gt;320.00&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;
+        &lt;a href=&quot;product_form.php?id=4&quot;&gt;แก้ไข&lt;/a&gt;
+        &lt;!-- ลบด้วย POST ไม่ใช้ลิงก์ GET เพื่อไม่ให้ลบโดยไม่ตั้งใจ และถามยืนยันก่อน --&gt;
+        &lt;form class=&quot;inline&quot; method=&quot;post&quot; action=&quot;product_delete.php&quot;
+              onsubmit=&quot;return confirm(&#x27;ยืนยันลบสินค้านี้หรือไม่ ลบแล้วกู้คืนไม่ได้&#x27;);&quot;&gt;
+          &lt;input type=&quot;hidden&quot; name=&quot;id&quot; value=&quot;4&quot;&gt;
+          &lt;button type=&quot;submit&quot; class=&quot;link-btn&quot;&gt;ลบ&lt;/button&gt;
+        &lt;/form&gt;
+      &lt;/td&gt;
+    &lt;/tr&gt;
+      &lt;tr&gt;
+      &lt;td&gt;
+                  &lt;span class=&quot;thumb&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
+              &lt;/td&gt;
+      &lt;td&gt;ภูคำ Natural 500 g&lt;/td&gt;
+      &lt;td&gt;เมล็ดกาแฟคั่ว&lt;/td&gt;
+      &lt;td&gt;790.00&lt;/td&gt;
+      &lt;td&gt;6&lt;/td&gt;
+      &lt;td&gt;
+        &lt;a href=&quot;product_form.php?id=5&quot;&gt;แก้ไข&lt;/a&gt;
+        &lt;!-- ลบด้วย POST ไม่ใช้ลิงก์ GET เพื่อไม่ให้ลบโดยไม่ตั้งใจ และถามยืนยันก่อน --&gt;
+        &lt;form class=&quot;inline&quot; method=&quot;post&quot; action=&quot;product_delete.php&quot;
+              onsubmit=&quot;return confirm(&#x27;ยืนยันลบสินค้านี้หรือไม่ ลบแล้วกู้คืนไม่ได้&#x27;);&quot;&gt;
+          &lt;input type=&quot;hidden&quot; name=&quot;id&quot; value=&quot;5&quot;&gt;
+          &lt;button type=&quot;submit&quot; class=&quot;link-btn&quot;&gt;ลบ&lt;/button&gt;
+        &lt;/form&gt;
+      &lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/table&gt;
+
+&lt;nav class=&quot;pagination&quot; aria-label=&quot;เลือกหน้า&quot;&gt;
+              &lt;span class=&quot;current&quot; aria-current=&quot;page&quot;&gt;1&lt;/span&gt;
+                &lt;a href=&quot;products.php?q=&amp;amp;page=2&quot;&gt;2&lt;/a&gt;
+                &lt;a href=&quot;products.php?q=&amp;amp;page=3&quot;&gt;3&lt;/a&gt;
+        &lt;a href=&quot;products.php?q=&amp;amp;page=2&quot;&gt;ถัดไป ›&lt;/a&gt;&lt;/nav&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;small&gt;ไร่ภูคำ Coffee Roasters · ใบงานที่ 8&lt;/small&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+" style="width:720px;height:640px" ></iframe><iframe title="ตัวอย่างหน้าเว็บ หน้า 2" sandbox="allow-scripts allow-forms" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;title&gt;จัดการสินค้า&lt;/title&gt;
+  &lt;style&gt;body { font-family: Tahoma, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 16px; line-height: 1.6; color: #1e1a17; background: #f7f5f0; }
+h1 { color: #1f4d3a; }
+table { border-collapse: collapse; margin: 12px 0; }
+th, td { border: 1px solid #bbb; padding: 4px 10px; text-align: left; }
+th { background: #e7efe9; }
+label { display: block; margin-top: 10px; font-weight: bold; }
+input, select { padding: 6px; font: inherit; }
+button { margin-top: 12px; padding: 8px 18px; font: inherit; background: #1f4d3a; color: #fff; border: 0; border-radius: 6px; }
+.box { background: #fff; border-radius: 8px; padding: 12px 16px; margin: 12px 0; }
+.ok { color: #1f7a4a; font-weight: bold; }
+.error { color: #b3261e; font-weight: bold; }
+nav a { margin-right: 12px; }
+.toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+.thumb { width: 64px; height: 48px; object-fit: cover; border-radius: 4px; background: #e5ddcf; display: block; }
+.pagination { display: flex; gap: 6px; flex-wrap: wrap; margin: 12px 0; }
+.pagination a, .pagination span { padding: 4px 10px; border: 1px solid #bbb; border-radius: 4px; text-decoration: none; }
+.pagination .current { background: #1f4d3a; color: #fff; border-color: #1f4d3a; }
+.inline { display: inline; }
+.link-btn { background: none; border: 0; padding: 0; margin: 0; color: #b3261e; text-decoration: underline; cursor: pointer; font: inherit; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;nav class=&quot;toolbar&quot;&gt;
+    &lt;span&gt;ระบบหลังร้านไร่ภูคำ · ผู้ดูแลร้าน&lt;/span&gt;
+    &lt;span&gt;&lt;a href=&quot;products.php&quot;&gt;สินค้า&lt;/a&gt; &lt;a href=&quot;logout.php&quot;&gt;ออกจากระบบ&lt;/a&gt;&lt;/span&gt;
+  &lt;/nav&gt;
+&lt;h1&gt;จัดการสินค้า&lt;/h1&gt;
+
+&lt;div class=&quot;toolbar&quot;&gt;
+  &lt;form method=&quot;get&quot; role=&quot;search&quot;&gt;
+    &lt;label for=&quot;q&quot; class=&quot;inline&quot;&gt;ค้นหาชื่อสินค้า&lt;/label&gt;
+    &lt;input type=&quot;search&quot; id=&quot;q&quot; name=&quot;q&quot; value=&quot;&quot;&gt;
+    &lt;button type=&quot;submit&quot;&gt;ค้นหา&lt;/button&gt;
+  &lt;/form&gt;
+  &lt;a href=&quot;product_form.php&quot;&gt;+ เพิ่มสินค้า&lt;/a&gt;
+&lt;/div&gt;
+
+&lt;p&gt;พบ 12 รายการ · หน้า 2 จาก 3&lt;/p&gt;
+&lt;table&gt;
+  &lt;tr&gt;&lt;th scope=&quot;col&quot;&gt;รูป&lt;/th&gt;&lt;th scope=&quot;col&quot;&gt;ชื่อสินค้า&lt;/th&gt;&lt;th scope=&quot;col&quot;&gt;หมวด&lt;/th&gt;&lt;th scope=&quot;col&quot;&gt;ราคา&lt;/th&gt;&lt;th scope=&quot;col&quot;&gt;คงเหลือ&lt;/th&gt;&lt;th scope=&quot;col&quot;&gt;จัดการ&lt;/th&gt;&lt;/tr&gt;
+      &lt;tr&gt;
+      &lt;td&gt;
+                  &lt;span class=&quot;thumb&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
+              &lt;/td&gt;
+      &lt;td&gt;Espresso Blend 250 g&lt;/td&gt;
+      &lt;td&gt;เมล็ดกาแฟคั่ว&lt;/td&gt;
+      &lt;td&gt;340.00&lt;/td&gt;
+      &lt;td&gt;15&lt;/td&gt;
+      &lt;td&gt;
+        &lt;a href=&quot;product_form.php?id=6&quot;&gt;แก้ไข&lt;/a&gt;
+        &lt;!-- ลบด้วย POST ไม่ใช้ลิงก์ GET เพื่อไม่ให้ลบโดยไม่ตั้งใจ และถามยืนยันก่อน --&gt;
+        &lt;form class=&quot;inline&quot; method=&quot;post&quot; action=&quot;product_delete.php&quot;
+              onsubmit=&quot;return confirm(&#x27;ยืนยันลบสินค้านี้หรือไม่ ลบแล้วกู้คืนไม่ได้&#x27;);&quot;&gt;
+          &lt;input type=&quot;hidden&quot; name=&quot;id&quot; value=&quot;6&quot;&gt;
+          &lt;button type=&quot;submit&quot; class=&quot;link-btn&quot;&gt;ลบ&lt;/button&gt;
+        &lt;/form&gt;
+      &lt;/td&gt;
+    &lt;/tr&gt;
+      &lt;tr&gt;
+      &lt;td&gt;
+                  &lt;img class=&quot;thumb&quot; src=&quot;data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAEsAZADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD6LooormNgooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKK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8F/+Rpuv+vN//Q0r2ivF/gv/AMjTdf8AXm//AKGle0V6uD/hHHX+MKKKK6zIKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAK8s+OH/MF/7b/wDtOvU68s+OH/MF/wC2/wD7Trnxf8J/11NKPxo8sooorxjuCiiigAooooAKKKKACiiigAooooAKKKKAO++C/wDyNN1/15v/AOhpXtFeL/Bf/kabr/rzf/0NK9or1sH/AAjir/GFFFFdZkFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFeWfHD/mC/9t//AGnXqdeWfHD/AJgv/bf/ANp1z4v+E/66mlH40eWUUUV4x3BRRRQAUUUUAFFFFABRRRQAUUUUAFFFFAHffBf/AJGm6/683/8AQ0r2ivF/gv8A8jTdf9eb/wDoaV7RXrYP+EcVf4wooorrMgooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAryz44f8wX/ALb/APtOvU688+M2mS3Oj2moRHKWbssi8fdfaN2c9iFGOfve1c+KTdJ2NKTtNHjlFFFeMdwUUUUAFFFFABRRRQAUUUUAFFFFABRRRQB33wX/AORpuv8Arzf/ANDSvaK8n+CumSm6vtVY4hVPsqjj5mJVj3yMAL253e1esV6+DTVJXOKs/fCiiiuoyCiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACmSxpNE8UyLJG6lWRhkMD1BHcU+igDy/X/haHlMuhXaxqzcwXJOFHP3WAJx0ABB781j/wDCrNb/AOfrTf8Av4//AMRXtFFczwlJu9jVVpo8X/4VZrf/AD9ab/38f/4ij/hVmt/8/Wm/9/H/APiK9ooqfqdIPbzPF/8AhVmt/wDP1pv/AH8f/wCIo/4VZrf/AD9ab/38f/4ivaKKPqdIPbzPF/8AhVmt/wDP1pv/AH8f/wCIo/4VZrf/AD9ab/38f/4ivaKKPqdIPbzPF/8AhVmt/wDP1pv/AH8f/wCIo/4VZrf/AD9ab/38f/4ivaKKPqdIPbzPF/8AhVmt/wDP1pv/AH8f/wCIo/4VZrf/AD9ab/38f/4ivaKKPqdIPbzPF/8AhVmt/wDP1pv/AH8f/wCIrQ0f4VTmcnWb6NYR0S0yWbg/xMAFwcdjnnpXrFFNYOknewOtMr2Fnb6fZxWllEsNvEu1EXoB/U9896sUUV0pW0RkFFFFMAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD//2Q==&quot; alt=&quot;ดริปแบ็ก Natural 10 ซอง&quot;&gt;
+              &lt;/td&gt;
+      &lt;td&gt;ดริปแบ็ก Natural 10 ซอง&lt;/td&gt;
+      &lt;td&gt;ดริปแบ็ก&lt;/td&gt;
+      &lt;td&gt;250.00&lt;/td&gt;
+      &lt;td&gt;30&lt;/td&gt;
+      &lt;td&gt;
+        &lt;a href=&quot;product_form.php?id=7&quot;&gt;แก้ไข&lt;/a&gt;
+        &lt;!-- ลบด้วย POST ไม่ใช้ลิงก์ GET เพื่อไม่ให้ลบโดยไม่ตั้งใจ และถามยืนยันก่อน --&gt;
+        &lt;form class=&quot;inline&quot; method=&quot;post&quot; action=&quot;product_delete.php&quot;
+              onsubmit=&quot;return confirm(&#x27;ยืนยันลบสินค้านี้หรือไม่ ลบแล้วกู้คืนไม่ได้&#x27;);&quot;&gt;
+          &lt;input type=&quot;hidden&quot; name=&quot;id&quot; value=&quot;7&quot;&gt;
+          &lt;button type=&quot;submit&quot; class=&quot;link-btn&quot;&gt;ลบ&lt;/button&gt;
+        &lt;/form&gt;
+      &lt;/td&gt;
+    &lt;/tr&gt;
+      &lt;tr&gt;
+      &lt;td&gt;
+                  &lt;span class=&quot;thumb&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
+              &lt;/td&gt;
+      &lt;td&gt;ดริปแบ็ก House Blend 10 ซอง&lt;/td&gt;
+      &lt;td&gt;ดริปแบ็ก&lt;/td&gt;
+      &lt;td&gt;220.00&lt;/td&gt;
+      &lt;td&gt;25&lt;/td&gt;
+      &lt;td&gt;
+        &lt;a href=&quot;product_form.php?id=8&quot;&gt;แก้ไข&lt;/a&gt;
+        &lt;!-- ลบด้วย POST ไม่ใช้ลิงก์ GET เพื่อไม่ให้ลบโดยไม่ตั้งใจ และถามยืนยันก่อน --&gt;
+        &lt;form class=&quot;inline&quot; method=&quot;post&quot; action=&quot;product_delete.php&quot;
+              onsubmit=&quot;return confirm(&#x27;ยืนยันลบสินค้านี้หรือไม่ ลบแล้วกู้คืนไม่ได้&#x27;);&quot;&gt;
+          &lt;input type=&quot;hidden&quot; name=&quot;id&quot; value=&quot;8&quot;&gt;
+          &lt;button type=&quot;submit&quot; class=&quot;link-btn&quot;&gt;ลบ&lt;/button&gt;
+        &lt;/form&gt;
+      &lt;/td&gt;
+    &lt;/tr&gt;
+      &lt;tr&gt;
+      &lt;td&gt;
+                  &lt;span class=&quot;thumb&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
+              &lt;/td&gt;
+      &lt;td&gt;ดริปแบ็กรวมรส 20 ซอง&lt;/td&gt;
+      &lt;td&gt;ดริปแบ็ก&lt;/td&gt;
+      &lt;td&gt;450.00&lt;/td&gt;
+      &lt;td&gt;8&lt;/td&gt;
+      &lt;td&gt;
+        &lt;a href=&quot;product_form.php?id=9&quot;&gt;แก้ไข&lt;/a&gt;
+        &lt;!-- ลบด้วย POST ไม่ใช้ลิงก์ GET เพื่อไม่ให้ลบโดยไม่ตั้งใจ และถามยืนยันก่อน --&gt;
+        &lt;form class=&quot;inline&quot; method=&quot;post&quot; action=&quot;product_delete.php&quot;
+              onsubmit=&quot;return confirm(&#x27;ยืนยันลบสินค้านี้หรือไม่ ลบแล้วกู้คืนไม่ได้&#x27;);&quot;&gt;
+          &lt;input type=&quot;hidden&quot; name=&quot;id&quot; value=&quot;9&quot;&gt;
+          &lt;button type=&quot;submit&quot; class=&quot;link-btn&quot;&gt;ลบ&lt;/button&gt;
+        &lt;/form&gt;
+      &lt;/td&gt;
+    &lt;/tr&gt;
+      &lt;tr&gt;
+      &lt;td&gt;
+                  &lt;img class=&quot;thumb&quot; src=&quot;data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAEsAZADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD6LooormNgooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKSlpr00rsTdhC3pRuNJRWlkZ3Yu40bjSUUWQXYu40bjSUUWQXYu40bjSUUWQXYu40bjSUUWQXYu40bjSUUWQXYu40BjSUUWQXY8HNLTE60+s2rM0TugooopDCiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACmv2p1NftTjuTLYbRRRWpmFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAKnWn0xOtPrOW5pHYKKKKkoKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKa/anU1+1OO5MthtFFFamYUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAqdafTE60+s5bmkdgoooqSgooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigApr9qdTX7U47ky2G0UUVqZhRT/Kf0/Wjyn9P1pXHZjKKf5T+n60eU/p+tFwsxlFP8p/T9aPKf0/Wi4WYyin+U/p+tHlP6frRcLMZRT/Kf0/Wjyn9P1ouFmMooIwcGimIVOtPpidafWctzSOwUUUVJQUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAU1+1Opr9qcdyZbDaKKK1My5RRRWZqFFFFABRRRQAUUUUAFFFFAFR/vt9aSlf77fWkqzIVOtPpidafUS3NI7BRRRUlBRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABTX7U6mv2px3JlsNooorUzLlFFFZmoUUUUAFFFFABRRRQAUUUUAVH++31pKV/vt9aSrMhU60+mJ1p9RLc0jsFFFFSUFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFNftTqa/anHcmWw2iiitTMuUUUVmahRRRQAUUUUAFFFFABRRRQBUf77fWkpX++31pKsyFTrT6YnWn1EtzSOwUUUVJQUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAU1+1Opr9qcdyZbDaKKK1My5RRRWZqFFFFABRRRQAUUUUAFFFFAFR/vt9aSlf77fWkqzIVOtPpidafUS3NI7BRRRUlBRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABTX7U6mv2px3JlsNooorUzLlFFFZmoUUUUAFFFFABRRRQAUUUUAVH++31pKV/vt9aSrMhU60+mJ1p9RLc0jsFFFFSUFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFNftTqa/anHcmWw2iiitTMuUVU3t/eP50b2/vH86nlL5i3RVTe394/nRvb+8fzo5Q5i3RVTe394/nRvb+8fzo5Q5i3RVTe394/nRvb+8fzo5Q5i3RVTe394/nRvb+8fzo5Q5gf77fWkoopkCp1p9MTrT6iW5pHYKKKKkoKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKa/anU1+1OO5MthtFFFamYUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAqdafTE60+s5bmkdgoooqSgooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigApr9qdTX7U47ky2G0UUVqZhRRRQAUUUUAFFFFABRRRQAUUUUAFFFFACp1p9MTrT6zluaR2CiiipKCiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACmv2p1NbpTjuTLYbRRRWpmFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAKnWn01PWnVlLc0jsFFFFIoKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAGlfSk2mn0U+Zk8qGbTRtNPop8zDlQzaaNpp9FHMw5UM2mjaafRRzMOVDNpo2mn0UczDlQzaaNpp9FHMw5UM2mlC+tOoo5mHKhKWiipKCiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD/9k=&quot; alt=&quot;ดริปเปอร์เซรามิก&quot;&gt;
+              &lt;/td&gt;
+      &lt;td&gt;ดริปเปอร์เซรามิก&lt;/td&gt;
+      &lt;td&gt;อุปกรณ์ชง&lt;/td&gt;
+      &lt;td&gt;590.00&lt;/td&gt;
+      &lt;td&gt;5&lt;/td&gt;
+      &lt;td&gt;
+        &lt;a href=&quot;product_form.php?id=10&quot;&gt;แก้ไข&lt;/a&gt;
+        &lt;!-- ลบด้วย POST ไม่ใช้ลิงก์ GET เพื่อไม่ให้ลบโดยไม่ตั้งใจ และถามยืนยันก่อน --&gt;
+        &lt;form class=&quot;inline&quot; method=&quot;post&quot; action=&quot;product_delete.php&quot;
+              onsubmit=&quot;return confirm(&#x27;ยืนยันลบสินค้านี้หรือไม่ ลบแล้วกู้คืนไม่ได้&#x27;);&quot;&gt;
+          &lt;input type=&quot;hidden&quot; name=&quot;id&quot; value=&quot;10&quot;&gt;
+          &lt;button type=&quot;submit&quot; class=&quot;link-btn&quot;&gt;ลบ&lt;/button&gt;
+        &lt;/form&gt;
+      &lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/table&gt;
+
+&lt;nav class=&quot;pagination&quot; aria-label=&quot;เลือกหน้า&quot;&gt;
+  &lt;a href=&quot;products.php?q=&amp;amp;page=1&quot;&gt;‹ ก่อนหน้า&lt;/a&gt;            &lt;a href=&quot;products.php?q=&amp;amp;page=1&quot;&gt;1&lt;/a&gt;
+                &lt;span class=&quot;current&quot; aria-current=&quot;page&quot;&gt;2&lt;/span&gt;
+                &lt;a href=&quot;products.php?q=&amp;amp;page=3&quot;&gt;3&lt;/a&gt;
+        &lt;a href=&quot;products.php?q=&amp;amp;page=3&quot;&gt;ถัดไป ›&lt;/a&gt;&lt;/nav&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;small&gt;ไร่ภูคำ Coffee Roasters · ใบงานที่ 8&lt;/small&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+" style="width:720px;height:640px" hidden></iframe></div></div>
+  <details class="x-trouble"><summary>ข้อผิดพลาดที่พบบ่อย</summary><dl><div><dt>$_FILES['image'] ว่าง หรือ Undefined array key "image"</dt><dd>ลืม enctype="multipart/form-data" ในแท็ก form</dd></div><div><dt>move_uploaded_file(): failed to open stream: Permission denied</dt><dd>โฟลเดอร์ uploads/products ไม่มีสิทธิ์เขียน หรือยังไม่ได้สร้างโฟลเดอร์</dd></div><div><dt>รูปไม่แสดงในหน้ารายการ</dt><dd>ตรวจว่า src ชี้ไปที่ uploads/products/ชื่อไฟล์ ตรงกับที่บันทึกในฐานข้อมูล และไฟล์อยู่ในโฟลเดอร์จริง</dd></div><div><dt>หน้าสุดท้ายว่างเปล่า</dt><dd>คำนวณ OFFSET จาก $page ก่อนบังคับให้อยู่ในช่วง 1 ถึงหน้าสุดท้าย</dd></div></dl></details>
+  <div class="x-shots"><b>ภาพหน้าจอที่ต้องแนบ</b><ul><li>ฟอร์มเพิ่มสินค้าที่เลือกรูปแล้ว</li><li>รายการสินค้าที่มีรูป</li><li>ไฟล์ในโฟลเดอร์ uploads/products และคอลัมน์ image ใน phpMyAdmin</li><li>ข้อความเมื่ออัปโหลดไฟล์ที่ไม่ใช่รูป</li><li>หน้า 1 และหน้าสุดท้ายของรายการ</li></ul></div>
+</section>
+
+<section id="e5">
+  <div class="x-head"><span class="x-num">สรุป</span><h2>สิ่งที่ต้องส่ง</h2></div>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>ส่วน</th><th>ข้อ</th><th>ไฟล์ / หลักฐาน</th></tr></thead><tbody><tr><td>1 (สัปดาห์ 14)</td><td>8.1</td><td>ไฟล์ .sql ที่ Export จาก phpMyAdmin + ภาพ Structure และ Relation view/Designer</td></tr><tr><td></td><td>8.2</td><td>products.php, product_form.php, product_delete.php, includes/ + ภาพทุกขั้นของ CRUD</td></tr><tr><td></td><td>8.3</td><td>login.php ที่ใช้ Prepared Statement + ตารางตรวจ 100% + ภาพผลทดลองโจมตี</td></tr><tr><td>2 (สัปดาห์ 15)</td><td>8.4</td><td>includes/upload.php, uploads/products/.htaccess + ภาพอัปโหลดและแบ่งหน้า</td></tr></tbody></table></div>
+  <p class="x-muted">Export ฐานข้อมูลจาก phpMyAdmin (แท็บ Export › Quick › SQL) ใส่ในโฟลเดอร์ sql แล้วบีบอัดโฟลเดอร์ ws8 เป็น .zip <b>ก่อนส่งให้เปลี่ยนรหัสผ่านใน db.php กลับเป็นค่าว่าง</b> และรวมภาพหน้าจอเป็น PDF ไฟล์เดียว ส่งพร้อมกันทั้งสองส่วนภายในสัปดาห์ที่ 15 ตั้งชื่อตามรูปแบบ <code>รหัสนักศึกษา_ใบงานที่8</code></p>
+</section>
+
+</div>
+<div class="pager"><a class="pn" href="ws8.html"><small>กลับไปที่</small><b>ใบงานที่ 8</b></a><a class="pn next" href="ws9.html"><small>ถัดไป</small><b>ใบงานที่ 9</b></a></div></div>
+</main>
+<footer class="foot"><div class="wrap fgrid">
+<div><a class="brand" href="../index.html"><span class="logo" aria-hidden="true">&lt;/&gt;</span><span class="bt"><b>การเขียนโปรแกรมบนเว็บ</b><small>Web Programming</small></span></a>
+<p class="small">สื่อเสริมการเรียนรู้ ใช้ประกอบเอกสารประกอบการสอน ไม่มีระบบสมาชิกและไม่เก็บข้อมูลส่วนบุคคล ส่งงานผ่าน Google Classroom</p></div>
+<div><p class="fh">เรียนรู้</p><a href="../chapters.html">บทเรียน 10 บท</a><a href="../worksheets.html">ใบงานประจำบท</a><a href="../assessment.html">เกณฑ์การประเมินผล</a><a href="../clo.html">ผลลัพธ์การเรียนรู้ (CLO)</a><a href="../start.html">เริ่มต้นใช้งาน</a></div>
+<div><p class="fh">รายวิชา</p><a href="../about.html">เกี่ยวกับรายวิชา</a><span>ผู้สอน: ดร.สุรเชษฐ์ สังขพันธ์</span><span>พ.ศ. 2569</span></div>
+</div></footer>
+<script src="../assets/app.js"></script>
+<script>
+document.querySelectorAll(".x-preview").forEach(function(pv){
+  var frames=pv.querySelectorAll("iframe"), out=pv.querySelector(".pvw");
+  pv.querySelectorAll("button[data-w]").forEach(function(b,_,all){b.addEventListener("click",function(){
+    all.forEach(function(x){x.setAttribute("aria-pressed","false")});b.setAttribute("aria-pressed","true");
+    frames.forEach(function(f){f.style.width=b.dataset.w+"px"});out.textContent=b.dataset.w+"px";});});
+  pv.querySelectorAll("button[data-doc]").forEach(function(b,_,all){b.addEventListener("click",function(){
+    all.forEach(function(x){x.setAttribute("aria-pressed","false")});b.setAttribute("aria-pressed","true");
+    frames.forEach(function(f,k){f.hidden=(k!=b.dataset.doc)});});});
+});
+</script>
+</body>
+</html>
