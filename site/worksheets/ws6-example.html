@@ -1,0 +1,877 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="ตัวอย่างการทำใบงานที่ 6: DOM และ Event คำนวณราคาพร้อม VAT, ตรวจฟอร์มด้วย Regex, Dark Mode ด้วย classList.toggle และ Fetch API แบบ async/await">
+<meta name="theme-color" content="#4338ca">
+<title>ตัวอย่างใบงานที่ 6 · การเขียนโปรแกรมบนเว็บ</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%234338ca'/%3E%3Cpath d='M26 20 14 32l12 12M38 20l12 12-12 12' fill='none' stroke='%23fff' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preload" href="../assets/fonts/Sarabun-400-thai.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css">
+<style>
+.wsx{display:grid;gap:52px;padding-block:28px 24px;font-size:1.05rem;line-height:1.75;
+  --term-bg:#0f1226;--term-ink:#e8eaf8;--term-dim:#7b84aa;--ok-bg:#1f7a4a}
+.wsx p{margin:0;max-width:74ch}
+.wsx section{display:grid;gap:18px;scroll-margin-top:84px;min-width:0}
+.wsx h2{margin:0;font-size:clamp(1.4rem,3vw,1.75rem)}
+.wsx h3{margin:8px 0 0;font-size:1.18rem}
+.wsx kbd{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:.82em;padding:1px 6px;border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;background:var(--surface)}
+.wsx .x-muted{color:var(--muted);font-size:.95rem}
+.wsx .x-intro{display:grid;gap:16px}
+.wsx .x-toc{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:0;padding:0}
+.wsx .x-toc a{display:inline-flex;gap:8px;align-items:baseline;padding:6px 14px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--ink);text-decoration:none;font-size:.95rem}
+.wsx .x-toc b{color:var(--brand);font-family:"JetBrains Mono",monospace;font-weight:600;font-size:.85em}
+.wsx .x-head{display:flex;align-items:center;gap:14px;border-top:2px solid var(--ink);padding-top:16px}
+.wsx .x-num{font-family:"JetBrains Mono",monospace;font-weight:600;color:var(--brand-ink);background:var(--brand);padding:2px 10px;border-radius:8px;font-size:.95rem}
+.wsx .x-steps{margin:0;padding-left:1.4em;display:grid;gap:6px}
+.wsx .x-grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:20px;align-items:start}
+.wsx .x-grid2>*{min-width:0}
+.wsx .x-os{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px;display:grid;gap:10px}
+.wsx .x-os h3{margin:0}
+.wsx .x-checks{display:grid;gap:8px}
+.wsx .x-checks ul{margin:0;padding-left:1.2em;display:grid;gap:6px}
+.wsx .x-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.wsx .x-table{min-width:640px;background:var(--surface);border:1px solid var(--line)}
+.wsx .x-table th,.wsx .x-table td{border:1px solid var(--line)}
+.wsx .x-table code{font-size:.85em;overflow-wrap:anywhere}
+.wsx .x-shots{background:var(--soft);border-radius:12px;padding:12px 18px;display:grid;gap:4px}
+.wsx .x-shots b{color:var(--brand)}
+.wsx .x-shots ul{margin:0;padding-left:1.2em}
+.wsx .x-trouble{border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.wsx .x-trouble summary{cursor:pointer;padding:12px 18px;font-weight:700}
+.wsx .x-trouble dl{margin:0;padding:0 18px 14px;display:grid;gap:12px}
+.wsx .x-trouble dt{font-family:"JetBrains Mono",monospace;font-size:.88rem;color:var(--ink);font-weight:600}
+.wsx .x-trouble dd{margin:2px 0 0;color:var(--muted)}
+.wsx .x-callout{background:var(--warn-bg);color:var(--warn-ink);border-left:4px solid var(--accent);border-radius:10px;padding:12px 16px}
+.wsx .x-callout code{background:none}
+/* terminal + tree (always dark, like a real terminal) */
+.wsx .x-term{background:var(--term-bg);color:var(--term-ink);border-radius:12px;overflow:hidden;min-width:0}
+.wsx .x-term-bar{display:flex;gap:6px;align-items:center;padding:8px 12px;background:#181c38;font-size:.8rem;color:var(--term-dim)}
+.wsx .x-term-bar i{width:10px;height:10px;border-radius:50%;background:#3a3f63;display:inline-block}
+.wsx .x-term-bar span{margin-left:8px}
+.wsx .x-term pre{color:var(--term-ink);font-size:13.5px;white-space:pre;overflow-x:auto}
+.wsx .x-term b{color:#8be9a8;font-weight:600}
+.wsx .x-term .c{color:var(--term-dim)}
+.wsx .x-tree{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow-x:auto}
+.wsx .x-tree pre{color:var(--ink);font-size:14px;white-space:pre}
+.wsx .x-tree b{color:var(--brand)}
+.wsx .x-tree span{color:var(--muted)}
+/* mock UIs */
+.wsx .x-mock{border-radius:12px;overflow:hidden;font-family:"Segoe UI",system-ui,sans-serif;font-size:13px}
+.wsx .x-vsc{background:#1f1f1f;color:#ccc;border:1px solid #333}
+.wsx .x-vsc-hd{padding:10px 14px;font-size:11px;letter-spacing:.06em;color:#9a9a9a}
+.wsx .x-ext{display:grid;grid-template-columns:40px 1fr auto;gap:10px;align-items:center;padding:8px 14px}
+.wsx .x-ext:nth-child(2){background:#04395e}
+.wsx .x-ext b{display:block;color:#eee;font-weight:600}
+.wsx .x-ext small{color:#9a9a9a}
+.wsx .x-ext em{font-style:normal;color:#73c991}
+.wsx .x-ico{width:40px;height:40px;border-radius:6px;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px}
+.wsx .x-vsc-status{display:flex;gap:16px;justify-content:flex-end;background:#007acc;color:#fff;padding:3px 12px;font-size:12px;margin-top:10px}
+.wsx .x-vsc-status span:first-child{margin-right:auto}
+.wsx .x-xampp{min-width:520px;background:#f3f3f3;color:#222;border:1px solid #c8c8c8}
+.wsx .x-xampp-hd{background:#fb7a24;color:#fff;font-weight:700;padding:8px 14px}
+.wsx .x-xampp table{width:100%;font-size:13px;background:#fff}
+.wsx .x-xampp th{background:#e8e8e8;color:#222;font-weight:600}
+.wsx .x-xampp th,.wsx .x-xampp td{border:1px solid #d6d6d6;padding:6px 10px}
+.wsx .x-xampp td{background:#fff;color:#222}
+.wsx .x-xampp tr.on td:first-child{background:#9be29b;font-weight:600}
+.wsx .x-xampp td span{display:inline-block;border:1px solid #aaa;border-radius:3px;padding:0 8px;margin-right:6px;background:#f7f7f7}
+.wsx .x-log{font-family:"JetBrains Mono",monospace;font-size:12px;padding:8px 14px;color:#1a5fb4;background:#fff;border-top:1px solid #d6d6d6}
+
+.wsx .x-head{flex-wrap:wrap}
+.wsx .x-part{margin-left:auto;font-size:.85rem;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:2px 12px}
+.wsx .x-file{margin:6px 0 -10px;font-family:"JetBrains Mono",monospace;font-size:.85rem;color:var(--brand);font-weight:600}
+.wsx .x-plain{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.wsx .x-plain li{display:grid;grid-template-columns:96px 1fr;gap:10px;align-items:baseline}
+.wsx .x-wk{font-size:.8rem;font-weight:700;color:var(--brand);background:var(--soft);border-radius:6px;padding:1px 8px;text-align:center}
+.wsx .x-plain-dots{margin:0;padding-left:1.2em;display:grid;gap:6px}
+.wsx .x-sem{display:grid;gap:6px;font-family:"JetBrains Mono",monospace;font-size:12.5px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px}
+.wsx .x-sem div{border:1.5px solid var(--line);border-radius:6px;padding:6px 8px;color:var(--ink)}
+.wsx .x-sem .s-hd,.wsx .x-sem .s-ft{background:var(--s1-soft);border-color:var(--s1)}
+.wsx .x-sem .s-nav{background:var(--s2-soft);border-color:var(--s2)}
+.wsx .x-sem .s-row{display:grid;grid-template-columns:2fr 1fr;gap:6px;border:0;padding:0}
+.wsx .x-sem .s-main{background:var(--s3-soft);border-color:var(--s3);display:grid;gap:6px}
+.wsx .x-sem .s-art{background:var(--surface);display:grid;gap:5px}
+.wsx .x-sem .s-sec,.wsx .x-sem .s-sub{border-style:dashed;font-size:11.5px}
+.wsx .x-sem .s-aside{background:var(--s4-soft);border-color:var(--s4)}
+
+
+.wsx .x-wrap pre{white-space:pre-wrap;overflow-wrap:anywhere}
+.wsx .x-preview{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface2)}
+.wsx .x-pv-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 12px;border-bottom:1px solid var(--line);background:var(--surface)}
+.wsx .x-pv-bar button{font:inherit;font-size:.9rem;padding:4px 12px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.wsx .x-pv-bar button[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
+.wsx .x-pv-sep{width:1px;height:22px;background:var(--line);margin:0 4px}
+.wsx .x-pv-bar .pvw{margin-left:auto;font-family:"JetBrains Mono",monospace;font-size:.85rem;color:var(--muted)}
+.wsx .x-pv-stage{overflow-x:auto;padding:12px}
+.wsx .x-pv-stage iframe{display:block;margin:0 auto;border:1px solid var(--line);border-radius:8px;background:#fff;max-width:none;transition:width .25s}
+</style>
+<script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+
+</head>
+<body class="ch-page">
+<a class="skip" href="#main">ข้ามไปยังเนื้อหา</a>
+<header class="top"><div class="wrap nav">
+<a class="brand" href="../index.html" aria-label="หน้าแรก การเขียนโปรแกรมบนเว็บ"><span class="logo" aria-hidden="true">&lt;/&gt;</span><span class="bt"><b>การเขียนโปรแกรมบนเว็บ</b><small>07-034-210</small></span></a>
+<button id="menuBtn" class="iconbtn menu-btn" type="button" aria-expanded="false" aria-controls="menu" aria-label="เปิดเมนู"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v2H3V6Zm0 5h18v2H3v-2Zm0 5h18v2H3v-2Z"/></svg></button>
+<nav id="menu" aria-label="เมนูหลัก">
+<a href="../chapters.html">บทเรียน</a><a href="../worksheets.html" aria-current="page">ใบงาน</a><a href="../assessment.html">เกณฑ์ประเมินผล</a><a href="../clo.html">ผลลัพธ์การเรียนรู้</a><a href="../start.html">เริ่มต้นใช้งาน</a><a href="../about.html">เกี่ยวกับรายวิชา</a>
+</nav>
+<button id="theme" class="iconbtn" type="button" aria-label="สลับโหมดมืดและสว่าง"><span class="i-moon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5Z"/></svg></span><span class="i-sun"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg></span></button>
+</div><div id="bar" class="bar" aria-hidden="true"></div></header>
+<main id="main">
+<div class="chead s3"><div class="wrap">
+<nav class="crumb" aria-label="เส้นทาง"><a href="../index.html">หน้าแรก</a><span>/</span><a href="../worksheets.html">ใบงาน</a><span>/</span><a href="ws6.html">ใบงานที่ 6</a><span>/</span><span aria-current="page">ตัวอย่าง</span></nav>
+<div class="chrow"><span class="badge b-s3 big" aria-hidden="true">JS</span><div><p class="kicker">ตัวอย่างการทำใบงานที่ 6</p><h1>JavaScript สำหรับร้านไร่ภูคำ: คำนวณราคา ตรวจฟอร์ม Dark Mode และ Fetch API</h1></div></div></div></div>
+<div class="wrap narrow"><div class="wsx">
+
+<header class="x-intro">
+  <p>ตัวอย่างนี้ต่อยอดจากไฟล์เริ่มต้นใน <code>starter/week06/</code> และตัวอย่างในหัวข้อ 6.8.4 และ 6.9.1 ของบทที่ 6 แต่ละข้อเป็นไฟล์ HTML 1 ไฟล์ที่มี JavaScript อยู่ในตัว ทุกไฟล์ผ่าน W3C Nu HTML Checker โดยไม่มี error และ<b>ลองใช้งานจริงได้ในหน้านี้</b></p>
+  <div class="x-grid2">
+    <div class="x-os"><h3>แบ่งงานตามสัปดาห์</h3>
+      <ul class="x-plain">
+        <li><span class="x-wk">สัปดาห์ 10</span><span>ส่วนที่ 1 ข้อ 6.1–6.3 <code>order.html</code> <code>signup.html</code> <code>theme.html</code></span></li>
+        <li><span class="x-wk">สัปดาห์ 11</span><span>ส่วนที่ 2 ข้อ 6.4 <code>users.html</code></span></li>
+        <li><span class="x-wk">ส่ง</span><span>ทั้งสองส่วนรวมกันภายในสัปดาห์ที่ 11</span></li>
+      </ul></div>
+    <div class="x-tree"><pre><b>ws6/</b>
+├── order.html   <span>← 6.1 ราคา + VAT</span>
+├── signup.html  <span>← 6.2 ตรวจฟอร์ม</span>
+├── theme.html   <span>← 6.3 Dark Mode</span>
+└── users.html   <span>← 6.4 Fetch API</span></pre></div>
+  </div>
+  <ul class="x-toc">
+    <li><a href="#e1"><b>6.1</b>DOM + Event</a></li>
+    <li><a href="#e2"><b>6.2</b>Client-Side Validation</a></li>
+    <li><a href="#e3"><b>6.3</b>Dark Mode</a></li>
+    <li><a href="#e4"><b>6.4</b>Fetch API</a></li>
+    <li><a href="#e5"><b>สรุป</b>สิ่งที่ต้องส่ง</a></li>
+  </ul>
+</header>
+
+<section id="e1">
+  <div class="x-head"><span class="x-num">6.1</span><h2>คำนวณราคาและ VAT แบบเรียลไทม์</h2><span class="x-part">ส่วนที่ 1 · สัปดาห์ 10</span></div>
+  <p>ขยายจาก <code>vat-calculator.html</code> ให้มีหลายช่องที่มีผลต่อราคา ทุกช่องเรียกฟังก์ชัน <code>calculate()</code> ตัวเดียวกัน</p>
+  <div class="x-preview" id="pv1"><div class="x-pv-bar" role="group" aria-label="เลือกความกว้างจอ"><button type="button" data-w="375" aria-pressed="false">มือถือ 375px</button><button type="button" data-w="700" aria-pressed="true">700px</button><span class="pvw">700px</span></div><div class="x-pv-stage"><iframe title="ตัวอย่างหน้าเว็บ order" sandbox="allow-scripts allow-forms" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;title&gt;คำนวณราคาสั่งซื้อ&lt;/title&gt;
+  &lt;style&gt;
+    body { font-family: Tahoma, sans-serif; max-width: 520px; margin: 2rem auto; padding: 0 16px; line-height: 1.6; }
+    label { display: block; margin-top: 12px; font-weight: bold; }
+    select, input[type=&quot;number&quot;] { width: 100%; padding: 8px; font: inherit; }
+    .summary { margin-top: 20px; border-top: 2px solid #1f4d3a; padding-top: 12px; }
+    .summary p { display: flex; justify-content: space-between; margin: 4px 0; }
+    .total { font-size: 1.3rem; font-weight: bold; color: #1f4d3a; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;สั่งซื้อเมล็ดกาแฟ&lt;/h1&gt;
+
+  &lt;label for=&quot;product&quot;&gt;สินค้า&lt;/label&gt;
+  &lt;select id=&quot;product&quot;&gt;
+    &lt;option value=&quot;420&quot;&gt;ภูคำ Natural 250 g (฿420)&lt;/option&gt;
+    &lt;option value=&quot;390&quot;&gt;ภูคำ Honey 250 g (฿390)&lt;/option&gt;
+    &lt;option value=&quot;320&quot;&gt;House Blend 250 g (฿320)&lt;/option&gt;
+  &lt;/select&gt;
+
+  &lt;label for=&quot;qty&quot;&gt;จำนวน (ถุง)&lt;/label&gt;
+  &lt;input type=&quot;number&quot; id=&quot;qty&quot; min=&quot;1&quot; max=&quot;50&quot; value=&quot;1&quot;&gt;
+
+  &lt;label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;gift&quot;&gt; ห่อของขวัญ (+฿30)&lt;/label&gt;
+
+  &lt;div class=&quot;summary&quot; aria-live=&quot;polite&quot;&gt;
+    &lt;p&gt;&lt;span&gt;ราคาสินค้า&lt;/span&gt;&lt;span id=&quot;subtotal&quot;&gt;฿0.00&lt;/span&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;span&gt;ภาษีมูลค่าเพิ่ม 7%&lt;/span&gt;&lt;span id=&quot;vat&quot;&gt;฿0.00&lt;/span&gt;&lt;/p&gt;
+    &lt;p class=&quot;total&quot;&gt;&lt;span&gt;ยอดชำระ&lt;/span&gt;&lt;span id=&quot;total&quot;&gt;฿0.00&lt;/span&gt;&lt;/p&gt;
+  &lt;/div&gt;
+
+  &lt;script&gt;
+    const VAT_RATE = 0.07;
+    const GIFT_FEE = 30;
+
+    const productEl = document.getElementById(&quot;product&quot;);
+    const qtyEl = document.getElementById(&quot;qty&quot;);
+    const giftEl = document.getElementById(&quot;gift&quot;);
+
+    // จัดรูปแบบเงินบาท เช่น 1234.5 → ฿1,234.50
+    const baht = new Intl.NumberFormat(&quot;th-TH&quot;, { style: &quot;currency&quot;, currency: &quot;THB&quot; });
+
+    function calculate() {
+      const price = Number(productEl.value);
+      const qty = Math.max(0, parseInt(qtyEl.value, 10) || 0);   // ช่องว่างหรือติดลบ = 0
+      const gift = giftEl.checked &amp;&amp; qty &gt; 0 ? GIFT_FEE : 0;    // ไม่มีสินค้า ไม่คิดค่าห่อ
+
+      const subtotal = price * qty + gift;
+      const vat = Math.round(subtotal * VAT_RATE * 100) / 100;    // ปัดเป็นสตางค์
+      const total = subtotal + vat;
+
+      document.getElementById(&quot;subtotal&quot;).textContent = baht.format(subtotal);
+      document.getElementById(&quot;vat&quot;).textContent = baht.format(vat);
+      document.getElementById(&quot;total&quot;).textContent = baht.format(total);
+    }
+
+    qtyEl.addEventListener(&quot;input&quot;, calculate);      // ทุกครั้งที่พิมพ์ตัวเลข
+    productEl.addEventListener(&quot;change&quot;, calculate); // เมื่อเลือกสินค้าใหม่
+    giftEl.addEventListener(&quot;change&quot;, calculate);    // เมื่อติ๊กหรือเอาติ๊กออก
+    calculate();                                      // คำนวณครั้งแรกตอนเปิดหน้า
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+" style="width:700px;height:520px" ></iframe></div></div>
+  <p class="x-file">order.html</p><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;title&gt;คำนวณราคาสั่งซื้อ&lt;/title&gt;
+  &lt;style&gt;
+    body { font-family: Tahoma, sans-serif; max-width: 520px; margin: 2rem auto; padding: 0 16px; line-height: 1.6; }
+    label { display: block; margin-top: 12px; font-weight: bold; }
+    select, input[type=&quot;number&quot;] { width: 100%; padding: 8px; font: inherit; }
+    .summary { margin-top: 20px; border-top: 2px solid #1f4d3a; padding-top: 12px; }
+    .summary p { display: flex; justify-content: space-between; margin: 4px 0; }
+    .total { font-size: 1.3rem; font-weight: bold; color: #1f4d3a; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;สั่งซื้อเมล็ดกาแฟ&lt;/h1&gt;
+
+  &lt;label for=&quot;product&quot;&gt;สินค้า&lt;/label&gt;
+  &lt;select id=&quot;product&quot;&gt;
+    &lt;option value=&quot;420&quot;&gt;ภูคำ Natural 250 g (฿420)&lt;/option&gt;
+    &lt;option value=&quot;390&quot;&gt;ภูคำ Honey 250 g (฿390)&lt;/option&gt;
+    &lt;option value=&quot;320&quot;&gt;House Blend 250 g (฿320)&lt;/option&gt;
+  &lt;/select&gt;
+
+  &lt;label for=&quot;qty&quot;&gt;จำนวน (ถุง)&lt;/label&gt;
+  &lt;input type=&quot;number&quot; id=&quot;qty&quot; min=&quot;1&quot; max=&quot;50&quot; value=&quot;1&quot;&gt;
+
+  &lt;label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;gift&quot;&gt; ห่อของขวัญ (+฿30)&lt;/label&gt;
+
+  &lt;div class=&quot;summary&quot; aria-live=&quot;polite&quot;&gt;
+    &lt;p&gt;&lt;span&gt;ราคาสินค้า&lt;/span&gt;&lt;span id=&quot;subtotal&quot;&gt;฿0.00&lt;/span&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;span&gt;ภาษีมูลค่าเพิ่ม 7%&lt;/span&gt;&lt;span id=&quot;vat&quot;&gt;฿0.00&lt;/span&gt;&lt;/p&gt;
+    &lt;p class=&quot;total&quot;&gt;&lt;span&gt;ยอดชำระ&lt;/span&gt;&lt;span id=&quot;total&quot;&gt;฿0.00&lt;/span&gt;&lt;/p&gt;
+  &lt;/div&gt;
+
+  &lt;script&gt;
+    const VAT_RATE = 0.07;
+    const GIFT_FEE = 30;
+
+    const productEl = document.getElementById(&quot;product&quot;);
+    const qtyEl = document.getElementById(&quot;qty&quot;);
+    const giftEl = document.getElementById(&quot;gift&quot;);
+
+    // จัดรูปแบบเงินบาท เช่น 1234.5 → ฿1,234.50
+    const baht = new Intl.NumberFormat(&quot;th-TH&quot;, { style: &quot;currency&quot;, currency: &quot;THB&quot; });
+
+    function calculate() {
+      const price = Number(productEl.value);
+      const qty = Math.max(0, parseInt(qtyEl.value, 10) || 0);   // ช่องว่างหรือติดลบ = 0
+      const gift = giftEl.checked &amp;&amp; qty &gt; 0 ? GIFT_FEE : 0;    // ไม่มีสินค้า ไม่คิดค่าห่อ
+
+      const subtotal = price * qty + gift;
+      const vat = Math.round(subtotal * VAT_RATE * 100) / 100;    // ปัดเป็นสตางค์
+      const total = subtotal + vat;
+
+      document.getElementById(&quot;subtotal&quot;).textContent = baht.format(subtotal);
+      document.getElementById(&quot;vat&quot;).textContent = baht.format(vat);
+      document.getElementById(&quot;total&quot;).textContent = baht.format(total);
+    }
+
+    qtyEl.addEventListener(&quot;input&quot;, calculate);      // ทุกครั้งที่พิมพ์ตัวเลข
+    productEl.addEventListener(&quot;change&quot;, calculate); // เมื่อเลือกสินค้าใหม่
+    giftEl.addEventListener(&quot;change&quot;, calculate);    // เมื่อติ๊กหรือเอาติ๊กออก
+    calculate();                                      // คำนวณครั้งแรกตอนเปิดหน้า
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>ส่วนของโค้ด</th><th>ทำหน้าที่</th></tr></thead><tbody><tr><td><code>document.getElementById(&quot;qty&quot;)</code></td><td>หา element จาก id เก็บไว้ในตัวแปรครั้งเดียว ไม่ต้องหาใหม่ทุกครั้งที่คำนวณ</td></tr><tr><td><code>addEventListener(&quot;input&quot;, …)</code></td><td>ช่องตัวเลข: ทำงานทุกครั้งที่พิมพ์หรือกดลูกศร</td></tr><tr><td><code>addEventListener(&quot;change&quot;, …)</code></td><td>select และ checkbox: ทำงานเมื่อเลือกค่าใหม่เสร็จ</td></tr><tr><td><code>Number()</code> / <code>parseInt()</code></td><td>ค่าจาก input เป็นข้อความเสมอ ต้องแปลงเป็นตัวเลขก่อนคำนวณ ไม่อย่างนั้น "420" + 30 จะได้ "42030"</td></tr><tr><td><code>|| 0</code> และ <code>Math.max(0, …)</code></td><td>ช่องว่างได้ NaN จึงแทนด้วย 0 และไม่ยอมให้ติดลบ</td></tr><tr><td><code>Math.round(x * 100) / 100</code></td><td>ปัดภาษีเป็นสตางค์ (ทศนิยม 2 ตำแหน่ง)</td></tr><tr><td><code>Intl.NumberFormat(&quot;th-TH&quot;, …)</code></td><td>แสดงเงินแบบไทย มีลูกน้ำและ ฿ เช่น ฿1,284.00</td></tr><tr><td><code>textContent</code></td><td>ใส่ผลลัพธ์ลงหน้าเว็บเป็นข้อความธรรมดา</td></tr></tbody></table></div>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>ทดสอบ</th><th>ราคาสินค้า</th><th>VAT 7%</th><th>ยอดชำระ</th></tr></thead><tbody><tr><td>Natural × 1</td><td>฿420.00</td><td>฿29.40</td><td>฿449.40</td></tr><tr><td>Honey × 3 + ห่อของขวัญ</td><td>฿1,200.00</td><td>฿84.00</td><td>฿1,284.00</td></tr><tr><td>Natural × 2 + ห่อของขวัญ</td><td>฿870.00</td><td>฿60.90</td><td>฿930.90</td></tr><tr><td>ลบตัวเลขในช่องจำนวนจนว่าง</td><td>฿0.00</td><td>฿0.00</td><td>฿0.00 (ไม่ขึ้น NaN)</td></tr></tbody></table></div>
+  <p class="x-muted">ตัวอย่างนี้คิด VAT บวกเพิ่มจากราคาสินค้าตามหัวข้อ 6.8.4 ร้านค้าปลีกในไทยส่วนใหญ่ติดราคารวม VAT แล้ว ถ้าต้องการแยก VAT ออกจากราคารวม ให้คำนวณ <code>vat = total × 7 / 107</code></p>
+  <div class="x-shots"><b>ภาพหน้าจอที่ต้องแนบ</b><ul><li>หน้า order.html ที่เปลี่ยนจำนวนและติ๊กห่อของขวัญแล้ว ยอดเปลี่ยนตาม</li><li>โค้ดส่วน addEventListener ใน VS Code</li></ul></div>
+</section>
+
+<section id="e2">
+  <div class="x-head"><span class="x-num">6.2</span><h2>ตรวจฟอร์มฝั่ง Client ด้วย JavaScript</h2><span class="x-part">ส่วนที่ 1 · สัปดาห์ 10</span></div>
+  <p>ใบงานที่ 5 ให้ Bootstrap กับ HTML ตรวจให้ ใบงานนี้เขียนการตรวจเองทั้งหมด จึงใส่ <code>novalidate</code> ปิดการตรวจของเบราว์เซอร์ แล้วใช้ Regular Expression ตรวจอีเมลและรหัสผ่าน</p>
+  <div class="x-preview" id="pv2"><div class="x-pv-bar" role="group" aria-label="เลือกความกว้างจอ"><button type="button" data-w="375" aria-pressed="false">มือถือ 375px</button><button type="button" data-w="700" aria-pressed="true">700px</button><span class="pvw">700px</span></div><div class="x-pv-stage"><iframe title="ตัวอย่างหน้าเว็บ signup" sandbox="allow-scripts allow-forms" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;title&gt;สมัครสมาชิก&lt;/title&gt;
+  &lt;style&gt;
+    body { font-family: Tahoma, sans-serif; max-width: 480px; margin: 2rem auto; padding: 0 16px; line-height: 1.6; }
+    label { display: block; margin-top: 14px; font-weight: bold; }
+    input { width: 100%; padding: 8px; font: inherit; border: 2px solid #999; border-radius: 6px; box-sizing: border-box; }
+    input[aria-invalid=&quot;true&quot;] { border-color: #b3261e; }
+    input[aria-invalid=&quot;false&quot;] { border-color: #1f7a4a; }
+    .error { color: #b3261e; font-size: 0.9rem; min-height: 1.4em; margin: 2px 0 0; }
+    button { margin-top: 18px; padding: 10px 20px; font: inherit; background: #1f4d3a; color: #fff; border: 0; border-radius: 6px; }
+    #result { margin-top: 16px; font-weight: bold; color: #1f7a4a; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;สมัครสมาชิกร้านไร่ภูคำ&lt;/h1&gt;
+
+  &lt;!-- novalidate: ปิดการตรวจของเบราว์เซอร์ เพื่อฝึกเขียนการตรวจเองด้วย JavaScript --&gt;
+  &lt;form id=&quot;signupForm&quot; novalidate&gt;
+    &lt;label for=&quot;email&quot;&gt;อีเมล&lt;/label&gt;
+    &lt;input type=&quot;text&quot; id=&quot;email&quot; name=&quot;email&quot; autocomplete=&quot;email&quot; aria-describedby=&quot;email-error&quot;&gt;
+    &lt;p class=&quot;error&quot; id=&quot;email-error&quot; aria-live=&quot;polite&quot;&gt;&lt;/p&gt;
+
+    &lt;label for=&quot;password&quot;&gt;รหัสผ่าน&lt;/label&gt;
+    &lt;input type=&quot;password&quot; id=&quot;password&quot; name=&quot;password&quot; autocomplete=&quot;new-password&quot; aria-describedby=&quot;password-error&quot;&gt;
+    &lt;p class=&quot;error&quot; id=&quot;password-error&quot; aria-live=&quot;polite&quot;&gt;&lt;/p&gt;
+
+    &lt;label for=&quot;confirm&quot;&gt;ยืนยันรหัสผ่าน&lt;/label&gt;
+    &lt;input type=&quot;password&quot; id=&quot;confirm&quot; name=&quot;confirm&quot; autocomplete=&quot;new-password&quot; aria-describedby=&quot;confirm-error&quot;&gt;
+    &lt;p class=&quot;error&quot; id=&quot;confirm-error&quot; aria-live=&quot;polite&quot;&gt;&lt;/p&gt;
+
+    &lt;button type=&quot;submit&quot;&gt;สมัครสมาชิก&lt;/button&gt;
+  &lt;/form&gt;
+  &lt;p id=&quot;result&quot; role=&quot;status&quot;&gt;&lt;/p&gt;
+
+  &lt;script&gt;
+    // รูปแบบอีเมล: มีข้อความก่อน @ / มีชื่อโดเมน / มีจุดตามด้วยอักษรอย่างน้อย 2 ตัว / ห้ามมีช่องว่าง
+    const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+    // รหัสผ่าน: อย่างน้อย 8 ตัว มีตัวอักษรอังกฤษและตัวเลขอย่างน้อยอย่างละ 1 ตัว
+    const PASSWORD_PATTERN = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
+
+    const form = document.getElementById(&quot;signupForm&quot;);
+    const email = document.getElementById(&quot;email&quot;);
+    const password = document.getElementById(&quot;password&quot;);
+    const confirm = document.getElementById(&quot;confirm&quot;);
+
+    // แสดงหรือล้างข้อความผิดพลาดใต้ช่อง แล้วคืนค่า true ถ้าผ่าน
+    function setError(input, message) {
+      document.getElementById(input.id + &quot;-error&quot;).textContent = message;
+      input.setAttribute(&quot;aria-invalid&quot;, message ? &quot;true&quot; : &quot;false&quot;);
+      return message === &quot;&quot;;
+    }
+
+    function checkEmail() {
+      const value = email.value.trim();
+      if (value === &quot;&quot;) return setError(email, &quot;กรุณากรอกอีเมล&quot;);
+      if (!EMAIL_PATTERN.test(value)) return setError(email, &quot;รูปแบบอีเมลไม่ถูกต้อง เช่น name@example.com&quot;);
+      return setError(email, &quot;&quot;);
+    }
+
+    function checkPassword() {
+      if (!PASSWORD_PATTERN.test(password.value)) {
+        return setError(password, &quot;อย่างน้อย 8 ตัว มีทั้งตัวอักษรอังกฤษและตัวเลข&quot;);
+      }
+      return setError(password, &quot;&quot;);
+    }
+
+    function checkConfirm() {
+      if (confirm.value === &quot;&quot;) return setError(confirm, &quot;กรุณายืนยันรหัสผ่าน&quot;);
+      if (confirm.value !== password.value) return setError(confirm, &quot;รหัสผ่านทั้งสองช่องไม่ตรงกัน&quot;);
+      return setError(confirm, &quot;&quot;);
+    }
+
+    // ตรวจทันทีเมื่อออกจากช่อง (blur) และตรวจซ้ำขณะพิมพ์หลังจากเคยผิดแล้ว
+    [[email, checkEmail], [password, checkPassword], [confirm, checkConfirm]].forEach(([input, check]) =&gt; {
+      input.addEventListener(&quot;blur&quot;, check);
+      input.addEventListener(&quot;input&quot;, () =&gt; {
+        if (input.getAttribute(&quot;aria-invalid&quot;) === &quot;true&quot;) check();
+        if (input === password &amp;&amp; confirm.value !== &quot;&quot;) checkConfirm();
+      });
+    });
+
+    form.addEventListener(&quot;submit&quot;, (event) =&gt; {
+      event.preventDefault();            // หยุดการส่งไว้ก่อน ตรวจให้ผ่านทั้งหมดจึงส่ง
+      const ok = [checkEmail(), checkPassword(), checkConfirm()].every(Boolean);
+      const result = document.getElementById(&quot;result&quot;);
+      if (!ok) {
+        result.textContent = &quot;&quot;;
+        form.querySelector(&#x27;[aria-invalid=&quot;true&quot;]&#x27;).focus();   // พาไปช่องแรกที่ผิด
+        return;
+      }
+      result.textContent = &quot;ข้อมูลถูกต้อง พร้อมส่งไปเซิร์ฟเวอร์ (บทที่ 7)&quot;;
+      // form.submit();  ← เปิดใช้เมื่อมีไฟล์ PHP รับข้อมูลแล้ว
+    });
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+" style="width:700px;height:560px" ></iframe></div></div>
+  <p class="x-file">signup.html</p><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;title&gt;สมัครสมาชิก&lt;/title&gt;
+  &lt;style&gt;
+    body { font-family: Tahoma, sans-serif; max-width: 480px; margin: 2rem auto; padding: 0 16px; line-height: 1.6; }
+    label { display: block; margin-top: 14px; font-weight: bold; }
+    input { width: 100%; padding: 8px; font: inherit; border: 2px solid #999; border-radius: 6px; box-sizing: border-box; }
+    input[aria-invalid=&quot;true&quot;] { border-color: #b3261e; }
+    input[aria-invalid=&quot;false&quot;] { border-color: #1f7a4a; }
+    .error { color: #b3261e; font-size: 0.9rem; min-height: 1.4em; margin: 2px 0 0; }
+    button { margin-top: 18px; padding: 10px 20px; font: inherit; background: #1f4d3a; color: #fff; border: 0; border-radius: 6px; }
+    #result { margin-top: 16px; font-weight: bold; color: #1f7a4a; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;สมัครสมาชิกร้านไร่ภูคำ&lt;/h1&gt;
+
+  &lt;!-- novalidate: ปิดการตรวจของเบราว์เซอร์ เพื่อฝึกเขียนการตรวจเองด้วย JavaScript --&gt;
+  &lt;form id=&quot;signupForm&quot; novalidate&gt;
+    &lt;label for=&quot;email&quot;&gt;อีเมล&lt;/label&gt;
+    &lt;input type=&quot;text&quot; id=&quot;email&quot; name=&quot;email&quot; autocomplete=&quot;email&quot; aria-describedby=&quot;email-error&quot;&gt;
+    &lt;p class=&quot;error&quot; id=&quot;email-error&quot; aria-live=&quot;polite&quot;&gt;&lt;/p&gt;
+
+    &lt;label for=&quot;password&quot;&gt;รหัสผ่าน&lt;/label&gt;
+    &lt;input type=&quot;password&quot; id=&quot;password&quot; name=&quot;password&quot; autocomplete=&quot;new-password&quot; aria-describedby=&quot;password-error&quot;&gt;
+    &lt;p class=&quot;error&quot; id=&quot;password-error&quot; aria-live=&quot;polite&quot;&gt;&lt;/p&gt;
+
+    &lt;label for=&quot;confirm&quot;&gt;ยืนยันรหัสผ่าน&lt;/label&gt;
+    &lt;input type=&quot;password&quot; id=&quot;confirm&quot; name=&quot;confirm&quot; autocomplete=&quot;new-password&quot; aria-describedby=&quot;confirm-error&quot;&gt;
+    &lt;p class=&quot;error&quot; id=&quot;confirm-error&quot; aria-live=&quot;polite&quot;&gt;&lt;/p&gt;
+
+    &lt;button type=&quot;submit&quot;&gt;สมัครสมาชิก&lt;/button&gt;
+  &lt;/form&gt;
+  &lt;p id=&quot;result&quot; role=&quot;status&quot;&gt;&lt;/p&gt;
+
+  &lt;script&gt;
+    // รูปแบบอีเมล: มีข้อความก่อน @ / มีชื่อโดเมน / มีจุดตามด้วยอักษรอย่างน้อย 2 ตัว / ห้ามมีช่องว่าง
+    const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+    // รหัสผ่าน: อย่างน้อย 8 ตัว มีตัวอักษรอังกฤษและตัวเลขอย่างน้อยอย่างละ 1 ตัว
+    const PASSWORD_PATTERN = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
+
+    const form = document.getElementById(&quot;signupForm&quot;);
+    const email = document.getElementById(&quot;email&quot;);
+    const password = document.getElementById(&quot;password&quot;);
+    const confirm = document.getElementById(&quot;confirm&quot;);
+
+    // แสดงหรือล้างข้อความผิดพลาดใต้ช่อง แล้วคืนค่า true ถ้าผ่าน
+    function setError(input, message) {
+      document.getElementById(input.id + &quot;-error&quot;).textContent = message;
+      input.setAttribute(&quot;aria-invalid&quot;, message ? &quot;true&quot; : &quot;false&quot;);
+      return message === &quot;&quot;;
+    }
+
+    function checkEmail() {
+      const value = email.value.trim();
+      if (value === &quot;&quot;) return setError(email, &quot;กรุณากรอกอีเมล&quot;);
+      if (!EMAIL_PATTERN.test(value)) return setError(email, &quot;รูปแบบอีเมลไม่ถูกต้อง เช่น name@example.com&quot;);
+      return setError(email, &quot;&quot;);
+    }
+
+    function checkPassword() {
+      if (!PASSWORD_PATTERN.test(password.value)) {
+        return setError(password, &quot;อย่างน้อย 8 ตัว มีทั้งตัวอักษรอังกฤษและตัวเลข&quot;);
+      }
+      return setError(password, &quot;&quot;);
+    }
+
+    function checkConfirm() {
+      if (confirm.value === &quot;&quot;) return setError(confirm, &quot;กรุณายืนยันรหัสผ่าน&quot;);
+      if (confirm.value !== password.value) return setError(confirm, &quot;รหัสผ่านทั้งสองช่องไม่ตรงกัน&quot;);
+      return setError(confirm, &quot;&quot;);
+    }
+
+    // ตรวจทันทีเมื่อออกจากช่อง (blur) และตรวจซ้ำขณะพิมพ์หลังจากเคยผิดแล้ว
+    [[email, checkEmail], [password, checkPassword], [confirm, checkConfirm]].forEach(([input, check]) =&gt; {
+      input.addEventListener(&quot;blur&quot;, check);
+      input.addEventListener(&quot;input&quot;, () =&gt; {
+        if (input.getAttribute(&quot;aria-invalid&quot;) === &quot;true&quot;) check();
+        if (input === password &amp;&amp; confirm.value !== &quot;&quot;) checkConfirm();
+      });
+    });
+
+    form.addEventListener(&quot;submit&quot;, (event) =&gt; {
+      event.preventDefault();            // หยุดการส่งไว้ก่อน ตรวจให้ผ่านทั้งหมดจึงส่ง
+      const ok = [checkEmail(), checkPassword(), checkConfirm()].every(Boolean);
+      const result = document.getElementById(&quot;result&quot;);
+      if (!ok) {
+        result.textContent = &quot;&quot;;
+        form.querySelector(&#x27;[aria-invalid=&quot;true&quot;]&#x27;).focus();   // พาไปช่องแรกที่ผิด
+        return;
+      }
+      result.textContent = &quot;ข้อมูลถูกต้อง พร้อมส่งไปเซิร์ฟเวอร์ (บทที่ 7)&quot;;
+      // form.submit();  ← เปิดใช้เมื่อมีไฟล์ PHP รับข้อมูลแล้ว
+    });
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+  <h3>อ่าน Regex ทีละส่วน</h3>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>ส่วนของ Regex</th><th>ความหมาย</th></tr></thead><tbody><tr><td><code>^</code> … <code>$</code></td><td>ตรวจตั้งแต่ตัวแรกถึงตัวสุดท้าย ไม่ใช่แค่มีบางส่วนตรง</td></tr><tr><td><code>[^\s@]+</code></td><td>อักขระอะไรก็ได้ที่ไม่ใช่ช่องว่างและไม่ใช่ @ อย่างน้อย 1 ตัว</td></tr><tr><td><code>@</code></td><td>ต้องมี @ หนึ่งตัว</td></tr><tr><td><code>\.[^\s@]{2,}</code></td><td>ต้องมีจุด ตามด้วยอักขระอย่างน้อย 2 ตัว เช่น .com .th</td></tr><tr><td><code>(?=.*[A-Za-z])</code></td><td>มองไปข้างหน้า (lookahead): ต้องมีตัวอักษรอังกฤษอย่างน้อย 1 ตัวที่ไหนก็ได้</td></tr><tr><td><code>(?=.*\d)</code></td><td>ต้องมีตัวเลขอย่างน้อย 1 ตัว</td></tr><tr><td><code>.{8,}</code></td><td>ยาวอย่างน้อย 8 ตัว</td></tr></tbody></table></div>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>กรอก</th><th>ผล (ทดสอบด้วย Node.js แล้ว)</th></tr></thead><tbody><tr><td><code>somying@example.com</code></td><td>ผ่าน</td></tr><tr><td><code>somying@example</code></td><td>ไม่ผ่าน ไม่มีจุดหลัง @</td></tr><tr><td><code>somying.example.com</code></td><td>ไม่ผ่าน ไม่มี @</td></tr><tr><td><code>som ying@example.com</code></td><td>ไม่ผ่าน มีช่องว่าง</td></tr><tr><td>รหัสผ่าน <code>abcdefgh</code></td><td>ไม่ผ่าน ไม่มีตัวเลข</td></tr><tr><td>รหัสผ่าน <code>12345678</code></td><td>ไม่ผ่าน ไม่มีตัวอักษร</td></tr><tr><td>รหัสผ่าน <code>coffee2569</code> ยืนยัน <code>coffee2568</code></td><td>รหัสผ่านผ่าน แต่ช่องยืนยันขึ้น "ไม่ตรงกัน"</td></tr></tbody></table></div>
+  <div class="x-callout"><b>ข้อควรรู้:</b> Regex อีเมลนี้ตรวจรูปแบบที่ใช้ทั่วไป ไม่ได้ครอบคลุมทุกกรณีตามมาตรฐานอีเมล และไม่ได้ยืนยันว่าอีเมลมีอยู่จริง การตรวจฝั่ง Client ช่วยผู้ใช้กรอกถูกต้องเร็วขึ้น แต่ผู้ใช้ปิด JavaScript หรือส่งข้อมูลตรงไปเซิร์ฟเวอร์ได้ ฝั่ง PHP ต้องตรวจซ้ำเสมอ (บทที่ 7)</div>
+  <details class="x-trouble"><summary>ข้อผิดพลาดที่พบบ่อย</summary><dl><div><dt>ข้อความผิดพลาดขึ้นตั้งแต่ยังไม่ได้พิมพ์</dt><dd>ตรวจเมื่อ blur (ออกจากช่อง) และเมื่อกดส่ง ไม่ควรตรวจตอนเพิ่งเริ่มพิมพ์ ผู้ใช้จะเห็นแต่สีแดง</dd></div><div><dt>แก้รหัสผ่านช่องแรกแล้วช่องยืนยันยังขึ้นว่าตรงกัน</dt><dd>ต้องตรวจช่องยืนยันซ้ำทุกครั้งที่รหัสผ่านช่องแรกเปลี่ยน ตัวอย่างนี้ทำไว้ใน event input ของช่อง password</dd></div><div><dt>ลืม event.preventDefault()</dt><dd>ฟอร์มจะส่งออกไปและรีเฟรชหน้าทันที ก่อนที่ผู้ใช้จะเห็นข้อความผิดพลาด</dd></div></dl></details>
+  <div class="x-shots"><b>ภาพหน้าจอที่ต้องแนบ</b><ul><li>ฟอร์มที่กดส่งตอนข้อมูลผิด (แสดงข้อความใต้ช่อง)</li><li>ฟอร์มที่รหัสผ่านไม่ตรงกัน</li><li>ฟอร์มที่ถูกต้องครบ</li></ul></div>
+</section>
+
+<section id="e3">
+  <div class="x-head"><span class="x-num">6.3</span><h2>สลับโหมดสว่าง/มืดด้วย classList.toggle</h2><span class="x-part">ส่วนที่ 1 · สัปดาห์ 10</span></div>
+  <p>ขยายจาก <code>dark-mode.html</code> ด้วย 3 เรื่อง: เก็บสีในตัวแปร CSS (ใบงานที่ 4) ให้สลับทั้งหน้าได้ด้วยคลาสเดียว, จำโหมดที่ผู้ใช้เลือกไว้ด้วย localStorage และเริ่มต้นตามการตั้งค่าของระบบปฏิบัติการ</p>
+  <div class="x-preview" id="pv3"><div class="x-pv-bar" role="group" aria-label="เลือกความกว้างจอ"><button type="button" data-w="375" aria-pressed="false">มือถือ 375px</button><button type="button" data-w="700" aria-pressed="true">700px</button><span class="pvw">700px</span></div><div class="x-pv-stage"><iframe title="ตัวอย่างหน้าเว็บ theme" sandbox="allow-scripts allow-forms" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;title&gt;สลับโหมดสว่าง/มืด&lt;/title&gt;
+  &lt;style&gt;
+    /* เก็บสีไว้ในตัวแปร แล้วเปลี่ยนแค่ค่าตัวแปรเมื่อ body มีคลาส dark */
+    body {
+      --bg: #f3ede3;
+      --text: #1e1a17;
+      --card: #ffffff;
+      --accent: #1f4d3a;
+      font-family: Tahoma, sans-serif;
+      margin: 0;
+      padding: 2rem 16px;
+      background-color: var(--bg);
+      color: var(--text);
+      transition: background-color 0.3s, color 0.3s;
+    }
+    body.dark {
+      --bg: #141816;
+      --text: #e6ebe8;
+      --card: #1f2522;
+      --accent: #8fd1ae;
+    }
+    .card { max-width: 480px; margin: 0 auto; padding: 20px; background: var(--card); border-radius: 12px; }
+    h1 { color: var(--accent); margin-top: 0; }
+    button { padding: 8px 16px; font: inherit; border: 2px solid var(--accent); color: var(--accent);
+             background: transparent; border-radius: 999px; cursor: pointer; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class=&quot;card&quot;&gt;
+    &lt;h1&gt;ไร่ภูคำ&lt;/h1&gt;
+    &lt;p&gt;กาแฟจากไร่บนดอย คั่วสดทุกสัปดาห์&lt;/p&gt;
+    &lt;button type=&quot;button&quot; id=&quot;themeBtn&quot; aria-pressed=&quot;false&quot;&gt;🌙 โหมดมืด&lt;/button&gt;
+  &lt;/div&gt;
+
+  &lt;script&gt;
+    const btn = document.getElementById(&quot;themeBtn&quot;);
+
+    function updateButton() {
+      const isDark = document.body.classList.contains(&quot;dark&quot;);
+      btn.textContent = isDark ? &quot;☀️ โหมดสว่าง&quot; : &quot;🌙 โหมดมืด&quot;;
+      btn.setAttribute(&quot;aria-pressed&quot;, String(isDark));   // บอกโปรแกรมอ่านหน้าจอว่าเปิดอยู่หรือไม่
+    }
+
+    // เริ่มต้น: ใช้ค่าที่ผู้ใช้เคยเลือก ถ้าไม่เคยเลือก ใช้ตามการตั้งค่าของระบบปฏิบัติการ
+    let saved = null;
+    try { saved = localStorage.getItem(&quot;theme&quot;); } catch (e) { /* บางเบราว์เซอร์ปิด localStorage */ }
+    const prefersDark = window.matchMedia(&quot;(prefers-color-scheme: dark)&quot;).matches;
+    if (saved === &quot;dark&quot; || (saved === null &amp;&amp; prefersDark)) {
+      document.body.classList.add(&quot;dark&quot;);
+    }
+    updateButton();
+
+    btn.addEventListener(&quot;click&quot;, () =&gt; {
+      document.body.classList.toggle(&quot;dark&quot;);               // มีคลาสอยู่ → เอาออก, ไม่มี → ใส่
+      updateButton();
+      try {
+        localStorage.setItem(&quot;theme&quot;, document.body.classList.contains(&quot;dark&quot;) ? &quot;dark&quot; : &quot;light&quot;);
+      } catch (e) { /* บันทึกไม่ได้ก็ยังสลับโหมดได้ตามปกติ */ }
+    });
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+" style="width:700px;height:340px" ></iframe></div></div>
+  <p class="x-muted">ตัวอย่างในหน้านี้จำโหมดไม่ได้ เพราะกรอบตัวอย่างถูกจำกัดสิทธิ์ไม่ให้ใช้ localStorage ซึ่งทำให้เห็นว่าโค้ดที่ครอบด้วย try…catch ยังสลับโหมดได้ตามปกติ เปิดด้วย Live Server แล้วรีเฟรชหน้า จะเห็นว่าโหมดที่เลือกไว้ยังอยู่</p>
+  <p class="x-file">theme.html</p><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;title&gt;สลับโหมดสว่าง/มืด&lt;/title&gt;
+  &lt;style&gt;
+    /* เก็บสีไว้ในตัวแปร แล้วเปลี่ยนแค่ค่าตัวแปรเมื่อ body มีคลาส dark */
+    body {
+      --bg: #f3ede3;
+      --text: #1e1a17;
+      --card: #ffffff;
+      --accent: #1f4d3a;
+      font-family: Tahoma, sans-serif;
+      margin: 0;
+      padding: 2rem 16px;
+      background-color: var(--bg);
+      color: var(--text);
+      transition: background-color 0.3s, color 0.3s;
+    }
+    body.dark {
+      --bg: #141816;
+      --text: #e6ebe8;
+      --card: #1f2522;
+      --accent: #8fd1ae;
+    }
+    .card { max-width: 480px; margin: 0 auto; padding: 20px; background: var(--card); border-radius: 12px; }
+    h1 { color: var(--accent); margin-top: 0; }
+    button { padding: 8px 16px; font: inherit; border: 2px solid var(--accent); color: var(--accent);
+             background: transparent; border-radius: 999px; cursor: pointer; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class=&quot;card&quot;&gt;
+    &lt;h1&gt;ไร่ภูคำ&lt;/h1&gt;
+    &lt;p&gt;กาแฟจากไร่บนดอย คั่วสดทุกสัปดาห์&lt;/p&gt;
+    &lt;button type=&quot;button&quot; id=&quot;themeBtn&quot; aria-pressed=&quot;false&quot;&gt;🌙 โหมดมืด&lt;/button&gt;
+  &lt;/div&gt;
+
+  &lt;script&gt;
+    const btn = document.getElementById(&quot;themeBtn&quot;);
+
+    function updateButton() {
+      const isDark = document.body.classList.contains(&quot;dark&quot;);
+      btn.textContent = isDark ? &quot;☀️ โหมดสว่าง&quot; : &quot;🌙 โหมดมืด&quot;;
+      btn.setAttribute(&quot;aria-pressed&quot;, String(isDark));   // บอกโปรแกรมอ่านหน้าจอว่าเปิดอยู่หรือไม่
+    }
+
+    // เริ่มต้น: ใช้ค่าที่ผู้ใช้เคยเลือก ถ้าไม่เคยเลือก ใช้ตามการตั้งค่าของระบบปฏิบัติการ
+    let saved = null;
+    try { saved = localStorage.getItem(&quot;theme&quot;); } catch (e) { /* บางเบราว์เซอร์ปิด localStorage */ }
+    const prefersDark = window.matchMedia(&quot;(prefers-color-scheme: dark)&quot;).matches;
+    if (saved === &quot;dark&quot; || (saved === null &amp;&amp; prefersDark)) {
+      document.body.classList.add(&quot;dark&quot;);
+    }
+    updateButton();
+
+    btn.addEventListener(&quot;click&quot;, () =&gt; {
+      document.body.classList.toggle(&quot;dark&quot;);               // มีคลาสอยู่ → เอาออก, ไม่มี → ใส่
+      updateButton();
+      try {
+        localStorage.setItem(&quot;theme&quot;, document.body.classList.contains(&quot;dark&quot;) ? &quot;dark&quot; : &quot;light&quot;);
+      } catch (e) { /* บันทึกไม่ได้ก็ยังสลับโหมดได้ตามปกติ */ }
+    });
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>คำสั่ง</th><th>ทำอะไร</th></tr></thead><tbody><tr><td><code>classList.toggle(&quot;dark&quot;)</code></td><td>ถ้า body มีคลาส dark อยู่จะเอาออก ถ้าไม่มีจะใส่ให้</td></tr><tr><td><code>classList.contains(&quot;dark&quot;)</code></td><td>ตรวจว่าตอนนี้อยู่โหมดไหน ใช้เปลี่ยนข้อความบนปุ่ม</td></tr><tr><td><code>body.dark { --bg: … }</code></td><td>เปลี่ยนแค่ค่าตัวแปร ทุกส่วนที่ใช้ var(--bg) เปลี่ยนตามเอง ไม่ต้องเขียนสีใหม่ทีละส่วน</td></tr><tr><td><code>localStorage.setItem / getItem</code></td><td>เก็บค่าในเบราว์เซอร์ เปิดหน้าใหม่ยังจำได้</td></tr><tr><td><code>matchMedia(&quot;(prefers-color-scheme: dark)&quot;)</code></td><td>ดูว่าผู้ใช้ตั้งเครื่องเป็นโหมดมืดอยู่หรือไม่</td></tr><tr><td><code>aria-pressed</code></td><td>บอกโปรแกรมอ่านหน้าจอว่าปุ่มสลับนี้เปิดอยู่หรือปิดอยู่</td></tr></tbody></table></div>
+  <div class="x-shots"><b>ภาพหน้าจอที่ต้องแนบ</b><ul><li>หน้า theme.html ในโหมดสว่างและโหมดมืด</li><li>DevTools แท็บ Elements ที่เห็น body มี class="dark"</li></ul></div>
+</section>
+
+<section id="e4">
+  <div class="x-head"><span class="x-num">6.4</span><h2>ดึงข้อมูล JSON ด้วย Fetch API และ async/await</h2><span class="x-part">ส่วนที่ 2 · สัปดาห์ 11</span></div>
+  <p>ขยายจาก <code>jsonplaceholder-table.html</code> เปลี่ยนจากตารางเป็นการ์ด และเพิ่มสถานะกำลังโหลด ข้อความเมื่อผิดพลาด และปุ่มโหลดใหม่ ข้อมูลมาจาก <a href="https://jsonplaceholder.typicode.com/users" target="_blank" rel="noopener noreferrer">jsonplaceholder.typicode.com/users</a> ซึ่งเป็นข้อมูลจำลอง 10 คน</p>
+  <div class="x-preview" id="pv4"><div class="x-pv-bar" role="group" aria-label="เลือกความกว้างจอ"><button type="button" data-w="375" aria-pressed="false">มือถือ 375px</button><button type="button" data-w="768" aria-pressed="false">แท็บเล็ต 768px</button><button type="button" data-w="1100" aria-pressed="true">คอมพิวเตอร์ 1100px</button><span class="pvw">1100px</span></div><div class="x-pv-stage"><iframe title="ตัวอย่างหน้าเว็บ users" sandbox="allow-scripts allow-forms" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;title&gt;รายชื่อสมาชิกจาก API&lt;/title&gt;
+  &lt;style&gt;
+    body { font-family: Tahoma, sans-serif; max-width: 960px; margin: 2rem auto; padding: 0 16px; line-height: 1.5; background: #f4f6f8; }
+    .toolbar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    button { padding: 8px 16px; font: inherit; background: #1f4d3a; color: #fff; border: 0; border-radius: 6px; cursor: pointer; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; margin-top: 16px; }
+    .card { background: #fff; border-radius: 10px; padding: 16px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); }
+    .card h2 { font-size: 1.1rem; margin: 0 0 4px; color: #1f4d3a; }
+    .card p { margin: 2px 0; font-size: 0.9rem; overflow-wrap: anywhere; }
+    .status { color: #555; }
+    .status.error { color: #b3261e; font-weight: bold; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;รายชื่อสมาชิก (ข้อมูลจำลองจาก JSONPlaceholder)&lt;/h1&gt;
+  &lt;div class=&quot;toolbar&quot;&gt;
+    &lt;button type=&quot;button&quot; id=&quot;loadBtn&quot;&gt;โหลดข้อมูล&lt;/button&gt;
+    &lt;p class=&quot;status&quot; id=&quot;status&quot; role=&quot;status&quot;&gt;กดปุ่มเพื่อโหลดข้อมูล&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;grid&quot; id=&quot;userGrid&quot;&gt;&lt;/div&gt;
+
+  &lt;script&gt;
+    const API_URL = &quot;https://jsonplaceholder.typicode.com/users&quot;;
+    const statusEl = document.getElementById(&quot;status&quot;);
+    const grid = document.getElementById(&quot;userGrid&quot;);
+    const loadBtn = document.getElementById(&quot;loadBtn&quot;);
+
+    // สร้างการ์ด 1 ใบจากข้อมูลผู้ใช้ 1 คน
+    function createCard(user) {
+      const card = document.createElement(&quot;article&quot;);
+      card.className = &quot;card&quot;;
+
+      const name = document.createElement(&quot;h2&quot;);
+      name.textContent = user.name;                 // textContent ไม่แปลงข้อความเป็น HTML จึงกัน XSS
+      card.appendChild(name);
+
+      const lines = [
+        `อีเมล: ${user.email}`,
+        `โทร: ${user.phone}`,
+        `เมือง: ${user.address.city}`,
+        `บริษัท: ${user.company.name}`,
+      ];
+      lines.forEach((text) =&gt; {
+        const p = document.createElement(&quot;p&quot;);
+        p.textContent = text;
+        card.appendChild(p);
+      });
+      return card;
+    }
+
+    async function loadUsers() {
+      statusEl.className = &quot;status&quot;;
+      statusEl.textContent = &quot;กำลังโหลด…&quot;;
+      loadBtn.disabled = true;
+      grid.replaceChildren();                        // ล้างการ์ดเก่า
+
+      try {
+        const response = await fetch(API_URL);      // รอจนเซิร์ฟเวอร์ตอบกลับ
+        if (!response.ok) {                          // fetch ไม่ throw เมื่อได้ 404/500 ต้องตรวจเอง
+          throw new Error(`เซิร์ฟเวอร์ตอบกลับรหัส ${response.status}`);
+        }
+        const users = await response.json();        // แปลง JSON เป็นอาร์เรย์ของออบเจกต์
+        users.forEach((user) =&gt; grid.appendChild(createCard(user)));
+        statusEl.textContent = `โหลดสำเร็จ ${users.length} รายการ`;
+      } catch (error) {
+        statusEl.className = &quot;status error&quot;;
+        statusEl.textContent = `โหลดข้อมูลไม่สำเร็จ: ${error.message}`;
+      } finally {
+        loadBtn.disabled = false;                    // ทำงานเสมอ ไม่ว่าสำเร็จหรือผิดพลาด
+      }
+    }
+
+    loadBtn.addEventListener(&quot;click&quot;, loadUsers);
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+" style="width:1100px;height:620px" ></iframe></div></div>
+  <p class="x-muted">กด "โหลดข้อมูล" ในกรอบด้านบน ต้องต่ออินเทอร์เน็ต</p>
+  <h3>ข้อมูล JSON ที่ได้ (ตัดบางส่วน)</h3>
+  <div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>[
+  {
+    &quot;id&quot;: 1,
+    &quot;name&quot;: &quot;Leanne Graham&quot;,
+    &quot;email&quot;: &quot;Sincere@april.biz&quot;,
+    &quot;address&quot;: { &quot;city&quot;: &quot;Gwenborough&quot;, ... },
+    &quot;phone&quot;: &quot;1-770-736-8031 x56442&quot;,
+    &quot;company&quot;: { &quot;name&quot;: &quot;Romaguera-Crona&quot;, ... },
+    ...
+  },
+  ... รวม 10 คน
+]</code></pre></div>
+  <p class="x-muted">ข้อมูลเป็นอาร์เรย์ของออบเจกต์ เมืองและชื่อบริษัทอยู่ในออบเจกต์ซ้อน จึงเรียกด้วย <code>user.address.city</code> และ <code>user.company.name</code> ลองเปิด URL ในเบราว์เซอร์เพื่อดูข้อมูลจริงทั้งหมด</p>
+  <p class="x-file">users.html</p><div class="code"><div class="bar"><span>โค้ด</span><span><button class="copy" type="button">คัดลอก</button></span></div><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;th&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;title&gt;รายชื่อสมาชิกจาก API&lt;/title&gt;
+  &lt;style&gt;
+    body { font-family: Tahoma, sans-serif; max-width: 960px; margin: 2rem auto; padding: 0 16px; line-height: 1.5; background: #f4f6f8; }
+    .toolbar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    button { padding: 8px 16px; font: inherit; background: #1f4d3a; color: #fff; border: 0; border-radius: 6px; cursor: pointer; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; margin-top: 16px; }
+    .card { background: #fff; border-radius: 10px; padding: 16px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); }
+    .card h2 { font-size: 1.1rem; margin: 0 0 4px; color: #1f4d3a; }
+    .card p { margin: 2px 0; font-size: 0.9rem; overflow-wrap: anywhere; }
+    .status { color: #555; }
+    .status.error { color: #b3261e; font-weight: bold; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;รายชื่อสมาชิก (ข้อมูลจำลองจาก JSONPlaceholder)&lt;/h1&gt;
+  &lt;div class=&quot;toolbar&quot;&gt;
+    &lt;button type=&quot;button&quot; id=&quot;loadBtn&quot;&gt;โหลดข้อมูล&lt;/button&gt;
+    &lt;p class=&quot;status&quot; id=&quot;status&quot; role=&quot;status&quot;&gt;กดปุ่มเพื่อโหลดข้อมูล&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;grid&quot; id=&quot;userGrid&quot;&gt;&lt;/div&gt;
+
+  &lt;script&gt;
+    const API_URL = &quot;https://jsonplaceholder.typicode.com/users&quot;;
+    const statusEl = document.getElementById(&quot;status&quot;);
+    const grid = document.getElementById(&quot;userGrid&quot;);
+    const loadBtn = document.getElementById(&quot;loadBtn&quot;);
+
+    // สร้างการ์ด 1 ใบจากข้อมูลผู้ใช้ 1 คน
+    function createCard(user) {
+      const card = document.createElement(&quot;article&quot;);
+      card.className = &quot;card&quot;;
+
+      const name = document.createElement(&quot;h2&quot;);
+      name.textContent = user.name;                 // textContent ไม่แปลงข้อความเป็น HTML จึงกัน XSS
+      card.appendChild(name);
+
+      const lines = [
+        `อีเมล: ${user.email}`,
+        `โทร: ${user.phone}`,
+        `เมือง: ${user.address.city}`,
+        `บริษัท: ${user.company.name}`,
+      ];
+      lines.forEach((text) =&gt; {
+        const p = document.createElement(&quot;p&quot;);
+        p.textContent = text;
+        card.appendChild(p);
+      });
+      return card;
+    }
+
+    async function loadUsers() {
+      statusEl.className = &quot;status&quot;;
+      statusEl.textContent = &quot;กำลังโหลด…&quot;;
+      loadBtn.disabled = true;
+      grid.replaceChildren();                        // ล้างการ์ดเก่า
+
+      try {
+        const response = await fetch(API_URL);      // รอจนเซิร์ฟเวอร์ตอบกลับ
+        if (!response.ok) {                          // fetch ไม่ throw เมื่อได้ 404/500 ต้องตรวจเอง
+          throw new Error(`เซิร์ฟเวอร์ตอบกลับรหัส ${response.status}`);
+        }
+        const users = await response.json();        // แปลง JSON เป็นอาร์เรย์ของออบเจกต์
+        users.forEach((user) =&gt; grid.appendChild(createCard(user)));
+        statusEl.textContent = `โหลดสำเร็จ ${users.length} รายการ`;
+      } catch (error) {
+        statusEl.className = &quot;status error&quot;;
+        statusEl.textContent = `โหลดข้อมูลไม่สำเร็จ: ${error.message}`;
+      } finally {
+        loadBtn.disabled = false;                    // ทำงานเสมอ ไม่ว่าสำเร็จหรือผิดพลาด
+      }
+    }
+
+    loadBtn.addEventListener(&quot;click&quot;, loadUsers);
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+  <h3>ลำดับการทำงาน</h3>
+  <ol class="x-steps">
+    <li>กดปุ่ม เรียก <code>loadUsers()</code> ซึ่งเป็นฟังก์ชัน <code>async</code> จึงใช้ <code>await</code> ข้างในได้</li>
+    <li><code>await fetch(API_URL)</code> ส่งคำขอไปเซิร์ฟเวอร์ ระหว่างรอ หน้าเว็บยังใช้งานได้ ไม่ค้าง</li>
+    <li>ตรวจ <code>response.ok</code> เพราะ fetch ไม่ถือว่าเป็นข้อผิดพลาดเมื่อเซิร์ฟเวอร์ตอบ 404 หรือ 500 ต้องตรวจเองแล้ว throw</li>
+    <li><code>await response.json()</code> แปลงข้อความ JSON เป็นอาร์เรย์ของออบเจกต์</li>
+    <li>วนสร้างการ์ดด้วย <code>createElement</code> และ <code>textContent</code> แล้วต่อเข้า grid</li>
+    <li>ถ้าผิดพลาดที่ขั้นไหน จะกระโดดไป <code>catch</code> แสดงข้อความให้ผู้ใช้ และ <code>finally</code> เปิดปุ่มกลับมาเสมอ</li>
+  </ol>
+  <div class="x-callout"><b>ลองทำให้ผิดพลาด:</b> แก้ <code>API_URL</code> เป็น <code>…/userz</code> เซิร์ฟเวอร์จะตอบ 404 (ทดสอบแล้ว) หน้าเว็บต้องแสดง "โหลดข้อมูลไม่สำเร็จ: เซิร์ฟเวอร์ตอบกลับรหัส 404" หรือปิด Wi-Fi แล้วกดโหลด จะได้ข้อความผิดพลาดจากการเชื่อมต่อแทน แนบภาพทั้งสองกรณีในรายงาน</div>
+  <details class="x-trouble"><summary>ข้อผิดพลาดที่พบบ่อย</summary><dl><div><dt>ใช้ innerHTML ต่อข้อความจาก API</dt><dd>ถ้าข้อมูลมีแท็ก &lt;script&gt; หรือ &lt;img onerror&gt; จะถูกรันในหน้าเว็บ (XSS) ข้อความที่มาจากภายนอกให้ใส่ด้วย textContent เสมอ</dd></div><div><dt>ได้ Promise { &lt;pending&gt; } แทนข้อมูล</dt><dd>ลืม await หน้า fetch() หรือ response.json() หรือเรียก await นอกฟังก์ชัน async</dd></div><div><dt>TypeError: Cannot read properties of undefined (reading 'city')</dt><dd>เรียกชื่อฟิลด์ผิด ให้ console.log(users[0]) ดูโครงสร้างข้อมูลจริงก่อน</dd></div><div><dt>เปิดไฟล์แบบ file:/// แล้ว fetch ไม่ทำงาน</dt><dd>เบราว์เซอร์บางตัวจำกัดคำขอจากไฟล์ในเครื่อง ให้เปิดผ่าน Live Server</dd></div></dl></details>
+  <div class="x-shots"><b>ภาพหน้าจอที่ต้องแนบ</b><ul><li>การ์ดผู้ใช้ 10 ใบที่โหลดสำเร็จ</li><li>DevTools แท็บ Network ที่เห็นคำขอ users สถานะ 200 และแท็บ Preview ของข้อมูล JSON</li><li>ข้อความเมื่อเปลี่ยน URL เป็น /userz (404)</li></ul></div>
+</section>
+
+<section id="e5">
+  <div class="x-head"><span class="x-num">สรุป</span><h2>สิ่งที่ต้องส่ง</h2></div>
+  <div class="x-scroll"><table class="x-table"><thead><tr><th>ส่วน</th><th>ข้อ</th><th>ไฟล์ / หลักฐาน</th></tr></thead><tbody><tr><td>1 (สัปดาห์ 10)</td><td>6.1</td><td><code>order.html</code> + ภาพยอดที่เปลี่ยนตามการกรอก</td></tr><tr><td></td><td>6.2</td><td><code>signup.html</code> + ภาพข้อมูลผิดและถูก</td></tr><tr><td></td><td>6.3</td><td><code>theme.html</code> + ภาพโหมดสว่างและมืด</td></tr><tr><td>2 (สัปดาห์ 11)</td><td>6.4</td><td><code>users.html</code> + ภาพผลสำเร็จ แท็บ Network และกรณีผิดพลาด</td></tr></tbody></table></div>
+  <p class="x-muted">บีบอัดโฟลเดอร์ ws6 เป็น .zip และรวมภาพหน้าจอเป็น PDF ไฟล์เดียว ส่งพร้อมกันทั้งสองส่วนภายในสัปดาห์ที่ 11 ตั้งชื่อตามรูปแบบ <code>รหัสนักศึกษา_ใบงานที่6</code></p>
+</section>
+
+</div>
+<div class="pager"><a class="pn" href="ws6.html"><small>กลับไปที่</small><b>ใบงานที่ 6</b></a><a class="pn next" href="ws7.html"><small>ถัดไป</small><b>ใบงานที่ 7</b></a></div></div>
+</main>
+<footer class="foot"><div class="wrap fgrid">
+<div><a class="brand" href="../index.html"><span class="logo" aria-hidden="true">&lt;/&gt;</span><span class="bt"><b>การเขียนโปรแกรมบนเว็บ</b><small>Web Programming</small></span></a>
+<p class="small">สื่อเสริมการเรียนรู้ ใช้ประกอบเอกสารประกอบการสอน ไม่มีระบบสมาชิกและไม่เก็บข้อมูลส่วนบุคคล ส่งงานผ่าน Google Classroom</p></div>
+<div><p class="fh">เรียนรู้</p><a href="../chapters.html">บทเรียน 10 บท</a><a href="../worksheets.html">ใบงานประจำบท</a><a href="../assessment.html">เกณฑ์การประเมินผล</a><a href="../clo.html">ผลลัพธ์การเรียนรู้ (CLO)</a><a href="../start.html">เริ่มต้นใช้งาน</a></div>
+<div><p class="fh">รายวิชา</p><a href="../about.html">เกี่ยวกับรายวิชา</a><span>ผู้สอน: ดร.สุรเชษฐ์ สังขพันธ์</span><span>พ.ศ. 2569</span></div>
+</div></footer>
+<script src="../assets/app.js"></script>
+<script>
+document.querySelectorAll(".x-preview").forEach(function(pv){
+  var frames=pv.querySelectorAll("iframe"), out=pv.querySelector(".pvw");
+  pv.querySelectorAll("button[data-w]").forEach(function(b,_,all){b.addEventListener("click",function(){
+    all.forEach(function(x){x.setAttribute("aria-pressed","false")});b.setAttribute("aria-pressed","true");
+    frames.forEach(function(f){f.style.width=b.dataset.w+"px"});out.textContent=b.dataset.w+"px";});});
+  pv.querySelectorAll("button[data-doc]").forEach(function(b,_,all){b.addEventListener("click",function(){
+    all.forEach(function(x){x.setAttribute("aria-pressed","false")});b.setAttribute("aria-pressed","true");
+    frames.forEach(function(f,k){f.hidden=(k!=b.dataset.doc)});});});
+});
+</script>
+</body>
+</html>
